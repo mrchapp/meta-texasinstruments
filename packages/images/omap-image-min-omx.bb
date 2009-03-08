@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2007 OpenedHand Ltd.
 #
-IMAGE_INSTALL = "task-poky-boot task-omap-bridge task-omap-sn task-omap-omx ${ROOTFS_PKGMANAGE}"
+IMAGE_INSTALL = "task-poky-boot task-omap-bridge task-omap-omx ${ROOTFS_PKGMANAGE}"
 
 IMAGE_LINGUAS = " "
 
