@@ -45,6 +45,8 @@ do_install() {
 do_stage() {
 	# Somehow, ${STAGING_DIR}/${HOST_SYS} != ${STAGING_LIBDIR}/../
 	STAGE_DIR=${STAGING_LIBDIR}/../
+
+	mkdir -p ${STAGING_LIBDIR}/../omx || :
 	oe_runmake \
 		PREFIX=${STAGE_DIR} PKGDIR=${S} \
 		CROSS=${AR%-*}- \
@@ -52,6 +54,9 @@ do_stage() {
 		TARGETDIR=${STAGE_DIR} OMXROOT=${S} \
 		SYSTEMINCLUDEDIR=${STAGING_INCDIR}/omx \
 		audio_manager.install
+
+	# We don't care about target binaries in staging.
+	rm -rf ${STAGING_LIBDIR}/../omx
 }
 
 FILES_${PN} = "\
