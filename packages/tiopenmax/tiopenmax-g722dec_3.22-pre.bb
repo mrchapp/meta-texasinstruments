@@ -81,8 +81,8 @@ FILES_${PN}-dev = "\
 	"
 
 do_stage_rm_omxdir() {
-	# Clean up undesired staging only if test patterns exist
-	${@base_contains("DISTRO_FEATURES", "testpatterns", "rm -rf ${STAGING_DIR_TARGET}/usr/omx/", "echo nothing to do here!", d)}
+	# Clean up undesired staging
+	rm -rf ${STAGING_DIR_TARGET}/usr/omx/
 }
 
 addtask stage_rm_omxdir after do_populate_staging before do_package_stage
