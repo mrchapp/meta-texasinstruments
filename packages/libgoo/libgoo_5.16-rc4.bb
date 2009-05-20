@@ -1,8 +1,8 @@
 SECTION = "libs"
-DEPENDS = "glib-2.0 tiopenmax"
+DEPENDS = "glib-2.0 virtual/openmax-il"
 DESCRIPTION = "Library for interacting OpenMAX IL."
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r1"
 
 SRCREV = "dbe22c03e2b76c419ff3bc37fa55a4f913050067"
 SRC_URI = "git://github.com/mrchapp/libgoo.git;protocol=http;branch=libgoo-5.16-rc"
