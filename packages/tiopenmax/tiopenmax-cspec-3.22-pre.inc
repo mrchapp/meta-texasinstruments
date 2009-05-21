@@ -7,6 +7,7 @@ CCASE_SPEC = "\
 	# OMX Image%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/image/... ACT_PREREL-IMAGE-L23.16%\
 	# LCML & core%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/system/src/openmax_il/audio_manager/... LINUX-MMSYSTEM_RLS_3.22P1%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/system/src/openmax_il/lcml/... LINUX-MMSYSTEM_RLS_3.20%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.22%\
 	# OMX Application%\
