@@ -152,7 +152,7 @@ PREFERRED_VERSION_tiopenmax-cspec = 		"3.22-pre"
 PREFERRED_VERSION_mm-isp =			"1.14"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.16-rc5"
+PREFERRED_VERSION_libgoo =		"5.16-rc6"
 PREFERRED_VERSION_gst-goo =		"5.16-rc7"
 PREFERRED_VERSION_gst-pyapps =		"5.16-pre"
 
