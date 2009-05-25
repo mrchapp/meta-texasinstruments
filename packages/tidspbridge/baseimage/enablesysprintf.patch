@@ -1,0 +1,13 @@
+Index: baseimage-2.43/system/baseimage/src/init.tci
+===================================================================
+--- baseimage-2.43.orig/system/baseimage/src/init.tci
++++ baseimage-2.43/system/baseimage/src/init.tci
+@@ -10,7 +10,7 @@ var ERT100840 = 0;
+ // debug control
+ var dPrint = true;
+ var fDebugBridge = false;
+-var enableSysPrintf = false;
++var enableSysPrintf = true;
+ 
+ // debug print message into standard output
+ DPrint = function (text)

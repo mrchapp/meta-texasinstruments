@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Baseimage."
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r1"
 DEPENDS = "baseimage-avsync \
    baseimage-dasf \
    baseimage-hal \
@@ -30,6 +30,8 @@ ENV_VAR = "DEPOT=${STAGING_BINDIR}/dspbridge/tools \
    DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR}/dspbridge/tools/cgt6x-6.0.7 \
    DBS_FC=${STAGING_BINDIR}/dspbridge/dsp/bdsptools/framework_components_1_10_04/packages-bld \
 "
+
+SRC_URI += "file://enablesysprintf.patch;patch=1"
  
 #set to release or debug
 RELEASE = "release"
