@@ -6,6 +6,9 @@ DESCRIPTION = "Texas Instruments OpenMAX IL."
 LICENSE = "LGPL"
 PR = "r0"
 
+PROVIDES = "virtual/openmax-il"
+RPROVIDES = "virtual/openmax-il"
+
 # We need to override this and make sure it's only -j1
 PARALLEL_MAKE = "-j1"
 
