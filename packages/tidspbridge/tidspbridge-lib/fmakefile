@@ -3,7 +3,7 @@
 SOURCE_DIR = .
 
 CC ?= arm-none-linux-gnueabi-gcc
-DB_CFLAGS = -Wall -g3
+DB_CFLAGS = -Wall -g3 -fpic
 LDFLAGS = -lpthread
 
 # Default target:
