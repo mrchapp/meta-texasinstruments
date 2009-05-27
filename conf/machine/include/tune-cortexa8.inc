@@ -12,6 +12,7 @@ TARGET_CC_ARCH_pn-libmad = "-mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fno-
 TARGET_CC_ARCH_pn-js = "-mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fno-tree-vectorize -pipe -O2"
 TARGET_CC_ARCH_pn-portmap = "-mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fno-tree-vectorize -pipe -O2"
 TARGET_CC_ARCH_pn-oprofile = "-march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp -fno-tree-vectorize -pipe"
+TARGET_CC_ARCH_pn-gst-omapfb = ""
 
 # Other potentially useful (and hazardous) options
 # -ftree-vectorize -ffast-math -fno-omit-frame-pointer
