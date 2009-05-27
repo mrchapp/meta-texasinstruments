@@ -14,8 +14,8 @@ PREFERRED_PROVIDER_virtual/openmax-il =		"tiopenmax"
 PREFERRED_VERSION_tiopenmax =			"0.3.5"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.14-os"
-PREFERRED_VERSION_gst-goo =		"5.14"
+PREFERRED_VERSION_libgoo =		"5.16-os"
+PREFERRED_VERSION_gst-goo =		"5.16"
 PREFERRED_VERSION_gst-pyapps =		"5.11"
 
 # connectivity
