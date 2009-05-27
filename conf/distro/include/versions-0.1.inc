@@ -10,8 +10,7 @@ PREFERRED_VERSION_tidspbridge-samples =	"4.52-P1"
 PREFERRED_VERSION_tidspbridge-extra =	"0.1"
 
 # openmax
-#PREFERRED_PROVIDER_virtual/openmax-il =		"meta-tiopenmax"
-PREFERRED_PROVIDER_virtual/openmax-il =		"meta-tiopenmax-complete"
+PREFERRED_PROVIDER_virtual/openmax-il =		"tiopenmax"
 PREFERRED_VERSION_tiopenmax =			"0.3.5"
 
 # gstreamer
