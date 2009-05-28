@@ -6,7 +6,7 @@ KERNEL_OUTPUT = "arch/${ARCH}/boot/compressed/${KERNEL_IMAGETYPE}"
 
 inherit kernel
 
-COMPATIBLE_MACHINE = "omap-3430(l|s)dp"
+COMPATIBLE_MACHINE = "omap-3430(l|s)dp|beagleboard"
 
 ADD_DISTRO_FEATURES = "	${@base_contains("DISTRO_FEATURES", "720p", "sed -i 's/# CONFIG_FB_OMAP_720P_STREAMING is not set/CONFIG_FB_OMAP_720P_STREAMING=y/' ${S}/.config;", "", d)}"
 
@@ -39,7 +39,10 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_3430sdp_defconfig
 				sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
 					${S}/.config
-				;;				
+				;;
+			beagleboard)
+				yes '' | oe_runmake omap3_beagle_defconfig
+				;;
 			*)
 				yes '' | oe_runmake ${MACHINE}_defconfig
 				;;
