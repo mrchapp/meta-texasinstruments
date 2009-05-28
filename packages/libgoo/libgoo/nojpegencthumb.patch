@@ -1,0 +1,28 @@
+Index: git/libgoo-ti/goo-ti-jpegenc.c
+===================================================================
+--- git.orig/libgoo-ti/goo-ti-jpegenc.c
++++ git/libgoo-ti/goo-ti-jpegenc.c
+@@ -37,7 +37,6 @@
+ 
+ #include <goo-ti-jpegenc.h>
+ #include <goo-utils.h>
+-#include "OMX_JpegEnc_CustomCmd.h"
+ 
+ #define ID "OMX.TI.JPEG.encoder"
+ 
+@@ -276,6 +275,7 @@ _goo_ti_jpegenc_set_thumbnail(GooTiJpegE
+ 		g_assert (GOO_COMPONENT (self)->cur_state != OMX_StateInvalid);
+ 		guint flag = 0;
+ 
++#if 0
+ 		switch (prop_id)
+         {
+ 			case PROP_APP1I:
+@@ -346,6 +346,7 @@ _goo_ti_jpegenc_set_thumbnail(GooTiJpegE
+ 			}
+ 		}
+ 
++#endif
+ 		GOO_OBJECT_DEBUG (self, "");
+         return;
+ }
