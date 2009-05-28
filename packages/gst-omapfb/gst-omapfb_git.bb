@@ -1,7 +1,7 @@
 DESCRIPTION = "GStreamer plug-in for omapfb rendering."
 AUTHOR = "Felipe Contreras <felipe.contreras@nokia.com>"
 LICENSE = "LGPL"
-DEPENDS = "gstreamer"
+DEPENDS = "gstreamer gst-plugins-base"
 COMPATIBLE_MACHINE = "omap-3430(l|s)dp|beagleboard"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PACKAGES = "${PN} ${PN}-dbg"
