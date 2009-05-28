@@ -32,8 +32,6 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugins-good	\
     gst-plugins-bad	\
     gst-plugins-ugly	\
-    gst-goo		\
-    gst-omap3		\
     gst-plugin-mpegaudioparse \
     gst-plugin-audiotestsrc \
     gst-plugin-videotestsrc \
@@ -52,6 +50,10 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-freeze \
     gst-plugin-multifile \
     gst-plugin-gconfelements \
+    gst-goo \
+    gst-openmax \
+    ${@base_contains("DISTRO_FEATURES", "opensource", "", "gst-omap3", d)} \
+    ${@base_contains("DISTRO_FEATURES", "opensource", "gst-omapfb", "", d)} \
     "
 
 RDEPENDS_task-omap-gst-apps = ""
