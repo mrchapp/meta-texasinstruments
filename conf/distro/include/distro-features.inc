@@ -19,4 +19,22 @@ DISTRO_FEATURES += "alsa bluetooth ext2 irda pcmcia usbgadget usbhost wifi nfs z
 # This is a multimedia-based distribution. We can specify what
 # codecs to enable in this release.
 
-DISTRO_FEATURES += "camera jpegdec jpegenc gfx 720p rarv tibluetooth tiwifi gps"
+DISTRO_FEATURES += "gfx 720p rarv tibluetooth tiwifi gps"
+
+### Codecs
+DISTRO_FEATURES += "videodec videoenc"
+DISTRO_FEATURES += "postproc"
+DISTRO_FEATURES += "prepostproc"
+DISTRO_FEATURES += "camera"
+#
+DISTRO_FEATURES += "aacdec aacenc"
+DISTRO_FEATURES += "g711dec g711enc g722dec g722enc g723dec g723enc g726dec g726enc g729dec g729enc"
+DISTRO_FEATURES += "gsmfrdec gsmfrenc gsmhrdec gsmhrenc"
+DISTRO_FEATURES += "ilbcdec ilbcenc"
+DISTRO_FEATURES += "mp3dec"
+DISTRO_FEATURES += "nbamrdec nbamrenc"
+DISTRO_FEATURES += "pcmdec pcmenc"
+DISTRO_FEATURES += "wbamrdec wbamrenc"
+DISTRO_FEATURES += "wmadec"
+#
+DISTRO_FEATURES += "jpegdec jpegenc"
