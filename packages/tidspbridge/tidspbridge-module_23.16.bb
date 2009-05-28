@@ -2,8 +2,11 @@ SECTION = "kernel/modules"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge module."
 LICENSE = "GPL"
-PR = "r0"
+PR = "r1"
 COMPATIBLE_MACHINE = "omap-3430(l|s)dp"
+
+PROVIDES="virtual/dspbridge-module"
+RPROVIDES="virtual/dspbridge-module"
 
 # We need to override this and make sure it's only -j1
 PARALLEL_MAKE = "-j1"

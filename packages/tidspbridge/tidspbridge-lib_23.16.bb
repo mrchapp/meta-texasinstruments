@@ -2,8 +2,8 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge libraries."
 LICENSE = "LGPL"
-PR = "r0"
-DEPENDS = "tidspbridge-module"
+PR = "r1"
+DEPENDS = "virtual/dspbridge-module"
 
 inherit ccasefetch
 
