@@ -17,6 +17,7 @@ PREFERRED_VERSION_u-boot =		"5.10"
 PREFERRED_VERSION_linux-tiomap =	"2.6.24.7-5.24"
 
 # bridge and friends
+PREFERRED_PROVIDER_virtual/dspbridge-module =	"tidspbridge-module"
 PREFERRED_VERSION_tidspbridge-module =		"23.16"
 PREFERRED_VERSION_tidspbridge-lib =		"23.16"
 PREFERRED_VERSION_tidspbridge-samples =		"4.54"
