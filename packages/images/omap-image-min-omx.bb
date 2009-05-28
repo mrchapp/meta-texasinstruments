@@ -1,7 +1,13 @@
 #
 # Copyright (C) 2007 OpenedHand Ltd.
 #
-IMAGE_INSTALL = "task-poky-boot task-omap-bridge task-omap-sn task-omap-omx ${ROOTFS_PKGMANAGE}"
+IMAGE_INSTALL = "\
+	${ROOTFS_PKGMANAGE} \
+	task-poky-boot \
+	task-omap-bridge \
+	${@base_contains("DISTRO", "tilinux-os", "", "task-omap-sn", d)} \
+	task-omap-omx \
+	"
 
 IMAGE_LINGUAS = " "
 
