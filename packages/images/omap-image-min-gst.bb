@@ -5,7 +5,7 @@ IMAGE_INSTALL = "\
 	${ROOTFS_PKGMANAGE} \
 	task-poky-boot \
 	task-omap-bridge \
-	task-omap-sn \
+	${@base_contains("DISTRO", "tilinux-os", "", "task-omap-sn", d)} \
 	task-omap-omx \
 	task-omap-gst \
 	"
