@@ -17,6 +17,8 @@ do_compile () {
 	unset LDFLAGS
 	unset CFLAGS
 	unset CPPFLAGS
+	#The following line needs to be Uncommented for NOR booting
+	#sed -i 's/\/\/#define CONFIG_NOR_BOOT/#define CONFIG_NOR_BOOT/' include/configs/omap4430sdp.h
 	oe_runmake ${UBOOT_MACHINE}
 	oe_runmake all
 }
