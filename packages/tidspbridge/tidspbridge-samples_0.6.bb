@@ -1,8 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge Socket Node compilation."
 LICENSE = "LGPL"
-PR = "r0"
-#RDEPENDS = "tidspbridge-mpusamples"
+PR = "r1"
 DEPENDS = "tidspbridge-mpusamples \
 	   tidspbridge-bios \
 	   tidspbridge-cgt7x \
@@ -27,7 +26,7 @@ ENV_VAR = "DEPOT=${STAGING_BINDIR}/dspbridge/tools \
 	   BIOS_OPTS=SABIOS_DIR=${STAGING_BINDIR}/dspbridge/tools/bios_6_20_00_23/packages \
 	   DD_XDCDIR=${STAGING_BINDIR}/dspbridge/tools/xdctools_3_15_00_28 \
 	   DD_XDC_OPT=DD_XDCDIR=${STAGING_BINDIR}/dspbridge/tools/xdctools_3_15_00_28 DD_XDCOPTIONS="XDCOPTIONS=v XDCBUILDCFG=${S}/private.bld XDCPATH=${STAGING_BINDIR}/dspbridge/tools/bios_6_20_00_23/packages\;${STAGING_BINDIR}/dspbridge/tools/framework_components_3_00_00_30/fctools/packages\;${STAGING_BINDIR}/dspbridge/tools/framework_components_3_00_00_30/packages\;${S}/bdsptools/packages\;${STAGING_BINDIR}/dspbridge/tools/ipc_1_00_00_27/packages\;${S} XDCTARGETS=C64T" \
-	   DLLCREATE_DIR=${STAGING_BINDIR}/DLLcreate \
+	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
 "
 SABIOS_DIR = ${STAGING_BINDIR}/dspbridge/tools/bios_6_20_00_23/packages
 C6X_CODEGEN_ROOT = ${STAGING_BINDIR}/dspbridge/tools/cgt7x-7.0.0a09019
