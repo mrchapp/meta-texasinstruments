@@ -12,6 +12,6 @@ RDEPENDS = "\
     tidspbridge-lib \
     tidspbridge-samples \
     "
-
+DEPENDS = "tidspbridge-ducatisamples"
 
 #tidspbridge-extra

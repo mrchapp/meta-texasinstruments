@@ -38,6 +38,8 @@ do_stage() {
 
 	install -d ${STAGING_LIBDIR}
 	cp -a ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/usr/lib/* ${STAGING_LIBDIR}
+	#libgcc.a
+        cp ${EXTERNAL_TOOLCHAIN}/lib/gcc/arm-none-linux-gnueabi/4.3.2/libgcc.a ${STAGING_LIBDIR}
 
 	install -d ${STAGING_DIR_TARGET}${layout_base_libdir}
 	cp -a ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/lib/* ${STAGING_DIR_TARGET}${base_libdir}
