@@ -7,11 +7,7 @@ PR = "r0"
 inherit dfetch
 
 
-#DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/framework_components_3_00_00_36"
-#DIRAC_PATHCOMPONENT = "framework_components_3_00_00_36"
-#DIRAC_PATHCOMPONENTS = 4
-
-DIRAC_PATHFETCH = "/data/EVM_filesystems/x0104108/24.0.8/framework_components_3_00_00_36"
+DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/framework_components_3_00_00_36"
 DIRAC_PATHCOMPONENT = "framework_components_3_00_00_36"
 DIRAC_PATHCOMPONENTS = 4
 

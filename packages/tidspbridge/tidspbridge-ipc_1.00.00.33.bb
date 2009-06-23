@@ -7,13 +7,9 @@ PR = "r0"
 inherit dfetch
 
 
-DIRAC_PATHFETCH = "/data/EVM_filesystems/x0104108/24.0.8/ipc_1_00_00_33"
+DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/ipc_1_00_00_33"
 DIRAC_PATHCOMPONENT = "ipc_1_00_00_33"
 DIRAC_PATHCOMPONENTS = 4
-
-#DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/ipc_1_00_00_33"
-#DIRAC_PATHCOMPONENT = "ipc_1_00_00_33"
-#DIRAC_PATHCOMPONENTS = 4
 
 
 do_stage() {

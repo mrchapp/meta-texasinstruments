@@ -8,11 +8,7 @@ inherit dfetch
 
 
 
-#DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/cgtarm-${PV}"
-#DIRAC_PATHCOMPONENT = "cgtarm-${PV}"
-#DIRAC_PATHCOMPONENTS = 4
-
-DIRAC_PATHFETCH = "/data/EVM_filesystems/x0104108/24.0.8/cgtarm-${PV}"
+DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/cgtarm-${PV}"
 DIRAC_PATHCOMPONENT = "cgtarm-${PV}"
 DIRAC_PATHCOMPONENTS = 4
 
