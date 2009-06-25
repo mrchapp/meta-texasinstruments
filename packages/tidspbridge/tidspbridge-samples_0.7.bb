@@ -100,5 +100,9 @@ do_install() {
 	oenote "Installing syslink scripts..."
 	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/tesla_install_script ${D}/dspbridge
 	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/ducati_install_script ${D}/dspbridge
+	oenote "Installing syslink module..."
+        install -m 0644 ${STAGING_LIBDIR}/modules/procmgr_app.ko ${D}/dspbridge
+
+
 
 }

@@ -18,7 +18,7 @@ PREFERRED_VERSION_linux-tiomap =	"2.6.30-0.8"
 
 # bridge and friends
 PREFERRED_VERSION_tidspbridge-lib =		"24.0.6"
-PREFERRED_VERSION_tidspbridge-syslinklib =      "24.0.8"
+PREFERRED_VERSION_tidspbridge-syslinklib =      "24.0.8-P1"
 PREFERRED_VERSION_tidspbridge-samples =		"0.7"
 PREFERRED_VERSION_tidspbridge-mpusamples =      "24.0.8"
 PREFERRED_VERSION_tidspbridge-extra =		"24.0.6"

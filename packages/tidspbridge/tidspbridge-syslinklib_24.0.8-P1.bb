@@ -1,3 +1,4 @@
+SECTION="libs"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Syslink libraries."
 LICENSE = "GPL"
@@ -6,15 +7,11 @@ DEPENDS = " \
         linux-tiomap \
         "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-PACKAGES = "${PN}-dev ${PN}-dbg ${PN}"
+PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 
-FILES_${PN}-dev = "/lib/libomap4430proc.so /lib/libnotify.so /lib/libprocmgr.so /lib/libipc.so /lib/libutils.so /lib/librcm.so"
-FILES_${PN}-dbg = "/lib/.debug"
-FILES_${PN} = "/lib"
-
-#SRC_URI = " \
-#       file://mkproc-sample.patch;patch=1 \
-#       "
+FILES_${PN} = "${libdir}/libutils.so ${libdir}/libnotify.so ${libdir}/libprocmgr.so ${libdir}/libproc4430.so ${libdir}/libomap4430proc.so"
+FILES_${PN} += "${libdir}/libipc.so ${libdir}/librcm.so"
+FILES_${PN}-dev = "${libdir}/libutils.so.0 ${libdir}/libnotify.so.0 ${libdir}/libprocmgr.so.2 ${libdir}/libproc4430.so.2 ${libdir}/libipc.so.0 ${libdir}/librcm.so.0"
 
 
 inherit ccasefetch 
@@ -45,6 +42,9 @@ do_compile() {
                 ROOTFSDIR=${D} \
                 CROSS=${AR%-*}- -f Makefile install
 
+	mv libutils.so libutils.so.0
+        ln -s libutils.so.0 libutils.so
+
 	cd ${S}/api/src/notify
         oe_runmake  \
                 PREFIX=${S} PROJROOT=${S} \
@@ -56,6 +56,8 @@ do_compile() {
                 ROOTFSDIR=${D} \
                 CROSS=${AR%-*}- -f Makefile install
 
+	mv libnotify.so libnotify.so.0
+        ln -s libnotify.so.0 libnotify.so
 
 	cd ${S}/api/src/procmgr
         oe_runmake  \
@@ -68,6 +70,9 @@ do_compile() {
                 ROOTFSDIR=${D} \
                 CROSS=${AR%-*}- -f Makefile install
 
+
+        cd ${S}/target/lib
+        ln -s libproc4430.so.2 libproc4430.so
 
         cd ${S}/api/src/ipc
         oe_runmake  \
@@ -92,30 +97,47 @@ do_compile() {
                 CROSS=${AR%-*}- -f Makefile install
 
 	cd ${S}/samples
-	oenote "Kernel staging: ${STAGING_KERNEL_DIR}"
-	oe_runmake KRNLSRC=${STAGING_KERNEL_DIR} \
-                PREFIX=${S} PROJROOT=${S}/samples \
-                ROOTFSDIR=${D} ARCH=arm \
-                CROSS=${AR%-*}- -f Makefile
+	export OLD_LDFLAGS=$LDFLAGS
+        unset LDFLAGS
+        cp ${STAGING_LIBDIR}/libpthread.so ${S}/target/lib
+        cp ${STAGING_LIBDIR}/librt.so ${S}/target/lib
+	oe_runmake \
+		KRNLSRC=`cat ${STAGING_KERNEL_DIR}/kernel-source` \
+                PREFIX=${S} TGTROOT=${S} \
+                ARCH=arm \
+                CROSS_COMPILE=${AR%-*}- -f Makefile
+
+        export LDFLAGS=$OLD_LDFLAGS
 
 }
 
 do_stage() {
         oenote "Installing syslink libraries in ${STAGING_LIBDIR} "
-	install -d ${STAGING_LIBDIR}/dspbridge/syslink
-        cp -d ${S}/target/lib/* ${STAGING_LIBDIR}/dspbridge/syslink
+	oe_libinstall -so -C ${S}/target/lib libproc4430 ${STAGING_LIBDIR}
+        oe_libinstall -so -C ${S}/api/src/notify libnotify ${STAGING_LIBDIR}
+        oe_libinstall -so -C ${S}/target/lib libprocmgr ${STAGING_LIBDIR}
+        oe_libinstall -so -C ${S}/target/lib libipc ${STAGING_LIBDIR}
+        oe_libinstall -so -C ${S}/api/src/utils libutils ${STAGING_LIBDIR}
+        oe_libinstall -so -C ${S}/target/lib librcm ${STAGING_LIBDIR}
 
 	oenote "Installing ducati scripts: `ls ${S}/scripts` "
 	install -m 0755 ${S}/scripts/* ${STAGING_BINDIR}/dspbridge/samples
 }
 
 do_install() {
-	install -d ${D}/lib
 	oenote "Installing syslink libraries in ${D}/lib " 
-	cp -d ${S}/target/lib/* ${D}/lib
+	oe_libinstall -so -C ${S}/target/lib libproc4430 ${D}${libdir}
+        oe_libinstall -so -C ${S}/api/src/notify libnotify ${D}${libdir}
+        oe_libinstall -so -C ${S}/target/lib libprocmgr ${D}${libdir}
+        oe_libinstall -so -C ${S}/target/lib libipc ${D}${libdir}
+        oe_libinstall -so -C ${S}/api/src/utils libutils ${D}${libdir}
+        oe_libinstall -so -C ${S}/target/lib librcm ${D}${libdir}
 
 	cd ${S}/samples
-	install -D `find . -name notifyping.out -print` ${STAGING_BINDIR}/dspbridge/samples
+	install -d ${STAGING_BINDIR}/dspbridge/samples
+        install -D `find . -name notifyping.out -print` ${STAGING_BINDIR}/dspbridge/samples
 	install -D `find . -name procmgrapp.out -print` ${STAGING_BINDIR}/dspbridge/samples
+        install -D ${S}/samples/proc_sample/krnl/procmgr_app.ko ${STAGING_LIBDIR}/modules
+
 
 }
