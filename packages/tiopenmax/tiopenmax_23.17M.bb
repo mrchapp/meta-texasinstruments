@@ -1,6 +1,6 @@
-DEPENDS = "tidspbridge-lib mm-isp"
+DEPENDS = "tidspbridge-lib mm-isp ${TTIF_DEPENDS}"
 DESCRIPTION = "Texas Instruments OpenMAX IL."
-PR = "r0"
+PR = "r0${TTIF_PR}"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}-patterns ${PN}"
 
 PROVIDES = "virtual/openmax-il"
@@ -25,7 +25,6 @@ SRC_URI = "\
 	file://wmadecmk.patch;patch=1 \
 	file://g722encmk.patch;patch=1 \
 	file://23.11-vppmake.patch;patch=1 \
-	file://videoencmk.patch;patch=1 \
 	file://videodecmk.patch;patch=1 \
 	file://23.11-cameramk.patch;patch=1 \
 	${@base_contains("DISTRO_FEATURES", "720p", "file://23.12-armaacnopatterns.patch;patch=1", "", d)} \
@@ -34,22 +33,8 @@ SRC_URI = "\
 	${@base_contains("DISTRO_FEATURES", "rarv", "", "file://remove-rarv.patch;patch=1", d)} \
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "file://remove-patterns.patch;patch=1", d)} \
 	"
-# these pending update for 23.10/23.11:
-#	file://wbamrencnorm.patch;patch=1 \
-#	file://postprocnorm.patch;patch=1 \
-#	file://videoencnorm.patch;patch=1 \
-#	file://vppnorm.patch;patch=1 \
-#	file://sysmake.patch;patch=1 \
-# these pending update for 23.11:
-#	file://aacdecnorm.patch;patch=1 \
-#	file://23.10-aacencnorm.patch;patch=1 \
-#	file://23.10-nbamrdecnorm.patch;patch=1 \
-#	file://23.10-nbamrencnorm.patch;patch=1 \
-#	file://23.10-wbamrdecnorm.patch;patch=1 \
-#	file://23.10-addcommon.patch;patch=1 \
-# not needed anymore for 23.14:
-#	file://23.10-g729encperf.patch;patch=1 \
-#	file://23.13-reordermake.patch;patch=1 \
+
+SRC_URI += " ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} "
 
 
 do_compile_prepend() {
