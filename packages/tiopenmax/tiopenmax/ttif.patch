@@ -1,0 +1,577 @@
+Index: tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h	2009-05-14 07:47:34.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h	2009-06-20 16:28:57.000000000 -0500
+@@ -49,57 +49,69 @@
+ #ifndef OMX_CAMERA_UTILS_H
+ #define OMX_CAMERA_UTILS_H
+ 
+-/* Enable/Disable debug messages */
+-/* DEBUG L1: Memory managment inside OMX layer */
+-#if (OMX_CAMERA_DEBUG & 1)
+-    #define OMX_CAMERA_PRINTF_L1(str,args...) printf("OMXCAM:%d:MEM:[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++
++#ifdef OMX_LOG_OVER_TTIF
++#   include <ttif_trace.h>
++    static TTIF_TRACE_ID __trace_id = TTIF_TRACE_INVALID_ID;
++    static TTIF_TRACE_ID __get_trace_id(void) {
++    	if( __trace_id == TTIF_TRACE_INVALID_ID ) {
++    		__trace_id = ttif_trace_open("CAMT");
++    	}
++    	return __trace_id;
++    }
++    enum {
++    	TC_CAMT_MEM   = 0x00000001,
++    	TC_CAMT_DRV   = 0x00000002,
++    	TC_CAMT_OMX   = 0x00000004,
++    	TC_CAMT_MUTEX = 0x00000008,
++    	TC_CAMT_IPP   = 0x00000010,
++		TC_CAMT_2A    = 0x00000020,
++		TC_CAMT_VSTAB = 0x00000040
++    };
++#   define OMX_CAMERA_PRINTF(lvl, id, str, args...) ttif_trace_fprintf(__get_trace_id(), TC_CAMT_##id, str, ##args)
++
++#   define OMX_CAMERA_PRINTF_ERROR(str,args...) do {                          \
++        ttif_trace_fprintf(__get_trace_id(), 0xffffffff, str, ##args);        \
++        fprintf(stderr,"OMX Camera:"str"\n",##args);                          \
++    } while(0)
++
+ #else
+-    #define OMX_CAMERA_PRINTF_L1(str,args...)
++
++#   define OMX_CAMERA_PRINTF(lvl, id, str, args...) do {                      \
++        if( OMX_CAMERA_DEBUG & (lvl) ) {                                      \
++        	printf("OMXCAM:%d:"#id":[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args); \
++        }                                                                     \
++    } while(0)
++
++#   define OMX_CAMERA_PRINTF_ERROR(str,args...) fprintf(stderr,"OMX Camera:"str"\n",##args)
++
+ #endif
+ 
++
++/* Enable/Disable debug messages */
++/* DEBUG L1: Memory managment inside OMX layer */
++#define OMX_CAMERA_PRINTF_L1(str,args...) OMX_CAMERA_PRINTF(1, MEM, str, ##args)
++
+ /* DEBUG_L2: Camera Driver status (queues/dequeues) */
+-#if (OMX_CAMERA_DEBUG & 2)
+-    #define OMX_CAMERA_PRINTF_L2(str,args...) printf("OMXCAM:%d:DRV:[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L2(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L2(str,args...) OMX_CAMERA_PRINTF(2, DRV, str, ##args)
+ 
+ /* DEBUG_L3: OMX Logic status */ 
+-#if (OMX_CAMERA_DEBUG & 4)
+-    #define OMX_CAMERA_PRINTF_L3(str,args...) printf("OMXCAM:%d:OMX:[%s] %s():%d:\n "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L3(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L3(str,args...) OMX_CAMERA_PRINTF(4, OMX, str, ##args)
+ 
+ /* DEBUG_L4: Mutex lock/unlock */
+-#if (OMX_CAMERA_DEBUG & 8)
+-    #define OMX_CAMERA_PRINTF_L4(str,args...) printf("OMXCAM:%d:MUTEX:[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L4(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L4(str,args...) OMX_CAMERA_PRINTF(8, MUTEX, str, ##args)
+ 
+ /* DEBUG_L5: Image Pipeline status */
+-#if (OMX_CAMERA_DEBUG & 16)
+-    #define OMX_CAMERA_PRINTF_L5(str,args...) printf("OMXCAM:%d:IPP:[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L5(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L5(str,args...) OMX_CAMERA_PRINTF(16, IPP, str, ##args)
+ 
+ /* DEBUG_L6: 2A status */
+-#if (OMX_CAMERA_DEBUG & 32)
+-    #define OMX_CAMERA_PRINTF_L6(str,args...) printf("OMXCAM:%d:2A:[%s] %s():%d: "str" \n",pthread_self() ,__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L6(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L6(str,args...) OMX_CAMERA_PRINTF(32, 2A, str, ##args)
+ 
+ /* DEBUG_L7: VSTAB status */
+-#if (OMX_CAMERA_DEBUG & 64)
+-    #define OMX_CAMERA_PRINTF_L7(str,args...) printf("OMXCAM:%d:VSTAB:[%s] %s():%d: "str" \n",pthread_self(),__FILE__,__FUNCTION__,__LINE__,##args)
+-#else
+-    #define OMX_CAMERA_PRINTF_L7(str,args...)
+-#endif
++#define OMX_CAMERA_PRINTF_L7(str,args...) OMX_CAMERA_PRINTF(64, VSTAB, str, ##args)
+ 
+-#define OMX_CAMERA_PRINTF_ERROR(str,args...) fprintf(stderr,"OMX Camera:"str"\n",##args)
+ 
+ /*------- System Header Files ----------------------------------------*/
+ 
+Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h	2009-06-15 23:44:23.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h	2009-06-20 16:28:57.000000000 -0500
+@@ -70,6 +70,34 @@
+ #define KHRONOS_1_1
+ #define OMX_NOPORT 0xfffffffe
+ 
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++#ifdef OMX_LOG_OVER_TTIF
++#   include <ttif_trace.h>
++    static TTIF_TRACE_ID __trace_id = TTIF_TRACE_INVALID_ID;
++    static TTIF_TRACE_ID __get_trace_id(void) {
++    	if( __trace_id == TTIF_TRACE_INVALID_ID ) {
++    		__trace_id = ttif_trace_open("VP_T");
++    	}
++    	return __trace_id;
++    }
++    enum {
++    	TC_VP_T_DEBUG = 0x00000001,
++    	TC_VP_T_BT    = 0x00000002,
++    	TC_VP_T_DT    = 0x00000004,
++    	TC_VP_T_PP    = 0x00000008
++    };
++#   define PRINTF(...)      ttif_trace_fprintf(__get_trace_id(), TC_VP_T_DEBUG, __VA_ARGS__)
++#   define PRINTF_BT(...)   ttif_trace_fprintf(__get_trace_id(), TC_VP_T_BT, __VA_ARGS__)
++#   define PRINTF_DT(...)   ttif_trace_fprintf(__get_trace_id(), TC_VP_T_DT, __VA_ARGS__)
++#   define PRINTF_PP(...)   ttif_trace_fprintf(__get_trace_id(), TC_VP_T_PP, __VA_ARGS__)
++#   define PRINTERROR(...)  do {                                               \
++        ttif_trace_fprintf(__get_trace_id(), 0xffffffff, __VA_ARGS__);         \
++        fprintf(stderr,__VA_ARGS__);                                           \
++    } while(0);
++
++#else
++
+ /* Uncomment following macro to enable debug logs */
+ 
+ //#define POSTPROC_DEBUG
+@@ -90,8 +118,13 @@
+ 	#define PRINTF_DT(...)
+ #endif
+ 
++#define PRINTF_PP(...) if(pComponentPrivate->nPrintPostProcEnabled == 1) printf(__VA_ARGS__)
++
+ #define PRINTERROR(...) fprintf(stderr,__VA_ARGS__)
+ 
++#endif
++
++
+ /* default resolution macros */
+ #define POSTPROC_QCIF_FRAME_WIDTH       176 
+ #define POSTPROC_QCIF_FRAME_HEIGHT      144
+Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c
+===================================================================
+--- tiopenmax-23.17M.orig/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c	2009-03-13 09:19:58.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c	2009-06-21 15:02:12.000000000 -0500
+@@ -1272,7 +1272,7 @@
+ 	                }
+ 					
+ 					/* save mapped bytes */
+-					printf("BUFFER lenfth =%d\n",sBuffer.length);
++	                PRINTF("BUFFER lenfth =%d\n",sBuffer.length);
+ 									
+ 					if(SetVstabResolution (pComponentPrivate) > sBuffer.length){
+ 						pComponentPrivate->nMappedBytes = SetVstabResolution (pComponentPrivate);
+@@ -1281,7 +1281,7 @@
+ 						pComponentPrivate->nMappedBytes = sBuffer.length;
+ 					}
+ 										
+-					printf("BYTES MAPPED =%d\n",pComponentPrivate->nMappedBytes);
++					PRINTF("BYTES MAPPED =%d\n",pComponentPrivate->nMappedBytes);
+ 					
+ 	                /* map video driver buffers into memory */
+ 					PRINTF_DT("***Display: video pipeline %d**********************************************\n", (int)pComponentPrivate->nVideoPipeline);
+@@ -1386,9 +1386,9 @@
+         PERF_Boundary(pComponentPrivate->pPERFcomp,
+         PERF_BoundaryComplete | PERF_BoundarySteadyState);
+         if (pComponentPrivate->bSynchronized) {
+-            printf("nFramesDecoded = %d\n", (int)pComponentPrivate->nFramesDecoded);
+-            printf("nFramesRendered = %d\n", (int)pComponentPrivate->nFramesRendered);
+-            printf("nFramesSkipped = %d\n", (int)pComponentPrivate->nFramesSkipped);
++        	PRINTF("nFramesDecoded = %d\n", (int)pComponentPrivate->nFramesDecoded);
++        	PRINTF("nFramesRendered = %d\n", (int)pComponentPrivate->nFramesRendered);
++        	PRINTF("nFramesSkipped = %d\n", (int)pComponentPrivate->nFramesSkipped);
+         }
+ #endif
+ 		/* return all buffers */
+@@ -1968,10 +1968,8 @@
+             nCurrentMediaTime = sCurrentMediaTime.nTimestamp;
+         }
+ 
+-		if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+ 			frames++;
+-			printf("Frame %3d :: pCompBuffer: %p, TimeStamp=%fs, MediaTime=%fs :: ", frames, pCompBuffer, pCompBuffer->nTimestamp * 0.000001, nCurrentMediaTime * 0.000001);
+-		}
++        PRINTF_PP("Frame %3d :: pCompBuffer: %p, TimeStamp=%ds, MediaTime=%ds :: ", frames, pCompBuffer, pCompBuffer->nTimestamp, nCurrentMediaTime);
+ 
+ #ifdef __PERF_INSTRUMENTATION__
+ 		PERF_SyncAV(pComponentPrivate->pPERFcomp,
+@@ -2001,14 +1999,12 @@
+ #endif
+ 
+ 
+-			if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+-				printf("WAITING CLOCK SIGNAL... ");
+-			}			
++			PRINTF_PP("WAITING CLOCK SIGNAL... ");
+ 
+ 			while (sem_wait(&pComponentPrivate->media_time_sem) != 0) {
+ 				if (errno != EINTR) { 
+ 					eError = OMX_ErrorUndefined;
+-					printf("ERROR:::: not EINTR\n");
++					PRINTF("ERROR:::: not EINTR\n");
+ 					goto EXIT;
+ 				}
+ 			}
+@@ -2025,9 +2021,7 @@
+ 				pCompBuffer->bBufferInUse = OMX_FALSE;
+ 				UNLOCK_MUTEX(pComponentPrivate->mDisplayDriverMutex);
+ 				
+-				if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+-					printf("RENDERED\n");
+-				}			
++				PRINTF_PP("RENDERED\n");
+ 
+ 				if (eError != OMX_ErrorNone) {
+ 			        goto EXIT;
+@@ -2044,9 +2038,7 @@
+             pComponentPrivate->nFramesSkipped++;
+ #endif   
+ 
+-			if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+-				printf("DROPPED\n");
+-			}
++            PRINTF_PP("DROPPED\n");
+ 
+         }
+ 		/* if it's time - render the frame */
+@@ -2063,9 +2055,7 @@
+ 				pCompBuffer->bBufferInUse = OMX_FALSE;
+ 				UNLOCK_MUTEX(pComponentPrivate->mDisplayDriverMutex);
+ 				
+-				if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+-					printf("RENDERED\n");
+-				}			
++				PRINTF_PP("RENDERED\n");
+ 
+ 				if (eError != OMX_ErrorNone) {
+ 			        goto EXIT;
+@@ -2084,7 +2074,7 @@
+                 
+ #ifdef __PERF_INSTRUMENTATION__
+ 				if(pComponentPrivate->nPrintPostProcEnabled == 1) {
+-					printf("DONE:::: Frames rendered=%d, Frames Dropped=%d, Average FPS=%f\n", (int)pComponentPrivate->nFramesRendered, (int)pComponentPrivate->nFramesSkipped, frames/(nCurrentMediaTime * 0.000001));
++					PRINTF("DONE:::: Frames rendered=%d, Frames Dropped=%d, Average FPS=%f\n", (int)pComponentPrivate->nFramesRendered, (int)pComponentPrivate->nFramesSkipped, frames/(nCurrentMediaTime * 0.000001));
+ 				}
+ #endif
+ 
+Index: tiopenmax-23.17M/Master.mk
+===================================================================
+--- tiopenmax-23.17M.orig/Master.mk	2009-06-20 16:28:56.000000000 -0500
++++ tiopenmax-23.17M/Master.mk	2009-06-20 16:28:57.000000000 -0500
+@@ -34,6 +34,11 @@
+ OMXINCLUDEDIR=$(TARGETDIR)/include/omx
+ endif
+ 
++ifndef TTIFINCLUDEDIR
++TTIFINCLUDEDIR=$(TARGETDIR)/include/ttif
++OTHER_LFLAGS+=-L$(TARGETDIR)/usr/lib -lttif -lttifcfg -lpthread
++endif
++
+ ifndef SYSTEMINCLUDEDIR
+ SYSTEMINCLUDEDIR=$(TARGETDIR)/include/system
+ endif
+@@ -96,6 +101,8 @@
+ LOMXPERFLIB= 
+ endif
+ 
++CFLAGS += -I$(TTIFINCLUDEDIR)
++
+ # make sure we use the proper build tools
+ export PATH=$(HOSTDIR):$(shell echo $$PATH)
+ 
+Index: tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h
+===================================================================
+--- tiopenmax-23.17M.orig/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2009-03-13 08:38:21.000000000 -0500
++++ tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2009-06-20 16:28:57.000000000 -0500
+@@ -280,6 +280,9 @@
+  *  format, list - debug message
+  */
+ 
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++
+ #ifdef ANDROID
+ #ifdef __OMX_DEBUG_ANDROID__
+     #define OMX_DBG_PRINT(file, domain, level, mask, format, list...) \
+@@ -303,6 +306,24 @@
+             } \
+         } while (0)
+ #endif
++#elif defined(OMX_LOG_OVER_TTIF)
++#  include <string.h>
++#  include <ttif_trace.h>
++static TTIF_TRACE_ID __get_trace_id( const char *file ) {
++    static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++    if( trace_id == TTIF_TRACE_INVALID_ID ) {
++        char *name = strrchr( file, '/');
++        if(!name) name = strrchr( file, '\\');
++        if(!name) name = file;
++        else      name++;
++        trace_id = ttif_trace_open(name);
++    }
++    return trace_id;
++}
++#define OMX_DBG_PRINT(file, domain, level, mask, format, list...)                  \
++    do {                                                                           \
++        ttif_trace_fprintf(__get_trace_id(__FILE__), (1<<level), format, ##list);  \
++    } while (0)
+ #else
+     #define OMX_DBG_PRINT(file, domain, level, mask, format, list...) \
+         do {\
+Index: tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile
+===================================================================
+--- tiopenmax-23.17M.orig/application/src/openmax_il/video_capture/src/Makefile	2007-07-03 12:56:05.000000000 -0500
++++ tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile	2009-06-20 16:28:57.000000000 -0500
+@@ -36,7 +36,7 @@
+ 	cp -f $(COMPONENT_TEST) $(COMPONENT_TARGET)
+ 
+ $(COMPONENT_TEST): $(OBJ)
+-	$(CROSS)gcc $(CFLAGS) -o $(COMPONENT_TEST) $(OBJ) -L$(OMXLIBDIR) -lOMX_Core
++	$(CROSS)gcc $(CFLAGS) -o $(COMPONENT_TEST) $(OBJ) -L$(OMXLIBDIR) -lOMX_Core $(OTHER_LFLAGS)
+ 
+ 
+ $(SRC): $(HSRC)
+Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h	2008-10-17 18:24:08.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h	2009-06-20 16:28:57.000000000 -0500
+@@ -104,12 +104,30 @@
+ 	}
+ 
+ #define OMX_DPRINT_ADDRESS(_s_, _ptr_)	\
+-    printf("%s = %p\n", _s_, _ptr_);
++    AACENC_DPRINT("%s = %p\n", _s_, _ptr_);
+ 
+ 
+ #undef SWAT_ANALYSIS
+ 
+ /* debug message */ 
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++#ifdef OMX_LOG_OVER_TTIF
++#    define AACENC_DEBUG
++#    include <ttif_trace.h>
++   static TTIF_TRACE_ID __get_trace_id(void) {
++      static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++      if( trace_id == TTIF_TRACE_INVALID_ID ) {
++              trace_id = ttif_trace_open("AAE");
++printf("opened AAE -> %d\n", trace_id);
++      }
++      return trace_id;
++   }
++
++#   define AACENC_EPRINT(...)    ttif_trace_fprintf(__get_trace_id(), 0x1, __VA_ARGS__)
++#   define AACENC_DPRINT(...)    ttif_trace_fprintf(__get_trace_id(), 0x2, __VA_ARGS__)
++
++#else
+ #undef AACENC_DEBUG        
+ #define AACENC_ERROR
+ 
+@@ -137,6 +155,7 @@
+ 
+ #endif /*UNDER_CE*/ 
+ 
++#endif
+ 
+ 
+ typedef struct 
+Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c
+===================================================================
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c	2009-06-15 17:21:11.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c	2009-06-20 16:28:57.000000000 -0500
+@@ -2288,7 +2288,10 @@
+ 	AACENC_DPRINT("%d :: UTIL: pHandle:%p \n",__LINE__,pHandle);
+ 	AACENC_DPRINT("%d :: UTIL: pComponentPrivate_CC:%p \n",__LINE__,pComponentPrivate_CC);
+ 	AACENC_DPRINT("%d :: UTIL: pLcmlHdr:%p \n",__LINE__,pLcmlHdr);
++	if(pLcmlHdr)
++	{
+ 	AACENC_DPRINT("%d :: UTIL: pLcmlHdr->pIpParam:%p \n",__LINE__,pLcmlHdr->pIpParam);
++	}
+ 
+ 
+     if(event == EMMCodecBufferProcessed) 
+@@ -2298,6 +2301,17 @@
+ 		{
+ 			AACENC_DPRINT("%d :: UTIL: Input: pBuffer = %p\n",__LINE__, pBuffer);
+             eError = AACENCGetCorresponding_LCMLHeader(pComponentPrivate_CC, pBuffer, OMX_DirInput, &pLcmlHdr);
++            AACENC_DPRINT("%d :: UTIL: pLcmlHdr:%p \n",__LINE__,pLcmlHdr);
++            if(pLcmlHdr)
++            {
++                AACENC_DPRINT("%d :: UTIL: pLcmlHdr->pIpParam:%p \n",__LINE__,pLcmlHdr->pIpParam);
++            }
++            else
++            {
++               AACENC_DPRINT("pLcmlHdr is NULL!!!!\n");
++               goto EXIT;
++            }
++
+ 
+ #ifdef __PERF_INSTRUMENTATION__
+ 			PERF_ReceivedFrame(pComponentPrivate_CC->pPERFcomp,
+@@ -2348,6 +2362,16 @@
+             AACENC_DPRINT("%d :: Incrementing nOutStandingFillDones = %d\n",__LINE__, (int)pComponentPrivate_CC->nOutStandingFillDones);
+ 			AACENC_DPRINT("%d :: pComponentPrivate_CC->nOutStandingFillDones = %ld\n",__LINE__, pComponentPrivate_CC->nOutStandingFillDones);
+             eError = AACENCGetCorresponding_LCMLHeader(pComponentPrivate_CC, pBuffer, OMX_DirOutput, &pLcmlHdr);
++            if(pLcmlHdr)
++            {
++                AACENC_DPRINT("%d :: UTIL: pLcmlHdr->pIpParam:%p \n",__LINE__,pLcmlHdr->pIpParam);
++            }
++            else
++            {
++               AACENC_DPRINT("pLcmlHdr is NULL!!!!\n");
++               goto EXIT;
++            }
++
+ 			AACENC_ClearPending(pComponentPrivate_CC,pLcmlHdr->buffer,OMX_DirOutput,__LINE__);
+             if (eError != OMX_ErrorNone) 
+ 			{
+Index: tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h	2009-06-19 11:50:06.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h	2009-06-20 16:28:57.000000000 -0500
+@@ -224,6 +224,33 @@
+ #endif
+ 
+ #else /* for Linux */
++
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++#ifdef OMX_LOG_OVER_TTIF
++
++#    include <ttif_trace.h>
++   static TTIF_TRACE_ID __get_trace_id(void) {
++      static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++      if( trace_id == TTIF_TRACE_INVALID_ID ) {
++              trace_id = ttif_trace_open("AAD");
++      }
++      return trace_id;
++   }
++
++#    define AACDEC_DPRINT(...)     ttif_trace_fprintf(__get_trace_id(), (1<<1), __VA_ARGS__)
++#    define AACDEC_BUFPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<2), __VA_ARGS__)
++#    define AACDEC_MEMPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<3), __VA_ARGS__)
++#    define AACDEC_STATEPRINT(...) ttif_trace_fprintf(__get_trace_id(), (1<<4), __VA_ARGS__)
++#    define AACDEC_EPRINT(...)     do {                                       \
++          ttif_trace_fprintf(__get_trace_id(), 0xffffffff, __VA_ARGS__);      \
++          fprintf(stdout, "%s %s %d::  ", __FILE__,__FUNCTION__, __LINE__);   \
++          fprintf(stdout, __VA_ARGS__);                                       \
++          fprintf(stdout, "\n");                                              \
++     } while(0)
++
++#else
++
+ #ifdef  AACDEC_DEBUG
+ #define AACDEC_DPRINT(...)  fprintf(stdout, "%s %d::  ",__FUNCTION__, __LINE__); \
+     fprintf(stdout, __VA_ARGS__);                                       \
+@@ -262,6 +289,8 @@
+ 
+ #endif
+ 
++#endif
++
+ /* ======================================================================= */
+ /**
+  * @def    AACD_OMX_MALLOC   Macro to allocate Memory
+Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2009-06-22 10:31:19.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2009-06-22 10:36:19.000000000 -0500
+@@ -82,6 +82,31 @@
+ 	#define sleep Sleep
+ #endif
+ 
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++#ifdef OMX_LOG_OVER_TTIF
++
++#    include <ttif_trace.h>
++   static TTIF_TRACE_ID __get_trace_id(void) {
++      static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++      if( trace_id == TTIF_TRACE_INVALID_ID ) {
++              trace_id = ttif_trace_open("NBE");
++      }
++      return trace_id;
++   }
++
++#    define AMRENC_DPRINT(...)     ttif_trace_fprintf(__get_trace_id(), (1<<1), __VA_ARGS__)
++#    define AMRENC_BUFPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<2), __VA_ARGS__)
++#    define AMRENC_MEMPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<3), __VA_ARGS__)
++#    define AMRENC_STATEPRINT(...) ttif_trace_fprintf(__get_trace_id(), (1<<4), __VA_ARGS__)
++#    define AMRENC_EPRINT(...)     do {                                       \
++          ttif_trace_fprintf(__get_trace_id(), 0xffffffff, __VA_ARGS__);      \
++          fprintf(stdout, "%s %s %d::  ", __FILE__,__FUNCTION__, __LINE__);   \
++          fprintf(stdout, __VA_ARGS__);                                       \
++          fprintf(stdout, "\n");                                              \
++     } while(0)
++#else
++
+ 
+ /* ======================================================================= */
+ /**
+@@ -174,6 +199,9 @@
+ 
+ #endif
+ 
++#endif
++
++
+ /* ======================================================================= */
+ /**
+  *  M A C R O S FOR MALLOC and MEMORY FREE and CLOSING PIPES
+Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h
+===================================================================
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2009-06-23 16:52:29.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2009-06-23 16:57:52.000000000 -0500
+@@ -190,6 +190,31 @@
+  *         this functionality On.
+  */
+ /* ======================================================================= */
++
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
++#ifdef OMX_LOG_OVER_TTIF
++
++#    include <ttif_trace.h>
++   static TTIF_TRACE_ID __get_trace_id(void) {
++      static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++      if( trace_id == TTIF_TRACE_INVALID_ID ) {
++              trace_id = ttif_trace_open("NBD");
++      }
++      return trace_id;
++   }
++
++#    define AMRDEC_DPRINT(...)     ttif_trace_fprintf(__get_trace_id(), (1<<1), __VA_ARGS__)
++#    define AMRDEC_MCP_DPRINT(...) ttif_trace_fprintf(__get_trace_id(), (1<<2), __VA_ARGS__)
++#    define AMRDEC_MEMPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<3), __VA_ARGS__)
++#    define AMRDEC_EPRINT(...)     do {                                       \
++          ttif_trace_fprintf(__get_trace_id(), 0xffffffff, __VA_ARGS__);      \
++          fprintf(stdout, "%s %s %d::  ", __FILE__,__FUNCTION__, __LINE__);   \
++          fprintf(stdout, __VA_ARGS__);                                       \
++          fprintf(stdout, "\n");                                              \
++     } while(0)
++#else
++
+ #undef NBAMRDEC_DEBUGMEM
+ /*#define NBAMRDEC_DEBUGMEM*/
+ 
+@@ -247,6 +272,7 @@
+ 
+ #endif
+ 
++#endif
+ 
+ /* ======================================================================= */
+ /**
