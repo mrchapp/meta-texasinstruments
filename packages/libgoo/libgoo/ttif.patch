@@ -1,0 +1,176 @@
+diff --git a/configure.ac b/configure.ac
+index 3e71e54..ec27b2d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -153,6 +153,9 @@ AM_CONDITIONAL([WITH_TI_CAMERA], test x$enable_ti_camera = xtrue)
+ dnl Check for gtk-doc
+ GTK_DOC_CHECK([1.4])
+ 
++dnl TTIF
++PKG_CHECK_MODULES(TTIF, libttif >= 2.9.0)
++
+ dnl Check for GObject
+ PKG_CHECK_MODULES([GOBJECT], [gobject-$GOBJECT_MAJORMINOR >= $GOBJECT_REQUIRED])
+ 
+diff --git a/libgoo-bellagio/Makefile.am b/libgoo-bellagio/Makefile.am
+index 9db311c..96f7b1d 100644
+--- a/libgoo-bellagio/Makefile.am
++++ b/libgoo-bellagio/Makefile.am
+@@ -6,12 +6,14 @@ libgoo_bellagio_la_CFLAGS = \
+ 	$(GOBJECT_CFLAGS) \
+ 	$(GTHREAD_CFLAGS) \
+ 	$(OMXIL_CFLAGS) \
++	$(TTIF_CFLAGS) \
+ 	$(GLIB_CFLAGS)
+ 
+ libgoo_bellagio_la_LIBADD = \
+ 	$(GOBJECT_LIBS) \
+ 	$(GTHREAD_LIBS) \
+ 	$(OMXIL_LIBS) \
++	$(TTIF_LIBS) \
+ 	$(GLIB_LIBS) \
+ 	$(top_builddir)/libgoo/libgoo.la
+ 
+diff --git a/libgoo-ti/Makefile.am b/libgoo-ti/Makefile.am
+index 2c976ae..d1257d7 100644
+--- a/libgoo-ti/Makefile.am
++++ b/libgoo-ti/Makefile.am
+@@ -6,12 +6,14 @@ libgoo_ti_la_CFLAGS = \
+ 	$(GOBJECT_CFLAGS) \
+ 	$(GTHREAD_CFLAGS) \
+ 	$(OMXIL_CFLAGS) \
++	$(TTIF_CFLAGS) \
+ 	$(GLIB_CFLAGS)
+ 
+ libgoo_ti_la_LIBADD = \
+ 	$(GOBJECT_LIBS) \
+ 	$(GTHREAD_LIBS) \
+ 	$(OMXIL_LIBS) \
++	$(TTIF_LIBS) \
+ 	$(GLIB_LIBS) \
+ 	$(top_builddir)/libgoo/libgoo.la \
+ 	-lm
+diff --git a/libgoo/Makefile.am b/libgoo/Makefile.am
+index 15647fd..8c81a04 100644
+--- a/libgoo/Makefile.am
++++ b/libgoo/Makefile.am
+@@ -4,12 +4,14 @@ libgoo_la_CFLAGS = \
+ 	$(GOBJECT_CFLAGS) \
+ 	$(GTHREAD_CFLAGS) \
+ 	$(OMXIL_CFLAGS) \
++	$(TTIF_CFLAGS) \
+ 	$(GLIB_CFLAGS)
+ 
+ libgoo_la_LIBADD = \
+ 	$(GOBJECT_LIBS) \
+ 	$(GTHREAD_LIBS) \
+ 	$(OMXIL_LIBS) \
++	$(TTIF_LIBS) \
+ 	$(GLIB_LIBS)
+ 
+ libgoo_la_LDFLAGS = \
+@@ -66,4 +68,4 @@ CLEANFILES = \
+ 	*.loT
+ 
+ DISTCLEANFILES = \
+-	$(pkgconfig_DATA)
+\ No newline at end of file
++	$(pkgconfig_DATA)
+diff --git a/libgoo/goo-log.c b/libgoo/goo-log.c
+index 2b3b385..661adb1 100644
+--- a/libgoo/goo-log.c
++++ b/libgoo/goo-log.c
+@@ -25,6 +25,9 @@
+ #endif
+ 
+ #include <goo-log.h>
++
++#ifndef GOO_LOG_OVER_TTIF
++
+ #include <goo-utils.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+@@ -213,3 +216,21 @@ goo_object_log (const gchar* objname, const gchar* prefix, guint level,
+ 
+ 	return;
+ }
++
++#else
++
++#  include <ttif_trace.h>
++
++static TTIF_TRACE_ID goo_trace = TTIF_TRACE_INVALID_ID;
++
++TTIF_TRACE_ID goo_get_log_stream (void)
++{
++	if (G_UNLIKELY (goo_trace == TTIF_TRACE_INVALID_ID))
++	{
++		goo_trace = ttif_trace_open ("goo");
++	}
++	return goo_trace;
++}
++
++#endif
++
+diff --git a/libgoo/goo-log.h b/libgoo/goo-log.h
+index 5905bde..a39f9c3 100644
+--- a/libgoo/goo-log.h
++++ b/libgoo/goo-log.h
+@@ -32,6 +32,7 @@
+  **/
+ #define GOO_DEBUG_LEVEL "GOO_DEBUG_LEVEL"
+ 
++#define GOO_LOG_OVER_TTIF   /* TODO: don't hardcode, but set thru configure script.. */
+ 
+ typedef enum _GooLogLevel GooLogLevel;
+ /**
+@@ -59,12 +60,17 @@ enum _GooLogLevel
+      GOO_LOG_DEBUG
+ };
+ 
++#ifndef GOO_LOG_OVER_TTIF
+ void goo_log (guint level, const gchar *file, const gchar *function,
+               gint line, const gchar *fmt, ...);
+ 
+ void goo_object_log (const gchar* objname, const gchar* prefix, guint level,
+ 		     const gchar* file, const gchar* function, gint line,
+ 		     const gchar* fmt, ...);
++#else
++#  include <ttif_trace.h>
++TTIF_TRACE_ID goo_get_log_stream(void);
++#endif
+ 
+ /**
+  * GOO_LOG:
+@@ -73,8 +79,14 @@ void goo_object_log (const gchar* objname, const gchar* prefix, guint level,
+  *
+  * Macro for goo_log() function
+  **/
++#ifndef GOO_LOG_OVER_TTIF
+ #define GOO_LOG(level, ...) goo_log ((level), __FILE__, __PRETTY_FUNCTION__, __LINE__, __VA_ARGS__);
+-
++#else
++#  define GOO_LOG(level, ...)														\
++	G_STMT_START {																	\
++		ttif_trace_fprintf (goo_get_log_stream(), (1<<(level)), __VA_ARGS__);		\
++    } G_STMT_END
++#endif
+ 
+ /**
+  * GOO_DEBUG:
+@@ -120,7 +132,15 @@ void goo_object_log (const gchar* objname, const gchar* prefix, guint level,
+  *
+  * Macro for goo_object_log() function
+  **/
++#ifndef GOO_LOG_OVER_TTIF
+ #define GOO_OBJECT_LOG(obj, level, ...) goo_object_log (GOO_OBJECT_NAME (obj), GOO_OBJECT_PREFIX (obj), (level), __FILE__, __PRETTY_FUNCTION__, __LINE__, __VA_ARGS__);
++#else
++#  define GOO_OBJECT_LOG(obj, level, str, args...)                                      \
++	G_STMT_START {																	\
++		ttif_trace_fprintf (goo_get_log_stream(), (1<<(level)), "<%s>: "str, GOO_OBJECT_NAME (obj), ##args); \
++    } G_STMT_END
++#endif
++
+ 
+ /**
+  * GOO_OBJECT_DEBUG:
