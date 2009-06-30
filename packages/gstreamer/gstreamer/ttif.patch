@@ -1,0 +1,178 @@
+Index: gstreamer-0.10.20/configure.ac
+===================================================================
+--- gstreamer-0.10.20.orig/configure.ac	2008-06-18 04:53:17.000000000 -0500
++++ gstreamer-0.10.20/configure.ac	2009-05-11 18:46:35.000000000 -0500
+@@ -470,6 +470,9 @@
+ 
+ dnl *** checks for dependency libraries ***
+ 
++dnl TTIF
++PKG_CHECK_MODULES(TTIF, libttif >= 2.9.0)
++
+ dnl GLib
+ GLIB_REQ=2.12
+ 
+@@ -584,11 +587,11 @@
+ dnl   will need the GStreamer source and generated headers
+ dnl LIBS: XML doesn't need to be added because we don't explicitly use symbols
+ dnl       from LibXML except for in the core library
+-GST_ALL_CFLAGS="-I\$(top_srcdir)/libs -I\$(top_srcdir) -I\$(top_builddir) $GLIB_CFLAGS $XML_CFLAGS \$(GST_OPTION_CFLAGS)"
++GST_ALL_CFLAGS="-I\$(top_srcdir)/libs -I\$(top_srcdir) -I\$(top_builddir) $GLIB_CFLAGS $XML_CFLAGS \$(GST_OPTION_CFLAGS) $TTIF_CFLAGS"
+ 
+ dnl FIXME: check if LTLIBINTL is needed everywhere
+ dnl I presume it is given that it contains the symbols that _() stuff maps to
+-GST_ALL_LIBS="$GLIB_LIBS $LTLIBINTL \$(GCOV_LIBS)"
++GST_ALL_LIBS="$GLIB_LIBS $LTLIBINTL \$(GCOV_LIBS) $TTIF_LIBS"
+ 
+ dnl LDFLAGS really should only contain flags, not libs - they get added before
+ dnl whatevertarget_LIBS and -L flags here affect the rest of the linking
+Index: gstreamer-0.10.20/gst/gstinfo.c
+===================================================================
+--- gstreamer-0.10.20.orig/gst/gstinfo.c	2008-06-04 14:41:21.000000000 -0500
++++ gstreamer-0.10.20/gst/gstinfo.c	2009-05-15 09:15:09.000000000 -0500
+@@ -467,7 +467,6 @@
+   return message->message;
+ }
+ 
+-
+ static gchar *
+ gst_debug_print_object (gpointer ptr)
+ {
+@@ -530,6 +529,13 @@
+   return g_strdup_printf ("%p", ptr);
+ }
+ 
++#ifdef GST_LOG_OVER_TTIF
++TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc = {
++  .convert = gst_debug_print_object,
++  .free    = g_free
++};
++#endif
++
+ #ifdef HAVE_PRINTF_EXTENSION
+ 
+ static gchar *
+@@ -1071,6 +1077,10 @@
+   g_atomic_int_set (&cat->threshold, 0);
+   gst_debug_reset_threshold (cat, NULL);
+ 
++#ifdef GST_LOG_OVER_TTIF
++  cat->stream_id = ttif_trace_open (cat->name);
++#endif
++
+   /* add to category list */
+   g_static_mutex_lock (&__cat_mutex);
+   __categories = g_slist_prepend (__categories, cat);
+Index: gstreamer-0.10.20/gst/gstinfo.h
+===================================================================
+--- gstreamer-0.10.20.orig/gst/gstinfo.h	2008-06-04 14:41:21.000000000 -0500
++++ gstreamer-0.10.20/gst/gstinfo.h	2009-05-11 18:46:35.000000000 -0500
+@@ -43,6 +43,8 @@
+ #define M_PI  3.14159265358979323846
+ #endif
+ 
++#define GST_LOG_OVER_TTIF  /* for now, hard-code this, until I figure out a better way */
++
+ G_BEGIN_DECLS
+ 
+ /**
+@@ -161,6 +163,10 @@
+ #define GST_DEBUG_BG_MASK	(0x00F0)
+ #define GST_DEBUG_FORMAT_MASK	(0xFF00)
+ 
++#ifdef GST_LOG_OVER_TTIF
++#  include <ttif_trace.h>
++#endif
++
+ typedef struct _GstDebugCategory GstDebugCategory;
+ /**
+  * GstDebugCategory:
+@@ -170,6 +176,9 @@
+  */
+ struct _GstDebugCategory {
+   /*< private >*/
++#ifdef GST_LOG_OVER_TTIF
++  TTIF_TRACE_ID		stream_id;
++#endif
+   gint                  threshold;
+   guint			color;		/* see defines above */
+ 
+@@ -435,6 +444,19 @@
+  * debugging messages. You will probably want to use one of the ones described
+  * below.
+  */
++#ifdef GST_LOG_OVER_TTIF
++#define GST_CAT_LEVEL_LOG(cat,level,object,str,args...) G_STMT_START{         \
++  if(!cat) {                                                                  \
++      /* maybe we should log a warning?? or default cat?? */                  \
++  } else if (object) {                                                        \
++    extern TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc;            \
++    ttif_trace_fprintf ((cat)->stream_id,(1<<level),"%qs: "str,               \
++       &__gst_debug_print_object_proc, (object), ##args);                     \
++  } else {                                                                    \
++    ttif_trace_fprintf ((cat)->stream_id, (1<<level), str, ##args);           \
++  }                                                                           \
++}G_STMT_END
++#else
+ #ifdef G_HAVE_ISO_VARARGS
+ #define GST_CAT_LEVEL_LOG(cat,level,object,...) G_STMT_START{		\
+   if (G_UNLIKELY (level <= __gst_debug_min)) {						\
+@@ -473,6 +495,7 @@
+ }
+ #endif
+ #endif /* G_HAVE_ISO_VARARGS */
++#endif /* GST_LOG_OVER_TTIF */
+ 
+ /**
+  * GST_CAT_ERROR_OBJECT:
+Index: gstreamer-0.10.20/gst/parse/grammar.y
+===================================================================
+--- gstreamer-0.10.20.orig/gst/parse/grammar.y	2008-06-04 14:41:22.000000000 -0500
++++ gstreamer-0.10.20/gst/parse/grammar.y	2009-05-11 18:46:35.000000000 -0500
+@@ -19,6 +19,15 @@
+ #include "../gstchildproxy.h"
+ #include "types.h"
+ 
++
++#ifdef GST_LOG_OVER_TTIF
++#  ifdef _
++#    undef _
++#  endif
++#  define _(x) x
++#endif
++
++
+ /* All error messages in this file are user-visible and need to be translated.
+  * Don't start the message with a capital, and don't end them with a period,
+  * as they will be presented inside a sentence/error.
+@@ -181,18 +190,14 @@
+ /* #  define YYFPRINTF(a, ...) GST_CAT_DEBUG (GST_CAT_PIPELINE, __VA_ARGS__) */
+ #    define YYFPRINTF(a, ...) \
+ G_STMT_START { \
+-     gchar *temp = g_strdup_printf (__VA_ARGS__); \
+-     GST_CAT_LOG (GST_CAT_PIPELINE, temp); \
+-     g_free (temp); \
++     GST_CAT_LOG (GST_CAT_PIPELINE, __VA_ARGS__); \
+ } G_STMT_END
+ 
+ #  elif defined(G_HAVE_GNUC_VARARGS)
+ 
+ #    define YYFPRINTF(a, args...) \
+ G_STMT_START { \
+-     gchar *temp = g_strdup_printf ( args ); \
+-     GST_CAT_LOG (GST_CAT_PIPELINE, temp); \
+-     g_free (temp); \
++     GST_CAT_LOG (GST_CAT_PIPELINE, args); \
+ } G_STMT_END
+ 
+ #  else
+Index: gstreamer-0.10.20/pkgconfig/gstreamer.pc.in
+===================================================================
+--- gstreamer-0.10.20.orig/pkgconfig/gstreamer.pc.in	2005-10-16 03:59:34.000000000 -0500
++++ gstreamer-0.10.20/pkgconfig/gstreamer.pc.in	2009-05-11 18:46:35.000000000 -0500
+@@ -11,4 +11,4 @@
+ Requires: @GST_PKG_DEPS@@LIBXML_PKG@
+ Version: @VERSION@
+ Libs: -L${libdir} -lgstreamer-@GST_MAJORMINOR@
+-Cflags: -I${includedir}
++Cflags: -I${includedir} -I${includedir}/../ttif
