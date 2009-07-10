@@ -27,6 +27,12 @@ python populate_packages_prepend () {
 	do_split_packages(d, gst_libdir, 'libgst(.*)\.l?a$', 'gst-plugin-%s-dev', 'GStreamer plugin for %s (development files)', extra_depends=bb.data.expand('${PN}-dev',d))
 }
 
+do_configure_prepend() {
+	# This m4 file contains nastiness which conflicts with libtool 2.2.2
+	rm ${S}/m4/lib-link.m4 || true
+}
+
+
 do_stage() {
 	autotools_stage_all
 }
