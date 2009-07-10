@@ -1,8 +1,8 @@
-Index: gstreamer-0.10.20/configure.ac
+Index: git/configure.ac
 ===================================================================
---- gstreamer-0.10.20.orig/configure.ac	2008-06-18 04:53:17.000000000 -0500
-+++ gstreamer-0.10.20/configure.ac	2009-05-11 18:46:35.000000000 -0500
-@@ -470,6 +470,9 @@
+--- git.orig/configure.ac	2009-07-10 12:52:34.000000000 -0500
++++ git/configure.ac	2009-07-10 13:57:20.000000000 -0500
+@@ -475,6 +475,9 @@
  
  dnl *** checks for dependency libraries ***
  
@@ -10,9 +10,9 @@ Index: gstreamer-0.10.20/configure.ac
 +PKG_CHECK_MODULES(TTIF, libttif >= 2.9.0)
 +
  dnl GLib
- GLIB_REQ=2.12
+ GLIB_REQ=2.16
  
-@@ -584,11 +587,11 @@
+@@ -587,11 +590,11 @@
  dnl   will need the GStreamer source and generated headers
  dnl LIBS: XML doesn't need to be added because we don't explicitly use symbols
  dnl       from LibXML except for in the core library
@@ -26,33 +26,25 @@ Index: gstreamer-0.10.20/configure.ac
  
  dnl LDFLAGS really should only contain flags, not libs - they get added before
  dnl whatevertarget_LIBS and -L flags here affect the rest of the linking
-Index: gstreamer-0.10.20/gst/gstinfo.c
+Index: git/gst/gstinfo.c
 ===================================================================
---- gstreamer-0.10.20.orig/gst/gstinfo.c	2008-06-04 14:41:21.000000000 -0500
-+++ gstreamer-0.10.20/gst/gstinfo.c	2009-05-15 09:15:09.000000000 -0500
-@@ -467,7 +467,6 @@
-   return message->message;
- }
- 
--
- static gchar *
- gst_debug_print_object (gpointer ptr)
- {
-@@ -530,6 +529,13 @@
+--- git.orig/gst/gstinfo.c	2009-07-10 12:52:36.000000000 -0500
++++ git/gst/gstinfo.c	2009-07-10 14:11:31.000000000 -0500
+@@ -642,6 +642,13 @@
    return g_strdup_printf ("%p", ptr);
  }
  
 +#ifdef GST_LOG_OVER_TTIF
 +TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc = {
-+  .convert = gst_debug_print_object,
-+  .free    = g_free
++  .convert = (char (*)(void *))gst_debug_print_object,
++  .free    = (void (*)(char *))g_free
 +};
 +#endif
 +
  #ifdef HAVE_PRINTF_EXTENSION
  
  static gchar *
-@@ -1071,6 +1077,10 @@
+@@ -1318,6 +1325,10 @@
    g_atomic_int_set (&cat->threshold, 0);
    gst_debug_reset_threshold (cat, NULL);
  
@@ -63,11 +55,11 @@ Index: gstreamer-0.10.20/gst/gstinfo.c
    /* add to category list */
    g_static_mutex_lock (&__cat_mutex);
    __categories = g_slist_prepend (__categories, cat);
-Index: gstreamer-0.10.20/gst/gstinfo.h
+Index: git/gst/gstinfo.h
 ===================================================================
---- gstreamer-0.10.20.orig/gst/gstinfo.h	2008-06-04 14:41:21.000000000 -0500
-+++ gstreamer-0.10.20/gst/gstinfo.h	2009-05-11 18:46:35.000000000 -0500
-@@ -43,6 +43,8 @@
+--- git.orig/gst/gstinfo.h	2009-07-10 12:52:36.000000000 -0500
++++ git/gst/gstinfo.h	2009-07-10 13:57:20.000000000 -0500
+@@ -32,6 +32,8 @@
  #define M_PI  3.14159265358979323846
  #endif
  
@@ -97,7 +89,7 @@ Index: gstreamer-0.10.20/gst/gstinfo.h
    gint                  threshold;
    guint			color;		/* see defines above */
  
-@@ -435,6 +444,19 @@
+@@ -472,6 +481,19 @@
   * debugging messages. You will probably want to use one of the ones described
   * below.
   */
@@ -117,18 +109,18 @@ Index: gstreamer-0.10.20/gst/gstinfo.h
  #ifdef G_HAVE_ISO_VARARGS
  #define GST_CAT_LEVEL_LOG(cat,level,object,...) G_STMT_START{		\
    if (G_UNLIKELY (level <= __gst_debug_min)) {						\
-@@ -473,6 +495,7 @@
+@@ -510,6 +532,7 @@
  }
  #endif
  #endif /* G_HAVE_ISO_VARARGS */
 +#endif /* GST_LOG_OVER_TTIF */
  
- /**
-  * GST_CAT_ERROR_OBJECT:
-Index: gstreamer-0.10.20/gst/parse/grammar.y
+ /* private helper function */
+ void _gst_debug_dump_mem (GstDebugCategory * cat, const gchar * file,
+Index: git/gst/parse/grammar.y
 ===================================================================
---- gstreamer-0.10.20.orig/gst/parse/grammar.y	2008-06-04 14:41:22.000000000 -0500
-+++ gstreamer-0.10.20/gst/parse/grammar.y	2009-05-11 18:46:35.000000000 -0500
+--- git.orig/gst/parse/grammar.y	2009-07-10 12:52:36.000000000 -0500
++++ git/gst/parse/grammar.y	2009-07-10 13:57:20.000000000 -0500
 @@ -19,6 +19,15 @@
  #include "../gstchildproxy.h"
  #include "types.h"
@@ -166,11 +158,11 @@ Index: gstreamer-0.10.20/gst/parse/grammar.y
  } G_STMT_END
  
  #  else
-Index: gstreamer-0.10.20/pkgconfig/gstreamer.pc.in
+Index: git/pkgconfig/gstreamer.pc.in
 ===================================================================
---- gstreamer-0.10.20.orig/pkgconfig/gstreamer.pc.in	2005-10-16 03:59:34.000000000 -0500
-+++ gstreamer-0.10.20/pkgconfig/gstreamer.pc.in	2009-05-11 18:46:35.000000000 -0500
-@@ -11,4 +11,4 @@
+--- git.orig/pkgconfig/gstreamer.pc.in	2009-07-10 12:52:36.000000000 -0500
++++ git/pkgconfig/gstreamer.pc.in	2009-07-10 13:57:20.000000000 -0500
+@@ -10,4 +10,4 @@
  Requires: @GST_PKG_DEPS@@LIBXML_PKG@
  Version: @VERSION@
  Libs: -L${libdir} -lgstreamer-@GST_MAJORMINOR@
