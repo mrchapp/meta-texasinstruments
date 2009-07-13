@@ -95,11 +95,14 @@ do_install() {
 	install -m 0644 `find ${STAGING_LIBDIR}/modules -name syslink_proc4430.ko` ${D}/dspbridge
 	install -m 0644 `find ${STAGING_LIBDIR}/modules -name syslink_proc.ko` ${D}/dspbridge
 	install -m 0644 `find ${STAGING_LIBDIR}/modules -name syslink_ipc.ko` ${D}/dspbridge
-	#oenote "Installing syslink libraries..."
-	#cp -d ${STAGING_LIBDIR}/dspbridge/syslink/* ${D}/dspbridge/exports/lib
+
 	oenote "Installing syslink scripts..."
 	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/tesla_install_script ${D}/dspbridge
 	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/ducati_install_script ${D}/dspbridge
+	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_syslink ${D}/dspbridge
+        install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_ducati_syslink ${D}/dspbridge
+        install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_tesla_bridge ${D}/dspbridge
+
 	oenote "Installing syslink module..."
         install -m 0644 ${STAGING_LIBDIR}/modules/procmgr_app.ko ${D}/dspbridge
 
