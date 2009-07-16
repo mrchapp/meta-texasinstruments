@@ -1,0 +1,37 @@
+Index: dplayer-5.17/src/core.c
+===================================================================
+--- dplayer-5.17.orig/src/core.c	2009-07-15 17:18:20.000000000 -0500
++++ dplayer-5.17/src/core.c	2009-07-15 17:18:11.000000000 -0500
+@@ -23,27 +23,27 @@
+ #endif
+ 	core_data->filesrc = gst_element_factory_make ("filesrc", "source");
+ 	core_data->demuxer =
+-            gst_element_factory_make ("ffdemux_mov_mp4_m4a_3gp_3g2_mj2", "demuxer");
++            gst_element_factory_make ("qtdemux", "demuxer");
+ 	core_data->videoqueue =
+             gst_element_factory_make ("queue", "videoqueue");
+ 	core_data->audioqueue =
+             gst_element_factory_make ("queue", "audioqueue");
+ #ifdef USE_OMX
+ 	core_data->videodecoder =
+-            gst_element_factory_make ("goodec_h263", "videodecoder");
++            gst_element_factory_make ("goodec_mpeg4", "videodecoder");
+ 
+-	g_object_set(G_OBJECT(core_data->videodecoder), "process-mode", 0, "input-buffers", 1, "output-buffers", 1, NULL);
++	/* g_object_set(G_OBJECT(core_data->videodecoder), "process-mode", 0, "input-buffers", 1, "output-buffers", 1, NULL); */
+ 
+ 
+ 	core_data->audiodecoder =
+ 			gst_element_factory_make ("goodec_aac", "audiodecoder");
+ 
+-	g_object_set(G_OBJECT(core_data->audiodecoder), "RAW", 1, "SBR", 0, NULL);
++	/* g_object_set(G_OBJECT(core_data->audiodecoder), "RAW", 1, "SBR", 0, NULL); */
+ 
+ 	core_data->videosink =
+ 			gst_element_factory_make ("goosink_pp", "videosink");
+ 
+-	g_object_set(G_OBJECT(core_data->videosink), "input-buffers", 1, NULL);
++	/* g_object_set(G_OBJECT(core_data->videosink), "input-buffers", 1, NULL); */
+ 
+ 	core_data->audiosink =
+ 		gst_element_factory_make ("dasfsink", "audiosink");
