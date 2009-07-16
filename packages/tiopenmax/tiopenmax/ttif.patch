@@ -1,7 +1,7 @@
 Index: tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h
 ===================================================================
 --- tiopenmax-23.17M.orig/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h	2009-05-14 07:47:34.000000000 -0500
-+++ tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h	2009-07-10 17:36:47.000000000 -0500
 @@ -49,57 +49,69 @@
  #ifndef OMX_CAMERA_UTILS_H
  #define OMX_CAMERA_UTILS_H
@@ -111,7 +111,7 @@ Index: tiopenmax-23.17M/video/src/openmax_il/camera/inc/OMX_Camera_Utils.h
 Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h
 ===================================================================
 --- tiopenmax-23.17M.orig/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h	2009-06-15 23:44:23.000000000 -0500
-+++ tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Utils.h	2009-07-10 17:36:47.000000000 -0500
 @@ -70,6 +70,34 @@
  #define KHRONOS_1_1
  #define OMX_NOPORT 0xfffffffe
@@ -164,7 +164,7 @@ Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/inc/OMX_PostProc_Uti
 Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c
 ===================================================================
 --- tiopenmax-23.17M.orig/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c	2009-03-13 09:19:58.000000000 -0500
-+++ tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c	2009-06-21 15:02:12.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Utils.c	2009-07-10 17:36:47.000000000 -0500
 @@ -1272,7 +1272,7 @@
  	                }
  					
@@ -269,8 +269,8 @@ Index: tiopenmax-23.17M/video/src/openmax_il/post_processor/src/OMX_PostProc_Uti
  
 Index: tiopenmax-23.17M/Master.mk
 ===================================================================
---- tiopenmax-23.17M.orig/Master.mk	2009-06-20 16:28:56.000000000 -0500
-+++ tiopenmax-23.17M/Master.mk	2009-06-20 16:28:57.000000000 -0500
+--- tiopenmax-23.17M.orig/Master.mk	2009-07-10 17:36:47.000000000 -0500
++++ tiopenmax-23.17M/Master.mk	2009-07-10 17:36:47.000000000 -0500
 @@ -34,6 +34,11 @@
  OMXINCLUDEDIR=$(TARGETDIR)/include/omx
  endif
@@ -295,7 +295,7 @@ Index: tiopenmax-23.17M/Master.mk
 Index: tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h
 ===================================================================
 --- tiopenmax-23.17M.orig/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2009-03-13 08:38:21.000000000 -0500
-+++ tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2009-07-10 17:36:47.000000000 -0500
 @@ -280,6 +280,9 @@
   *  format, list - debug message
   */
@@ -334,7 +334,7 @@ Index: tiopenmax-23.17M/system/src/openmax_il/common/inc/OMX_TI_Debug.h
 Index: tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile
 ===================================================================
 --- tiopenmax-23.17M.orig/application/src/openmax_il/video_capture/src/Makefile	2007-07-03 12:56:05.000000000 -0500
-+++ tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile	2009-07-10 17:36:47.000000000 -0500
 @@ -36,7 +36,7 @@
  	cp -f $(COMPONENT_TEST) $(COMPONENT_TARGET)
  
@@ -347,7 +347,7 @@ Index: tiopenmax-23.17M/application/src/openmax_il/video_capture/src/Makefile
 Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h
 ===================================================================
 --- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h	2008-10-17 18:24:08.000000000 -0500
-+++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h	2009-07-10 17:36:47.000000000 -0500
 @@ -104,12 +104,30 @@
  	}
  
@@ -391,7 +391,7 @@ Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/inc/OMX_AacEnc_Utils.h
 Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c
 ===================================================================
 --- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c	2009-06-15 17:21:11.000000000 -0500
-+++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c	2009-07-10 17:36:47.000000000 -0500
 @@ -2288,7 +2288,10 @@
  	AACENC_DPRINT("%d :: UTIL: pHandle:%p \n",__LINE__,pHandle);
  	AACENC_DPRINT("%d :: UTIL: pComponentPrivate_CC:%p \n",__LINE__,pComponentPrivate_CC);
@@ -441,7 +441,7 @@ Index: tiopenmax-23.17M/audio/src/openmax_il/aac_enc/src/OMX_AacEnc_Utils.c
 Index: tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h
 ===================================================================
 --- tiopenmax-23.17M.orig/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h	2009-06-19 11:50:06.000000000 -0500
-+++ tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h	2009-06-20 16:28:57.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h	2009-07-10 17:36:47.000000000 -0500
 @@ -224,6 +224,33 @@
  #endif
  
@@ -487,8 +487,8 @@ Index: tiopenmax-23.17M/audio/src/openmax_il/aac_dec/inc/OMX_AacDec_Utils.h
   * @def    AACD_OMX_MALLOC   Macro to allocate Memory
 Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h
 ===================================================================
---- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2009-06-22 10:31:19.000000000 -0500
-+++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2009-06-22 10:36:19.000000000 -0500
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2008-10-17 18:24:28.000000000 -0500
++++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h	2009-07-10 17:36:47.000000000 -0500
 @@ -82,6 +82,31 @@
  	#define sleep Sleep
  #endif
@@ -533,8 +533,8 @@ Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_enc/inc/OMX_AmrEnc_Utils.h
   *  M A C R O S FOR MALLOC and MEMORY FREE and CLOSING PIPES
 Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h
 ===================================================================
---- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2009-06-23 16:52:29.000000000 -0500
-+++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2009-06-23 16:57:52.000000000 -0500
+--- tiopenmax-23.17M.orig/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2008-11-12 13:41:40.000000000 -0600
++++ tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h	2009-07-10 17:36:47.000000000 -0500
 @@ -190,6 +190,31 @@
   *         this functionality On.
   */
@@ -575,3 +575,42 @@ Index: tiopenmax-23.17M/audio/src/openmax_il/nbamr_dec/inc/OMX_AmrDecoder.h
  
  /* ======================================================================= */
  /**
+Index: tiopenmax-23.17M/video/src/openmax_il/video_decode/inc/OMX_VideoDec_Utils.h
+===================================================================
+--- tiopenmax-23.17M.orig/video/src/openmax_il/video_decode/inc/OMX_VideoDec_Utils.h	2009-07-16 08:51:21.000000000 -0500
++++ tiopenmax-23.17M/video/src/openmax_il/video_decode/inc/OMX_VideoDec_Utils.h	2009-07-16 09:09:50.000000000 -0500
+@@ -1045,6 +1045,8 @@
+     #define VIDDEC_ERROR_DEBUG
+ #endif
+ 
++#define OMX_LOG_OVER_TTIF    /* TODO don't hard code this */
++
+ #ifdef UNDER_CE
+     #include <oaf_debug.h>
+     #ifndef VIDDEC_DPRINT
+@@ -1072,6 +1074,25 @@
+         #define VIDDEC_VERSIONPRINT
+     #endif
+ 
++#elif defined(OMX_LOG_OVER_TTIF)
++#  include <ttif_trace.h>
++   static TTIF_TRACE_ID __get_trace_id(void) {
++      static TTIF_TRACE_ID trace_id = TTIF_TRACE_INVALID_ID;
++      if( trace_id == TTIF_TRACE_INVALID_ID ) {
++              trace_id = ttif_trace_open("VD_T");
++      }
++      return trace_id;
++   }
++#  define VIDDECODER_EPRINT(...)     do {                                     \
++          ttif_trace_fprintf(__get_trace_id(), 0xffffffff, __VA_ARGS__);      \
++          VIDDEC_eprint(__LINE__, __FUNCTION__, __VA_ARGS__);                 \
++     } while(0)
++#  define VIDDEC_EPRINT              VIDDECODER_EPRINT
++#  define VIDDEC_BUFFERPRINT(...)    ttif_trace_fprintf(__get_trace_id(), (1<<2), __VA_ARGS__)
++#  define VIDDEC_VERSIONPRINT(...)   ttif_trace_fprintf(__get_trace_id(), (1<<3), __VA_ARGS__)
++#  define VIDDECODER_DPRINT(...)     ttif_trace_fprintf(__get_trace_id(), (1<<4), __VA_ARGS__)
++#  define OMX_DPRINT                 VIDDECODER_DPRINT
++
+ #else /* Linux Only */
+     #ifdef  VIDDEC_ERROR_DEBUG
+        #define VIDDECODER_EPRINT(STR, ARG...) VIDDEC_eprint(__LINE__, __FUNCTION__, STR, ##ARG)
