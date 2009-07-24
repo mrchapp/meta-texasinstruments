@@ -48,7 +48,6 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-rtpmanager \
     gst-plugin-amrnb \
     gst-plugin-amrwb \
-    gst-plugin-mms \
     gst-plugin-freeze \
     gst-plugin-multifile \
     gst-plugin-gconfelements \
