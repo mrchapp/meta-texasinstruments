@@ -8,7 +8,7 @@ EXTRA_OECONF += "--disable-aalib --disable-esd --disable-shout2 --disable-libcac
 
 PACKAGES += "gst-plugin-id3demux"
 
-SRCREV = "4065c9e1ff927604d9a52c944eeee1047a24d283"
+SRCREV = "126af02bd5533a1481bb457e1c6fb5970753cb75"
 
 # override the SRC_URI from gst-plugins-git.inc to pull from our fork (can be removed when v4l2sink is integrated upstream):
 SRC_URI = "git://github.com/roopar/gst-plugins-good.git;protocol=git \
