@@ -4,9 +4,9 @@
 
 TARGET_VENDOR = "-none"
 
-EXTERNAL_TOOLCHAIN = "/usr/local/csl/arm-2008q3"
+EXTERNAL_TOOLCHAIN = "/data/tools/arm-2008q3"
 
-PATH =. ":${EXTERNAL_TOOLCHAIN}/bin:"
+PATH =. "${EXTERNAL_TOOLCHAIN}/bin:"
 
 PREFERRED_PROVIDER_linux-libc-headers = "external-csl-toolchain"
 PREFERRED_PROVIDER_virtual/arm-none-linux-gnueabi-gcc = "external-csl-toolchain"
