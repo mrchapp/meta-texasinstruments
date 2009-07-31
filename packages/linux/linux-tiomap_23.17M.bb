@@ -9,7 +9,7 @@ DEFAULT_PREFERENCE = "1"
 CCASE_SPEC = "\
 	element /vobs/wtbu/CSSD_L_GIT_2.6/linux/kernel_org/2.6_kernel/... LINUX_RLS_${PV}0%\
 	element * /main/LATEST%\
-	element * /main/0
+	element * /main/0%\
 	"
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_L_GIT_2.6/linux/kernel_org/2.6_kernel"
 CCASE_PATHCOMPONENTS = 5
