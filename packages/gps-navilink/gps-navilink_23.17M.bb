@@ -15,9 +15,9 @@ inherit ccasefetch
 COMPATIBLE_MACHINE = "omap-3430(l|s)dp"
 
 CCASE_SPEC = "%\
-	element /vobs/MCP_Common/... LINUX_RLS_${PV}0%\
-	element /vobs/NaviLink/... LINUX_RLS_${PV}0%\
-	element /vobs/GPS_HOSTSW/... LINUX_RLS_${PV}0%\
+        element /vobs/MCP_Common/... LINUX_RLS_${PV}0%\
+        element /vobs/NaviLink/... LINUX_RLS_${PV}0%\
+        element /vobs/GPS_HOSTSW/... LINUX_RLS_${PV}0%\
 	element * /main/LATEST %\
 	"
  
