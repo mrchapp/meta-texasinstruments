@@ -2,7 +2,7 @@ SECTION = "libs"
 DEPENDS = "glib-2.0 virtual/openmax-il ${TTIF_DEPENDS}"
 DESCRIPTION = "Library for interacting OpenMAX IL."
 LICENSE = "LGPL"
-PR = "r0${TTIF_PR}"
+PR = "r0"
 
 SRCREV = "f0953c7bc387877e1baaaeaf2ebede74299106cc"
 SRC_URI = "git://git.omapzoom.org/repo/libgoo.git;protocol=http"
