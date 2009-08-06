@@ -10,7 +10,7 @@ inherit autotools pkgconfig gconf
 
 SRC_URI = "http://download.gnome.org/sources/gnome-bluetooth/0.11/gnome-bluetooth-${PV}.tar.bz2 \
 	   file://python-pygtk-version.patch;patch=1 \
-	  "
+	   file://file-accept-reject-fix.patch;patch=1"
 
 FILES_${PN} +="${datadir}/gconf ${libdir}/libgnomebt.so* ${bindir}/* ${sharedir}/gnome-bluetooth/pixmaps/*"
 
