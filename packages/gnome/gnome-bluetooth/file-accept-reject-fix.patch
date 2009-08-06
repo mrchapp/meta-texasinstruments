@@ -1,0 +1,57 @@
+--- ./obex/gnome-obex-server.c	2009-07-15 10:30:28.000000000 +0530
++++ ./obex/gnome-obex-server-modified.c	2009-07-22 00:10:19.000000000 +0530
+@@ -156,7 +156,7 @@
+ 		return TRUE;
+ 	else if (perm == GNOMEBT_PERM_NEVER)
+ 		return FALSE;
+-
++	
+ 	dlg = gnomebt_permissiondialog_new (app->btctl,
+ 			bdaddr, _("Accept a file from '%s'?"),
+ 			_("The remote device is attempting to send you a file via Bluetooth. Do you wish to allow the connection?"),
+@@ -167,12 +167,26 @@
+ 			gnomebt_permissiondialog_remember (dlg)) {
+ 		gnomebt_controller_set_device_permission (app->btctl, bdaddr,
+ 				GNOMEBT_PERM_ALWAYS);
++
++		gtk_widget_destroy (GTK_WIDGET (dlg));
++
++	        return TRUE;
+ 	}
+-	
++        if(result ==  GTK_RESPONSE_OK){
++                gtk_widget_destroy (GTK_WIDGET (dlg));
++
++                return TRUE;
++	}
++
++	if(result == GTK_RESPONSE_CANCEL){
++		gtk_widget_destroy (GTK_WIDGET (dlg));
++		
++		return FALSE;
++	}
++
+ 	gtk_widget_destroy (GTK_WIDGET (dlg));
+ 
+-	
+-	return (result == GTK_RESPONSE_OK);
++	return FALSE;
+ }
+ 
+ static char *
+@@ -297,8 +311,14 @@
+ 	 * from this device.  For testing purposes, we will.
+ 	 */
+ 	app->decision = allowed_to_put (app, bdaddr);
+-	if (app->decision)
++	if (app->decision){
++		/*Accept the file*/
+ 		btctl_obex_set_response (bo, TRUE);
++	}
++	else{
++		/*Reject the file*/
++                btctl_obex_set_response (bo, FALSE);
++	}
+ }
+ 
+ static void
