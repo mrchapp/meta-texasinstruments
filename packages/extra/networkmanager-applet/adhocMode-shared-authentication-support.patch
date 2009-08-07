@@ -1,0 +1,18 @@
+diff -Naurb network-manager-applet-0.7.1_orig/src/wireless-security/ws-wep-key.c network-manager-applet-0.7.1/src/wireless-security/ws-wep-key.c
+--- network-manager-applet-0.7.1_orig/src/wireless-security/ws-wep-key.c	2009-04-04 21:03:56.000000000 +0530
++++ network-manager-applet-0.7.1/src/wireless-security/ws-wep-key.c	2009-08-06 00:28:23.000000000 +0530
+@@ -413,14 +413,6 @@
+ 	                  (GCallback) wireless_security_changed_cb,
+ 	                  sec);
+ 
+-	/* Ad-Hoc connections can't use Shared Key auth */
+-	if (is_adhoc) {
+-		gtk_combo_box_set_active (GTK_COMBO_BOX (widget), 0);
+-		gtk_widget_hide (widget);
+-		widget = glade_xml_get_widget (xml, "auth_method_label");
+-		gtk_widget_hide (widget);
+-	}
+-
+ 	return sec;
+ }
+ 

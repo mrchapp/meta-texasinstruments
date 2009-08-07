@@ -1,0 +1,26 @@
+Index: network-manager-applet-0.7.1/configure
+===================================================================
+--- network-manager-applet-0.7.1.orig/configure	2009-07-28 09:44:15.000000000 +0200
++++ network-manager-applet-0.7.1/configure	2009-07-28 09:44:50.000000000 +0200
+@@ -23643,7 +23643,7 @@
+ if test "$GCC" = "yes" -a "$set_more_warnings" != "no"; then
+ 	{ echo "$as_me:$LINENO: result: yes" >&5
+ echo "${ECHO_T}yes" >&6; }
+-	CFLAGS="-Wall -Werror -std=gnu89 $CFLAGS"
++	CFLAGS="-Wall -std=gnu89 $CFLAGS"
+ 
+ 	for option in -Wshadow -Wmissing-declarations -Wmissing-prototypes \
+ 		      -Wdeclaration-after-statement -Wstrict-prototypes \
+Index: network-manager-applet-0.7.1/configure.ac
+===================================================================
+--- network-manager-applet-0.7.1.orig/configure.ac	2009-07-28 09:44:57.000000000 +0200
++++ network-manager-applet-0.7.1/configure.ac	2009-07-28 09:45:39.000000000 +0200
+@@ -195,7 +195,7 @@
+ AC_MSG_CHECKING(for more warnings, including -Werror)
+ if test "$GCC" = "yes" -a "$set_more_warnings" != "no"; then
+ 	AC_MSG_RESULT(yes)
+-	CFLAGS="-Wall -Werror -std=gnu89 $CFLAGS"
++	CFLAGS="-Wall -std=gnu89 $CFLAGS"
+ 
+ 	for option in -Wshadow -Wmissing-declarations -Wmissing-prototypes \
+ 		      -Wdeclaration-after-statement -Wstrict-prototypes \

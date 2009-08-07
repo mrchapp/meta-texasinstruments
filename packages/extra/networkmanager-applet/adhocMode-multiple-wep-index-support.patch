@@ -1,0 +1,17 @@
+diff -Naurb network-manager-applet-0.7.1_orig/src/wireless-security/ws-wep-key.c network-manager-applet-0.7.1/src/wireless-security/ws-wep-key.c
+--- network-manager-applet-0.7.1_orig/src/wireless-security/ws-wep-key.c	2009-04-04 21:03:56.000000000 +0530
++++ network-manager-applet-0.7.1/src/wireless-security/ws-wep-key.c	2009-08-06 00:07:10.000000000 +0530
+@@ -388,13 +388,6 @@
+ 	                  (GCallback) key_index_combo_changed_cb,
+ 	                  sec);
+ 
+-	/* Key index is useless with adhoc networks */
+-	if (is_adhoc) {
+-		gtk_widget_hide (widget);
+-		widget = glade_xml_get_widget (xml, "key_index_label");
+-		gtk_widget_hide (widget);
+-	}
+-
+ 	/* Fill the key entry with the key for that index */
+ 	widget = glade_xml_get_widget (xml, "wep_key_entry");
+ 	if (strlen (sec->keys[default_key_idx]))

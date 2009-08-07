@@ -1,0 +1,51 @@
+Index: NetworkManager-0.7.1/src/backends/NetworkManagerDebian.c
+===================================================================
+--- NetworkManager-0.7.1.orig/src/backends/NetworkManagerDebian.c	2009-08-06 14:37:24.000000000 +0200
++++ NetworkManager-0.7.1/src/backends/NetworkManagerDebian.c	2009-08-06 14:38:59.000000000 +0200
+@@ -30,6 +30,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
++#include <sys/stat.h>
+ 
+ #include "NetworkManagerGeneric.h"
+ #include "NetworkManagerSystem.h"
+@@ -66,3 +67,20 @@
+ 	}
+ }
+ 
++gboolean nm_system_device_get_disabled (NMDevice *dev)
++{
++    struct stat statbuf;
++    gchar *filepath;
++
++    g_return_val_if_fail (dev != NULL, FALSE);
++
++    filepath = g_strdup_printf (SYSCONFDIR"/network/nm-disabled-%s", nm_device_get_iface (dev));
++
++    if (stat(filepath, &statbuf) == 0) {
++        g_free(filepath);
++        return TRUE;
++    }
++
++    g_free(filepath);
++    return FALSE;
++}
+Index: NetworkManager-0.7.1/src/nm-device.c
+===================================================================
+--- NetworkManager-0.7.1.orig/src/nm-device.c	2009-08-06 14:39:56.000000000 +0200
++++ NetworkManager-0.7.1/src/nm-device.c	2009-08-06 14:42:40.000000000 +0200
+@@ -191,6 +191,13 @@
+ 		goto error;
+ 	}
+ 
++	/* Allow distributions to flag devices as disabled */
++	if (nm_system_device_get_disabled (dev)) {
++	nm_warning ("(%s): Device otherwise managed, ignoring.",
++		nm_device_get_iface (dev));
++	goto error;
++	}
++
+ 	nm_print_device_capabilities (dev);
+ 
+ 	/* Delay transition from UNMANAGED to UNAVAILABLE until we've given the
