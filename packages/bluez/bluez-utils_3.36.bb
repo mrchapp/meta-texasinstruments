@@ -6,7 +6,11 @@ PR = "r1"
 SRC_URI = "http://bluez.sourceforge.net/download/bluez-utils-${PV}.tar.gz \
            file://hcid.conf \
            file://sbc-thumb.patch;patch=1 \
-           file://hciattach-custom-baudrate-support.patch;patch=1"
+           file://hciattach-custom-baudrate-support.patch;patch=1 \
+           file://bt-por-retry-logic.patch;patch=1 \
+           file://hciattach-core-off-fix.patch;patch=1 \
+           file://bton-optimization-fix.patch;patch=1 \
+"
 
 # see bluez-utils3.inc for the explanation of these option
 EXTRA_OECONF = " \
