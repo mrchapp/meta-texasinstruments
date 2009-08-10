@@ -1,0 +1,412 @@
+diff -Naur ./tools_org/hciattach.c ./tools/hciattach.c
+--- ./tools_org/hciattach.c	2009-08-07 14:49:16.000000000 +0530
++++ ./tools/hciattach.c	2009-08-07 14:51:39.000000000 +0530
+@@ -62,6 +62,10 @@
+ #define HCI_UART_H4DS	3
+ #define HCI_UART_LL	4
+ 
++/* maximum number of Power On Reset Retry count */
++#define DEFAULT_MAX_POWER_ON_RESET_RETRY  5
++static int  max_retry = DEFAULT_MAX_POWER_ON_RESET_RETRY;
++
+ struct uart_t {
+ 	char *type;
+ 	int  m_id;
+@@ -89,6 +93,7 @@
+         speed_t c_ispeed;               /* input speed */
+         speed_t c_ospeed;               /* output speed */
+ };
++extern char texas_disable_bluetooth_chip_power();
+ 
+ static volatile sig_atomic_t __io_canceled = 0;
+ 
+@@ -316,12 +321,12 @@
+ 	return 0;
+ }
+ 
+-extern int texas_init(int fd, struct termios *ti);
++extern int texas_init(int uart_fd, int max_retry, struct termios *ti);
+ extern int texas_post(int fd, struct termios *ti);
+ 
+ static int texas(int fd, struct uart_t *u, struct termios *ti)
+ {
+-	return texas_init(fd, ti);
++	return texas_init(fd, max_retry,ti);
+ }
+ 
+ static int texas2(int fd, struct uart_t *u, struct termios *ti)
+@@ -1218,7 +1223,8 @@
+ {
+ 	printf("hciattach - HCI UART driver initialization utility\n");
+ 	printf("Usage:\n");
+-	printf("\thciattach [-n] [-p] [-b] [-t timeout] [-s initial_speed] <tty> <type | id> [speed] [flow|noflow] [bdaddr]\n");
++	printf("\thciattach [-n] [-p] [-b] [-t timeout] [-r max_retry] [-s initial_speed] "); 
++	printf("<tty> <type | id> [speed] [flow|noflow] [bdaddr]\n");
+ 	printf("\thciattach -l\n");
+ }
+ 
+@@ -1227,6 +1233,7 @@
+ 	struct uart_t *u = NULL;
+ 	int detach, printpid, opt, i, n, ld, err;
+ 	int to = 10;
++	int retry_cnt;
+ 	int init_speed = 0;
+ 	int send_break = 0;
+ 	pid_t pid;
+@@ -1237,7 +1244,7 @@
+ 	detach = 1;
+ 	printpid = 0;
+ 
+-	while ((opt=getopt(argc, argv, "bnpt:s:l")) != EOF) {
++	while ((opt=getopt(argc, argv, "bnpt:r:s:l")) != EOF) {
+ 		switch(opt) {
+ 		case 'b':
+ 			send_break = 1;
+@@ -1255,6 +1262,10 @@
+ 			to = atoi(optarg);
+ 			break;
+ 
++		case 'r':
++			retry_cnt = atoi(optarg);
++			break;
++
+ 		case 's':
+ 			init_speed = atoi(optarg);
+ 			break;
+@@ -1334,6 +1345,11 @@
+ 	if (init_speed)
+ 		u->init_speed = init_speed;
+ 
++	/* Use user's maximum POR(power on reset) retry count, 
++	   instead of default value */
++	if(retry_cnt)
++ 		max_retry = retry_cnt;
++
+ 	memset(&sa, 0, sizeof(sa));
+ 	sa.sa_flags   = SA_NOCLDSTOP;
+ 	sa.sa_handler = sig_alarm;
+@@ -1394,5 +1410,11 @@
+ 		exit(1);
+ 	}
+ 
++	/* Power off bluetooth chip  */
++	if(texas_disable_bluetooth_chip_power()) {
++		perror("Can't power down bluetooth chip power");
++		exit(1);
++	}  
++ 
+ 	return 0;
+ }
+diff -Naur ./tools_org/hciattach_ti.c ./tools/hciattach_ti.c
+--- ./tools_org/hciattach_ti.c	2009-08-07 14:49:19.000000000 +0530
++++ ./tools/hciattach_ti.c	2009-08-07 14:59:46.000000000 +0530
+@@ -38,6 +38,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
+ #include <sys/uio.h>
++#include <fcntl.h>
+ 
+ #include <bluetooth/bluetooth.h>
+ #include <bluetooth/hci.h>
+@@ -71,6 +72,12 @@
+ 
+ #define FILE_HEADER_MAGIC	0x42535442
+ 
++#define BT_CHIP_POWER_ON       '1'
++#define BT_CHIP_POWER_OFF      '0'  
++
++/* BT RFKILL entry complete path */
++static char *rfkill_state_path = NULL;
++
+ /*
+  * BRF Firmware header
+  */
+@@ -437,16 +444,193 @@
+ 	return ret;
+ }
+ 
+-int texas_init(int fd, struct termios *ti)
++/* 
++ * This function finds rfkill entry which corresponds to Bluetooth.
++ * We need this Bluetooth RFKILL subsystem entry to toggle Bluetooth
++ * chip power line from OFF state to ON state and vice versa.   
++ */
++static int init_rfkill() 
++{
++	char path[64];
++	char buf[16];
++	int fd;
++	int noofbytes;
++	int id;
++	
++	/* Go though all RFKILL subsystem entries till we find 
++	*  entry for "bluetooth" */
++	for (id = 0; ; id++) 
++	{
++	  snprintf(path, sizeof(path), "/sys/class/rfkill/rfkill%d/type", id);
++
++	  fd = open(path, O_RDONLY);
++	  if (fd < 0) 
++	     return -1;
++         
++	  noofbytes = read(fd, &buf, sizeof(buf));
++
++	  close(fd);
++
++	  /* BT RFKILL type should match with "bluetooth" keyword */
++	  if (noofbytes >= 9 && memcmp(buf, "bluetooth", 9) == 0) 
++	    break;
++	}
++	asprintf(&rfkill_state_path, "/sys/class/rfkill/rfkill%d/state", id);
++	return 0;
++}
++
++/* 
++ * This function does actual write on Bluetooth RFKILL entry to bring bluetooth chip 
++ * power line (nShutdown) status to LOW or HIGH.
++ */
++inline char texas_config_bluetooth_chip_power(int rfkill_fd,char bt_onoff)
++{
++	int noofbytes;
++
++	noofbytes = write(rfkill_fd, &bt_onoff, 1);
++	if (noofbytes < 0) 
++	{
++	  fprintf(stderr,"write(%s) failed: %s (%d)", rfkill_state_path, strerror(errno),errno);
++	  close(rfkill_fd);
++	  return -1;
++	}
++	return 0;
++}
++
++/* 
++ * When user terminates hciattach process , this will be called from hciattach.c
++ * main() function to cut off Bluetooth chip power.
++ */
++char texas_disable_bluetooth_chip_power()
++{
++	int rfkill_fd;
++	struct timespec tm = {0, 1*1000*1000}; /* 1ms */
++
++	/* Get FD for Bluetooth "/sys/class/rfkill/rfkill%d/state" entry */
++	rfkill_fd = open(rfkill_state_path, O_WRONLY);
++	if (rfkill_fd < 0) 
++	{
++		fprintf(stderr,"open(%s) for write failed: %s (%d)", 
++			rfkill_state_path,strerror(errno), errno);
++		return -1;
++	}
++        
++	/*  
++	 * Cut off bluetooth chip power by toggling BT power line (LOW->HIGH->LOW).
++	 * BT Chip Power LED is not going to OFF state in the first LOW, so we need 
++	 * to pull HIGH and then LOW.
++	 */
++	if(texas_config_bluetooth_chip_power(rfkill_fd,BT_CHIP_POWER_OFF) < 0)
++		return -1;
++	nanosleep(&tm, NULL); 
++
++	if(texas_config_bluetooth_chip_power(rfkill_fd,BT_CHIP_POWER_ON) < 0)
++		return -1;
++	nanosleep(&tm, NULL); 
++
++	if(texas_config_bluetooth_chip_power(rfkill_fd,BT_CHIP_POWER_OFF) < 0)
++		return -1;
++	nanosleep(&tm, NULL); 
++
++	close(rfkill_fd);
++
++	return 0;
++}
++
++/* 
++ * This function is duplication of read_hci_event() in 'hciattach.c' file.
++ * Additionally it includes Power On Reset retry logic.
++ */
++int texas_read_response_byte(int fd, unsigned char* buf, int size) 
++{
++	struct timespec tm = {0, 50*1000*1000};
++	int remain, r;
++	int count = 0;
++	unsigned char rd_retry_count = 0; 
++
++	if (size <= 0)
++		return -1;
++
++	/* The first byte identifies the packet type. For HCI event packets, it
++  	* should be 0x04, so we read until we get to the 0x04. */
++	while (1) 
++	{
++		/* 
++		* The maximum BT chip's response timeout value is 200 ms.
++		* Already UART FD configured as NON-BLOCKing device in 
++		* texas_init(). So read() function will come out immediately. 
++		* Check return type value of read(), if no response byte 
++		* received from BT chip , then wait for 50ms and try read 
++		* once again. This retries logic repeated four times 
++		* (4 times * 50ms = 200 ms).                          
++		*/
++		r = read(fd, buf, 1);
++		if (r <= 0 && rd_retry_count < 4)
++		{
++			rd_retry_count +=1;
++			nanosleep(&tm, NULL); /* 50 ms */
++			continue;	
++		}
++		else if(rd_retry_count >= 4)
++			return -1;
++
++		if (buf[0] == 0x04)
++			break;
++	}
++	count++;
++
++	/* The next two bytes are the event code and parameter total length. */
++	while (count < 3) 
++	{
++		r = read(fd, buf + count, 3 - count);
++		if (r <= 0)
++			return -1;
++		count += r;
++	}
++
++	/* Now we read the parameters. */
++	if (buf[2] < (size - 3)) 
++		remain = buf[2];
++	else 
++		remain = size - 3;
++
++	while ((count - 3) < remain) 
++	{
++		r = read(fd, buf + count, remain - (count - 3));
++		if (r <= 0)
++			return -1;
++		count += r;
++	}
++
++	return count;
++}
++
++int texas_init(int uart_fd, int max_retry, struct termios *ti)
+ {
+-	struct timespec tm = {0, 50000};
++	struct timespec tm = {0};
+ 	char cmd[4];
+ 	unsigned char resp[100];		/* Response */
+ 	const char *bts_file;
+-	int n;
+-
+-	memset(resp,'\0', 100);
+-
++	unsigned char por_retry_count; 
++	int n,status;
++	int rfkill_fd;
++
++	/* Get RFKILL entry created for Bluetooth */
++	status = init_rfkill();
++	if(status < 0)
++	{
++		fprintf(stderr,"rfkill entry not found to toggle bluetooth chip power line\n");
++		return -1;
++	}
++      
++	/* Get BT RFKILL's  FD to toggle BT chip power line */  
++	rfkill_fd = open(rfkill_state_path, O_WRONLY);
++	if (rfkill_fd < 0) 
++	{
++		fprintf(stderr,"open(%s) for write failed: %s (%d)", 
++			rfkill_state_path,strerror(errno), errno);
++		return -1;
++	}     
+ 	/* It is possible to get software version with manufacturer specific 
+ 	   HCI command HCI_VS_TI_Version_Number. But the only thing you get more
+ 	   is if this is point-to-point or point-to-multipoint module */
+@@ -457,26 +641,67 @@
+ 	cmd[2] = 0x10;
+ 	cmd[3] = 0x00;
+ 
++	memset(resp,'\0', 100);
++
++	/* Change UART FD as NON-BLOCKing device. In case BT chip doesn't response,
++	 * this avoids indefinite wait on read() system call */
++	fcntl(uart_fd, F_SETFL,fcntl(uart_fd, F_GETFL) | O_NONBLOCK);
++
++	por_retry_count = 1;
+ 	do {
+-		n = write(fd, cmd, 4);
+-		if (n < 0) {
++		/* Toggle bluetooth chip power line (LOW->HIGH) */
++		if(texas_config_bluetooth_chip_power(rfkill_fd,BT_CHIP_POWER_OFF) < 0)
++			return -1;
++               
++		if(texas_config_bluetooth_chip_power(rfkill_fd,BT_CHIP_POWER_ON) < 0)
++			return -1;
++	
++		/* Allow BT chip to complete it's self test */
++		tm.tv_nsec =  200*1000*1000; /* 200 ms */ 
++		nanosleep(&tm, NULL); 			                         
++
++		n = write(uart_fd, cmd, 4);
++		if (n < 0) 
++		{
+ 			perror("Failed to write init command (READ_LOCAL_VERSION_INFORMATION)");
++			close(rfkill_fd);
+ 			return -1;
+ 		}
+-		if (n < 4) {
++		if (n < 4) 
++		{
+ 			fprintf(stderr, "Wanted to write 4 bytes, could only write %d. Stop\n", n);
++			close(rfkill_fd);
+ 			return -1;
+ 		}
+-
+-		/* Read reply. */
+-		if (read_hci_event(fd, resp, 100) < 0) {
+-			perror("Failed to read init response (READ_LOCAL_VERSION_INFORMATION)");
+-			return -1;
++		
++		/* Read response byte */
++		if (texas_read_response_byte(uart_fd, resp, 100) < 0) 
++		{
++			/* If chip doesn't response , then repeat once again    
++			   till retry count reaches max retry limit */  
++			if(por_retry_count < max_retry)
++			{
++			   por_retry_count += 1; 
++			   continue;
++			}
++			else
++			{
++			   perror("Failed to read init response (READ_LOCAL_VERSION_INFORMATION)");
++			   close(rfkill_fd);
++			   return -1;
++			}
+ 		}
+ 
+ 		/* Wait for command complete event for our Opcode */
+ 	} while (resp[4] != cmd[1] && resp[5] != cmd[2]);
+ 
++	/* Change UART FD as BLOCKing device, The rest of the hciattach operation will  
++	   be continued in BLOCKing mode. */
++	fcntl(uart_fd, F_SETFL,fcntl(uart_fd, F_GETFL) & ~O_NONBLOCK);
++
++	/* Close Bluetooth RFKILL FD , no longer needed */
++	close(rfkill_fd);
++
+ 	/* Verify manufacturer */
+ 	if (! is_it_texas(resp)) {
+ 		fprintf(stderr,"ERROR: module's manufacturer is not Texas Instruments\n");
+@@ -488,9 +713,10 @@
+ 	bts_file = get_firmware_name(resp);
+ 	fprintf(stderr, "Firmware file : %s\n", bts_file);
+ 
+-	n = brf_do_script(fd, ti, bts_file);
++	n = brf_do_script(uart_fd, ti, bts_file);
+ 
+-	nanosleep(&tm, NULL);
++	tm.tv_nsec =  50*1000;  /* 50 microsec */ 
++	nanosleep(&tm, NULL); 
+ 
+ 	return n;
+ }
