@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libbridge
+Description: DSP Bridge
+Version: 1.0.0
+Requires:
+Libs: -L${libdir} -lbridge
+Cflags: -I${includedir}/dspbridge
