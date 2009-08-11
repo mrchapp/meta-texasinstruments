@@ -45,6 +45,10 @@ do_configure_prepend() {
 				;;
 		esac
 	fi
+
+	# enable oprofile.. possibly, this should be controlled by a distro-feature??
+	sed -i "s/# CONFIG_PROFILING is not set/CONFIG_PROFILING=y\nCONFIG_OPROFILE=y\nCONFIG_OPROFILE_ARMV7=y/" ${S}/.config
+
 	${ADD_DISTRO_FEATURES}
 }
 
