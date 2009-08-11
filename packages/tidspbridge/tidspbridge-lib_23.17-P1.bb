@@ -5,7 +5,7 @@ LICENSE = "LGPL"
 PR = "r0"
 DEPENDS = "tidspbridge-module"
 
-inherit ccasefetch
+inherit ccasefetch pkgconfig
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 FILES_${PN} = "${libdir}/libbridge.so ${libdir}/libbridge.so.2 ${libdir}/libqos.a ${libdir}/libqos.so.2"
@@ -23,6 +23,10 @@ CCASE_SPEC = "%\
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/dspbridge"
 CCASE_PATHCOMPONENT = "dspbridge"
 CCASE_PATHCOMPONENTS = "3"
+
+do_compile_prepend() {
+	install -m 0644 ${FILESDIR}/libdspbridge.pc ${S}/libdspbridge.pc
+}
 
 do_compile() {
 	#mkdir ${S}/target
