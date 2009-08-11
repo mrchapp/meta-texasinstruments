@@ -3,7 +3,9 @@ PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge libraries."
 LICENSE = "LGPL"
 PR = "r0"
-RDEPENDS = "tidspbridge-module"
+DEPENDS = "tidspbridge-module"
+
+inherit ccasefetch pkgconfig
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 FILES_${PN} = "${libdir}/libbridge.so ${libdir}/libbridge.so.2 ${libdir}/libqos.a ${libdir}/libqos.so.2"
@@ -20,7 +22,11 @@ CCASE_PATHCOMPONENT = "dspbridge"
 CCASE_PATHCOMPONENTS = "3"
 
 SRC_URI = " \
-        file://23.12-mkcross-api.patch;patch=1"
+	file://23.12-mkcross-api.patch;patch=1"
+
+do_compile_prepend() {
+	install -m 0644 ${FILESDIR}/libdspbridge.pc ${S}/libdspbridge.pc
+}
 
 do_compile() {
 	cd ${S}/mpu_api/src
