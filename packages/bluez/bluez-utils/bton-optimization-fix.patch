@@ -1,0 +1,77 @@
+diff -Naur ./tools_org/hciattach.c ./tools/hciattach.c
+--- ./tools_org/hciattach.c	2009-08-07 15:06:31.000000000 +0530
++++ ./tools/hciattach.c	2009-08-07 15:07:59.000000000 +0530
+@@ -66,6 +66,14 @@
+ 
+ /* maximum number of Power On Reset Retry count */
+ #define DEFAULT_MAX_POWER_ON_RESET_RETRY  5
++
++/* ioctl code to change uart dma rx buffer size dynamically */
++#define TCSET_OMAPUART_RXBUFSIZE                        0x5461
++
++/* macros used to configure uart dma rx buffer size */
++#define CONFIG_UART_DMA_RX_BUFSIZE_TO_ONE_BYTE          1
++#define CONFIG_UART_DMA_RX_BUFSIZE_TO_DEFAULT_SIZE     -1
++
+ static int  max_retry = DEFAULT_MAX_POWER_ON_RESET_RETRY;
+ 
+ struct uart_t {
+@@ -1152,7 +1160,7 @@
+ {
+ 	struct termios ti;
+ 	int fd, i;
+-
++	struct timespec tm = {0, 10*1000*1000}; /* 10 ms */
+ 	fd = open(dev, O_RDWR | O_NOCTTY);
+ 	if (fd < 0) {
+ 		perror("Can't open serial port");
+@@ -1192,9 +1200,25 @@
+ 		usleep(500000);
+ 	}
+ 
++	/* 
++	*  Configure uart dma rx buffer size to 1 byte. This configuration 
++	*  helps us to get faster Bluetooth ON. The '10 ms' delayed required 
++	*  before and after calling ioctl() call. This delay allows uart driver 
++	*  to settle down with modfied buffer size. 
++	*/	
++	nanosleep(&tm, NULL);
++	ioctl(fd,TCSET_OMAPUART_RXBUFSIZE,CONFIG_UART_DMA_RX_BUFSIZE_TO_ONE_BYTE);
++	nanosleep(&tm, NULL);
++
+ 	if (u->init && u->init(fd, u, &ti) < 0)
+ 		return -1;
+ 
++	/* Ask uart driver to revert back uart dma rx buffer size to default size
++	* (whatever size configured in kernel config) */
++	nanosleep(&tm, NULL);
++	ioctl(fd,TCSET_OMAPUART_RXBUFSIZE,CONFIG_UART_DMA_RX_BUFSIZE_TO_DEFAULT_SIZE);
++	nanosleep(&tm, NULL);
++
+ 	tcflush(fd, TCIOFLUSH);
+ 
+ 	/* Set actual baudrate */
+diff -Naur ./tools_org/hciattach_ti.c ./tools/hciattach_ti.c
+--- ./tools_org/hciattach_ti.c	2009-08-07 15:06:34.000000000 +0530
++++ ./tools/hciattach_ti.c	2009-08-07 15:07:59.000000000 +0530
+@@ -391,7 +391,7 @@
+ 	int ret = 0,  hcill_installed = bts_file ? 0 : 1;
+ 	uint32_t vers;
+ 	static FILE *brf_script_file = NULL;
+-	static uint8_t brf_action[256];
++	static uint8_t brf_action[270];
+ 	static long brf_size;
+ 	static uint16_t brf_type;
+ 
+@@ -724,8 +724,10 @@
+ int texas_post(int fd, struct termios *ti)
+ {
+ 	int dev_id, dd, ret = 0;
++	struct timespec tm = {0};
+ 
+-	sleep(1);
++	tm.tv_nsec =  300*1000*1000; /* 300 ms */
++	nanosleep(&tm, NULL);  
+ 
+ 	dev_id = ioctl(fd, HCIUARTGETDEVICE, 0);
+ 	if (dev_id < 0) {
