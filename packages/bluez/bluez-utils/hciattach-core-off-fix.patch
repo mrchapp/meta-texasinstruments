@@ -1,0 +1,54 @@
+diff -Naur ./tools_org/hciattach.c ./tools/hciattach.c
+--- ./tools_org/hciattach.c	2009-08-04 17:43:27.000000000 +0530
++++ ./tools/hciattach.c	2009-08-04 17:54:08.000000000 +0530
+@@ -27,6 +27,7 @@
+ #include <config.h>
+ #endif
+ 
++#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -48,6 +49,7 @@
+ #include <bluetooth/hci.h>
+ #include <bluetooth/hci_lib.h>
+ 
++#include "ppoll.h"
+ #ifndef N_HCI
+ #define N_HCI	15
+ #endif
+@@ -1239,6 +1241,7 @@
+ 	pid_t pid;
+ 	struct sigaction sa;
+ 	struct pollfd p;
++	sigset_t sigs;
+ 	char dev[PATH_MAX];
+ 
+ 	detach = 1;
+@@ -1394,9 +1397,25 @@
+ 	p.fd = n;
+ 	p.events = POLLERR | POLLHUP;
+ 
++        /*initialise and fill a signal set*/
++        sigfillset(&sigs);
++
++        /* Delete SIGCHLD,SIGPIPE,SIGTERM,SIGINT,SIGHUP signal from a signal set,
++         * since ppoll will not handle these signals */
++        sigdelset(&sigs, SIGCHLD);
++        sigdelset(&sigs, SIGPIPE);
++        sigdelset(&sigs, SIGTERM);
++        sigdelset(&sigs, SIGINT);
++        sigdelset(&sigs, SIGHUP);
++
+ 	while (!__io_canceled) {
++
+ 		p.revents = 0;
+-		err = poll(&p, 1, 500);
++		
++                /* Use the ppoll instead of poll. ppoll blocks
++                 * for indefinate time for events */
++                err = ppoll(&p, 1, NULL, &sigs);
++ 
+ 		if (err < 0 && errno == EINTR)
+ 			continue;
+ 		if (err)
