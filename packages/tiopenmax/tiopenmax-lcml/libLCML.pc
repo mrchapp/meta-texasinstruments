@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: libLCML
+Description: OpenMAX Linux Common Media Library
+
+Version: 1.0.0
+Requires: libdspbridge
+Libs: -L${libdir} -lLCML
+Cflags: -I${includedir}/omx/lcml
