@@ -1,7 +1,7 @@
 Index: git/configure.ac
 ===================================================================
 --- git.orig/configure.ac	2009-07-10 12:52:34.000000000 -0500
-+++ git/configure.ac	2009-07-10 13:57:20.000000000 -0500
++++ git/configure.ac	2009-08-12 13:49:53.000000000 -0500
 @@ -475,6 +475,9 @@
  
  dnl *** checks for dependency libraries ***
@@ -29,22 +29,62 @@ Index: git/configure.ac
 Index: git/gst/gstinfo.c
 ===================================================================
 --- git.orig/gst/gstinfo.c	2009-07-10 12:52:36.000000000 -0500
-+++ git/gst/gstinfo.c	2009-07-10 14:11:31.000000000 -0500
-@@ -642,6 +642,13 @@
-   return g_strdup_printf ("%p", ptr);
++++ git/gst/gstinfo.c	2009-08-12 13:59:58.000000000 -0500
+@@ -211,6 +211,7 @@
+ static void gst_debug_reset_threshold (gpointer category, gpointer unused);
+ static void gst_debug_reset_all_thresholds (void);
+ 
++#ifndef GST_LOG_OVER_TTIF
+ #ifdef HAVE_PRINTF_EXTENSION
+ static int _gst_info_printf_extension_ptr (FILE * stream,
+     const struct printf_info *info, const void *const *args);
+@@ -224,6 +225,7 @@
+     size_t n, int *argtypes);
+ #endif
+ #endif
++#endif
+ 
+ struct _GstDebugMessage
+ {
+@@ -295,6 +297,10 @@
+   return (in_valgrind == GST_VG_INSIDE) ? TRUE : FALSE;
  }
  
 +#ifdef GST_LOG_OVER_TTIF
-+TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc = {
-+  .convert = (char (*)(void *))gst_debug_print_object,
-+  .free    = (void (*)(char *))g_free
-+};
++static void __gst_debug_init_ttif(void);
 +#endif
 +
+ /**
+  * _gst_debug_init:
+  *
+@@ -312,6 +318,9 @@
+   /* get time we started for debugging messages */
+   _priv_gst_info_start_time = gst_util_get_timestamp ();
+ 
++#ifdef GST_LOG_OVER_TTIF
++  __gst_debug_init_ttif ();
++#else
  #ifdef HAVE_PRINTF_EXTENSION
+ #if HAVE_REGISTER_PRINTF_SPECIFIER
+   register_printf_specifier (GST_PTR_FORMAT[0], _gst_info_printf_extension_ptr,
+@@ -325,6 +334,7 @@
+       _gst_info_printf_extension_segment, _gst_info_printf_extension_arginfo);
+ #endif
+ #endif
++#endif
+ 
+   /* do NOT use a single debug function before this line has been run */
+   GST_CAT_DEFAULT = _gst_debug_category_new ("default",
+@@ -642,7 +652,7 @@
+   return g_strdup_printf ("%p", ptr);
+ }
+ 
+-#ifdef HAVE_PRINTF_EXTENSION
++#if defined(HAVE_PRINTF_EXTENSION) || defined(GST_LOG_OVER_TTIF)
  
  static gchar *
-@@ -1318,6 +1325,10 @@
+ gst_debug_print_segment (gpointer ptr)
+@@ -1318,6 +1328,10 @@
    g_atomic_int_set (&cat->threshold, 0);
    gst_debug_reset_threshold (cat, NULL);
  
@@ -55,10 +95,62 @@ Index: git/gst/gstinfo.c
    /* add to category list */
    g_static_mutex_lock (&__cat_mutex);
    __categories = g_slist_prepend (__categories, cat);
+@@ -1550,6 +1564,42 @@
+ 
+ /*** PRINTF EXTENSIONS ********************************************************/
+ 
++
++#ifdef GST_LOG_OVER_TTIF
++static TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_ptr_proc = {
++  .convert = (char (*)(void *))gst_debug_print_object,
++  .free    = (void (*)(char *))g_free
++};
++static TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_segment_proc = {
++  .convert = (char (*)(void *))gst_debug_print_segment,
++  .free    = (void (*)(char *))g_free
++};
++
++/* this is only used by other plugins compiled against older versions
++ * of gstinfo.h... I'm just leaving it for now to avoid having to recompile
++ * everything.. but it should be removed eventually..
++ */
++TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc = {
++  .convert = (char (*)(void *))gst_debug_print_object,
++  .free    = (void (*)(char *))g_free
++};
++
++
++int __gst_log_enabled = FALSE;
++
++static void __gst_ttif_connection_listener (Bool connected, void *arg)
++{
++	__gst_log_enabled = connected;
++}
++
++static void __gst_debug_init_ttif(void)
++{
++	ttif_addConnectionListener (__gst_ttif_connection_listener, NULL);
++	ttif_trace_register_printf_function (GST_PTR_FORMAT[0], &__gst_debug_print_ptr_proc);
++	ttif_trace_register_printf_function (GST_SEGMENT_FORMAT[0], &__gst_debug_print_segment_proc);
++}
++
++#else
+ #ifdef HAVE_PRINTF_EXTENSION
+ static int
+ _gst_info_printf_extension_ptr (FILE * stream, const struct printf_info *info,
+@@ -1608,6 +1658,8 @@
+   return 1;
+ }
+ #endif /* HAVE_PRINTF_EXTENSION */
++#endif /* GST_LOG_OVER_TTIF */
++
+ 
+ static void
+ gst_info_dump_mem_line (gchar * linebuf, gsize linebuf_size,
 Index: git/gst/gstinfo.h
 ===================================================================
 --- git.orig/gst/gstinfo.h	2009-07-10 12:52:36.000000000 -0500
-+++ git/gst/gstinfo.h	2009-07-10 13:57:20.000000000 -0500
++++ git/gst/gstinfo.h	2009-08-12 13:59:58.000000000 -0500
 @@ -32,6 +32,8 @@
  #define M_PI  3.14159265358979323846
  #endif
@@ -89,27 +181,29 @@ Index: git/gst/gstinfo.h
    gint                  threshold;
    guint			color;		/* see defines above */
  
-@@ -472,6 +481,19 @@
+@@ -472,6 +481,21 @@
   * debugging messages. You will probably want to use one of the ones described
   * below.
   */
 +#ifdef GST_LOG_OVER_TTIF
 +#define GST_CAT_LEVEL_LOG(cat,level,object,str,args...) G_STMT_START{         \
-+  if(!cat) {                                                                  \
++  extern int __gst_log_enabled;                                               \
++  if (G_UNLIKELY (__gst_log_enabled)) {                                       \
++    if(!cat) {                                                                \
 +      /* maybe we should log a warning?? or default cat?? */                  \
-+  } else if (object) {                                                        \
-+    extern TTIF_TRACE_ARG_PROCESSOR __gst_debug_print_object_proc;            \
-+    ttif_trace_fprintf ((cat)->stream_id,(1<<level),"%qs: "str,               \
-+       &__gst_debug_print_object_proc, (object), ##args);                     \
-+  } else {                                                                    \
-+    ttif_trace_fprintf ((cat)->stream_id, (1<<level), str, ##args);           \
++    } else if (object) {                                                      \
++      ttif_trace_fprintf ((cat)->stream_id,(1<<level),"%P: "str,              \
++            (object), ##args);                                                \
++    } else {                                                                  \
++      ttif_trace_fprintf ((cat)->stream_id, (1<<level), str, ##args);         \
++    }                                                                         \
 +  }                                                                           \
 +}G_STMT_END
 +#else
  #ifdef G_HAVE_ISO_VARARGS
  #define GST_CAT_LEVEL_LOG(cat,level,object,...) G_STMT_START{		\
    if (G_UNLIKELY (level <= __gst_debug_min)) {						\
-@@ -510,6 +532,7 @@
+@@ -510,6 +534,7 @@
  }
  #endif
  #endif /* G_HAVE_ISO_VARARGS */
@@ -120,7 +214,7 @@ Index: git/gst/gstinfo.h
 Index: git/gst/parse/grammar.y
 ===================================================================
 --- git.orig/gst/parse/grammar.y	2009-07-10 12:52:36.000000000 -0500
-+++ git/gst/parse/grammar.y	2009-07-10 13:57:20.000000000 -0500
++++ git/gst/parse/grammar.y	2009-08-12 13:49:53.000000000 -0500
 @@ -19,6 +19,15 @@
  #include "../gstchildproxy.h"
  #include "types.h"
@@ -161,7 +255,7 @@ Index: git/gst/parse/grammar.y
 Index: git/pkgconfig/gstreamer.pc.in
 ===================================================================
 --- git.orig/pkgconfig/gstreamer.pc.in	2009-07-10 12:52:36.000000000 -0500
-+++ git/pkgconfig/gstreamer.pc.in	2009-07-10 13:57:20.000000000 -0500
++++ git/pkgconfig/gstreamer.pc.in	2009-08-12 13:49:53.000000000 -0500
 @@ -10,4 +10,4 @@
  Requires: @GST_PKG_DEPS@@LIBXML_PKG@
  Version: @VERSION@
