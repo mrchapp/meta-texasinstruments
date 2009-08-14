@@ -8,5 +8,5 @@ Description: OpenMAX Linux Common Media Library
 
 Version: 1.0.0
 Requires: libdspbridge
-Libs: -L${libdir} -lLCML
+Libs: -L${libdir} -lLCML -lPERFc
 Cflags: -I${includedir}/omx/lcml
