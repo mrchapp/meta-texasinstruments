@@ -53,8 +53,8 @@ RDEPENDS = "\
     ${@base_contains("DISTRO_FEATURES", "spark", "tisocketnode-spark", "", d)} \    
     tisocketnode-vpp \
     tisocketnode-wmv9 \
-    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4-720pdec", "", d)} \
-    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4-720penc", "", d)} \
+    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4-xdm720pdec", "", d)} \
+    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4-xdm720penc", "", d)} \
     \
     tisocketnode-jpegdec \
     tisocketnode-jpegenc \
