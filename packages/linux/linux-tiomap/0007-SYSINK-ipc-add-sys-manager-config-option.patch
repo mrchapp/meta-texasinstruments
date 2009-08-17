@@ -1,0 +1,89 @@
+From 11f11d4720bc5d003e5ff5b9b9d7715458347fc9 Mon Sep 17 00:00:00 2001
+From: Hari Kanigeri <h-kanigeri2@ti.com>
+Date: Fri, 31 Jul 2009 23:17:06 -0500
+Subject: [PATCH] SYSINK:ipc-add sys manager config option
+
+This patch adds the config option to select sys manager
+feature. This is a temporary patch until Sys manager
+feature is stabilized.
+
+Signed-off-by: Hari Kanigeri <h-kanigeri2@ti.com>
+---
+ drivers/dsp/syslink/Kconfig           |    6 ++++++
+ drivers/dsp/syslink/procmgr/procmgr.c |   14 +++++++-------
+ 2 files changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/dsp/syslink/Kconfig b/drivers/dsp/syslink/Kconfig
+index ccf932b..c601d30 100755
+--- a/drivers/dsp/syslink/Kconfig
++++ b/drivers/dsp/syslink/Kconfig
+@@ -40,6 +40,12 @@ config MPU_SYSLINK_IPC
+         help
+           Syslink IPC Module
+ 
++config SYSLINK_USE_SYSMGR
++        bool "Enable SYS MGR setup"
++        depends on MPU_SYSLINK_IPC && SYSLINK_PROC
++        default n
++        help
++          This is the experimental option to enable SYS manager setup
+ endif
+ 
+ 
+diff --git a/drivers/dsp/syslink/procmgr/procmgr.c b/drivers/dsp/syslink/procmgr/procmgr.c
+index 3bd3dda..cb75ec2 100755
+--- a/drivers/dsp/syslink/procmgr/procmgr.c
++++ b/drivers/dsp/syslink/procmgr/procmgr.c
+@@ -25,10 +25,10 @@
+ #include "procdefs.h"
+ #include "processor.h"
+ #include <syslink/atomic_linux.h>
+-#if defined SYSLINK_USE_SYSMGR
++#if defined CONFIG_SYSLINK_USE_SYSMGR
+ #include <sysmgr.h>
+ #include <platform.h>
+-#endif /* if defined (SYSLINK_USE_SYSMGR) */
++#endif /* if defined (CONFIG_SYSLINK_USE_SYSMGR) */
+ 
+ 
+ /* ================================
+@@ -579,7 +579,7 @@ int proc_mgr_start(void *handle, u32 entry_point,
+ 		proc_mgr_get_start_params(handle, &tmp_params);
+ 		params = &tmp_params;
+ 	}
+-#if defined SYSLINK_USE_SYSMGR
++#if defined CONFIG_SYSLINK_USE_SYSMGR
+ 	platform_load_callback((void *)params->proc_id); /*  FIXME */
+ #endif
+ 	WARN_ON(mutex_lock_interruptible(proc_mgr_obj_state.gate_handle));
+@@ -591,12 +591,12 @@ int proc_mgr_start(void *handle, u32 entry_point,
+ 						entry_point, &proc_params);
+ 
+ 	mutex_unlock(proc_mgr_obj_state.gate_handle);
+-#if defined SYSLINK_USE_SYSMGR
++#if defined CONFIG_SYSLINK_USE_SYSMGR
+ 	if (retval == 0) {
+ 		/* TBD: should be removed when notify local is implemepented */
+ 		platform_start_callback(proc_mgr_handle->proc_id);
+ 	}
+-#endif /* defined (SYSLINK_USE_SYSMGR)*/
++#endif /* defined (CONFIG_SYSLINK_USE_SYSMGR)*/
+ 
+ 	return retval;;
+ }
+@@ -624,10 +624,10 @@ int proc_mgr_stop(void *handle)
+ 		return -EFAULT;
+ 	}
+ 	BUG_ON(handle == NULL);
+-#if defined SYSLINK_USE_SYSMGR
++#if defined CONFIG_SYSLINK_USE_SYSMGR
+ 	/* TBD: should be removed when notify local is implemepented */
+ 	platform_stop_callback(proc_mgr_handle->proc_id);
+-#endif /* #if defined (SYSLINK_USE_SYSMGR) */
++#endif /* #if defined (CONFIG_SYSLINK_USE_SYSMGR) */
+ 
+ 	WARN_ON(mutex_lock_interruptible(proc_mgr_obj_state.gate_handle));
+ 	retval = processor_stop(proc_mgr_handle->proc_handle);
+-- 
+1.5.4.3
+

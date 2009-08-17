@@ -101,7 +101,6 @@ do_install() {
 	install -d ${STAGING_BINDIR}/dspbridge/samples
         install -D `find . -name notifyping.out -print` ${STAGING_BINDIR}/dspbridge/samples
 	install -D `find . -name procmgrapp.out -print` ${STAGING_BINDIR}/dspbridge/samples
-        install -D ${S}/samples/proc_sample/krnl/procmgr_app.ko ${STAGING_LIBDIR}/modules
 	install -D ${S}/samples/ipc/gatePeterson/usr/GatePetersonApp.out ${STAGING_BINDIR}/dspbridge/samples
         install -D ${S}/samples/ipc/sharedRegion/usr/SharedRegionApp.out ${STAGING_BINDIR}/dspbridge/samples
         install -D ${S}/samples/ipc/messageQ/usr/messageQApp.out ${STAGING_BINDIR}/dspbridge/samples
@@ -110,5 +109,12 @@ do_install() {
         install -D ${S}/samples/ipc/heapBuf/usr/heapBufApp.out ${STAGING_BINDIR}/dspbridge/samples
         install -D ${S}/samples/ipc/nameServer/usr/NameServerApp.out ${STAGING_BINDIR}/dspbridge/samples
         install -D ${S}/samples/rcm/rcmtest.out ${STAGING_BINDIR}/dspbridge/samples
+	install -D ${S}/samples/procmgr/ducati_load/ducati_load.out ${STAGING_BINDIR}/dspbridge/samples
 
+	oenote "Installing modules..."
+	if [ ! -d ${STAGING_LIBDIR}/modules ]
+	then
+		install -d ${STAGING_LIBDIR}/modules
+	fi
+	install -D ${S}/samples/proc_sample/krnl/procmgr_app.ko ${STAGING_LIBDIR}/modules
 }
