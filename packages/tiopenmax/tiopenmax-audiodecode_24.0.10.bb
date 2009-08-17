@@ -1,4 +1,4 @@
-DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-rmproxy"
+DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-rmproxy tiopenmax-lcml"
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r0"
