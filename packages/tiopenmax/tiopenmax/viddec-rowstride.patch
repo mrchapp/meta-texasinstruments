@@ -1,0 +1,151 @@
+Index: tiopenmax-3.23/video/src/openmax_il/video_decode/src/OMX_VideoDecoder.c
+===================================================================
+--- tiopenmax-3.23.orig/video/src/openmax_il/video_decode/src/OMX_VideoDecoder.c	2009-08-19 13:14:24.000000000 -0500
++++ tiopenmax-3.23/video/src/openmax_il/video_decode/src/OMX_VideoDecoder.c	2009-08-19 13:39:09.000000000 -0500
+@@ -1212,6 +1212,25 @@
+ 	                OMX_PARAM_PORTDEFINITIONTYPE *pPortDef = pComponentPrivate->pOutPortDef;
+                     memcpy(pPortDefParam, pPortDef, sizeof(OMX_PARAM_PORTDEFINITIONTYPE));
+ #ifdef VIDDEC_RETURNBUFFERSIZE
++                    /*  --- BEGIN nStride SUPPORT --- */
++#define ROUND_UP_4(num)  (((num)+3)&~3)
++printf("**** nStride=%d\n", pPortDefParam->format.video.nStride);
++                    if (pPortDefParam->format.video.nStride != VIDDEC_OUTPUT_PORT_STRIDE) {
++                    	switch (pPortDefParam->format.video.eColorFormat)
++                    	{
++                    	case OMX_COLOR_FormatCbYCrY:              /* UYVY */
++                    		pPortDefParam->nBufferSize = ROUND_UP_4 (pPortDefParam->format.video.nStride * pPortDefParam->format.video.nFrameHeight);
++                    		break;
++                    	case OMX_COLOR_FormatYUV420PackedPlanar:  /* I420 */
++                    		pPortDefParam->nBufferSize = ROUND_UP_4 (2 * pPortDefParam->format.video.nStride * pPortDefParam->format.video.nFrameHeight);
++                    		break;
++                    	default:
++                    		eError = OMX_ErrorNoMore;
++                    		break;
++                    	}
++printf("**** nBufferSize=%d\n", pPortDefParam->nBufferSize);
++                    } else
++                    /*  --- END nStride SUPPORT --- */
+                     if (pPortDefParam->format.video.eColorFormat == VIDDEC_COLORFORMAT420){
+                         ((OMX_PARAM_PORTDEFINITIONTYPE *)ComponentParameterStructure)->nBufferSize = 
+                             pPortDefParam->format.video.nFrameWidth * pPortDefParam->format.video.nFrameHeight *
+Index: tiopenmax-3.23/video/src/openmax_il/video_decode/src/OMX_VideoDec_Utils.c
+===================================================================
+--- tiopenmax-3.23.orig/video/src/openmax_il/video_decode/src/OMX_VideoDec_Utils.c	2009-08-19 13:14:22.000000000 -0500
++++ tiopenmax-3.23/video/src/openmax_il/video_decode/src/OMX_VideoDec_Utils.c	2009-08-19 17:22:25.000000000 -0500
+@@ -101,6 +101,76 @@
+ #endif
+ }
+ 
++/*  --- BEGIN nStride SUPPORT --- */
++/**
++ * Convert from one stride to another... like memmove, but can convert stride in
++ * the process.  This function is not aware of pixels, only of bytes.  So widths
++ * are given in bytes, not pixels.  The new_buf and orig_buf can point to the
++ * same buffers to do an in-place conversion, but the buffer should be large
++ * enough.
++ */
++static void
++stridemove (char *new_buf, char *orig_buf, int new_width, int orig_width, int height)
++{
++	int row;
++
++	/* if increasing the stride, work from bottom-up to avoid overwriting data
++	 * that has not been moved yet.. otherwise, work in the opposite order,
++	 * for the same reason.
++	 */
++	if (new_width > orig_width) {
++		for (row=height-1; row>=0; row--) {
++			memmove (new_buf+(new_width*row), orig_buf+(orig_width*row), orig_width);
++		}
++	} else {
++		for (row=0; row<height; row++) {
++			memmove (new_buf+(new_width*row), orig_buf+(orig_width*row), new_width);
++		}
++	}
++}
++
++static void
++stridify_buffer (VIDDEC_COMPONENT_PRIVATE* pComponentPrivate, OMX_BUFFERHEADERTYPE* pBufferHdr)
++{
++	/* if the stride has been set, respect it.. it should be a value in bytes.. the pBuffer
++	 * already points to a sufficiently large block of memory, so just re-arrange the lines
++	 * of the video to respect nStride
++	 */
++	OMX_PARAM_PORTDEFINITIONTYPE *param = pComponentPrivate->pOutPortDef;
++	if ((pBufferHdr->nFilledLen > 0) &&
++		(param->format.video.nStride != VIDDEC_OUTPUT_PORT_STRIDE)) {
++		int width  = param->format.video.nFrameWidth;
++		int height = param->format.video.nFrameHeight;
++		int stride = param->format.video.nStride;
++		char *strided   = pBufferHdr->pBuffer;
++		char *unstrided = pBufferHdr->pBuffer;  /* an in-place copy */
++
++		switch (param->format.video.eColorFormat) {
++			case OMX_COLOR_FormatYUV420PackedPlanar: { /* I420 */
++				stridemove (
++						strided + (int)(height*stride*1.5),
++						unstrided + (int)(height*width*1.5),
++						stride, width/2, height);                         /* move U/V */
++				stridemove (
++						strided + (height*stride),
++						unstrided + (height*width),
++						stride, width/2, height);                         /* move V/U */
++				stridemove (strided, unstrided, stride, width, height);   /* move Y */
++				return;
++			}
++			case OMX_COLOR_FormatCbYCrY: {             /* UYVY */
++				stridemove (strided, unstrided, stride, width*2, height);
++				return;
++			}
++			default: {
++				return;
++			}
++		}
++	}
++}
++/*  --- END nStride SUPPORT --- */
++
++
+ /*----------------------------------------------------------------------------*/
+ /**
+   * VIDDEC_GetRMFrecuency() Return the value for frecuecny to use RM.
+@@ -1599,6 +1669,9 @@
+                             if (eError != OMX_ErrorNone) {
+                                 goto EXIT;
+                             }
++                            /*  --- BEGIN nStride SUPPORT --- */
++                            stridify_buffer (pComponentPrivate, (OMX_BUFFERHEADERTYPE*)pComponentPrivate->pCompPort[VIDDEC_OUTPUT_PORT]->pBufferPrivate[i]->pBufferHdr);
++                            /*  --- END nStride SUPPORT --- */
+                             eError = pComponentPrivate->cbInfo.FillBufferDone((OMX_HANDLETYPE *)pComponentPrivate->pHandle,
+                                        pComponentPrivate->pHandle->pApplicationPrivate,
+                                         (OMX_BUFFERHEADERTYPE*)pComponentPrivate->pCompPort[VIDDEC_OUTPUT_PORT]->pBufferPrivate[i]->pBufferHdr);
+@@ -3589,6 +3662,9 @@
+                                                            VIDDEC_OUTPUT_PORT,
+                                                            OMX_BUFFERFLAG_EOS,
+                                                            NULL);
++                    /*  --- BEGIN nStride SUPPORT --- */
++                    stridify_buffer (pComponentPrivate, pBuffHead);
++                    /*  --- END nStride SUPPORT --- */
+                     pComponentPrivate->cbInfo.FillBufferDone(pComponentPrivate->pHandle,
+                                                              pComponentPrivate->pHandle->pApplicationPrivate,
+                                                              pBuffHead);
+@@ -3710,6 +3786,9 @@
+                                                            VIDDEC_OUTPUT_PORT,
+                                                            OMX_BUFFERFLAG_EOS,
+                                                            NULL);
++                    /*  --- BEGIN nStride SUPPORT --- */
++                    stridify_buffer (pComponentPrivate, pBuffHead);
++                    /*  --- END nStride SUPPORT --- */
+                     pComponentPrivate->cbInfo.FillBufferDone(pComponentPrivate->pHandle,
+                                                              pComponentPrivate->pHandle->pApplicationPrivate,
+                                                              pBuffHead);
+@@ -6420,6 +6499,9 @@
+                     }
+                 }
+     #endif
++                /*  --- BEGIN nStride SUPPORT --- */
++                stridify_buffer (pComponentPrivate, pBuffHead);
++                /*  --- END nStride SUPPORT --- */
+ 
+                 pComponentPrivate->cbInfo.FillBufferDone(pComponentPrivate->pHandle,
+                                                          pComponentPrivate->pHandle->pApplicationPrivate,

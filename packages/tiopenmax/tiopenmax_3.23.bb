@@ -1,6 +1,6 @@
 DEPENDS = "tidspbridge-lib mm-isp ${TTIF_DEPENDS}"
 DESCRIPTION = "Texas Instruments OpenMAX IL."
-PR = "r1"
+PR = "r2"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}-patterns ${PN}"
 
 PROVIDES = "virtual/openmax-il"
@@ -33,6 +33,7 @@ SRC_URI = "\
 	${@base_contains("DISTRO_FEATURES", "rarv", "", "file://remove-rarv.patch;patch=1", d)} \
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "file://remove-patterns.patch;patch=1", d)} \
 	file://include-path-fixes.patch;patch=1 \
+	file://viddec-rowstride.patch;patch=1 \
 	"
 
 SRC_URI += " ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} "
