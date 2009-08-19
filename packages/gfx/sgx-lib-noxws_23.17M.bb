@@ -17,7 +17,7 @@ SRC_URI = "file://noxsupport.patch;patch=1"
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_${PV}0%\
+	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_${PV}2RC1%\
 	element * /main/LATEST%\
 	"
 

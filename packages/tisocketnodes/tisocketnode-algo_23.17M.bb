@@ -2,7 +2,7 @@ DESCRIPTION = "Texas Instruments algo for IPP."
 PR = "r0"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/algo/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/algo/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/algo"

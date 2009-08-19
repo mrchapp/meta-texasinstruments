@@ -3,7 +3,7 @@ PR = "r0"
 DEPENDS += "tisocketnode-mpeg2-codec"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/mpeg2/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/video/node/mpeg2/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/mpeg2"

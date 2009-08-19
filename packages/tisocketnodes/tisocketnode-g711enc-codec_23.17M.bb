@@ -3,7 +3,7 @@ PR = "r0"
 DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_enc/c64x/mm_tiicodecs/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_enc/c64x/mm_tiicodecs/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_enc/c64x/mm_tiicodecs"

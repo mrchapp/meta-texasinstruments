@@ -5,7 +5,7 @@ PR = "r0"
 DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/video/DivX_3430/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/video/DivX_3430/... DSP-MM-TII_RLS_3.4%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/video/DivX_3430"

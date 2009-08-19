@@ -7,7 +7,7 @@ COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp"
 DEFAULT_PREFERENCE = "1"
 
 CCASE_SPEC = "\
-	element /vobs/wtbu/CSSD_L_GIT_2.6/linux/kernel_org/2.6_kernel/... LINUX_RLS_23.17M0%\
+	element /vobs/wtbu/CSSD_L_GIT_2.6/linux/kernel_org/2.6_kernel/... LINUX_RLS_23.17M2RC1%\
 	element * /main/LATEST%\
 	element * /main/0%\
 	"

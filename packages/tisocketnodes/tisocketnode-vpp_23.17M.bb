@@ -3,7 +3,7 @@ PR = "r0"
 DEPENDS += "baseimage-vgpop"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/vpp/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/video/node/vpp/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/vpp"

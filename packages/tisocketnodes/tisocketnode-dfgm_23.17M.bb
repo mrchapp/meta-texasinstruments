@@ -2,7 +2,7 @@ DESCRIPTION = "Texas Instruments DASF Control Task Node Node."
 PR = "r0"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/system/dfgm/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/system/dfgm/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/dfgm"

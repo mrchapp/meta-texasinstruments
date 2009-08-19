@@ -3,7 +3,7 @@ PR = "r0"
 DEPENDS += "tisocketnode-g729enc-codec"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/speech/node/g729/enc/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/speech/node/g729/enc/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/g729/enc"

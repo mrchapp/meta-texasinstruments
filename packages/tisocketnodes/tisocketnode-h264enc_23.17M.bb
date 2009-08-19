@@ -3,7 +3,7 @@ PR = "r0"
 DEPENDS += "tisocketnode-h264enc-codec"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/h264/enc/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/video/node/h264/enc/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/h264/enc"

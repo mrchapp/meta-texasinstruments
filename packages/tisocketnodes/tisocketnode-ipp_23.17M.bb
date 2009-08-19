@@ -3,7 +3,7 @@ PR = "r1"
 DEPENDS += "tisocketnode-algo tisocketnode-dfgm"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/ivp/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/ivp/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/ivp"

@@ -9,7 +9,7 @@ inherit module ccasefetch
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_${PV}0%\
+	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_${PV}2RC1%\
 	element * /main/LATEST%\
 	"
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK/src/eurasia_km"

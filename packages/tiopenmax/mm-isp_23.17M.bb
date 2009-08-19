@@ -10,8 +10,8 @@ PARALLEL_MAKE = "-j1"
 
 CCASE_SPEC = "\
 	# MM ISP%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX_RLS_${PV}0%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX_RLS_${PV}0%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX_RLS_${PV}2RC1%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX_RLS_${PV}2RC1%\
 	element * /main/LATEST%\
 	"
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/linux/mm_isp /vobs/wtbu/OMAPSW_MPU/algo"

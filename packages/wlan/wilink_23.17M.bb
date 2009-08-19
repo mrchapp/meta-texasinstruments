@@ -11,8 +11,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-zoom2-(alpha|beta)"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX_RLS_${PV}0%\
-	element /vobs/WCGDev/... LINUX_RLS_${PV}0%\
+	element /vobs/WiLink/... LINUX_RLS_${PV}2RC1%\
+	element /vobs/WCGDev/... LINUX_RLS_${PV}2RC1%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WiLink/ \

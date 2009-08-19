@@ -3,7 +3,7 @@ PR = "r1"
 DEPENDS += "tisocketnode-jpegenc-codec tisocketnode-conversions"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/image/node/jpeg/enc/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/image/node/jpeg/enc/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/image/node/jpeg/enc"

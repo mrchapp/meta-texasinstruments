@@ -4,7 +4,7 @@ inherit ccasefetch
 PR="r0"
 
 CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_L/u-boot/... LINUX_RLS_${PV}0%\
+	element /vobs/wtbu/OMAPSW_L/u-boot/... LINUX_RLS_${PV}2RC1%\
 	element /vobs/wtbu/OMAPSW_L /main/LATEST%\
 	element * /main/0%\
 	"

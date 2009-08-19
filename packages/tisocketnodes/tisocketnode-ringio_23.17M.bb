@@ -5,7 +5,7 @@ PR = "r1"
 DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/system/ringio/... LINUX_RLS_${PV}0%\
+	      element /vobs/wtbu/OMAPSW_DSP/system/ringio/... LINUX_RLS_${PV}2RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/ringio"
