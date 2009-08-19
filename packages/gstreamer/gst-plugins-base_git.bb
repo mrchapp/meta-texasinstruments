@@ -14,5 +14,5 @@ SRC_URI = "git://github.com/robclark/gst-plugins-base.git;protocol=git \
 
 SRC_URI += " file://trace-fix.patch;patch=1 "
 
-SRCREV = "ba47fc7ee2fb82a1bb3b42f31371276ddf856108"
+SRCREV = "77e43fb0fc58e940323aff15ce5b8a688d9ae171"
 
