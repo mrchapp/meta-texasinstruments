@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments G723 Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-g723dec-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/speech/node/g723/dec/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/g723/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

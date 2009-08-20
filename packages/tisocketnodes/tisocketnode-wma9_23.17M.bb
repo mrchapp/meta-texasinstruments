@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments WMA9 Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-wma9-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/audio/node/wma9/dec/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/wma9/dec/"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

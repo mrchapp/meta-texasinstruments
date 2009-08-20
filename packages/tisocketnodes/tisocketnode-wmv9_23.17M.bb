@@ -2,10 +2,7 @@ DESCRIPTION = "Texas Instruments Windows Media Video 9 Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-wmv9-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/wmv9/dec/... LINUX_RLS_${PV}2RC1%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/wmv9/dec_pplibs_configs/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/wmv9/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

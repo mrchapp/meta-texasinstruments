@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments IPP Socket Node."
 PR = "r1"
 DEPENDS += "tisocketnode-algo tisocketnode-dfgm"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/ivp/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/ivp"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

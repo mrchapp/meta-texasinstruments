@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments MPEG2 Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-mpeg2-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/mpeg2/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/mpeg2"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

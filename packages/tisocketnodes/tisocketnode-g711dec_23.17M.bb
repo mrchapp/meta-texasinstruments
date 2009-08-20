@@ -3,10 +3,7 @@ PR = "r0"
 DEPENDS += "tisocketnode-g711dec-codec \
 	    tisocketnode-nmu-plc-vad \
 "
-
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/speech/node/g711/dec/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/g711/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

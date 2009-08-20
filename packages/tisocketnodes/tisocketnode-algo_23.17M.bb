@@ -1,9 +1,7 @@
 DESCRIPTION = "Texas Instruments algo for IPP."
 PR = "r0"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/algo/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/algo"
 CCASE_PATHCOMPONENT = "algo"

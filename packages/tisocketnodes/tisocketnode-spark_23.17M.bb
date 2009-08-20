@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments Sorensen Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-spark-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/node/spark/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/spark/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

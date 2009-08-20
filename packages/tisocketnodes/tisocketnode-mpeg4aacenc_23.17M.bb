@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments MPEG4 AAC Encoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-mpeg4aacenc-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/audio/node/mpeg4aac/enc/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/mpeg4aac/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

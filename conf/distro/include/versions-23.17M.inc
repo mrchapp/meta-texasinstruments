@@ -41,6 +41,7 @@ PREFERRED_VERSION_baseimage-system-cspec =		"23.17M"
 PREFERRED_VERSION_baseimage-vgpop =			"23.17M"
 
 # socket nodes and codecs
+PREFERRED_VERSION_tisocketnode-cs =                     "23.17M"
 PREFERRED_VERSION_tisocketnode-algo =			"23.17M"
 PREFERRED_VERSION_tisocketnode-dfgm =			"23.17M"
 PREFERRED_VERSION_tisocketnode-usn =			"23.17M"

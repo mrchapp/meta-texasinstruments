@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments WB-AMR Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-wbamrdec-codec"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/speech/node/wbamr/dec/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/wbamr/dec/"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
