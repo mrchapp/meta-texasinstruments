@@ -1,5 +1,5 @@
-DEPENDS = "gstreamer virtual/openmax-il"
-PR = "r2"
+DEPENDS = "gst-plugins-base virtual/openmax-il"
+PR = "r3"
  
 SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
 # From omap branch:
