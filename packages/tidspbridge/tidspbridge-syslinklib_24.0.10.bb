@@ -8,6 +8,8 @@ DEPENDS = " \
         "
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
+# We need to override this and make sure it's only -j1
+PARALLEL_MAKE = "-j1"
 
 #FILES_${PN} = "${libdir}/libutils.so ${libdir}/libnotify.so"
 #FILES_${PN} += "${libdir}/libprocmgr.so ${libdir}/libproc4430.so"
