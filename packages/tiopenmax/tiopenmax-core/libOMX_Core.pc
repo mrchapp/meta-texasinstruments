@@ -7,5 +7,5 @@ Name: libOMX_Core
 Description: OMX Core
 Version: 1.0.0
 Requires: 
-Libs: -L${libdir} -lOMX_Core
+Libs: -L${libdir} -lOMX_Core -ldl
 Cflags: -I${includedir}/omx
