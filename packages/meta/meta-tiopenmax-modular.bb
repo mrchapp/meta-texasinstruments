@@ -13,6 +13,7 @@ RDEPENDS = "\
 	tiopenmax-osal \
 	tiopenmax-perf \
 	tiopenmax-rmproxy \
+	tiopenmax-videodec \
 	"
 
 DEPENDS="${RDEPENDS}"
