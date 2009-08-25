@@ -6,8 +6,6 @@ PR = "r0"
 require tiopenmax-audio-git.inc
 S = "${WORKDIR}/git/system/omx_core/"
 
-SRC_URI += "file://libOMX_Core-pc.patch;patch=1"
-
 inherit pkgconfig autotools
 
 FILES_${PN} += "${libdir}/*.so"
