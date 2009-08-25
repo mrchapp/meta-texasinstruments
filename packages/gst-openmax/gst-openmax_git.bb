@@ -1,7 +1,8 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
 PR = "r3"
  
-SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
+SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap \
+	file://omxincpath.patch;patch=1"
 # From omap branch:
 SRCREV = "5e0eaa106042238174c2c6bb09374636425f3bb8"
 S = "${WORKDIR}/git"
