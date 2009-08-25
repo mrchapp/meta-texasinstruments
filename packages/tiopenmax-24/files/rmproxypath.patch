@@ -1,0 +1,65 @@
+Index: audio_decode/aac_dec/src/omx_audiodec_aacutils.c
+===================================================================
+--- audio_decode.orig/aac_dec/src/omx_audiodec_aacutils.c	2009-08-25 02:46:28.000000000 -0500
++++ audio_decode/aac_dec/src/omx_audiodec_aacutils.c	2009-08-25 02:46:33.000000000 -0500
+@@ -45,7 +45,7 @@
+ #include <omx_base_internal.h> 
+ #include <timm_osal_interfaces.h>
+ #include <omx_base_utils.h>
+-#include <ResourceManagerProxyAPI.h>
++#include <rmproxy/ResourceManagerProxyAPI.h>
+ #include "TIDspOmx.h"
+ #include "LCML_DspCodec.h"
+ #include <usn.h>
+Index: audio_decode/base/inc/omx_audiodecutils.h
+===================================================================
+--- audio_decode.orig/base/inc/omx_audiodecutils.h	2009-08-25 02:45:59.000000000 -0500
++++ audio_decode/base/inc/omx_audiodecutils.h	2009-08-25 02:46:06.000000000 -0500
+@@ -45,7 +45,7 @@
+ /**-------------------------program files ----------------------------------**/
+ #include <OMX_Component.h>
+ #include <omx_base.h>
+-#include <ResourceManagerProxyAPI.h>
++#include <rmproxy/ResourceManagerProxyAPI.h>
+ #include "omx_audiodec_mp3utils.h"
+ #include "omx_audiodec_aacutils.h"
+ 
+Index: audio_decode/base/src/omx_audiodecoder.c
+===================================================================
+--- audio_decode.orig/base/src/omx_audiodecoder.c	2009-08-25 02:45:24.000000000 -0500
++++ audio_decode/base/src/omx_audiodecoder.c	2009-08-25 02:45:32.000000000 -0500
+@@ -44,7 +44,7 @@
+ #include <OMX_Types.h>
+ #include <OMX_Index.h>
+ 
+-#include <ResourceManagerProxyAPI.h>
++#include <rmproxy/ResourceManagerProxyAPI.h>
+ #include "usn.h"
+ #include <omx_base.h>
+ #include <timm_osal_interfaces.h>
+Index: audio_decode/base/src/omx_audiodecutils.c
+===================================================================
+--- audio_decode.orig/base/src/omx_audiodecutils.c	2009-08-25 02:45:39.000000000 -0500
++++ audio_decode/base/src/omx_audiodecutils.c	2009-08-25 02:45:48.000000000 -0500
+@@ -43,7 +43,7 @@
+ #include <omx_base.h>
+ #include <timm_osal_interfaces.h>
+ #include <omx_base_utils.h>
+-#include <ResourceManagerProxyAPI.h>
++#include <rmproxy/ResourceManagerProxyAPI.h>
+ #include "TIDspOmx.h"
+ #include "LCML_DspCodec.h"
+ 
+Index: audio_decode/mp3_dec/src/omx_audiodec_mp3utils.c
+===================================================================
+--- audio_decode.orig/mp3_dec/src/omx_audiodec_mp3utils.c	2009-08-25 02:46:15.000000000 -0500
++++ audio_decode/mp3_dec/src/omx_audiodec_mp3utils.c	2009-08-25 02:46:21.000000000 -0500
+@@ -45,7 +45,7 @@
+ #include <omx_base_internal.h> 
+ #include <timm_osal_interfaces.h>
+ #include <omx_base_utils.h>
+-#include <ResourceManagerProxyAPI.h>
++#include <rmproxy/ResourceManagerProxyAPI.h>
+ #include "TIDspOmx.h"
+ #include "LCML_DspCodec.h"
+ #include <usn.h>

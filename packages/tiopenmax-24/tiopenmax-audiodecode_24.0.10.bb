@@ -1,10 +1,11 @@
 DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-rmproxy tiopenmax-lcml"
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r0"
+PR = "r1"
 
 require tiopenmax-audio-git.inc
 S = "${WORKDIR}/git/audio/audio_decode/"
+SRC_URI += "file://rmproxypath.patch;patch=1"
 
 EXTRA_OECONF = "--enable-tests"
 
