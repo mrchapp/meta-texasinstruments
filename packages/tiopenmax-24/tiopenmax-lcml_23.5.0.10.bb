@@ -1,4 +1,4 @@
-DEPENDS = "tidspbridge-lib tiopenmax-common"
+DEPENDS = "tidspbridge-lib tiopenmax-common tiopenmax-core"
 DESCRIPTION = "Texas Instruments OpenMAX IL Linux Common Media Library (LCML)."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r0"
