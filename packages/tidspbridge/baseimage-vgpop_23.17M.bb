@@ -3,9 +3,7 @@ DESCRIPTION = "Texas Instruments MPU/DSP Bridge Socket Node compilation."
 LICENSE = "LGPL"
 PR = "r0"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/video/alg/vgpop/... LINUX_RLS_${PV}2RC1%\
-	      element * /main/LATEST%"
+require baseimage-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/alg/vgpop"
 CCASE_PATHCOMPONENT = "vgpop"

@@ -18,7 +18,7 @@ FILES_${PN}="\
 	${base_libdir}/dsp/baseimage.map \
 	"
 
-require baseimage-system-cspec-${PV}.inc
+require baseimage-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

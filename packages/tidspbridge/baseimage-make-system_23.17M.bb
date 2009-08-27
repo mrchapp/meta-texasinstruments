@@ -3,7 +3,7 @@ DESCRIPTION = "Texas Instruments Baseimage make system."
 LICENSE = "LGPL"
 PR = "r0"
 
-require baseimage-system-cspec-${PV}.inc
+require baseimage-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/make"
 CCASE_PATHCOMPONENT = "make"

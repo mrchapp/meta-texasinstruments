@@ -9,9 +9,9 @@ inherit ccasefetch
 COMPATIBLE_MACHINE = "omap-3430(s|l)dp"
 
 CCASE_SPEC =   "%\
-	element /vobs/WCGDev/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/MCP_Common/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/HSW_FMStack/... LINUX_RLS_${PV}2RC1%\
+	element /vobs/WCGDev/... LINUX_RLS_${PV}3RC1%\
+	element /vobs/MCP_Common/... LINUX_RLS_${PV}3RC1%\
+	element /vobs/HSW_FMStack/... LINUX_RLS_${PV}3RC1%\
 	element * /main/LATEST%\
 	"
 

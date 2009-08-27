@@ -4,7 +4,7 @@ LICENSE = "Texas Instruments"
 PR = "r1"
 
 CCASE_SPEC = "%\
-              element /vobs/SDS/Source/Dload/dload/... LINUX_RLS_${PV}2RC1%\
+              element /vobs/SDS/Source/Dload/dload/... LINUX_RLS_${PV}3RC1%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"

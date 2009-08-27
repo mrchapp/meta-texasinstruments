@@ -22,7 +22,7 @@ SRC_URI = "\
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_MPU/dspbridge/... LINUX_RLS_${PV}2RC1%\
+	element /vobs/wtbu/OMAPSW_MPU/... LINUX_RLS_${PV}3RC1%\
 	element * /main/LATEST%\
 	"
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/dspbridge"

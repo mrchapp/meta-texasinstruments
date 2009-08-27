@@ -1,0 +1,13 @@
+diff -Naurb wilink-23-17_orig/WiLink/CUDK/wlan wilink-23-17/WiLink/CUDK/wlan
+--- wilink-23-17_orig/WiLink/CUDK/wlan	2009-05-19 12:55:52.000000000 +0530
++++ wilink-23-17/WiLink/CUDK/wlan	2009-08-24 14:16:43.000000000 +0530
+@@ -43,9 +43,6 @@
+             ./tiwlan_loader
+             echo "Making WLAN interface up"
+             /sbin/ifconfig tiwlan0 up
+-            kill `ps | grep  haldaemon | grep -v addon | grep -v grep | cut "-d " -f2`	
+-            /usr/sbin/hald
+-
+         else
+             echo "Failed to install driver"
+             exit

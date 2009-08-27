@@ -6,7 +6,7 @@ LICENSE = "LGPL"
 PR = "r0"
 
 CCASE_SPEC = "%\
-element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_${PV}2RC1%\
+element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_${PV}3RC1%\
 element * /main/LATEST%\
 "
 
