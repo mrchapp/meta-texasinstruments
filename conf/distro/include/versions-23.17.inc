@@ -139,7 +139,7 @@ PREFERRED_VERSION_tisocketnode-conversions =		"3.2"
 
 # openmax
 #require versions-tiopenmax-23.17.inc
-require versions-tiopenmax-24.0.10.inc
+require versions-tiopenmax-24.0.11.inc
 
 
 # gstreamer
