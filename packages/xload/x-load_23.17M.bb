@@ -8,7 +8,7 @@ DEPENDS="u-boot"
 inherit ccasefetch
 
 CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_L/x-load/... LINUX_RLS_${PV}3RC1%\
+	element /vobs/wtbu/OMAPSW_L/x-load/... LINUX_RLS_${PV}3RC2%\
 	element /vobs/wtbu/OMAPSW_L /main/LATEST%\
 	element * /main/0%\
 	"
