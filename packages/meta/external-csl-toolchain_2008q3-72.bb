@@ -56,7 +56,7 @@ do_stage() {
 PACKAGES = "libgcc libgcc-dev libstdc++ libstdc++-dev linux-libc-headers"
 FILES_libgcc = "${base_libdir}/libgcc_s.so.1"
 FILES_libgcc-dev = "${base_libdir}/libgcc_s.so"
-FILES_libstdc++ = "${libdir}/libstdc++*"
+FILES_libstdc++ = "${libdir}/libstdc++.so.*"
 FILES_libstdc++-dev = "${includedir}/c++/${PV} \
 	${libdir}/libstdc++.so \
 	${libdir}/libstdc++.la \
