@@ -12,11 +12,11 @@ COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-zoom2-(alpha|beta)"
 
 CCASE_SPEC = "%\
 	element /vobs/WiLink/... LINUX-WCG-WLAN_RLS_L23-17-M1%\
-#	element /vobs/WCGDev/... LINUX-WCG-WLAN_RLS_L23-17-M1%\
+	element /vobs/WCGDev/... LINUX-WCG-WLAN_RLS_L23-17-M1%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WiLink/ \
-#	/vobs/WCGDev \
+	/vobs/WCGDev \
 	"
 CCASE_PATHCOMPONENTS = 0
 CCASE_PATHCOMPONENT = "vobs"
