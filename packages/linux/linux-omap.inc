@@ -46,15 +46,15 @@ do_configure_prepend() {
                         omap-4430sdp)
                                 yes '' | oe_runmake omap_4430sdp_defconfig
 				sed -i 's/CONFIG_CMDLINE="root=\/dev\/ram0 rw mem=128M console=ttyS0,115200n8 initrd=0x81600000,20M ramdisk_size=20480"/CONFIG_CMDLINE="root=\/dev\/ram0 rw mem=128M console=ttyS0,115200n8 initrd=0x81600000,54M ramdisk_size=55296"/' ${S}/.config
-				sed -i 's/# CONFIG_MPU_BRIDGE is not set/CONFIG_MPU_BRIDGE=y/' ${S}/.config
-				sed -i 's/CONFIG_SYSLINK_PROC=m/CONFIG_SYSLINK_PROC=y/' ${S}/.config
-				sed -i 's/CONFIG_SYSLINK_PROC4430=m/CONFIG_SYSLINK_PROC4430=y/' ${S}/.config
-				sed -i 's/CONFIG_MPU_BRIDGE_NOTIFY=m/CONFIG_MPU_BRIDGE_NOTIFY=y/' ${S}/.config
-				sed -i 's/CONFIG_NOTIFY_TESLA=m/CONFIG_NOTIFY_TESLA=y/' ${S}/.config
-				sed -i 's/CONFIG_NOTIFY_DUCATI=m/CONFIG_NOTIFY_DUCATI=y/' ${S}/.config
-				sed -i 's/CONFIG_MPU_SYSLINK_IPC=m/CONFIG_MPU_SYSLINK_IPC=y/' ${S}/.config
+				#sed -i 's/# CONFIG_MPU_BRIDGE is not set/CONFIG_MPU_BRIDGE=y/' ${S}/.config
+				#sed -i 's/CONFIG_SYSLINK_PROC=m/CONFIG_SYSLINK_PROC=y/' ${S}/.config
+				#sed -i 's/CONFIG_SYSLINK_PROC4430=m/CONFIG_SYSLINK_PROC4430=y/' ${S}/.config
+				#sed -i 's/CONFIG_MPU_BRIDGE_NOTIFY=m/CONFIG_MPU_BRIDGE_NOTIFY=y/' ${S}/.config
+				#sed -i 's/CONFIG_NOTIFY_TESLA=m/CONFIG_NOTIFY_TESLA=y/' ${S}/.config
+				#sed -i 's/CONFIG_NOTIFY_DUCATI=m/CONFIG_NOTIFY_DUCATI=y/' ${S}/.config
+				#sed -i 's/CONFIG_MPU_SYSLINK_IPC=m/CONFIG_MPU_SYSLINK_IPC=y/' ${S}/.config
 				#sed -i 's/# CONFIG_SYSLINK_USE_SYSMGR is not set/CONFIG_SYSLINK_USE_SYSMGR=y/' ${S}/.config
-				echo "CONFIG_BRIDGE_DEBUG=y"        >> ${S}/.config
+				#echo "CONFIG_BRIDGE_DEBUG=y"        >> ${S}/.config
 
                                 ;;
                         *)
