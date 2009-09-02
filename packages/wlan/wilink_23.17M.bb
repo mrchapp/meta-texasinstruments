@@ -28,7 +28,7 @@ SRC_URI = "file://fix-libestadrv-makefile.diff;patch=1\
 	"
 
 PACKAGES = "${PN}"
-FILES_${PN} += "/wlan"
+FILES_${PN} += "/wlan /etc"
 
 # nasty hack for the moment.  Will fix this in upstream makefiles for L23.13.
 do_configure () {
@@ -59,12 +59,13 @@ do_install() {
 	install -d ${D}/etc/rc6.d
 
 	install -m 755 ${S}/WiLink/CUDK/wlan ${D}/etc/init.d/
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc0.d/K29Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc3.d/S29Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc2.d/S29Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc5.d/S29Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc6.d/K29Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc1.d/K29Wlan
+	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
+
 #CHANGES end
 
 	install -m 755 ${S}/WiLink/platforms/os/linux/wlan_cu ${D}/wlan
