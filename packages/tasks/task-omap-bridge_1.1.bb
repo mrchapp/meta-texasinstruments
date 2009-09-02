@@ -3,15 +3,19 @@
 #
 
 DESCRIPTION = "Tasks for TI's dspbridge"
-PR = "r1"
+PR = "r2"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
     tidspbridge-lib \
+    tidspbridge-mpusamples \
+    tidspbridge-syslinklib \
     tidspbridge-samples \
     "
-DEPENDS = "tidspbridge-ducatisamples"
+DEPENDS = "\
+	tidspbridge-ducatisamples \
+	"
 
 #tidspbridge-extra

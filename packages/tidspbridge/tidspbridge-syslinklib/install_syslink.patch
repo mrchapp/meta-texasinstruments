@@ -1,6 +1,6 @@
---- /scripts/install_tesla_bridge.orig	2009-09-02 11:42:48.000000000 -0500
-+++ /scripts/install_tesla_bridge	2009-09-02 11:43:49.000000000 -0500
-@@ -5,16 +5,16 @@
+--- /scripts/install_syslink.orig	2009-09-02 11:41:04.000000000 -0500
++++ /scripts/install_syslink	2009-09-02 11:41:33.000000000 -0500
+@@ -5,12 +5,12 @@
  echo " "
  echo " "
  #install omap_notify driver
@@ -8,6 +8,15 @@
 -insmod /binaries/omap_notify.ko
 +echo "installing omap_notify.ko"
 +insmod omap_notify.ko
+ 
+ #install notify syslink proc driver
+ echo "installing syslink_proc.ko"
+-insmod /binaries/syslink_proc.ko
++insmod syslink_proc.ko
+ 
+ #install syslink ipc driver
+ echo "installing syslink_ipc.ko"
+@@ -27,11 +27,11 @@
  
  #install notify syslink proc driver
  echo "installing notify_tesladriver.ko"
@@ -19,5 +28,5 @@
 -insmod /binaries/dspbridge.ko
 +insmod dspbridge.ko
  
+ 
  #install notify tesla driver
- echo "installing bridgedriver.ko"
