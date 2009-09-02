@@ -1,9 +1,9 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
-PR = "r4"
+PR = "r5"
  
 SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
 # From omap branch:
-SRCREV = "8d0d934b71d7b5ec583303952ad9ec9fcddca462"
+SRCREV = "8489c4d109cb7132e639000e96dc04a4520a40c7"
 S = "${WORKDIR}/git"
  
 inherit autotools
