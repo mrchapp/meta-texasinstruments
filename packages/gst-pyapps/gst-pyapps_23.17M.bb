@@ -5,7 +5,7 @@ DESCRIPTION = "GStreamer plug-ins for OpenMAX IL based on LibGoo"
 PR = "r0"
 
 CCASE_SPEC = "%\
-element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_${PV}3RC2%\
+element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_DB20090907%\
 element * /main/LATEST%\
 "
 

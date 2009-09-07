@@ -8,7 +8,7 @@ DEPENDS = "tidspbridge-bios-native \
 FILES_${PN}="/dspbridge"
 
 CCASE_SPEC = "%\
-	      element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_${PV}3RC2%\
+	      element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_DB20090904%\
 	      element /vobs/SDS/Source/Bridge/dsp/... -error%\
 	      element * /main/LATEST%"
 
@@ -31,12 +31,13 @@ inherit ccasefetch
 do_compile() {
 	chmod -R +w ${S}/*
 	${ENV_VAR} oe_runmake -f gmakefile .clean
-	${ENV_VAR} oe_runmake -f gmakefile .bridge_samples
+	${ENV_VAR} oe_runmake -f gmakefile .exports
+        ${ENV_VAR} oe_runmake -f gmakefile .bridge_samples
 }
 
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/dsp
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
+	cp -af ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
 	install -d ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/lib/*.a64P ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -d ${STAGING_INCDIR}/dspbridge/exports/include
