@@ -1,0 +1,11 @@
+--- tidspbridge-syslinklib-24.0.8/samples/procmgr/procmgrapp/Makefile.origin	2009-06-10 09:01:36.000000000 -0500
++++ tidspbridge-syslinklib-24.0.8/samples/procmgr/procmgrapp/Makefile	2009-06-10 09:02:14.000000000 -0500
+@@ -23,7 +23,7 @@
+ 
+ CFLAGS=-Wall -g -O2 $(INCLUDE) -finline-functions -D$(PROCFAMILY) $(LDFLAGS)
+ 
+-LIBS = -lutils -lprocmgr 
++LIBS = -lutils -lprocmgr -lomap4430proc
+ 
+ all: procmgrapp.out
+ 
