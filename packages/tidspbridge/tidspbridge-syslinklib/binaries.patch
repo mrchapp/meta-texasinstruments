@@ -1,0 +1,37 @@
+--- tidspbridge-syslinklib-24.0.9/scripts/install_syslink.orig	2009-07-10 18:35:28.000000000 -0500
++++ tidspbridge-syslinklib-24.0.9/scripts/install_syslink	2009-07-10 18:36:16.000000000 -0500
+@@ -5,16 +5,16 @@
+ echo " "
+ echo " "
+ #install omap_notify driver
+-echo "installing /binaries/omap_notify.ko"
+-insmod /binaries/omap_notify.ko
++echo "installing omap_notify.ko"
++insmod omap_notify.ko
+ 
+ #install notify dispatcher driver
+ echo "installing notify_disp.ko"
+-insmod /binaries/notify_disp.ko
++insmod notify_disp.ko
+ 
+ #install notify syslink proc driver
+ echo "installing syslink_proc.ko"
+-insmod /binaries/syslink_proc.ko
++insmod syslink_proc.ko
+ 
+ #install syslink ipc driver
+ echo "installing syslink_ipc.ko"
+@@ -31,11 +31,11 @@
+ 
+ #install notify syslink proc driver
+ echo "installing notify_tesladriver.ko"
+-insmod /binaries/notify_tesladriver.ko
++insmod notify_tesladriver.ko
+ 
+ #install notify syslink proc4430 driver
+ echo "installing dspbridge.ko"
+-insmod /binaries/dspbridge.ko
++insmod dspbridge.ko
+ 
+ 
+ #install notify tesla driver
