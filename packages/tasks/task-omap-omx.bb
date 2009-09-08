@@ -14,4 +14,5 @@ ALLOW_EMPTY = "1"
 # should we keep this mechanism around to allow for other OpenMAX
 # implementations?
 
-RDEPENDS = "virtual/openmax-il"
+#RDEPENDS = "virtual/openmax-il"
+RDEPENDS = "tiopenmax-audio-decode"

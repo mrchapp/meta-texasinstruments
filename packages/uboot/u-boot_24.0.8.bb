@@ -7,7 +7,7 @@ PR="r0"
 SRCREV = "ti-omap4-v0.1"
 
 
-SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=omap4_dev;protocol=http"
+SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=omap4_dev;protocol=git"
 
 S = "${WORKDIR}/git"
 

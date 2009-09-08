@@ -1,0 +1,86 @@
+From cdd36dde1023740d6fe0b2bd53194712ef8ff0da Mon Sep 17 00:00:00 2001
+From: Suman Anna <s-anna@ti.com>
+Date: Fri, 31 Jul 2009 22:22:36 -0500
+Subject: [PATCH] SYSLINK: ipc - sharedregion fixes for sysmgr validation
+
+This patch includes fixes in the sharedregion module for issues
+found during sysmgr validation. The main change is to return
+success if a add request is for an exact duplicate sharedregion entry.
+The other change is to return success instead of failure if the
+sharedregion module is already setup.
+
+Signed-off-by: Suman Anna <s-anna@ti.com>
+---
+ drivers/dsp/syslink/multicore_ipc/sharedregion.c |   18 +++++++++++++++---
+ 1 files changed, 15 insertions(+), 3 deletions(-)
+ mode change 100755 => 100644 drivers/dsp/syslink/multicore_ipc/sharedregion.c
+
+diff --git a/drivers/dsp/syslink/multicore_ipc/sharedregion.c b/drivers/dsp/syslink/multicore_ipc/sharedregion.c
+old mode 100755
+new mode 100644
+index 723574d..ec2ed0e
+--- a/drivers/dsp/syslink/multicore_ipc/sharedregion.c
++++ b/drivers/dsp/syslink/multicore_ipc/sharedregion.c
+@@ -30,7 +30,7 @@
+ /* Macro to make a correct module magic number with refCount */
+ #define SHAREDREGION_MAKE_MAGICSTAMP(x)   ((SHAREDREGION_MODULEID << 16u) | (x))
+ 
+-#define SHAREDREGION_MAX_REGIONS_DEFAULT  256
++#define SHAREDREGION_MAX_REGIONS_DEFAULT  4
+ 
+ /*
+  *  Module state object
+@@ -109,8 +109,7 @@ int sharedregion_setup(const struct sharedregion_config *config)
+ 
+ 	if (atomic_inc_return(&sharedregion_state.ref_count)
+ 				!= SHAREDREGION_MAKE_MAGICSTAMP(1)) {
+-		retval = -EEXIST;
+-		goto error;
++		return 1;
+ 	}
+ 
+ 	if (config != NULL) {
+@@ -223,6 +222,7 @@ int sharedregion_add(u32 index, void *base, u32 len)
+ 	u32 i;
+ 	u16 myproc_id;
+ 	bool overlap = false;
++	bool same = false;
+ 
+ 	if (atomic_cmpmask_and_lt(&(sharedregion_state.ref_count),
+ 				SHAREDREGION_MAKE_MAGICSTAMP(0),
+@@ -249,6 +249,12 @@ int sharedregion_add(u32 index, void *base, u32 len)
+ 			+ (myproc_id * sharedregion_state.cfg.max_regions)
+ 			+ i);
+ 		if (entry->is_valid) {
++			/* Handle duplicate entry */
++			if((base == entry->base) && (len == entry->len)) {
++				same = true;
++				break;
++			}
++
+ 			if ((base >= entry->base) &&
+ 			(base < (void *)((u32)entry->base + entry->len))) {
+ 				overlap = true;
+@@ -263,6 +269,11 @@ int sharedregion_add(u32 index, void *base, u32 len)
+ 		}
+ 	}
+ 
++	if (same) {
++		retval = 1;
++		goto success;
++	}
++
+ 	if (overlap) {
+ 		retval = -EPERM;
+ 		goto mem_overlap_error;
+@@ -281,6 +292,7 @@ int sharedregion_add(u32 index, void *base, u32 len)
+ 		goto dup_entry_error;
+ 	}
+ 
++success:
+ 	mutex_unlock(sharedregion_state.gate_handle);
+ 	return 0;
+ 
+-- 
+1.5.4.3
+
