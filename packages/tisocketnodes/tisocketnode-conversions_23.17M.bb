@@ -4,7 +4,9 @@ LICENSE = "LGPL"
 PR = "r1"
 DEPENDS = "baseimage tisocketnode-usn"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/video/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/lib/conversions"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

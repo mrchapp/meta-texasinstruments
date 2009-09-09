@@ -18,3 +18,5 @@ FILES_${PN}-dbg += "${libdir}/gstreamer-0.10/.debug/"
 do_stage() {
 	autotools_stage_all
 }
+
+PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"

@@ -2,7 +2,9 @@ DESCRIPTION = "Texas Instruments IMA-ADPCM Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-ima-adpcmdec-codec"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/audio/node/ima-adpcm/dec/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/ima-adpcm/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

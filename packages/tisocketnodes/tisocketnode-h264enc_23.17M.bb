@@ -2,7 +2,9 @@ DESCRIPTION = "Texas Instruments H264 Encoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-h264enc-codec"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/video/node/h264/enc/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/h264/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

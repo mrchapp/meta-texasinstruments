@@ -2,7 +2,9 @@ DESCRIPTION = "Texas Instruments G729 Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-g729dec-codec"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/speech/node/g729/dec/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/g729/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

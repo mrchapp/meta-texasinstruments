@@ -2,7 +2,9 @@ DESCRIPTION = "Texas Instruments JPEG Encoder Socket Node."
 PR = "r1"
 DEPENDS += "tisocketnode-jpegenc-codec tisocketnode-conversions"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/image/node/jpeg/enc/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/image/node/jpeg/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
