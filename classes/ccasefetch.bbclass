@@ -57,6 +57,8 @@ do_unpack_ccase () {
 		tar zxf ${CCASEFETCH_OUTFILE} ${TAROPTS}
 		mv ${CCASE_PATHCOMPONENT} ${PN}-${PV}
 	fi
+
+    chmod +w -R .
 }
 
 addtask fetch_ccase after do_fetch before do_unpack

@@ -1,0 +1,236 @@
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/avsync/syncclock/inc/sync_clock.h	2009-05-25 23:56:36.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/avsync/syncclock/inc/sync_clock.h	2009-09-03 11:30:04.000000000 +0200
+@@ -27,7 +27,7 @@
+ 
+ // Standard Includes 
+ #ifdef _Tesla_
+- #include <ti/targets/nda/c64T.h>
++ #include <ti/targets/nda/C64T.h>
+  #include <ti/bios/include/std.h>
+  #include <ti/bios/include/sys.h>
+  #include <ti/bios/include/mem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/avsync/syncclock/src/sync_clock_function.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/avsync/syncclock/src/sync_clock_function.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/avsync/syncclock/src/sync_clock_function.c	2009-05-19 07:38:45.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/avsync/syncclock/src/sync_clock_function.c	2009-09-03 11:31:36.000000000 +0200
+@@ -35,7 +35,7 @@
+ #ifdef _Tesla_
+ #include <ti/sysbios/hal/Cache.h>
+ #define BCACHE_writeback(ptr,sze) ti_sysbios_hal_Cache_wb(ptr,sze,Cache_Type_L1D,1)
+-#include <ti/sysbios/hal/hwi.h>
++#include <ti/sysbios/hal/Hwi.h>
+ #define HWI_disable() ti_sysbios_hal_Hwi_disable()
+ #define HWI_restore(hwi_val) ti_sysbios_hal_Hwi_restore(hwi_val)
+ #else
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/gmakefile baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/gmakefile
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/gmakefile	2009-07-16 20:03:06.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/gmakefile	2009-09-03 11:34:57.000000000 +0200
+@@ -9,7 +9,7 @@
+ 
+ 
+ # Define version of trees to import from.  
+-include $(DSPMAKEROOT)\product.mak
++include $(DSPMAKEROOT)/product.mak
+ 
+ # This ensures that sm-make only calls us once.  We handle DEBUG flags
+ # internally on our own
+@@ -83,7 +83,7 @@ DSP_JOBS =
+ # build verbose-ly, using the appropriate config.bld, and setting the package
+ # path to include the imports directory (where packages are exploded into)
+ DD_XDCOPTIONS = XDCOPTIONS=v XDCBUILDCFG=$(DSPMAKEROOT)/config.bld \
+-    XDCPATH=$(SABIOS_DIR)\;$(DEPOT)/framework_components_$(FC_VER)/fctools/packages\;$(DEPOT)/framework_components_$(FC_VER)/packages\;$(BRIDGETOOL_DIR)/packages\;$(DEPOT)/osal_$(OSAL_VER)/packages\;$(DEPOT)/ipc_$(IPC_VER)/packages;$(CURDIR)/inc;$(DSPMAKEROOT)/../system/utils/inc;$(DBS_BRIDGE_DIR_C64)/ti/dspbridge/dsp/bridge_product/exports/include;$(DBS_BRIDGE_DIR_C64);$(DSPMAKEROOT)/../include;$(DSPMAKEROOT)/../system/inst2/inst2_lib/inc;$(DSPMAKEROOT)/../system/dasf/inc;$(DSPMAKEROOT)/../system/avsync/syncclock/inc;$(DSPMAKEROOT)/../system/tmon/inc;$(DSPMAKEROOT)/../system/hal/timer/inc;$(DSPMAKEROOT)/../system/hal/common/inc;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/McBspCdn/inc;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/Common/inc;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/HwIf/inc;$(DSPMAKEROOT)/../system/hal/mcbsp/inc;$(DSPMAKEROOT)/../system/hal/edma/inc;$(DSPMAKEROOT)/../system/dasf/AcousticDeviceNode/inc;$(DSPMAKEROOT)/../system/dasf/MixerDeviceNode/inc;$(DSPMAKEROOT)/../system/dasf/MMMixerDeviceNode/inc;$(DSPMAKEROOT)/../audio/alg/SampleRateConverter/inc;$(DSPMAKEROOT)/../system/dasf/PolicyTaskSocketNode/inc;$(DSPMAKEROOT)/../system/dasf/TeeDeviceNode/inc;$(DSPMAKEROOT)/../test/dctf/framework/pipe/inc;$(DSPMAKEROOT)/../test/dctf/framework/sa/inc;$(DSPMAKEROOT)/../test/dctf/framework/tcapi/inc;$(DSPMAKEROOT)/../test/dctf/framework/te/inc;$(DSPMAKEROOT)/../test/dctf/tc_common/inc;$(DSPMAKEROOT)/../test/dctf/framework/common_interface/inc;$(DSPMAKEROOT)/../system/usn/inc;$(DSPMAKEROOT)/../audio/node/pcm/dec/inc;$(DSPMAKEROOT)/../test/dctf/test/testnode/inc;$(DSPMAKEROOT)/../test/dctf/test/testcase;    \
++    XDCPATH=$(SABIOS_DIR)\;$(DEPOT)/framework_components_$(FC_VER)/fctools/packages\;$(DEPOT)/framework_components_$(FC_VER)/packages\;$(BRIDGETOOL_DIR)/packages\;$(DEPOT)/osal_$(OSAL_VER)/packages\;$(DEPOT)/ipc_$(IPC_VER)/packages\;$(CURDIR)/inc\;$(DSPMAKEROOT)/../system/utils/inc\;$(DBS_BRIDGE_DIR_C64)/ti/dspbridge/dsp/bridge_product/exports/include\;$(DBS_BRIDGE_DIR_C64)\;$(DSPMAKEROOT)/../include\;$(DSPMAKEROOT)/../system/inst2/inst2_lib/inc\;$(DSPMAKEROOT)/../system/dasf/inc\;$(DSPMAKEROOT)/../system/avsync/syncclock/inc\;$(DSPMAKEROOT)/../system/tmon/inc\;$(DSPMAKEROOT)/../system/hal/timer/inc\;$(DSPMAKEROOT)/../system/hal/common/inc\;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/McBspCdn/inc\;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/Common/inc\;$(DSPMAKEROOT)/../system/dasf/CodecDeviceNode/HwIf/inc\;$(DSPMAKEROOT)/../system/hal/mcbsp/inc\;$(DSPMAKEROOT)/../system/hal/edma/inc\;$(DSPMAKEROOT)/../system/dasf/AcousticDeviceNode/inc\;$(DSPMAKEROOT)/../system/dasf/MixerDeviceNode/inc\;$(DSPMAKEROOT)/../system/dasf/MMMixerDeviceNode/inc\;$(DSPMAKEROOT)/../audio/alg/SampleRateConverter/inc\;$(DSPMAKEROOT)/../system/dasf/PolicyTaskSocketNode/inc\;$(DSPMAKEROOT)/../system/dasf/TeeDeviceNode/inc\;$(DSPMAKEROOT)/../test/dctf/framework/pipe/inc\;$(DSPMAKEROOT)/../test/dctf/framework/sa/inc\;$(DSPMAKEROOT)/../test/dctf/framework/tcapi/inc\;$(DSPMAKEROOT)/../test/dctf/framework/te/inc\;$(DSPMAKEROOT)/../test/dctf/tc_common/inc\;$(DSPMAKEROOT)/../test/dctf/framework/common_interface/inc\;$(DSPMAKEROOT)/../system/usn/inc\;$(DSPMAKEROOT)/../audio/node/pcm/dec/inc\;$(DSPMAKEROOT)/../test/dctf/test/testnode/inc\;$(DSPMAKEROOT)/../test/dctf/test/testcase\;    \
+     XDCTARGETS="$(XDCTARGETS)"
+ 
+ SAMPLE_PACKAGES = src
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/inc/icache.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/inc/icache.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/inc/icache.h	2009-05-25 13:32:42.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/inc/icache.h	2009-09-03 11:30:03.000000000 +0200
+@@ -28,7 +28,7 @@
+ *
+ ***H*O*C*E***************************************************/
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #else
+ #include <std.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/src/main.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/src/main.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/baseimage/src/main.c	2009-05-28 01:36:24.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/baseimage/src/main.c	2009-09-03 11:29:56.000000000 +0200
+@@ -44,7 +44,7 @@
+   #include <c55.h>
+  #endif
+ #else
+- #include <ti/targets/nda/c64T.h>
++ #include <ti/targets/nda/C64T.h>
+  #include <ti/bios/include/std.h>
+  #include <ti/bios/include/sys.h>
+  #include <ti/bios/include/mem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/AcousticDeviceNode/inc/_acdn.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/AcousticDeviceNode/inc/_acdn.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/AcousticDeviceNode/inc/_acdn.h	2009-06-24 07:44:09.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/AcousticDeviceNode/inc/_acdn.h	2009-09-03 11:30:03.000000000 +0200
+@@ -32,7 +32,7 @@
+ #define __ACDN_
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/dev.h>
+ #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/AcousticDeviceNode/src/aec_ns.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/AcousticDeviceNode/src/aec_ns.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/AcousticDeviceNode/src/aec_ns.c	2009-06-24 07:44:13.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/AcousticDeviceNode/src/aec_ns.c	2009-09-03 11:29:56.000000000 +0200
+@@ -32,7 +32,7 @@
+ //============= Includes =====================================
+ //============================================================
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/clk.h>
+ #else
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/CodecDeviceNode/Common/inc/_cdn.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/CodecDeviceNode/Common/inc/_cdn.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/CodecDeviceNode/Common/inc/_cdn.h	2009-06-24 07:44:31.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/CodecDeviceNode/Common/inc/_cdn.h	2009-09-03 11:30:03.000000000 +0200
+@@ -42,7 +42,7 @@
+  #include <c64.h>
+  #include "bcache.h"
+ #else
+- #include <ti/targets/nda/c64T.h>
++ #include <ti/targets/nda/C64T.h>
+  #include <ti/bios/include/std.h>
+  #include <ti/bios/include/dev.h>
+  #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/ControlTaskNode/src/ControlTaskNode.cfg baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/ControlTaskNode/src/ControlTaskNode.cfg
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/ControlTaskNode/src/ControlTaskNode.cfg	2009-05-05 06:15:33.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/ControlTaskNode/src/ControlTaskNode.cfg	2009-09-03 11:30:46.000000000 +0200
+@@ -19,7 +19,7 @@
+  *
+  */
+ 
+-xdc.loadCapsule("../../../../../vobs_SDS_Source_Bridge_dsp/ti/dspbridge/dsp/bridge_config/platforms/c64T_dyn.cfg");
++xdc.loadCapsule("ti/dspbridge/dsp/bridge_config/platforms/c64T_dyn.cfg");
+ 
+ // For testing, change some node configuration
+ var DCTN_TI = new Node.Params();
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MMMixerDeviceNode/inc/mm_mixer.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MMMixerDeviceNode/inc/mm_mixer.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MMMixerDeviceNode/inc/mm_mixer.h	2009-06-24 07:44:53.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MMMixerDeviceNode/inc/mm_mixer.h	2009-09-03 11:30:03.000000000 +0200
+@@ -6,7 +6,7 @@
+ ****************************************************************/
+ /* ----- system and platform files ----------------------------*/
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/sys.h>
+ #include <ialg.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/inc/_mixer.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/inc/_mixer.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/inc/_mixer.h	2009-05-27 09:31:42.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/inc/_mixer.h	2009-09-03 11:30:03.000000000 +0200
+@@ -33,7 +33,7 @@
+ #define __MIXER_H_
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/dev.h>
+ #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/src/src_functions.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/src/src_functions.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/src/src_functions.c	2009-06-24 07:44:01.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/src/src_functions.c	2009-09-03 11:29:56.000000000 +0200
+@@ -36,7 +36,7 @@
+ //============= Includes =====================================
+ //============================================================
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/dev.h>
+ #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/src/swi_tx.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/src/swi_tx.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/MixerDeviceNode/src/swi_tx.c	2009-05-27 09:35:26.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/MixerDeviceNode/src/swi_tx.c	2009-09-03 11:29:56.000000000 +0200
+@@ -34,7 +34,7 @@
+ //============= Includes =====================================
+ //============================================================
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/dev.h>
+ #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/RTMixerDeviceNode/src/rt_mixer.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/RTMixerDeviceNode/src/rt_mixer.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/RTMixerDeviceNode/src/rt_mixer.c	2009-06-24 07:44:39.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/RTMixerDeviceNode/src/rt_mixer.c	2009-09-03 11:29:56.000000000 +0200
+@@ -31,7 +31,7 @@
+ ****************************************************************/
+ /* ----- system and platform files ----------------------------*/
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/sys.h>
+ #define BCACHE_invalidate(ptr,sze)
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/inc/device.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/inc/device.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/inc/device.h	2009-05-27 09:28:51.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/inc/device.h	2009-09-03 11:30:03.000000000 +0200
+@@ -3,7 +3,7 @@
+ #define _ADN_
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/dev.h>
+ #include <ti/bios/include/sem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/src/device.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/src/device.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/dasf/src/device.c	2009-06-24 07:44:46.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/dasf/src/device.c	2009-09-03 11:29:56.000000000 +0200
+@@ -32,7 +32,7 @@
+ /* ----- system and platform files ----------------------------*/
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ //#include <ti/sysbios/hal/Cache.h>
+ #define BCACHE_invalidate(ptr,sze)
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/inst2/inst2_lib/inc/inst2.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/inst2/inst2_lib/inc/inst2.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/inst2/inst2_lib/inc/inst2.h	2009-05-26 15:42:23.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/inst2/inst2_lib/inc/inst2.h	2009-09-03 11:30:04.000000000 +0200
+@@ -10,7 +10,7 @@
+  * public header file for instrumentation of the code for benchmarking
+  */
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/clk.h>
+ #include <ti/bios/include/mem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/inst2/inst2_lib/src/inst2.c baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/inst2/inst2_lib/src/inst2.c
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/inst2/inst2_lib/src/inst2.c	2009-05-26 15:46:50.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/inst2/inst2_lib/src/inst2.c	2009-09-03 11:29:56.000000000 +0200
+@@ -15,7 +15,7 @@
+ // ============================================================================
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/clk.h>
+ #include <ti/bios/include/mem.h>
+diff -rup baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/tmon/inc/tmon.h baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/tmon/inc/tmon.h
+--- baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6,orig/system/tmon/inc/tmon.h	2009-05-26 00:26:16.000000000 +0200
++++ baseimage-4.0+cc+ACT_BASEIMAGE-4430-0.6/system/tmon/inc/tmon.h	2009-09-03 11:30:04.000000000 +0200
+@@ -35,7 +35,7 @@
+ #define _TMON_H_
+ 
+ #ifdef _Tesla_
+-#include <ti/targets/nda/c64T.h>
++#include <ti/targets/nda/C64T.h>
+ #include <ti/bios/include/std.h>
+ #include <ti/bios/include/sys.h>
+ #else
