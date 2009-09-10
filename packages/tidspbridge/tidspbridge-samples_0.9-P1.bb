@@ -1,29 +1,21 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments DSP Tesla Samples."
 LICENSE = "LGPL"
-PR = "r1"
-DEPENDS = "tidspbridge-mpusamples \
-	   tidspbridge-syslinklib \
+PR = "r2"
+DEPENDS = " \
 	   tidspbridge-tiler \
 	   tidspbridge-bios \
 	   tidspbridge-cgt7x \
            tidspbridge-fc \
            tidspbridge-xdc \
 	   tidspbridge-ipc \
-	   tidspbridge-lib \
-	   tidspbridge-dllcreate"
+	   tidspbridge-dllcreate \
+	"
 
 PACKAGES = "${PN}-dev ${PN}-dbg ${PN}"
-FILES_${PN}-dev = "/dspbridge/exports/lib/libutils.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/librcm.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libipc.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libprocmgr.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libnotify.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libomap4430proc.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libsysmgr.so"
-FILES_${PN}-dev += "/dspbridge/exports/lib/libsysmemmgr.so"
+#FILES_${PN}-dev = "/dspbridge/exports/lib/lib*.so"
 
-FILES_${PN}-dbg += "/dspbridge/exports/lib/.debug"
+#FILES_${PN}-dbg += "/dspbridge/exports/lib/.debug"
 FILES_${PN}-dbg += "/dspbridge/.debug"
 FILES_${PN} = "/dspbridge"
 
@@ -54,7 +46,6 @@ ENV_VAR = "DEPOT=${DEPOT} \
 	   DD_XDC_OPT=DD_XDCDIR=${DD_XDCDIR} DD_XDCOPTIONS="XDCOPTIONS=v XDCBUILDCFG=${S}/private.bld XDCPATH=${SABIOS_DIR}\;${DEPOT}/framework_components_${FC_VER}/fctools/packages\;${DEPOT}/framework_components_${FC_VER}/packages\;${S}/bdsptools/packages\;${S}\;${DEPOT}/ipc_${IPC_VER}/packages XDCTARGETS=C64T" \
 	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
 "
-#C6X_CODEGEN_ROOT = ${STAGING_BINDIR}/dspbridge/tools/cgt7x-${CGT_VER}
 
 SRC_URI = "file://tidspbridge.patch;patch=1"
 
@@ -75,10 +66,6 @@ do_compile() {
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/dsp
 	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
-	install -d ${STAGING_LIBDIR}/dspbridge/exports/lib
-	#install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/lib/*.a64T ${STAGING_LIBDIR}/dspbridge/exports/lib
-	install -d ${STAGING_INCDIR}/dspbridge/exports/include
-	#install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/include/*.h ${STAGING_INCDIR}/dspbridge/exports/include
 }
 
 do_install() {
@@ -87,11 +74,6 @@ do_install() {
 	install -m 0644 *.dof* ${D}/dspbridge
 	install -m 0644 *.dll64T* ${D}/dspbridge
 
-	oenote "Installing MPU API and Samples..."
-	install -m 755 ${STAGING_BINDIR}/dspbridge/samples/*.out ${D}/dspbridge
-	#install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_bridge ${D}/dspbridge
-	#install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_bridge_128 ${D}/dspbridge
-	#install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/uninstall_bridge ${D}/dspbridge
 	if [ `find ${STAGING_LIBDIR}/modules -name bridgedriver.ko` != "" ]
 	then
 		oenote "Installing bridgedriver.ko"
@@ -137,18 +119,5 @@ do_install() {
 		oenote "Installing syslink_ipc.ko"
 		install -m 0644 `find ${STAGING_LIBDIR}/modules -name syslink_ipc.ko` ${D}/dspbridge
         fi
-
-	oenote "Installing syslink scripts..."
-	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/tesla_install_script ${D}/dspbridge
-	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/ducati_install_script ${D}/dspbridge
-	install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_syslink ${D}/dspbridge
-        install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_ducati_syslink ${D}/dspbridge
-        install -m 0755 ${STAGING_BINDIR}/dspbridge/samples/install_tesla_bridge ${D}/dspbridge
-
-	oenote "Installing syslink sample module..."
-        install -m 0644 ${STAGING_LIBDIR}/modules/procmgr_app.ko ${D}/dspbridge
-
-	#oenote "Installing Tiler module..."
-	install -m 0644 ${STAGING_LIBDIR}/modules/tiler.ko ${D}/dspbridge
 
 }

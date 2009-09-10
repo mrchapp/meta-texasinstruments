@@ -54,6 +54,7 @@ do_compile() {
         ln -s libpthread.so.0 libpthread.so
         ln -s librt.so.1 librt.so
 	oe_libinstall -so -C ${STAGING_LIBDIR} libdmmdrv ${S}/target/lib
+	oe_libinstall -so -C ${STAGING_DIR_TARGET}${layout_base_libdir} libgcc_s ${S}/target/lib
 
         cd ${S}/api/src
 
@@ -169,8 +170,6 @@ do_stage() {
         oe_libinstall -so -C ${S}/target/lib librcm ${STAGING_LIBDIR}
 	oe_libinstall -so -C ${S}/target/lib libsysmemmgr ${STAGING_LIBDIR}
 	oe_libinstall -so -C ${S}/target/lib libsysmgr ${STAGING_LIBDIR}
-	#oe_libinstall -so -C ${S}/target/lib librt ${STAGING_LIBDIR}
-	#oe_libinstall -so -C ${S}/target/lib libpthread ${STAGING_LIBDIR}
 
 }
 
@@ -184,7 +183,7 @@ do_install() {
         oe_libinstall -so -C ${S}/target/lib librcm ${D}${libdir}
 	oe_libinstall -so -C ${S}/target/lib libsysmemmgr ${D}${libdir} 
         oe_libinstall -so -C ${S}/target/lib libsysmgr ${D}${libdir} 
-	#oe_libinstall -a -C ${S}/target/lib libgcc ${D}${base_libdir}
+	oe_libinstall -so -C ${S}/target/lib libgcc_s ${D}${base_libdir}
 
 	oenote "Installing ducati scripts: `ls ${S}/scripts` "
 	install -d ${D}/dspbridge
@@ -204,4 +203,12 @@ do_install() {
 
 	oenote "Installing modules..."
 	install -D ${S}/target/binaries/procmgr_app.ko ${D}/dspbridge/
+
+	oenote "Installing install scripts..."
+	install -D ${S}/scripts/install_syslink ${D}/dspbridge/
+	install -D ${S}/scripts/install_tesla_bridge ${D}/dspbridge/
+	install -D ${S}/scripts/install_ducati_syslink ${D}/dspbridge/
+	install -D ${S}/scripts/uninstall* ${D}/dspbridge/
+
 }
+

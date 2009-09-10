@@ -9,7 +9,7 @@ PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 
 FILES_${PN}-dbg += "/usr/bin/.debug"
 FILES_${PN}-dbg += "${libdir}/.debug"
-
+FILES_${PN}-dev += "${libdir}/lib*.so*"
 FILES_${PN} +="${libdir}/lib*.so"
 FILES_${PN} +="${bindir}"
 FILES_${PN} +="/usr/include"
@@ -76,7 +76,8 @@ do_install() {
 	install -d ${D}/usr/include
 	install -D ${S}/usr/include/tilermgr.h ${D}/usr/include/
 	install -d ${D}${libdir}
-	oe_libinstall -so -C ${STAGING_LIBDIR} libdmmdrv ${D}${libdir}
+	#oe_libinstall -so -C ${STAGING_LIBDIR} libdmmdrv ${D}${libdir}
+	oe_libinstall -so -C ${S}${libdir} libdmmdrv ${D}${libdir}
 }
 
 do_stage() {
