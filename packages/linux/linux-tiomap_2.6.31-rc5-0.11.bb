@@ -22,8 +22,7 @@ S = "${WORKDIR}/git"
 
 # You can supply your own defconfig if you like.  See
 # http://bec-systems.com/oe/html/recipes_sources.html for a full explanation
-#SRC_URI_omap-3430ldp += "file://defconfig-omap-3430ldp"
-#SRC_URI_omap-3430sdp += "file://defconfig-omap-3430sdp"
+SRC_URI += "file://defconfig-omap-4430sdp"
 
 
 do_stage_append() {
