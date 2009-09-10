@@ -29,6 +29,8 @@ inherit base
 
 CCASEFETCH_OUTFILE=${DL_DIR}/${PN}-${PV}.tar.gz
 
+SRCREV=${SRCREV_pn-${PN}}
+
 do_fetch_ccase () {
 	TAROPTS=
 	if [ ! -z "${CCASE_SPEC}" ]; then
