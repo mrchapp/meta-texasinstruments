@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for TI's OpenMAX IL"
-PR = "r3"
+PR = "r4"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
@@ -15,4 +15,7 @@ ALLOW_EMPTY = "1"
 # implementations?
 
 #RDEPENDS = "virtual/openmax-il"
-RDEPENDS = "tiopenmax-audio-decode"
+RDEPENDS = " \
+	tiopenmax-audiodecode \
+	tiopenmax-audioencode \
+	"

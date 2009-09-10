@@ -29,6 +29,8 @@ inherit base
 
 CCASEFETCH_OUTFILE=${DL_DIR}/${PN}-${PV}.tar.gz
 
+SRCREV=${SRCREV_pn-${PN}}
+
 do_fetch_ccase () {
 	TAROPTS=
 	if [ ! -z "${CCASE_SPEC}" ]; then
@@ -55,6 +57,8 @@ do_unpack_ccase () {
 		tar zxf ${CCASEFETCH_OUTFILE} ${TAROPTS}
 		mv ${CCASE_PATHCOMPONENT} ${PN}-${PV}
 	fi
+
+    chmod +w -R .
 }
 
 addtask fetch_ccase after do_fetch before do_unpack

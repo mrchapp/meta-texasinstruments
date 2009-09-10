@@ -1,0 +1,35 @@
+Index: tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1/audio/node/mpeg4aac/enc/makefile
+===================================================================
+--- tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1.orig/audio/node/mpeg4aac/enc/makefile	2009-09-03 22:21:54.000000000 +0200
++++ tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1/audio/node/mpeg4aac/enc/makefile	2009-09-03 22:22:30.000000000 +0200
+@@ -10,7 +10,7 @@
+ 
+ 
+ # Define version of trees to import from.  
+-include $(DSPMAKEROOT)\product.mak
++include $(DSPMAKEROOT)/product.mak
+ 
+ # This ensures that sm-make only calls us once.  We handle DEBUG flags
+ # internally on our own
+@@ -115,7 +115,7 @@
+ # build verbose-ly, using the appropriate config.bld, and setting the package
+ # path to include the imports directory (where packages are exploded into)
+ DD_XDCOPTIONS = XDCOPTIONS=v XDCBUILDCFG=$(DSPMAKEROOT)/config.bld \
+-    XDCPATH=$(SABIOS_DIR)\;$(DEPOT)/framework_components_$(FC_VER)/fctools/packages\;$(BRIDGETOOL_DIR)/packages\;$(FC_DIR)\;$(CURDIR)\;$(DEPOT)/osal_$(OSAL_VER)/packages\;$(DEPOT)/ipc_$(IPC_VER)/packages\;$(CURDIR)/inc\;$(DSPMAKEROOT)/../system/utils/inc\;$(DSPMAKEROOT)/../system/inst2/inst2_lib/inc\;$(DBS_BRIDGE_DIR_C64)/ti/dspbridge/dsp/bridge_product/exports/include\;$(DBS_BRIDGE_DIR_C64);$(DSPMAKEROOT)/../system/usn/inc;;$(DSPMAKEROOT)/../audio/alg/aacenc/omap4_he/inc; \
++    XDCPATH=$(SABIOS_DIR)\;$(DEPOT)/framework_components_$(FC_VER)/fctools/packages\;$(BRIDGETOOL_DIR)/packages\;$(FC_DIR)\;$(CURDIR)\;$(DEPOT)/osal_$(OSAL_VER)/packages\;$(DEPOT)/ipc_$(IPC_VER)/packages\;$(CURDIR)/inc\;$(DSPMAKEROOT)/../system/utils/inc\;$(DSPMAKEROOT)/../system/inst2/inst2_lib/inc\;$(DBS_BRIDGE_DIR_C64)/ti/dspbridge/dsp/bridge_product/exports/include\;$(DBS_BRIDGE_DIR_C64)\;$(DSPMAKEROOT)/../system/usn/inc\;$(DSPMAKEROOT)/../audio/alg/aacenc/omap4_he/inc \
+     XDCTARGETS="$(XDCTARGETS)"
+ 
+ SAMPLE_PACKAGES = src 
+Index: tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1/audio/node/mpeg4aac/enc/src/mpeg4aacenc_sn.cfg
+===================================================================
+--- tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1.orig/audio/node/mpeg4aac/enc/src/mpeg4aacenc_sn.cfg	2009-09-03 22:22:55.000000000 +0200
++++ tisocketnode-mpeg4aacenc-4.0+cc+DSP-MM-TESLA_RLS_4.1/audio/node/mpeg4aac/enc/src/mpeg4aacenc_sn.cfg	2009-09-03 22:23:04.000000000 +0200
+@@ -19,7 +19,7 @@
+  *
+  */
+ 
+-xdc.loadCapsule("../../../../../vobs_SDS_Source_Bridge_dsp/ti/dspbridge/dsp/bridge_config/platforms/c64T_dyn.cfg");
++xdc.loadCapsule("ti/dspbridge/dsp/bridge_config/platforms/c64T_dyn.cfg");
+ 
+ 
+ var MPEG4AACENC_SN                   = new Node.Params();
