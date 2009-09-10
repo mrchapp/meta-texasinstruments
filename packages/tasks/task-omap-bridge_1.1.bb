@@ -13,9 +13,10 @@ RDEPENDS = "\
     tidspbridge-mpusamples \
     tidspbridge-syslinklib \
     tidspbridge-samples \
+    baseimage \
     "
 DEPENDS = "\
 	tidspbridge-ducatisamples \
 	"
 
-#tidspbridge-extra
+#tidspbridge-extra baseimage
