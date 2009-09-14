@@ -196,8 +196,8 @@ PREFERRED_VERSION_tiopenmax-videocapturetest =		"23.17M"
 PREFERRED_VERSION_mm-isp =				"23.17M"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =				"5.17"
-PREFERRED_VERSION_gst-goo =				"5.17"
+PREFERRED_VERSION_libgoo =				"5.17m.3"
+PREFERRED_VERSION_gst-goo =				"5.17m.3"
 PREFERRED_VERSION_gst-pyapps =				"23.17M"
 
 # connectivity
