@@ -4,7 +4,7 @@
 
 TARGET_VENDOR = "-none"
 
-EXTERNAL_TOOLCHAIN = "/usr/local/csl/arm-2008q3"
+EXTERNAL_TOOLCHAIN ?= "/usr/local/csl/arm-2008q3"
 
 PATH =. "${EXTERNAL_TOOLCHAIN}/bin:"
 
