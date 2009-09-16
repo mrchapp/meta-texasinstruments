@@ -5,3 +5,5 @@ IMAGE_INSTALL += "task-omap-bridge"
 IMAGE_INSTALL += "task-omap-omx"
 IMAGE_INSTALL += "task-omap-sn"
 
+IMAGE_ROOTFS_SIZE = "40000"
+
