@@ -16,15 +16,15 @@ Index: meta/packages/opkg/files/no-werror.patch
 + libopkg_include_HEADERS= opkg.h
 Index: meta/packages/opkg/opkg.inc
 ===================================================================
---- meta/packages/opkg/opkg.inc	(revision 5728)
-+++ meta/packages/opkg/opkg.inc	(working copy)
-@@ -7,7 +7,8 @@
- PV = "0.0+svnr${SRCREV}"
+--- meta/packages/opkg/opkg.inc
++++ meta/packages/opkg/opkg.inc
+@@ -13,7 +13,8 @@ PV = "0.0+svnr${SRCREV}"
  
  SRC_URI = "svn://svn.openmoko.org/trunk/src/target/;module=opkg;proto=http \
--           file://fix_prototype.patch;patch=1"
-+           file://fix_prototype.patch;patch=1 \
-+           file://no-werror.patch;patch=1"
+            file://fix_prototype.patch;patch=1 \
+-           file://opkg-fix-gcc-warnings.patch;patch=1"
++           file://opkg-fix-gcc-warnings.patch;patch=1 \
++           file://no-werror.patch;patch=1 "
  
  S = "${WORKDIR}/opkg"
- 
+
