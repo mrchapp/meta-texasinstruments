@@ -5,12 +5,13 @@ DESCRIPTION = "GStreamer plug-ins for OpenMAX IL based on LibGoo"
 LICENSE = "LGPL"
 PR = "r0"
 
-SRCREV = "c423239a818e1bb89bd4ab7754e1b33a7546023f"
-SRC_URI = "git://git.omapzoom.org/repo/gst-goo.git;protocol=http"
+SRCREV = "7c5f42e53a50ba8f659bf6c50a52453aaaf5ef87"
+SRC_URI = "git://git.omapzoom.org/repo/gst-goo.git;protocol=http;branch=gst-goo-5.17m.3-rc"
 S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
 
+PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 FILES_${PN} += "${libdir}/gstreamer-0.10/libgstgoo.so"
 FILES_${PN}-dev += "${libdir}/gstreamer-0.10/libgstgoo.*a"
 FILES_${PN}-dbg += "${libdir}/gstreamer-0.10/.debug/"
@@ -18,5 +19,3 @@ FILES_${PN}-dbg += "${libdir}/gstreamer-0.10/.debug/"
 do_stage() {
 	autotools_stage_all
 }
-
-PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
