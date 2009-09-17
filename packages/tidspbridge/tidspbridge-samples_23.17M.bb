@@ -8,7 +8,7 @@ DEPENDS = "tidspbridge-bios-native \
 FILES_${PN}="/dspbridge"
 
 CCASE_SPEC = "%\
-	      element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_DB20090908%\
+	      element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_DB20090916%\
 	      element /vobs/SDS/Source/Bridge/dsp/... -error%\
 	      element * /main/LATEST%"
 
