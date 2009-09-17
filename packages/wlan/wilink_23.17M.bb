@@ -11,8 +11,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-zoom2-(alpha|beta)"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX-WCG-WLAN_RLS_L23-17-M1%\
-	element /vobs/WCGDev/... LINUX-WCG-WLAN_RLS_L23-17-M1%\
+	element /vobs/WiLink/... LINUX_RLS_DB20090916%\
+	element /vobs/WCGDev/... LINUX_RLS_DB20090916%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WiLink/ \
@@ -28,7 +28,7 @@ SRC_URI = "file://fix-libestadrv-makefile.diff;patch=1\
 	"
 
 PACKAGES = "${PN}"
-FILES_${PN} += "/wlan /etc"
+FILES_${PN} += "/wlan"
 
 # nasty hack for the moment.  Will fix this in upstream makefiles for L23.13.
 do_configure () {
