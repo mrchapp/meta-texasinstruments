@@ -4,7 +4,7 @@ inherit base
 
 SDOSERVER="http://www.sanb.design.ti.com/tisb_releases"
 
-SDO_INSTALL_DIR = ${STAGING_BINDIR}/dspbridge/tools
+SDO_INSTALL_DIR = ${STAGING_BINDIR}/titools
 
 SRC_URI = "${SDOSERVER}/${SDOPATH}"
 
