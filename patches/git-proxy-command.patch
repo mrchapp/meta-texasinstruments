@@ -2,7 +2,7 @@ Index: scripts/poky-git-proxy-command
 ===================================================================
 --- scripts/poky-git-proxy-command	(revision 5728)
 +++ scripts/poky-git-proxy-command	(working copy)
-@@ -1,10 +1,25 @@
+@@ -1,10 +1,24 @@
 -#! /bin/bash
 +#!/bin/bash
  
@@ -33,8 +33,7 @@ Index: scripts/poky-git-proxy-command
 +if [ $use_proxy = 0 ]; then
 +	(cat | socket $1 $2)
 +else
-+	(echo "CONNECT $1:$2 HTTP/1.0"; echo; cat ) | socket \
-+	$GIT_PROXY_HOST $GIT_PROXY_PORT | (read a; read a; cat)
++	exec corkscrew $GIT_PROXY_HOST $GIT_PROXY_PORT $*
 +fi
 +
 +
