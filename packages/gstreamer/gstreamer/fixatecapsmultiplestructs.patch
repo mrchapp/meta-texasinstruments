@@ -1,0 +1,44 @@
+From 4b8126eefaaf544937e57238dc5487d71c3d19fb Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Wed, 9 Sep 2009 15:37:11 -0500
+Subject: [PATCH 1/4] make gst_pad_fixate_caps() return fixed caps even if there are multiple structs
+
+The default gst_pad_fixate_caps() previously would only fixate each individual struct.  But in case there are multiple structs, the resulting caps would still not be fixed.  In the spirit of how individual structs are fixated, this patch changes gst_pad_fixate_caps() to remove all but the first struct.
+---
+ gst/gstpad.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/gst/gstpad.c b/gst/gstpad.c
+index cbcd25c..51fa6b0 100644
+--- a/gst/gstpad.c
++++ b/gst/gstpad.c
+@@ -2344,7 +2344,7 @@ void
+ gst_pad_fixate_caps (GstPad * pad, GstCaps * caps)
+ {
+   GstPadFixateCapsFunction fixatefunc;
+-  guint n, len;
++  guint len;
+ 
+   g_return_if_fail (GST_IS_PAD (pad));
+   g_return_if_fail (caps != NULL);
+@@ -2359,11 +2359,15 @@ gst_pad_fixate_caps (GstPad * pad, GstCaps * caps)
+ 
+   /* default fixation */
+   len = gst_caps_get_size (caps);
+-  for (n = 0; n < len; n++) {
+-    GstStructure *s = gst_caps_get_structure (caps, n);
++  if (len > 0) {
++    GstStructure *s = gst_caps_get_structure (caps, 0);
+ 
+     gst_structure_foreach (s, gst_pad_default_fixate, s);
+   }
++
++  if (len > 1) {
++    gst_caps_truncate (caps);
++  }
+ }
+ 
+ /* Default accept caps implementation just checks against
+-- 
+1.6.3.2
+

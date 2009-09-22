@@ -12,6 +12,7 @@ inherit autotools pkgconfig
 SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
            file://common-20090628.tar.gz \
            file://buffer-alignment.patch;patch=1 \
+	   file://fixatecapsmultiplestructs.patch;patch=1 \
            ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} \
           "
 SRCREV = "2cb16ad7aa773c7b1415cd599524727ad874c4b8"
