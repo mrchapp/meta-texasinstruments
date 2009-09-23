@@ -1,22 +1,25 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge Socket Node compilation."
 LICENSE = "LGPL"
-PR = "r1"
+PR = "r0"
 
 DEPENDS = " \
-	   tidspbridge-bios \
-	   tidspbridge-cgt7x \
-       tidspbridge-fc \
-       tidspbridge-xdc \
-	   tidspbridge-ipc \
-	   tidspbridge-dllcreate"
+    titools-bios \
+    titools-cgt6x \
+    titools-fc \
+    titools-xdc \
+    titools-ipc \
+    tidspbridge-dllcreate"
 
-
-FILES_${PN}="/dspbridge"
+PACKAGES = "${PN}-dev ${PN}-dbg ${PN}"
+#FILES_${PN}-dev = "/dspbridge/exports/lib/lib*.so"
+#FILES_${PN}-dbg += "/dspbridge/exports/lib/.debug"
+FILES_${PN}-dbg += "/dspbridge/.debug"
+FILES_${PN} = "/dspbridge"
 
 inherit ccasefetch
 
-PV = "5.0+cc+${SRCREV}"
+PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
 	      element /vobs/WTSD_MultiCoreSW/Tesla/Bridge/... ${SRCREV}%\
@@ -28,8 +31,8 @@ CCASE_PATHCOMPONENT = "Bridge"
 CCASE_PATHCOMPONENTS = "3"
 
 ENV_VAR = " \
-        DEPOT=${STAGING_BINDIR}/dspbridge/tools \
-	    DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
+        DEPOT=${STAGING_BINDIR}/titools \
+        DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
         "       
 
 SRC_URI = "file://tidspbridge.patch;patch=1"
