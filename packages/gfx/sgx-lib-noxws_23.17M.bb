@@ -33,7 +33,7 @@ do_chmod() {
 do_compile() {
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} BISON=bison-1.875 V=1 SUPPORT_XWS=0
+		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} BISON=/usr/bin/bison V=1 SUPPORT_XWS=0
 }
 
 do_install() {
@@ -69,7 +69,6 @@ do_install() {
 	install -m 755 sgx_blit_test ${D}${bindir}
 	install -m 755 sgx_flip_test ${D}${bindir}
 	install -m 755 sgx_render_flip_test ${D}${bindir}
-	install -m 755 sgx_render_test ${D}${bindir}
 	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
 
