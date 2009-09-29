@@ -6,7 +6,7 @@ PR = "r1"
 DEPENDS = " \
    baseimage-masterconfig \
    tidspbridge-samples \
-"
+   "
 
 inherit xdc ccasefetch
 
