@@ -4,13 +4,13 @@ SECTION = "multimedia"
 PRIORITY = "optional"
 LICENSE = "LGPL"
 HOMEPAGE = "http://www.gstreamer.net/"
-PR = "r1"
+PR = "r2"
 DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native ${TTIF_DEPENDS}"
 
 inherit autotools pkgconfig
 
 SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
-           file://common-20090628.tar.gz \
+           file://common-20090928.tar.gz \
            file://buffer-alignment.patch;patch=1 \
 	   file://fixatecapsmultiplestructs.patch;patch=1 \
            ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} \
@@ -24,7 +24,7 @@ EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=
 do_configure_prepend() {
 	# This m4 file contains nastiness which conflicts with libtool 2.2.2
 	rm -f ${S}/common/m4/lib-link.m4 || true
-	mv ${WORKDIR}/common-20090628/* ${S}/common/
+	mv ${WORKDIR}/common-20090928/* ${S}/common/
 	(cd ${S}/; NOCONFIGURE=1 ./autogen.sh)
 }
 
