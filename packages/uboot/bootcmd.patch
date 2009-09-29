@@ -1,0 +1,14 @@
+--- a/include/configs/omap4430sdp.h
++++ b/include/configs/omap4430sdp.h
+@@ -131,7 +131,8 @@
+        "bootcmd=go 0x80008000\0"
+ #else
+-#define CONFIG_BOOTDELAY         3
++#define CONFIG_BOOTDELAY         300
+-
++#define CONFIG_EXTRA_ENV_SETTINGS \
++	"bootcmd=set bootargs root=/dev/ram0 rw mem=114M console=ttyS0,115200n8 initrd=0x81600000,40M ramdisk_size=40960; bootm 0x80300000\0"
+ #endif /*CONFIG_4430ZEBU */
+ 
+ #ifdef NFS_BOOT_DEFAULTS
+
