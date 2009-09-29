@@ -1,15 +1,14 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Baseimage."
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r1"
 
 DEPENDS = " \
    baseimage-masterconfig \
    tidspbridge-samples \
 "
 
-
-inherit ccasefetch
+inherit xdc ccasefetch
 
 PV = "4.0+cc+${SRCREV}"
 
@@ -38,54 +37,35 @@ CCASE_PATHFETCH = " \
    /vobs/wtbu/OMAPSW_DSP/system/utils \
    "
 
-CCASE_PATHCOMPONENT = "OMAPSW_DSP"
-CCASE_PATHCOMPONENTS = "2"
+CCASE_PATHCOMPONENT = "wtbu"
+CCASE_PATHCOMPONENTS = "1"
 
-ENV_VAR = " \
-   DEPOT=${STAGING_BINDIR}/dspbridge/tools \
-   DSPMAKEROOT=${S}/make \
-   DBS_BRIDGE_DIR_C64=${STAGING_BINDIR}/dspbridge/dsp \
-   "
+XDCPATH="\
+${STAGING_BINDIR}/dspbridge/dsp;\
+${STAGING_BINDIR}/dspbridge/dsp/bdsptools/packages;\
+${S}/OMAPSW_DSP;\
+"        
 
-SRC_URI = "file://baseimage-linux-build.patch;patch=1"
-        
+XDCBUILDCFG="${S}/OMAPSW_DSP/make/config.bld"
 
-do_compile() {
+XDCBUILDROOT="${S}/OMAPSW_DSP/system/baseimage"
 
-   cd ${S}/system/baseimage
-
-## Getting system files
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/utils/* ${S}/system/utils
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/inst2/* ${S}/system/inst2
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/avsync/* ${S}/system/avsync
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/dasf/* ${S}/system/dasf
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/hal/* ${S}/system/hal
-#  cp -fa ${STAGING_BINDIR}/dspbridge/system/tmon/* ${S}/system/tmon
-#
-#  mkdir -p ${S}/make 
-#  cp -fa ${STAGING_BINDIR}/dspbridge/make/* ${S}/make
-#
-#  mkdir -p ${S}/audio/alg/SampleRateConverter
-#  cp -fa ${STAGING_BINDIR}/dspbridge/audio/alg/SampleRateConverter/* ${S}/audio/alg/SampleRateConverter    
-#
-
-  # import the stupid masterconfig files
-  mkdir -p ${S}/include
-  cp -fa ${STAGING_INCDIR}/dspbridge/include/MasterConfig.* ${S}/include
-
-  ${ENV_VAR} oe_runmake -f gmakefile omap4430
+do_compile_prepend() {
+    # import the stupid masterconfig files
+    mkdir -p ${S}/OMAPSW_DSP/include
+    cp -fa ${STAGING_INCDIR}/dspbridge/include/MasterConfig.* ${S}/OMAPSW_DSP/include
 }
 
 
 # we need to stage baseimage so that we can later build socket nodes
 do_stage() {
-	install -d ${STAGING_BINDIR}/dspbridge
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge
+    install -d ${STAGING_BINDIR}/dspbridge
+    cp -a ${S}/* ${STAGING_BINDIR}/dspbridge
 }
 
 do_install() {
-  install -d ${D}${base_libdir}/dsp
-  install -m 0644 ${S}/system/baseimage/src/baseimage_tiomap4430.dof64T ${D}${base_libdir}/dsp
+    install -d ${D}${base_libdir}/dsp
+    install -m 0644 ${S}/OMAPSW_DSP/system/baseimage/baseimage_tiomap4430.dof64T ${D}${base_libdir}/dsp
 }
 
 FILES_${PN}="${base_libdir}/dsp"
