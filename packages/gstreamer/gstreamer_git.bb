@@ -4,7 +4,7 @@ SECTION = "multimedia"
 PRIORITY = "optional"
 LICENSE = "LGPL"
 HOMEPAGE = "http://www.gstreamer.net/"
-PR = "r2"
+PR = "r3"
 DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native ${TTIF_DEPENDS}"
 
 inherit autotools pkgconfig
@@ -15,7 +15,7 @@ SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
 	   file://fixatecapsmultiplestructs.patch;patch=1 \
            ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} \
           "
-SRCREV = "2cb16ad7aa773c7b1415cd599524727ad874c4b8"
+SRCREV = "95c438cf85db2be7c0d457048b207af84ae8f9c8"
 S = "${WORKDIR}/git"
 
 EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=no --disable-examples --disable-tests --disable-valgrind --disable-debug"
