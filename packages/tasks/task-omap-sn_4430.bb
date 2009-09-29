@@ -10,17 +10,9 @@ ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
     tisocketnode-usn \
-    \
     tisocketnode-mp3 \
     tisocketnode-mpeg4aacdec \
     tisocketnode-mpeg4aacenc \
-    \
-    \
-    \
-    "
-
-
-DEPENDS = "\
-    tisocketnode-algo \
-    tisocketnode-nmu-plc-vad \
+    tisocketnode-nbamrenc \
+    tisocketnode-nbamrdec \
     "
