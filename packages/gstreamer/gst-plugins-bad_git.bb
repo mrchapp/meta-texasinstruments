@@ -5,9 +5,14 @@ PR="r4"
 SRC_URI += "file://trace-fix.patch;patch=1"
 
 EXTRA_OECONF += "--disable-examples --disable-experimental --disable-sdl --disable-cdaudio \
-		--with-plugins=flv,musicbrainz,wavpack,ivorbis,amrwb,libmms,freeze,rtpmanager,aacparse"
+		--with-plugins=flv,musicbrainz,wavpack,ivorbis,amrwb,libmms,freeze,rtpmanager,aacparse,qtmux"
 
 ARM_INSTRUCTION_SET = "arm"
 
-SRCREV = "44f0d31ba385ee644a8bd64efc64679c2e92e7eb"
+SRCREV = "a5e53bd26d8e48d1a2e62c700fa51df917459581"
 
+# override the SRC_URI from gst-plugins-git.inc to pull from our
+# fork (can be removed when jpegparser is integrated upstream):
+SRC_URI = "git://github.com/JJCG/gst-plugins-bad.git;protocol=git;branch=jpegparser3 \
+	   file://common-20090928.tar.gz \
+	   "
