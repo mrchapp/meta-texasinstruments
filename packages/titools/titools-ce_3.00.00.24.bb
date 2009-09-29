@@ -6,7 +6,7 @@ PR = "r0"
 
 inherit sdotools-tar
 
-SDOVERS = 3_00_00_22
+SDOVERS = 3_00_00_24
 
 SDOFILE = codec_engine_${SDOVERS}.tar.gz
 
