@@ -1,4 +1,3 @@
-PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Baseimage."
 LICENSE = "LGPL"
 PR = "r1"
@@ -40,7 +39,7 @@ CCASE_PATHFETCH = " \
 CCASE_PATHCOMPONENT = "wtbu"
 CCASE_PATHCOMPONENTS = "1"
 
-XDCPATH="\
+XDCPATH += "\
 ${STAGING_BINDIR}/dspbridge/dsp;\
 ${STAGING_BINDIR}/dspbridge/dsp/bdsptools/packages;\
 ${S}/OMAPSW_DSP;\

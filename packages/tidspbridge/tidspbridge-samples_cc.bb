@@ -1,4 +1,3 @@
-PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU/DSP Bridge Socket Node compilation."
 LICENSE = "LGPL"
 PR = "r0"
@@ -33,6 +32,7 @@ CCASE_PATHCOMPONENTS = "3"
 ENV_VAR = " \
         DEPOT=${STAGING_BINDIR}/titools \
         DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
+        FC_VER=3_00_00_48_eng\
         "       
 
 SRC_URI = "file://tidspbridge.patch;patch=1"
