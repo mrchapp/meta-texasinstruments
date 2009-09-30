@@ -14,8 +14,6 @@ ADD_DISTRO_FEATURES_omap-3430sdp ?= "   ${@base_contains("DISTRO_FEATURES", "720
 
 
 do_configure_prepend() {
-	mv ${S}/arch/arm/configs/omap_4430sdp_defconfig ${S}/arch/arm/configs/omap_4430sdp_defconfig_ori
-        mv ${WORKDIR}/defconfig-omap-4430sdp ${S}/arch/arm/configs/omap_4430sdp_defconfig
 
 	if [ -f '${WORKDIR}/defconfig-${MACHINE}' ]; then
 		rm -f ${S}/.config || true
@@ -47,6 +45,13 @@ do_configure_prepend() {
                                 ;;
                         omap-4430sdp)
                                 yes '' | oe_runmake omap_4430sdp_defconfig
+                                sed -i "s/CONFIG_SYSLINK_PROC=m/CONFIG_SYSLINK_PROC=y/" ${S}/.config
+                                sed -i "s/CONFIG_SYSLINK_PROC4430=m/CONFIG_SYSLINK_PROC4430=y/" ${S}/.config
+                                sed -i "s/CONFIG_MPU_BRIDGE_NOTIFY=m/CONFIG_MPU_BRIDGE_NOTIFY=y/" ${S}/.config
+                                sed -i "s/CONFIG_NOTIFY_TESLA=m/CONFIG_NOTIFY_TESLA=y/" ${S}/.config
+                                sed -i "s/CONFIG_NOTIFY_DUCATI=m/CONFIG_NOTIFY_DUCATI=y/" ${S}/.config
+                                sed -i "s/CONFIG_MPU_SYSLINK_IPC=m/CONFIG_MPU_SYSLINK_IPC=y/" ${S}/.config
+                                sed -i "s/# CONFIG_MPU_BRIDGE is not set/CONFIG_MPU_BRIDGE=y\nCONFIG_BRIDGE_MEMPOOL_SIZE=0x600000\n# CONFIG_BRIDGE_DEBUG is not set/" ${S}/.config
                                 ;;
                         *)
 				yes '' | oe_runmake ${MACHINE}_defconfig
