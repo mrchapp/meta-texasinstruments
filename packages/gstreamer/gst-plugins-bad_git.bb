@@ -1,11 +1,11 @@
 require gst-plugins-git.inc
-DEPENDS += "gst-plugins-base libmusicbrainz tremor amrwb libmms"
-PR="r4"
+DEPENDS += "gst-plugins-base libmusicbrainz tremor libmms opencore-amr"
+PR="r5"
 
 SRC_URI += "file://trace-fix.patch;patch=1"
 
 EXTRA_OECONF += "--disable-examples --disable-experimental --disable-sdl --disable-cdaudio \
-		--with-plugins=flv,musicbrainz,wavpack,ivorbis,amrwb,libmms,freeze,rtpmanager,aacparse,qtmux"
+		--with-plugins=flv,musicbrainz,wavpack,ivorbis,amrwbenc,libmms,freeze,rtpmanager,aacparse,qtmux"
 
 ARM_INSTRUCTION_SET = "arm"
 
