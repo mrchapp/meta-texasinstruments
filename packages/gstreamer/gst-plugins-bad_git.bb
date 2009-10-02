@@ -1,6 +1,6 @@
 require gst-plugins-git.inc
-DEPENDS += "gst-plugins-base libmusicbrainz tremor libmms opencore-amr"
-PR="r6"
+DEPENDS += "gst-plugins-base libmusicbrainz tremor libmms amrwb"
+PR="r7"
 
 SRC_URI += "file://trace-fix.patch;patch=1"
 
