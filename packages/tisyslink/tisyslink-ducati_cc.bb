@@ -27,7 +27,6 @@ do_compile() {
     chmod -R +w ${S}/*
     export ${COFFBLD_tidspbridge-ducatisamples}
     export DEPOT=${STAGING_BINDIR}/titools
-    export XDCARGS='${PARALLEL_MAKE}'
     oe_runmake -f gmakefile .ducati_samples  
 }
 

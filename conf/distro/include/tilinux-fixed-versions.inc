@@ -38,8 +38,8 @@ PREFERRED_VERSION_titools-xdais  =          "7.00.00.18.eng"
 # Ducati syslink
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.0.12"
 PREFERRED_VERSION_tisyslink-tiler    =      "24.0.11"
-SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.11-PRE"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.07.00.00"
+SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.11"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 
 # baseimage
 SRCREV_pn-baseimage ?=				        "DSP-DASF-SYSTEM-TESLA_RLS_4.2"

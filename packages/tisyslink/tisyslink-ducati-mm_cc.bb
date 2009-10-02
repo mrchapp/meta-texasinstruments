@@ -19,7 +19,6 @@ inherit xdc ccasefetch
 PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-   element /vobs/WTSD_DucatiMMSW/...   ACT_DUCATI_LINUXBUILDCHANGES.0.6%\
    element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
    element * /main/LATEST%"
 
@@ -29,11 +28,10 @@ CCASE_PATHFETCH = "/vobs/WTSD_DucatiMMSW"
 CCASE_PATHCOMPONENT = "vobs"
 CCASE_PATHCOMPONENTS = "0"
 
-#E:\Build_requirements_August\IVAHD_H264ENC\packages;
-
 XDCPATH += "\
 ${STAGING_BINDIR}/syslink/ducati/ipc;\
-$../../framework;\
+${S}/WTSD_DucatiMMSW/framework;\
+${S}/WTSD_DucatiMMSW/ext_rel/ivahd_codecs/packages;\
 "
 
 XDCBUILDROOT="${S}/WTSD_DucatiMMSW/platform/base_image"
@@ -45,9 +43,9 @@ XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 
 do_install() {
     install -d ${D}/syslink/ducati
-    cd ${S}/platform/base_image
-    install -m 0644 out/app_m3/debug/base_image_app_m3.xm3 ${D}/syslink/ducati
-    install -m 0644 out/sys_m3/debug/base_image_sys_m3.xm3 ${D}/syslink/ducati
+    cd ${S}/WTSD_DucatiMMSW/platform/base_image
+    install -m 0644 out/app_m3/debug/base_image_app_m3.xem3 ${D}/syslink/ducati
+    install -m 0644 out/sys_m3/debug/base_image_sys_m3.xem3 ${D}/syslink/ducati
 }
 
 FILES_${PN}="/syslink/ducati"

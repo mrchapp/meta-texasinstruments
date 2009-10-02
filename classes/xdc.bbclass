@@ -35,7 +35,7 @@ IPC_VER    = ${@pv_underscore("${PREFERRED_VERSION_titools-ipc}")}
 CGTARM_VER = ${PREFERRED_VERSION_titools-cgtarm}
 CGT6X_VER  = ${PREFERRED_VERSION_titools-cgt6x}
 
-XDCPATH += "\
+XDC_XDCPATH = "\
 ${TITOOLS_DIR}/bios_${BIOS_VER}/packages;\
 ${TITOOLS_DIR}/framework_components_${FC_VER}/packages;\
 ${TITOOLS_DIR}/framework_components_${FC_VER}/fctools/packages;\
@@ -48,7 +48,7 @@ ${TITOOLS_DIR}/ipc_${IPC_VER}/packages;\
 XDCROOT="${TITOOLS_DIR}/xdctools_${XDC_VER}"
 
 xdc_do_compile() {
-    export XDCPATH="${@rm_space("${XDCPATH}")}"
+    export XDCPATH="${@rm_space("${XDCPATH};${XDC_XDCPATH}")}"
     export XDCROOT="${XDCROOT}"
     export CGT_C64T_PATH="${TITOOLS_DIR}/cgt7x-${CGT6X_VER}"
     export TMS470CGTOOLPATH="${TITOOLS_DIR}/cgtarm-${CGTARM_VER}"
