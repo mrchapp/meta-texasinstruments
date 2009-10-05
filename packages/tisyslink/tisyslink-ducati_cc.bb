@@ -40,16 +40,16 @@ do_stage() {
 do_install() {
     install -d ${D}/syslink/ducati
     cd ${S}/ipc/ti/sdo/samples
-    install -m 0644 ammu/debug/*      ${D}/syslink/ducati
+#    install -m 0644 ammu/debug/*      ${D}/syslink/ducati
 #    install bios6boot/debug/* ${D}/syslink/ducati
-    install -m 0644 frameq/debug/*    ${D}/syslink/ducati
-    install -m 0644 heapbuf/debug/*   ${D}/syslink/ducati
-    install -m 0644 listmp/debug/*    ${D}/syslink/ducati
-    install -m 0644 messageq/debug/*  ${D}/syslink/ducati
-    install -m 0644 notify/debug/*    ${D}/syslink/ducati
-    install -m 0644 dmm/debug/*       ${D}/syslink/ducati
-    install -m 0644 rcm/debug/*       ${D}/syslink/ducati
-    install -m 0644 sysmgr/debug/*    ${D}/syslink/ducati
+#    install -m 0644 frameq/debug/*    ${D}/syslink/ducati
+#    install -m 0644 heapbuf/debug/*   ${D}/syslink/ducati
+#    install -m 0644 listmp/debug/*    ${D}/syslink/ducati
+#    install -m 0644 messageq/debug/*  ${D}/syslink/ducati
+#    install -m 0644 notify/debug/*    ${D}/syslink/ducati
+#    install -m 0644 dmm/debug/*       ${D}/syslink/ducati
+#    install -m 0644 rcm/debug/*       ${D}/syslink/ducati
+#    install -m 0644 sysmgr/debug/*    ${D}/syslink/ducati
 }
 
 FILES_${PN}="/syslink/ducati"

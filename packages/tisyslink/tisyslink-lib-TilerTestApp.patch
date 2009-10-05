@@ -1,0 +1,25 @@
+--- a/samples/Makefile
++++ b/samples/Makefile
+@@ -63,7 +63,7 @@
+ ipc \
+ rcm/single_test \
+ rcm/multi_test \
+-tiler \
++#tiler \
+ proc_sample/krnl 
+ 
+ # Filename must not begin with '.', '/' or '\'
+
+===================================================================
+--- a/samples/tiler/TilerTestApp.c
++++ b/samples/tiler/TilerTestApp.c
+@@ -127,7 +127,7 @@
+ 
+     if(testNo == 5) {
+         Osal_printf ("SyslinkMapUnMapTest with Malloc invoked.\n");
+-        status = SyslinkMapUnMapTest ();
++        status = SyslinkMapUnMapTest (1);
+         if (status < 0)
+             Osal_printf ("Error in SyslinkMapUnMapTest test \n");
+     }
+

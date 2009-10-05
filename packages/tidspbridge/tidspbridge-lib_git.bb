@@ -3,24 +3,21 @@ PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments MPU Bridge API."
 LICENSE = "GPL"
 PR = "r0"
-DEPENDS = " \
-	linux-tiomap \
-        "
+DEPENDS = "linux-tiomap"
+inherit pkgconfig
+
+# We need to override this and make sure it's only -j1
+PARALLEL_MAKE = "-j1"
 
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 FILES_${PN} += "${libdir}/libbridge.so ${libdir}/libqos.a"
 FILES_${PN}-dev = "${libdir}/libbridge.so.2 ${libdir}/libqos.so.2 ${libdir}/lib*.so"
 FILES_${PN}-dbg = "${libdir}/.debug"
 
-
-inherit pkgconfig
-
-S = "${WORKDIR}/git"
-
-PV = "24.0+git+${SRCREV}"
+PV = "24.0.12+git+${SRCREV}"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git"
-
+S = "${WORKDIR}/git"
 
 do_compile_prepend() {
          install -m 0644 ${FILESDIR}/libdspbridge.pc ${S}/libdspbridge.pc 

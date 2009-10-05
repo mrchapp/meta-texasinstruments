@@ -44,8 +44,8 @@ XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 do_install() {
     install -d ${D}/syslink/ducati
     cd ${S}/WTSD_DucatiMMSW/platform/base_image
-    install -m 0644 out/app_m3/debug/base_image_app_m3.xem3 ${D}/syslink/ducati
-    install -m 0644 out/sys_m3/debug/base_image_sys_m3.xem3 ${D}/syslink/ducati
+#    install -m 0644 out/app_m3/debug/base_image_app_m3.xem3 ${D}/syslink/ducati
+#    install -m 0644 out/sys_m3/debug/base_image_sys_m3.xem3 ${D}/syslink/ducati
 }
 
 FILES_${PN}="/syslink/ducati"

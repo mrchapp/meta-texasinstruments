@@ -3,15 +3,15 @@ PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Syslink libraries."
 LICENSE = "GPL"
 PR = "r0"
-DEPENDS = " \
-        linux-tiomap \
-	tidspbridge-tiler \
-        "
+DEPENDS = "linux-tiomap"
+RDEPENDS= "tisyslink-memmgr"
+inherit pkgconfig
+
+# We need to override this and make sure it's only -j1
+PARALLEL_MAKE = "-j1"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
-# We need to override this and make sure it's only -j1
-PARALLEL_MAKE = "-j1"
 
 FILES_${PN} = "${libdir}/lib*.so \
 		${base_libdir}/lib*.so \
@@ -32,6 +32,7 @@ SRC_URI = "\
     file://install_ducati_syslink.patch;patch=1 \
     file://install_tesla.patch;patch=1 \
     file://install_syslink.patch;patch=1 \
+    file://tisyslink-lib-TilerTestApp.patch;patch=1 \
     "
 
 S = "${WORKDIR}/git"
@@ -43,27 +44,31 @@ do_compile() {
 	install -d ${S}/target/lib
 	cd ${S}/target/lib
 	cp ${STAGING_LIBDIR}/libgcc.a .
+
         cp -prf ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/lib/libpthread-2.8.so .
         cp -prf ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/lib/libpthread.so.0 .
         cp -prf ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/lib/librt.so.1 .
         cp -prf ${EXTERNAL_TOOLCHAIN}/arm-none-linux-gnueabi/libc/lib/librt-2.8.so .
-        ln -s libpthread.so.0 libpthread.so
-        ln -s librt.so.1 librt.so
-	oe_libinstall -so -C ${STAGING_LIBDIR} libdmmdrv ${S}/target/lib
+        ln -s -f libpthread.so.0 libpthread.so
+        ln -s -f librt.so.1 librt.so
+#	oe_libinstall -so -C ${STAGING_LIBDIR} libdmmdrv ${S}/target/lib
 	oe_libinstall -so -C ${STAGING_DIR_TARGET}${layout_base_libdir} libgcc_s ${S}/target/lib
 
         cd ${S}/api/src
 
 	oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS=${AR%-*}- -f Makefile clean
 
         oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS=${AR%-*}- -f Makefile
 
 	oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS=${AR%-*}- -f Makefile install
 
 
@@ -75,24 +80,30 @@ do_compile() {
         if [ ${USE_SYSMGR} != "CONFIG_SYSLINK_USE_SYSMGR=y" ]
         then
 		oenote "Deselecting SYS Manager for daemons: ${USE_SYSMGR}"
-		sed -i 's/^CFLAGS += -DSYSLINK_USE_SYSMGR/#CFLAGS += -DSYSLINK_USE_SYSMGR/g' tiler/Makefile
-                sed -i 's/^SH_LIBS        += sysmgr sysmemmgr/#SH_LIBS        += sysmgr sysmemmgr/g' tiler/Makefile
+		sed -i 's/^CFLAGS += -DSYSLINK_USE_SYSMGR/#CFLAGS += -DSYSLINK_USE_SYSMGR/g' ${S}/daemons/syslink/Makefile
+                sed -i 's/^SH_LIBS        += sysmgr sysmemmgr/#SH_LIBS        += sysmgr sysmemmgr/g' ${S}/daemons/syslink/Makefile
         else
 		oenote "Selecting SYS Manager for daemons: ${USE_SYSMGR}"
-		sed -i 's/^#CFLAGS += -DSYSLINK_USE_SYSMGR/CFLAGS += -DSYSLINK_USE_SYSMGR/g' tiler/Makefile
-                sed -i 's/^#SH_LIBS        += sysmgr sysmemmgr/SH_LIBS        += sysmgr sysmemmgr/g' tiler/Makefile
+		sed -i 's/^#CFLAGS += -DSYSLINK_USE_SYSMGR/CFLAGS += -DSYSLINK_USE_SYSMGR/g' ${S}/daemons/syslink/Makefile
+                sed -i 's/^#SH_LIBS        += sysmgr sysmemmgr/SH_LIBS        += sysmgr sysmemmgr/g' ${S}/daemons/syslink/Makefile
         fi
 
 	oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
+		LIBINCLUDES=${STAGING_LIBDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile clean
 
         oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
+		LIBINCLUDES=${STAGING_LIBDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile
 
         oe_runmake  \
                 PREFIX=${S} TGTROOT=${S} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
+		LIBINCLUDES=${STAGING_LIBDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile install
 
 
@@ -138,18 +149,24 @@ do_compile() {
                 KRNLSRC=`cat ${STAGING_KERNEL_DIR}/kernel-source` \
                 PREFIX=${S} TGTROOT=${S} \
                 ARCH=arm \
+		LIBINCLUDES=${STAGING_LIBDIR} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile clean
 
 	oe_runmake \
 		KRNLSRC=`cat ${STAGING_KERNEL_DIR}/kernel-source` \
                 PREFIX=${S} TGTROOT=${S} \
                 ARCH=arm \
+		LIBINCLUDES=${STAGING_LIBDIR} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile
 
 	oe_runmake \
                 KRNLSRC=`cat ${STAGING_KERNEL_DIR}/kernel-source` \
                 PREFIX=${S} TGTROOT=${S} \
                 ARCH=arm \
+		LIBINCLUDES=${STAGING_LIBDIR} \
+		TILER_INC_PATH=${STAGING_INCDIR} \
                 CROSS_COMPILE=${AR%-*}- -f Makefile install
 
         export LDFLAGS=$OLD_LDFLAGS
@@ -183,22 +200,22 @@ do_install() {
 
 	oenote "Installing ducati scripts: `ls ${S}/scripts` "
 	install -d ${D}/dspbridge
-	install -D ${S}/target/notify/notifyping.out ${D}/dspbridge/
-	install -D ${S}/target/procmgrapps/procmgrapp.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/GatePetersonApp.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/SharedRegionApp.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/messageQApp.out ${D}/dspbridge/
+	install -D ${S}/target/syslink/notifyping.out ${D}/dspbridge/
+	install -D ${S}/target/syslink/procMgrApp.out ${D}/dspbridge/
+	install -D ${S}/samples/ipc/gatePeterson/usr/gatePetersonApp.out ${D}/dspbridge/
+	install -D ${S}/samples/ipc/sharedRegion/usr/sharedRegionApp.out ${D}/dspbridge/
+	install -D ${S}/samples/ipc/messageQ/usr/messageQApp.out ${D}/dspbridge/
 	install -D ${S}/samples/ipc/messageQ/usr/messageQApp1.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/listMPApp.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/heapBufApp.out ${D}/dspbridge/
-	install -D ${S}/target/ipc/NameServerApp.out ${D}/dspbridge/
-	install -D ${S}/target/target/rcm_multitest.out ${D}/dspbridge/
-	install -D ${S}/target/target/rcm_singletest.out ${D}/dspbridge/
-	install -D ${S}/target/procmgrapps/ducati_load.out ${D}/dspbridge/
-	install -D ${S}/target/target/tiler_daemon.out ${D}/dspbridge/
+	install -D ${S}/target/syslink/listMPApp.out ${D}/dspbridge/
+	install -D ${S}/target/syslink/heapBufApp.out ${D}/dspbridge/
+	install -D ${S}/samples/ipc/nameServer/usr/nameServerApp.out ${D}/dspbridge/
+	install -D ${S}/samples/rcm/multi_test/rcm_multitest.out ${D}/dspbridge/
+	install -D ${S}/samples/rcm/single_test/rcm_singletest.out ${D}/dspbridge/
+	install -D ${S}/samples/procmgr/ducati_load/ducati_load.out ${D}/dspbridge/
+	install -D ${S}/daemons/syslink/syslink_daemon.out ${D}/dspbridge/
 
-	oenote "Installing modules..."
-	install -D ${S}/target/binaries/procmgr_app.ko ${D}/dspbridge/
+#	oenote "Installing modules..."
+#	install -D ${S}/target/binaries/procmgr_app.ko ${D}/dspbridge/
 
 	oenote "Installing install scripts..."
 	install -D ${S}/scripts/install_syslink ${D}/dspbridge/

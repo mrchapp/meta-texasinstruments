@@ -5,6 +5,7 @@
 DESCRIPTION = "Tasks for TI's Socket Nodes for OMAP4"
 PR = "r1"
 
+PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
 
 RDEPENDS_task-omap-sn = "\

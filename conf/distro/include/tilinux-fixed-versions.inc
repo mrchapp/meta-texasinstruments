@@ -37,7 +37,8 @@ PREFERRED_VERSION_titools-xdais  =          "7.00.00.18.eng"
 
 # Ducati syslink
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.0.12"
-PREFERRED_VERSION_tisyslink-tiler    =      "24.0.11"
+SRCREV_pn-tisyslink-memmgr           =      "l24.0.12.rel"
+SRCREV_pn-tisyslink-d2c              =      "l24.0.12.rel"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.11"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 

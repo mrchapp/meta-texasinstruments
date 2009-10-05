@@ -11,8 +11,8 @@ ALLOW_EMPTY = "1"
 RDEPENDS = "\
     tisyslink-lib\
     tisyslink-ducati\
-    tisyslink-tiler\
+    tisyslink-memmgr\
+    tisyslink-d2c\
+    tisyslink-ducati-mm \
    "
-
-#    tisyslink-ducati-mm \
 
