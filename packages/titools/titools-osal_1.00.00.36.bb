@@ -2,13 +2,27 @@ SECTION = "toolchains"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments OSAL"
 LICENSE = "Texas Instruments"
-PR = "r0"
+PR = "r1"
 
-inherit sdotools-tar
+#inherit sdotools-tar
+#
+#SDOVERS = 1_00_00_36
+#
+#SDOFILE = osal_${SDOVERS}.tar.gz
+#
+#SDOPATH = "OSAL/${SDOVERS}/exports/${SDOFILE}"
 
-SDOVERS = 1_00_00_36
+inherit dfetch
 
-SDOFILE = osal_${SDOVERS}.tar.gz
+DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/osal_1_00_00_36"
+DIRAC_PATHCOMPONENT = "osal_1_00_00_36"
+DIRAC_PATHCOMPONENTS = 4 
 
-SDOPATH = "OSAL/${SDOVERS}/exports/${SDOFILE}"
+do_stage() {
+	chmod -R +w ${S}/*
+	install -d ${STAGING_BINDIR}/titools/osal_1_00_00_36
+	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
+}
+
+
 
