@@ -1,0 +1,600 @@
+From a65aa214d2859da90dbd4328d0e0eabf7c4ec14e Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?= <vjaquez@igalia.com>
+Date: Wed, 19 Aug 2009 13:32:54 +0200
+Subject: [PATCH 2/3] jpegparse: This is a combination of 18 commits.
+
+The 18 commits are:
+* jpegparse: dettach it from the jpeg plugin
+* jpegparse: remove the < 0.10.24 compatibility code
+* jpegparse: change src pad capabilities
+* jpegparse: caps in source pad are dynamically set
+* jpegparse: header parse and caps handling
+* jpegparse: add progressive field in caps
+* jpegparse: reset params at pipeline stop
+* jpegparse: don't impose image size
+* jpegparse: add the progressive field in the static pad and reset params.
+* jpegparse: add color format field in caps
+* jpegparse: initial sink pad caps negotiation
+* jpegparse: handling framerate
+* jpegparse: decrease the marker length size to 4 (6-2)
+* jpegparse: error handling.
+* jpegparse: the attributes are initialized at change state
+* jpegparse: documentation
+* jpegparse: decrease the marker length
+* jpegparse: Use interlaced caps instead of progressive according to bug 163577
+---
+ docs/plugins/Makefile.am                          |    1 +
+ docs/plugins/gst-plugins-bad-plugins-docs.sgml    |    2 +
+ docs/plugins/gst-plugins-bad-plugins-sections.txt |   14 +
+ gst/jpegparse/gstjpegparse.c                      |  305 ++++++++++++++++-----
+ gst/jpegparse/gstjpegparse.h                      |   30 ++-
+ 5 files changed, 281 insertions(+), 71 deletions(-)
+
+diff --git a/docs/plugins/Makefile.am b/docs/plugins/Makefile.am
+index d828725..cf4ad30 100644
+--- a/docs/plugins/Makefile.am
++++ b/docs/plugins/Makefile.am
+@@ -137,6 +137,7 @@ EXTRA_HFILES = \
+ 	$(top_srcdir)/gst/festival/gstfestival.h \
+ 	$(top_srcdir)/gst/legacyresample/gstlegacyresample.h \
+ 	$(top_srcdir)/gst/liveadder/liveadder.h \
++	$(top_srcdir)/gst/jpegparse/gstjpegparse.h \
+ 	$(top_srcdir)/gst/mxf/mxfdemux.h \
+ 	$(top_srcdir)/gst/mxf/mxfmux.h \
+ 	$(top_srcdir)/gst/nuvdemux/gstnuvdemux.h \
+diff --git a/docs/plugins/gst-plugins-bad-plugins-docs.sgml b/docs/plugins/gst-plugins-bad-plugins-docs.sgml
+index bf73a02..48ccfa6 100644
+--- a/docs/plugins/gst-plugins-bad-plugins-docs.sgml
++++ b/docs/plugins/gst-plugins-bad-plugins-docs.sgml
+@@ -43,6 +43,7 @@
+     <xi:include href="xml/element-ivorbisdec.xml" />
+     <xi:include href="xml/element-jackaudiosrc.xml" />
+     <xi:include href="xml/element-jackaudiosink.xml" />
++    <xi:include href="xml/element-jpegparse.xml" />
+     <xi:include href="xml/element-kateenc.xml" />
+     <xi:include href="xml/element-katedec.xml" />
+     <xi:include href="xml/element-kateparse.xml" />
+@@ -120,6 +121,7 @@
+     <xi:include href="xml/plugin-gsm.xml" />
+     <xi:include href="xml/plugin-h264parse.xml" />
+     <xi:include href="xml/plugin-jack.xml" />
++    <xi:include href="xml/plugin-jpegparse.xml" />
+     <xi:include href="xml/plugin-kate.xml" />
+     <xi:include href="xml/plugin-ladspa.xml" />
+     <xi:include href="xml/plugin-liveadder.xml" />
+diff --git a/docs/plugins/gst-plugins-bad-plugins-sections.txt b/docs/plugins/gst-plugins-bad-plugins-sections.txt
+index 8d50a95..b0100c8 100644
+--- a/docs/plugins/gst-plugins-bad-plugins-sections.txt
++++ b/docs/plugins/gst-plugins-bad-plugins-sections.txt
+@@ -426,6 +426,20 @@ gst_jack_audio_sink_get_type
+ </SECTION>
+ 
+ <SECTION>
++<FILE>element-jpegparse</FILE>
++<TITLE>jpegparse</TITLE>
++GstJpegParse
++<SUBSECTION Starndard>
++GstJpegParseClass
++GST_JPEG_PARSE
++GST_JPEG_PARSE_CLASS
++GST_IS_JPEG_PARSE
++GST_IS_JPEG_PARSE_CLASS
++GST_TYPE_JPEG_PARSE
++gst_jpeg_parse_get_type
++</SECTION>
++
++<SECTION>
+ <FILE>element-legacyresample</FILE>
+ <TITLE>legacyresample</TITLE>
+ GstLegacyresample
+diff --git a/gst/jpegparse/gstjpegparse.c b/gst/jpegparse/gstjpegparse.c
+index 20823e2..357ff55 100644
+--- a/gst/jpegparse/gstjpegparse.c
++++ b/gst/jpegparse/gstjpegparse.c
+@@ -3,6 +3,7 @@
+  * jpegparse: a parser for JPEG streams
+  *
+  * Copyright (C) <2009> Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
++ *                      Víctor Manuel Jáquez Leal <vjaquez@igalia.com>
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+@@ -19,33 +20,31 @@
+  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+  * Boston, MA 02111-1307, USA.
+  */
+-#ifdef HAVE_CONFIG_H
+-#include <config.h>
+-#endif
+-
+-#include <string.h>
+-
+-#include <gst/gst.h>
+-
+-#include "gstjpegparse.h"
+-#include "gst/gst-i18n-plugin.h"
+ 
+ /**
+  * SECTION:element-jpegparse
++ * @short_description: JPEG parser
+  *
+- * Parses a JPEG stream into JPEG images.  It looks for EOI boundaries to split
+- * a continuous stream into single-frame buffers.
+- *
++ * Parses a JPEG stream into JPEG images.  It looks for EOI boundaries to
++ * split a continuous stream into single-frame buffers. Also reads the
++ * image header searching for image properties such as width and height
++ * among others.
+  * <refsect2>
+  * <title>Example launch line</title>
+  * |[
+  * gst-launch -v souphttpsrc location=... ! jpegparse ! matroskamux ! filesink location=...
+  * ]|
+- * The above pipeline fetches a motion JPEG stream from an IP camera over HTTP
+- * and stores it in a matroska file.
++ * The above pipeline fetches a motion JPEG stream from an IP camera over
++ * HTTP and stores it in a matroska file.
+  * </refsect2>
+  */
+ 
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include "gstjpegparse.h"
++
+ static const GstElementDetails gst_jpeg_parse_details =
+ GST_ELEMENT_DETAILS ("JPEG stream parser",
+     "Codec/Parser/Video",
+@@ -56,14 +55,19 @@ static GstStaticPadTemplate gst_jpeg_parse_src_pad_template =
+ GST_STATIC_PAD_TEMPLATE ("src",
+     GST_PAD_SRC,
+     GST_PAD_ALWAYS,
+-    GST_STATIC_CAPS ("image/jpeg, parsed = true")
++    GST_STATIC_CAPS ("image/jpeg, "
++        "format = (fourcc) { I420, UYVY }, "
++        "width = (int) [ 0, MAX ],"
++        "height = (int) [ 0, MAX ], "
++        "interlaced = (boolean) { true, false }, "
++        "framerate = (fraction) [ 0/1, MAX ]")
+     );
+ 
+ static GstStaticPadTemplate gst_jpeg_parse_sink_pad_template =
+ GST_STATIC_PAD_TEMPLATE ("sink",
+     GST_PAD_SINK,
+     GST_PAD_ALWAYS,
+-    GST_STATIC_CAPS ("image/jpeg, parsed = false")
++    GST_STATIC_CAPS ("image/jpeg")
+     );
+ 
+ GST_DEBUG_CATEGORY_STATIC (jpeg_parse_debug);
+@@ -76,6 +80,7 @@ static void gst_jpeg_parse_class_init (GstJpegParseClass * klass);
+ static void gst_jpeg_parse_dispose (GObject * object);
+ 
+ static GstFlowReturn gst_jpeg_parse_chain (GstPad * pad, GstBuffer * buffer);
++static gboolean gst_jpeg_parse_sink_setcaps (GstPad * pad, GstCaps * caps);
+ static gboolean gst_jpeg_parse_sink_event (GstPad * pad, GstEvent * event);
+ static gboolean gst_jpeg_parse_src_event (GstPad * pad, GstEvent * event);
+ static GstStateChangeReturn gst_jpeg_parse_change_state (GstElement * element,
+@@ -126,7 +131,7 @@ gst_jpeg_parse_reset (GstJpegParse * parse)
+   }
+   parse->srcpad = NULL;
+   parse->sinkpad = NULL;
+-  parse->timestamp = GST_CLOCK_TIME_NONE;
++  parse->next_ts = GST_CLOCK_TIME_NONE;
+ }
+ 
+ static void
+@@ -142,9 +147,8 @@ gst_jpeg_parse_init (GstJpegParse * parse, GstJpegParseClass * g_class)
+       GST_DEBUG_FUNCPTR (gst_jpeg_parse_chain));
+   gst_pad_set_event_function (parse->sinkpad,
+       GST_DEBUG_FUNCPTR (gst_jpeg_parse_sink_event));
+-  gst_pad_set_caps (parse->sinkpad,
+-      gst_static_pad_template_get_caps (&gst_jpeg_parse_sink_pad_template));
+-  gst_pad_use_fixed_caps (parse->sinkpad);
++  gst_pad_set_setcaps_function (parse->sinkpad,
++      GST_DEBUG_FUNCPTR (gst_jpeg_parse_sink_setcaps));
+   gst_element_add_pad (GST_ELEMENT (parse), parse->sinkpad);
+ 
+   parse->srcpad =
+@@ -152,9 +156,6 @@ gst_jpeg_parse_init (GstJpegParse * parse, GstJpegParseClass * g_class)
+       "src");
+   gst_pad_set_event_function (parse->srcpad,
+       GST_DEBUG_FUNCPTR (gst_jpeg_parse_src_event));
+-  gst_pad_set_caps (parse->srcpad,
+-      gst_static_pad_template_get_caps (&gst_jpeg_parse_src_pad_template));
+-  gst_pad_use_fixed_caps (parse->srcpad);
+   gst_element_add_pad (GST_ELEMENT (parse), parse->srcpad);
+ 
+   parse->adapter = gst_adapter_new ();
+@@ -170,16 +171,33 @@ gst_jpeg_parse_dispose (GObject * object)
+   G_OBJECT_CLASS (parent_class)->dispose (object);
+ }
+ 
++static gboolean
++gst_jpeg_parse_sink_setcaps (GstPad * pad, GstCaps * caps)
++{
++  GstJpegParse *parse = GST_JPEG_PARSE (GST_OBJECT_PARENT (pad));
++  GstStructure *s = gst_caps_get_structure (caps, 0);
++  const GValue *framerate;
++
++  if ((framerate = gst_structure_get_value (s, "framerate")) != NULL) {
++    if (GST_VALUE_HOLDS_FRACTION (framerate)) {
++      parse->framerate_numerator = gst_value_get_fraction_numerator (framerate);
++      parse->framerate_denominator =
++          gst_value_get_fraction_denominator (framerate);
++      parse->packetized = TRUE;
++      GST_DEBUG_OBJECT (parse, "got framerate of %d/%d fps => packetized mode",
++          parse->framerate_numerator, parse->framerate_denominator);
++    }
++  }
++
++  return TRUE;
++}
++
+ /* Flush everything until the next JPEG header.  The header is considered
+  * to be the a start marker (0xff 0xd8) followed by any other marker (0xff ...).
+  * Returns TRUE if the header was found, FALSE if more data is needed. */
+ static gboolean
+ gst_jpeg_parse_skip_to_jpeg_header (GstJpegParse * parse)
+ {
+-  /* When this element was written,  gst_adapter_masked_scan_uint32() had just
+-   * been added, so we still support the manual scanning method too. */
+-#if GST_CHECK_VERSION(0,10,24) || \
+-  (GST_CHECK_VERSION(0,10,23) && GST_VERSION_NANO >= 1)
+   guint available, flush;
+   gboolean ret = TRUE;
+ 
+@@ -197,31 +215,6 @@ gst_jpeg_parse_skip_to_jpeg_header (GstJpegParse * parse)
+     gst_adapter_flush (parse->adapter, flush);
+   }
+   return ret;
+-
+-#else /* GST_CHECK_VERSION(0,10,24) */
+-  guint size;
+-
+-  while ((size = gst_adapter_available (parse->adapter)) >= 3) {
+-    const guint8 *data, *marker;
+-    guint off;
+-    data = gst_adapter_peek (parse->adapter, size);
+-
+-    if (data[0] == 0xff && data[1] == 0xd8 && data[2] == 0xff)
+-      return TRUE;
+-
+-    marker = memchr (data + 1, 0xff, size - 1 - 2);
+-    if (marker == NULL) {
+-      off = size - 1;           /* keep last byte */
+-    } else {
+-      off = marker - data;
+-    }
+-
+-    GST_LOG_OBJECT (parse, "Skipping %u bytes.", off);
+-    gst_adapter_flush (parse->adapter, off);
+-  }
+-
+-  return FALSE;
+-#endif /* GST_CHECK_VERSION(0,10,24) */
+ }
+ 
+ static inline gboolean
+@@ -352,6 +345,102 @@ gst_jpeg_parse_get_image_length (GstJpegParse * parse)
+   return start + offset;
+ }
+ 
++static gint
++gst_jpeg_parse_get_color_format (const guint8 * data)
++{
++  gint j, i, temp;
++  gshort H[4], V[4];
++  guint8 Nf = data[7];
++
++  if (Nf != 3)
++    goto done;
++
++  for (j = 0; j < Nf; j++) {
++    i = j * 3 + 7 + 2;
++    /* H[j]: upper 4 bits of a byte, horizontal sampling factor. */
++    H[j] = (0x0f & (data[i] >> 4));
++
++    /* V[j]: lower 4 bits of a byte, vertical sampling factor.   */
++    V[j] = (0x0f & data[i]);
++  }
++
++  temp = (V[0] * H[0]) / (V[1] * H[1]);
++
++  if (temp == 4 && H[0] == 2)
++    return GST_MAKE_FOURCC ('I', '4', '2', '0');
++
++done:
++  return GST_MAKE_FOURCC ('U', 'Y', 'V', 'Y');
++}
++
++static gboolean
++gst_jpeg_parse_read_header (GstJpegParse * parse, GstBuffer * buffer)
++{
++  guint8 *data;
++  gint section;
++
++  data = GST_BUFFER_DATA (buffer);
++  data += 2;                    /* skip start marker */
++
++  for (section = 0; section < 19; section++) {
++    gint a, len;
++    guint8 marker;
++
++    for (a = 0; a < 7; a++) {
++      marker = *data++;
++      if (marker != 0xff)
++        break;
++    }
++
++    if (a >= 6 || marker == 0xff)
++      return FALSE;             /* reached max number of sections */
++
++    len = GST_READ_UINT16_BE (data);
++    GST_INFO_OBJECT (parse, "marker = %x, length = %d", marker, len);
++
++    if (len < 2)
++      return FALSE;             /* invalid marker */
++
++    switch (marker) {
++      case 0xda:               /* start of scan (begins compressed data) */
++        return TRUE;
++        break;
++      case 0xd9:               /* end of image (end of datastream) */
++        GST_INFO_OBJECT (parse, "Premature EOI");
++        return FALSE;           /* premature EOI */
++        break;
++      case 0xfe:               /* comment section */
++      case 0xed:               /* non exif image tag */
++      case 0xe1:               /* exif image tag */
++        break;
++      case 0xc2:               /* interlaced jpeg */
++        parse->interlaced = TRUE;
++      case 0xc0:               /* start of frame N */
++      case 0xc1:               /* N indicates which compression process */
++      case 0xc3:
++      case 0xc5:               /* 0xc4 and 0xcc are not sof markers */
++      case 0xc6:
++      case 0xc7:
++      case 0xc9:
++      case 0xca:
++      case 0xcb:
++      case 0xcd:
++      case 0xce:
++      case 0xcf:
++        parse->height = GST_READ_UINT16_BE (data + 3);
++        parse->width = GST_READ_UINT16_BE (data + 5);
++        parse->fourcc = gst_jpeg_parse_get_color_format (data);
++        break;
++      default:
++        break;
++    }
++
++    data += len;
++  }
++
++  return FALSE;
++}
++
+ static GstFlowReturn
+ gst_jpeg_parse_push_buffer (GstJpegParse * parse, guint len)
+ {
+@@ -360,14 +449,74 @@ gst_jpeg_parse_push_buffer (GstJpegParse * parse, guint len)
+ 
+   outbuf = gst_adapter_take_buffer (parse->adapter, len);
+   if (outbuf == NULL) {
+-    GST_ERROR_OBJECT (parse, "Failed to take buffer of size %u", len);
++    GST_ELEMENT_ERROR (parse, STREAM, DECODE,
++        ("Failed to take buffer of size %u", len),
++        ("Failed to take buffer of size %u", len));
+     return GST_FLOW_ERROR;
+   }
+-  GST_BUFFER_TIMESTAMP (outbuf) = parse->timestamp;
+-  gst_buffer_set_caps (outbuf, GST_PAD_CAPS (parse->srcpad));
+-  parse->timestamp = GST_CLOCK_TIME_NONE;
+ 
+-  /* FIXME set duration? */
++  if (gst_jpeg_parse_read_header (parse, outbuf)) {
++    if (parse->width != parse->caps_width || parse->height != parse->height ||
++        parse->framerate_numerator != parse->caps_framerate_numerator ||
++        parse->framerate_denominator != parse->caps_framerate_denominator) {
++      GstCaps *caps;
++
++      /* framerate == 0/1 is a still frame */
++      if (parse->framerate_denominator == 0) {
++        parse->framerate_numerator = 0;
++        parse->framerate_denominator = 1;
++      }
++
++      caps = gst_caps_new_simple ("image/jpeg",
++          "format", GST_TYPE_FOURCC, parse->fourcc,
++          "width", G_TYPE_INT, parse->width,
++          "height", G_TYPE_INT, parse->height,
++          "framerate", GST_TYPE_FRACTION, parse->framerate_numerator,
++          parse->framerate_denominator,
++          "interlaced", G_TYPE_BOOLEAN, parse->interlaced, NULL);
++
++      if (!gst_pad_set_caps (parse->srcpad, caps)) {
++        GST_ELEMENT_ERROR (parse, CORE, NEGOTIATION,
++            ("Can't set caps to the src pad"),
++            ("Can't set caps to the src pad"));
++        return GST_FLOW_ERROR;
++      }
++
++      gst_caps_unref (caps);
++
++      parse->caps_width = parse->width;
++      parse->caps_height = parse->height;
++      parse->caps_framerate_numerator = parse->framerate_numerator;
++      parse->caps_framerate_denominator = parse->framerate_denominator;
++    }
++  } else {
++    GST_ELEMENT_ERROR (parse, STREAM, DECODE,
++        ("Failed to read the image header"),
++        ("Failed to read the image header"));
++    return GST_FLOW_ERROR;
++  }
++
++  GST_BUFFER_TIMESTAMP (outbuf) = parse->next_ts;
++
++  if (parse->packetized && GST_CLOCK_TIME_IS_VALID (parse->next_ts)) {
++    if (GST_CLOCK_TIME_IS_VALID (parse->duration)) {
++      parse->next_ts += parse->duration;
++    } else if (parse->framerate_numerator != 0) {
++      parse->duration = gst_util_uint64_scale (GST_SECOND,
++          parse->framerate_denominator, parse->framerate_numerator);
++      parse->next_ts += parse->duration;
++    } else {
++      parse->duration = GST_CLOCK_TIME_NONE;
++      parse->next_ts = GST_CLOCK_TIME_NONE;
++    }
++  } else {
++    parse->duration = GST_CLOCK_TIME_NONE;
++    parse->next_ts = GST_CLOCK_TIME_NONE;
++  }
++
++  GST_BUFFER_DURATION (outbuf) = parse->duration;
++
++  gst_buffer_set_caps (outbuf, GST_PAD_CAPS (parse->srcpad));
+ 
+   GST_LOG_OBJECT (parse, "pushing buffer (ts=%" GST_TIME_FORMAT ", len=%u)",
+       GST_TIME_ARGS (GST_BUFFER_TIMESTAMP (outbuf)), len);
+@@ -382,27 +531,35 @@ gst_jpeg_parse_chain (GstPad * pad, GstBuffer * buf)
+ {
+   GstJpegParse *parse;
+   guint len;
+-  GstClockTime timestamp;
++  GstClockTime timestamp, duration;
+   GstFlowReturn ret = GST_FLOW_OK;
+ 
+   parse = GST_JPEG_PARSE (GST_PAD_PARENT (pad));
+ 
+   timestamp = GST_BUFFER_TIMESTAMP (buf);
++  duration = GST_BUFFER_DURATION (buf);
+ 
+   gst_adapter_push (parse->adapter, buf);
+ 
+   while (ret == GST_FLOW_OK && gst_jpeg_parse_skip_to_jpeg_header (parse)) {
+-    if (G_UNLIKELY (!GST_CLOCK_TIME_IS_VALID (parse->timestamp)))
+-      parse->timestamp = timestamp;
++    if (GST_CLOCK_TIME_IS_VALID (timestamp))
++      parse->next_ts = timestamp;
++
++    if (GST_CLOCK_TIME_IS_VALID (duration))
++      parse->duration = duration;
+ 
+-    len = gst_jpeg_parse_get_image_length (parse);
+-    if (len == 0)
+-      return GST_FLOW_OK;
++    if (!parse->packetized) {
++      len = gst_jpeg_parse_get_image_length (parse);
++      if (len == 0)
++        return GST_FLOW_OK;
++    } else {
++      len = GST_BUFFER_SIZE (buf);
++    }
+ 
+     ret = gst_jpeg_parse_push_buffer (parse, len);
+   }
+ 
+-  GST_DEBUG_OBJECT (parse, "No start marker found, waiting for more data.");
++  GST_DEBUG_OBJECT (parse, "No further start marker found.");
+   return ret;
+ }
+ 
+@@ -429,7 +586,6 @@ gst_jpeg_parse_src_event (GstPad * pad, GstEvent * event)
+       /* Discard any data in the adapter.  There should have been an EOS before
+        * to flush it. */
+       gst_adapter_clear (parse->adapter);
+-      parse->timestamp = GST_CLOCK_TIME_NONE;
+       break;
+     default:
+       break;
+@@ -460,6 +616,20 @@ gst_jpeg_parse_change_state (GstElement * element, GstStateChange transition)
+ 
+   parse = GST_JPEG_PARSE (element);
+ 
++  switch (transition) {
++    case GST_STATE_CHANGE_READY_TO_PAUSED:
++      parse->next_ts = GST_CLOCK_TIME_NONE;
++      parse->width = parse->height = 0;
++      parse->framerate_numerator = 0;
++      parse->framerate_denominator = 1;
++      parse->caps_framerate_numerator = parse->caps_framerate_denominator = 0;
++      parse->caps_width = parse->caps_height = -1;
++      parse->interlaced = FALSE;
++      parse->packetized = FALSE;
++    default:
++      break;
++  }
++
+   ret = GST_ELEMENT_CLASS (parent_class)->change_state (element, transition);
+   if (ret != GST_STATE_CHANGE_SUCCESS)
+     return ret;
+@@ -467,7 +637,6 @@ gst_jpeg_parse_change_state (GstElement * element, GstStateChange transition)
+   switch (transition) {
+     case GST_STATE_CHANGE_PAUSED_TO_READY:
+       gst_adapter_clear (parse->adapter);
+-      parse->timestamp = GST_CLOCK_TIME_NONE;
+       break;
+     default:
+       break;
+@@ -489,6 +658,6 @@ plugin_init (GstPlugin * plugin)
+ 
+ GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+     GST_VERSION_MINOR,
+-    "jpeg",
++    "jpegparse",
+     "JPEG parser",
+     plugin_init, VERSION, "LGPL", GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)
+diff --git a/gst/jpegparse/gstjpegparse.h b/gst/jpegparse/gstjpegparse.h
+index 5d6ce1d..5b7ac11 100644
+--- a/gst/jpegparse/gstjpegparse.h
++++ b/gst/jpegparse/gstjpegparse.h
+@@ -50,15 +50,39 @@ struct _GstJpegParse {
+   GstPad      *srcpad;
+ 
+   GstAdapter  *adapter;
+-  GstClockTime timestamp;
++
++  /* negotiated state */
++  guint16 width, height;
++  gint caps_width, caps_height;
++  gint caps_framerate_numerator;
++  gint caps_framerate_denominator;
++
++  /* TRUE if the image is interlaced */
++  gboolean interlaced;
++
++  /* fourcc color space */
++  guint32 fourcc;
++
++  /* TRUE if each input buffer contains a whole jpeg image */
++  gboolean packetized;
++
++  /* the (expected) timestamp of the next frame */
++  guint64 next_ts;
++
++  /* duration of the current frame */
++  guint64 duration;
++
++  /* video state */
++  gint framerate_numerator;
++  gint framerate_denominator;
+ };
+ 
+ struct _GstJpegParseClass {
+   GstElementClass  parent_class;
+ };
+ 
+-GType gst_jpeg_parse_get_type(void);
++GType gst_jpeg_parse_get_type (void);
+ 
+ G_END_DECLS
+ 
+-#endif
++#endif /* __GST_JPEG_PARSE_H__ */
+-- 
+1.6.3.1
+
