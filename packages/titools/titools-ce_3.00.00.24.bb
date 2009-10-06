@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "codec_engine_3_00_00_24"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/codec_engine_3_00_00_24
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

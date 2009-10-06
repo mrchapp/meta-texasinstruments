@@ -20,7 +20,7 @@ DIRAC_PATHCOMPONENT = "cgt7x-7.0.0B2"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/cgt7x-7.0.0B2
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

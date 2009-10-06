@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "osal_1_00_00_36"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/osal_1_00_00_36
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

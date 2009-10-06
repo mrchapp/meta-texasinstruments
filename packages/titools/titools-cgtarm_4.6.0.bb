@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "cgtarm-4.6.0"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/cgtarm-4.6.0
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

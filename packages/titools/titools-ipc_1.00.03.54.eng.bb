@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "ipc_1_00_03_54_eng"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/ipc_1_00_03_54_eng
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

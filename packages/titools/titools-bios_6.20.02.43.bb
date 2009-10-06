@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "bios_6_20_02_43"
 DIRAC_PATHCOMPONENTS = 5
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/bios_6_20_02_43
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

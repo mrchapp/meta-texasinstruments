@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "framework_components_3_00_00_48_eng"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/framework_components_3_00_00_48_eng
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }

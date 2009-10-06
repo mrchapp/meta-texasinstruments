@@ -22,7 +22,7 @@ SDOPATH = "Codec_Engine/${SDOVERS}/exports/${SDOFILE}"
 #
 #
 #do_stage() {
-#	chmod -R +w ${S}/*
+#	chmod -R +rw ${S}/*
 #	install -d ${STAGING_BINDIR}/titools/${DIRAC_FILE}
 #	cp -a ${S}/* ${STAGING_BINDIR}/titools/${DIRAC_FILE}
 #}

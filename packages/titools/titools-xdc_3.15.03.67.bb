@@ -19,7 +19,7 @@ DIRAC_PATHCOMPONENT = "xdctools_3_15_03_67"
 DIRAC_PATHCOMPONENTS = 4 
 
 do_stage() {
-	chmod -R +w ${S}/*
+	chmod -R +rw ${S}/*
 	install -d ${STAGING_BINDIR}/titools/xdctools_3_15_03_67
 	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
 }
