@@ -2,9 +2,8 @@ SECTION="libs"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Syslink libraries."
 LICENSE = "GPL"
-PR = "r0"
-DEPENDS = "linux-tiomap"
-RDEPENDS= "tisyslink-memmgr"
+PR = "r5"
+DEPENDS = "linux-tiomap tisyslink-memmgr"
 inherit pkgconfig
 
 # We need to override this and make sure it's only -j1
