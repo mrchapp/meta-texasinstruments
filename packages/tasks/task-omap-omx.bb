@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for TI's OpenMAX IL"
-PR = "r4"
+PR = "r5"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
@@ -14,4 +14,7 @@ ALLOW_EMPTY = "1"
 # should we keep this mechanism around to allow for other OpenMAX
 # implementations?
 
-RDEPENDS = "virtual/openmax-il"
+RDEPENDS = "\
+   	tiopenmax-audiodecode \
+	tiopenmax-audioencode \
+"
