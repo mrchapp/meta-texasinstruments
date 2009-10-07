@@ -1,8 +1,8 @@
-DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml"
+DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
-RDEPENDS = "alsa-utils-aplay"
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r1"
+RDEPENDS = "alsa-utils-aplay"
+PR = "r3"
 
 require tiopenmax-audio-git.inc
 

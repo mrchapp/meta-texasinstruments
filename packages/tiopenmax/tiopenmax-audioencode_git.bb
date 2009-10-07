@@ -1,12 +1,12 @@
-DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml"
+DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
+RDEPENDS = "alsa-utils-aplay"
 PR = "r2"
 
 require tiopenmax-audio-git.inc
 
 S = "${WORKDIR}/git/audio/audio_encode/"
-
 
 EXTRA_OECONF = "--enable-tests"
 
