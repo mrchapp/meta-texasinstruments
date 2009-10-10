@@ -5,7 +5,7 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 HOMEPAGE = "http://www.gstreamer.net/"
 PR = "r3"
-DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native ${TTIF_DEPENDS}"
+DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native"
 
 inherit autotools pkgconfig
 
@@ -13,7 +13,7 @@ SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
            file://common-20090928.tar.gz \
            file://buffer-alignment.patch;patch=1 \
 	   file://fixatecapsmultiplestructs.patch;patch=1 \
-           ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} \
+           file://0001-Changes-to-make-it-possible-to-LD_PRELOAD-libttif.patch;patch=1 \
           "
 SRCREV = "7fcd73875fbd377384bf7401c9af6eca3f1a1095"
 S = "${WORKDIR}/git"
