@@ -15,7 +15,7 @@ SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
 	   file://fixatecapsmultiplestructs.patch;patch=1 \
            ${@base_contains("DISTRO_FEATURES", "ttif", "file://ttif.patch;patch=1", "", d)} \
           "
-SRCREV = "95c438cf85db2be7c0d457048b207af84ae8f9c8"
+SRCREV = "7fcd73875fbd377384bf7401c9af6eca3f1a1095"
 S = "${WORKDIR}/git"
 
 EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=no --disable-examples --disable-tests --disable-valgrind --disable-debug"
