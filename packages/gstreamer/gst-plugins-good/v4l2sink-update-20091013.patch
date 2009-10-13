@@ -1,0 +1,226 @@
+diff --git a/sys/v4l2/gstv4l2bufferpool.c b/sys/v4l2/gstv4l2bufferpool.c
+index bca07b9..d3920cb 100644
+--- a/sys/v4l2/gstv4l2bufferpool.c
++++ b/sys/v4l2/gstv4l2bufferpool.c
+@@ -451,17 +451,27 @@ gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool)
+ 
+ /**
+  * gst_v4l2_buffer_pool_get:
+- * @pool: the pool
++ * @pool   the "this" object
++ * @blocking  should this call suspend until there is a buffer available
++ *    in the buffer pool?
+  *
+  * Get an available buffer in the pool
+  */
+ GstV4l2Buffer *
+-gst_v4l2_buffer_pool_get (GstV4l2BufferPool * pool)
++gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool, gboolean blocking)
+ {
+-  GstV4l2Buffer *buf = g_async_queue_try_pop (pool->avail_buffers);
++  GstV4l2Buffer *buf;
+ 
+-  if (buf)
++  if (blocking) {
++    buf = g_async_queue_pop (pool->avail_buffers);
++  } else {
++    buf = g_async_queue_try_pop (pool->avail_buffers);
++  }
++
++  if (buf) {
+     GST_BUFFER_SIZE (buf) = buf->vbuffer.length;
++    GST_BUFFER_FLAG_UNSET (buf, 0xffffffff);
++  }
+ 
+   pool->running = TRUE;
+ 
+diff --git a/sys/v4l2/gstv4l2bufferpool.h b/sys/v4l2/gstv4l2bufferpool.h
+index 36a4220..1fe4f43 100644
+--- a/sys/v4l2/gstv4l2bufferpool.h
++++ b/sys/v4l2/gstv4l2bufferpool.h
+@@ -84,7 +84,7 @@ void gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool);
+ GstV4l2BufferPool *gst_v4l2_buffer_pool_new (GstElement *v4l2elem, gint fd, gint num_buffers, GstCaps * caps, gboolean requeuebuf, enum v4l2_buf_type type);
+ 
+ 
+-GstV4l2Buffer *gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool);
++GstV4l2Buffer *gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool, gboolean blocking);
+ gboolean gst_v4l2_buffer_pool_qbuf (GstV4l2BufferPool *pool, GstV4l2Buffer *buf);
+ GstV4l2Buffer *gst_v4l2_buffer_pool_dqbuf (GstV4l2BufferPool *pool);
+ 
+diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
+index d2d5cb3..a18dee2 100644
+--- a/sys/v4l2/gstv4l2sink.c
++++ b/sys/v4l2/gstv4l2sink.c
+@@ -63,7 +63,8 @@ GST_ELEMENT_DETAILS ("Video (video4linux2) Sink",
+ GST_DEBUG_CATEGORY (v4l2sink_debug);
+ #define GST_CAT_DEFAULT v4l2sink_debug
+ 
+-#define PROP_DEF_QUEUE_SIZE         8
++#define PROP_DEF_QUEUE_SIZE         12
++#define PROP_DEF_MIN_QUEUED_BUFS    1
+ #define DEFAULT_PROP_DEVICE   "/dev/video1"
+ 
+ enum
+@@ -71,6 +72,7 @@ enum
+   PROP_0,
+   V4L2_STD_OBJECT_PROPS,
+   PROP_QUEUE_SIZE,
++  PROP_MIN_QUEUED_BUFS,
+   PROP_OVERLAY_TOP,
+   PROP_OVERLAY_LEFT,
+   PROP_OVERLAY_WIDTH,
+@@ -234,6 +236,12 @@ gst_v4l2sink_class_init (GstV4l2SinkClass * klass)
+           "Number of buffers to be enqueud in the driver in streaming mode",
+           GST_V4L2_MIN_BUFFERS, GST_V4L2_MAX_BUFFERS, PROP_DEF_QUEUE_SIZE,
+           G_PARAM_READWRITE));
++  g_object_class_install_property (gobject_class, PROP_MIN_QUEUED_BUFS,
++      g_param_spec_uint ("min-queued-bufs", "Minimum queued bufs",
++          "Minimum number of queued bufs; v4l2sink won't dqbuf if the driver "
++          "doesn't have more than this number (which normally you shouldn't change)",
++          0, GST_V4L2_MAX_BUFFERS, PROP_DEF_MIN_QUEUED_BUFS,
++          G_PARAM_READWRITE));
+   g_object_class_install_property (gobject_class, PROP_OVERLAY_TOP,
+       g_param_spec_int ("overlay-top", "Overlay top",
+           "The topmost (y) coordinate of the video overlay; top left corner of screen is 0,0",
+@@ -254,7 +262,6 @@ gst_v4l2sink_class_init (GstV4l2SinkClass * klass)
+   basesink_class->get_caps = GST_DEBUG_FUNCPTR (gst_v4l2sink_get_caps);
+   basesink_class->set_caps = GST_DEBUG_FUNCPTR (gst_v4l2sink_set_caps);
+   basesink_class->buffer_alloc = GST_DEBUG_FUNCPTR (gst_v4l2sink_buffer_alloc);
+-  basesink_class->preroll = GST_DEBUG_FUNCPTR (gst_v4l2sink_show_frame);
+   basesink_class->render = GST_DEBUG_FUNCPTR (gst_v4l2sink_show_frame);
+ }
+ 
+@@ -274,6 +281,7 @@ gst_v4l2sink_init (GstV4l2Sink * v4l2sink, GstV4l2SinkClass * klass)
+ 
+   /* number of buffers requested */
+   v4l2sink->num_buffers = PROP_DEF_QUEUE_SIZE;
++  v4l2sink->min_queued_bufs = PROP_DEF_MIN_QUEUED_BUFS;
+ 
+   v4l2sink->probed_caps = NULL;
+   v4l2sink->current_caps = NULL;
+@@ -375,6 +383,9 @@ gst_v4l2sink_set_property (GObject * object,
+       case PROP_QUEUE_SIZE:
+         v4l2sink->num_buffers = g_value_get_uint (value);
+         break;
++      case PROP_MIN_QUEUED_BUFS:
++        v4l2sink->min_queued_bufs = g_value_get_uint (value);
++        break;
+       case PROP_OVERLAY_TOP:
+         v4l2sink->overlay.top = g_value_get_int (value);
+         v4l2sink->overlay_fields_set |= OVERLAY_TOP_SET;
+@@ -415,6 +426,9 @@ gst_v4l2sink_get_property (GObject * object,
+       case PROP_QUEUE_SIZE:
+         g_value_set_uint (value, v4l2sink->num_buffers);
+         break;
++      case PROP_MIN_QUEUED_BUFS:
++        g_value_set_uint (value, v4l2sink->min_queued_bufs);
++        break;
+       case PROP_OVERLAY_TOP:
+         g_value_set_int (value, v4l2sink->overlay.top);
+         break;
+@@ -611,6 +625,27 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+     /* initialize the buffer pool if not initialized yet (first buffer): */
+     if (G_UNLIKELY (!v4l2sink->pool)) {
+ 
++      gboolean no_pending_streamon = FALSE;
++      char *driver = (char *) v4l2sink->v4l2object->vcap.driver;
++
++      /* the omap24xxvout driver wants us to start streaming before we
++       * queue the first buffer:
++       */
++      if (!strcmp("omap24xxvout", driver)) {
++        GST_DEBUG_OBJECT (v4l2sink, "enabling no_pending_streamon hack for omap24xxvout driver");
++        no_pending_streamon = TRUE;
++      }
++
++      /* temporary workaround for bug in omap_vout driver, when we ask
++       * for more than four buffers:
++       */
++      if (!strcmp("omap_vout", driver)) {
++        if (v4l2sink->num_buffers > 4) {
++          v4l2sink->num_buffers = 4;
++          GST_DEBUG_OBJECT (v4l2sink, "limiting to 4 buffers to work-around omap_vout driver bug");
++        }
++      }
++
+       /* set_caps() might not be called yet.. so just to make sure: */
+       if (!gst_v4l2sink_set_caps (bsink, caps)) {
+         return GST_FLOW_ERROR;
+@@ -624,7 +659,15 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+                   V4L2_BUF_TYPE_VIDEO_OUTPUT))) {
+         return GST_FLOW_ERROR;
+       }
+-      v4l2sink->state = STATE_PENDING_STREAMON;
++
++      if (no_pending_streamon) {
++        if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
++          return GST_FLOW_ERROR;
++        }
++        v4l2sink->state = STATE_STREAMING;
++      } else {
++        v4l2sink->state = STATE_PENDING_STREAMON;
++      }
+ 
+       GST_INFO_OBJECT (v4l2sink, "outputting buffers via mmap()");
+ 
+@@ -634,7 +677,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+       }
+     }
+ 
+-    v4l2buf = gst_v4l2_buffer_pool_get (v4l2sink->pool);
++    v4l2buf = gst_v4l2_buffer_pool_get (v4l2sink->pool, TRUE);
+ 
+     if (G_LIKELY (v4l2buf)) {
+       GST_DEBUG_OBJECT (v4l2sink, "allocated buffer: %p", v4l2buf);
+@@ -671,7 +714,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+         &newbuf);
+ 
+     if (GST_FLOW_OK != ret) {
+-      return ret;
++      GST_DEBUG_OBJECT (v4l2sink, "dropping frame!  Consider increasing 'queue-size' property!");
++      return GST_FLOW_OK;
+     }
+ 
+     memcpy (GST_BUFFER_DATA (newbuf),
+@@ -686,6 +730,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+   if (!gst_v4l2_buffer_pool_qbuf (v4l2sink->pool, GST_V4L2_BUFFER (buf))) {
+     return GST_FLOW_ERROR;
+   }
++
+   if (v4l2sink->state == STATE_PENDING_STREAMON) {
+     if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
+       return GST_FLOW_ERROR;
+@@ -701,7 +746,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+    * just queued, then dequeue one immediately to make it available via
+    * _buffer_alloc():
+    */
+-  if (gst_v4l2_buffer_pool_available_buffers (v4l2sink->pool) > 1) {
++  if (gst_v4l2_buffer_pool_available_buffers (v4l2sink->pool) > v4l2sink->min_queued_bufs) {
+     GstV4l2Buffer *v4l2buf = gst_v4l2_buffer_pool_dqbuf (v4l2sink->pool);
+ 
+     /* note: if we get a buf, we don't want to use it directly (because
+diff --git a/sys/v4l2/gstv4l2sink.h b/sys/v4l2/gstv4l2sink.h
+index 71553cb..22d2559 100644
+--- a/sys/v4l2/gstv4l2sink.h
++++ b/sys/v4l2/gstv4l2sink.h
+@@ -58,6 +58,7 @@ struct _GstV4l2Sink {
+   GstCaps *current_caps;        /* the current negotiated caps */
+   GstV4l2BufferPool *pool;
+   guint32 num_buffers;
++  guint32 min_queued_bufs;
+ 
+   /*
+    * field to store requested overlay-top/left/width/height props:
+diff --git a/sys/v4l2/v4l2src_calls.c b/sys/v4l2/v4l2src_calls.c
+index 73de302..91fac35 100644
+--- a/sys/v4l2/v4l2src_calls.c
++++ b/sys/v4l2/v4l2src_calls.c
+@@ -69,7 +69,7 @@ gst_v4l2src_buffer_pool_activate (GstV4l2BufferPool * pool,
+ {
+   GstV4l2Buffer *buf;
+ 
+-  while ((buf = gst_v4l2_buffer_pool_get (pool)) != NULL)
++  while ((buf = gst_v4l2_buffer_pool_get (pool, FALSE)) != NULL)
+     if (!gst_v4l2_buffer_pool_qbuf (pool, buf))
+       goto queue_failed;
+ 
