@@ -52,6 +52,12 @@ do_configure_prepend() {
                                 sed -i "s/CONFIG_NOTIFY_DUCATI=m/CONFIG_NOTIFY_DUCATI=y/" ${S}/.config
                                 sed -i "s/CONFIG_MPU_SYSLINK_IPC=m/CONFIG_MPU_SYSLINK_IPC=y/" ${S}/.config
                                 sed -i "s/# CONFIG_MPU_BRIDGE is not set/CONFIG_MPU_BRIDGE=y\nCONFIG_BRIDGE_MEMPOOL_SIZE=0x600000\n# CONFIG_BRIDGE_DEBUG is not set/" ${S}/.config
+                                sed -i "s/# CONFIG_SOUND is not set/CONFIG_SOUND=y\n# CONFIG_SND_TIMER=y\nCONFIG_SND_PCM=y\nCONFIG_SND_JACK=y\nCONFIG_SND_SUPPORT_OLD_API=y\nCONFIG_SND_VERBOSE_PROCFS=y\nCONFIG_SND_DRIVERS=y\nCONFIG_SND_ARM=y\nCONFIG_SND_SPI=y\nCONFIG_SND_SOC=y\nCONFIG_SND_OMAP_SOC=y\nCONFIG_SND_OMAP_SOC_ABE=y\nCONFIG_SND_OMAP_SOC_SDP4430=y\nCONFIG_SND_SOC_I2C_AND_SPI=y\nCONFIG_SND_SOC_ABE_TWL6030=y\n/" ${S}/.config
+#                                sed -i "s/# CONFIG_NET is not set/CONFIG_NET=y\nCONFIG_NETWORK_FILESYSTEMS=y/" ${S}/.config
+#                                sed -i "s/# CONFIG_REGULATOR is not set/CONFIG_REGULATOR=y\nCONFIG_REGULATOR_TWL=y/" ${S}/.config
+#                                sed -i "s/# CONFIG_MMC_DEBUG is not set/CONFIG_MMC_DEBUG=y/" ${S}/.config
+#                                sed -i "s/# CONFIG_MMC_SDHCI is not set/CONFIG_MMC_SDHCI=y/" ${S}/.config
+ 
                                 ;;
                         *)
 				yes '' | oe_runmake ${MACHINE}_defconfig
@@ -87,3 +93,4 @@ do_deploy() {
 do_deploy[dirs] = "${S}"
 
 addtask deploy before do_populate_staging after do_install
+
