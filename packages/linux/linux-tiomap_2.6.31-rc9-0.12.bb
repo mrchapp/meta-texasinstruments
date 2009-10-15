@@ -1,6 +1,6 @@
 require linux-omap.inc
 
-PR = "r8"
+PR = "r10"
 
 COMPATIBLE_MACHINE = "omap-4430sdp"
 DEFAULT_PREFERENCE = "1"
@@ -19,7 +19,7 @@ S = "${WORKDIR}/git"
 
 # You can supply your own defconfig if you like.  See
 # http://bec-systems.com/oe/html/recipes_sources.html for a full explanation
-#SRC_URI += "file://defconfig-omap-4430sdp"
+SRC_URI += "file://defconfig-omap-4430sdp"
 
 
 do_stage_append() {
