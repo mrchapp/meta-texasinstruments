@@ -16,6 +16,8 @@ RDEPENDS = "\
 	tiopenmax-videodec \
 	tiopenmax-videoenc \
 	tiopenmax-stubcamera \
+	tiopenmax-jpegdec \
+	tiopenmax-jpegenc \
 	"
 
 DEPENDS="${RDEPENDS}"
