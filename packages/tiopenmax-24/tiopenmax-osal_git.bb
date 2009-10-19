@@ -1,9 +1,9 @@
 DEPENDS = "tidspbridge-lib tiopenmax-common"
 DESCRIPTION = "Texas Instruments OpenMAX IL Operating System Abstraction Layer (OSAL)."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r0"
+PR = "r1"
 
-require tiopenmax-audio-git.inc
+require tiopenmax-system-git.inc
 S = "${WORKDIR}/git/system/mm_osal/"
 
 inherit pkgconfig autotools
