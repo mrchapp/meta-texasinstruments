@@ -11,21 +11,19 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-zoom2-(alpha|beta)"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX_RLS_DB20090916%\
-	element /vobs/WCGDev/... LINUX_RLS_DB20090916%\
-	"
+	element /vobs/WiLink/... LINUX_RLS_DB20091020%\
+	element /vobs/WCGDev/... LINUX_RLS_DB20091020"
 
 CCASE_PATHFETCH = "/vobs/WiLink/ \
-	/vobs/WCGDev \
-	"
+	/vobs/WCGDev"
+
 CCASE_PATHCOMPONENTS = 0
 CCASE_PATHCOMPONENT = "vobs"
 
 SRC_URI = "file://fix-libestadrv-makefile.diff;patch=1\
 	file://fix-libuadrv-makefile.diff;patch=1\
 	file://fix-CUDK-makefile.diff;patch=1\
-	file://remove-hald-reconfig-wlan-script.diff;patch=1\
-	"
+	file://remove-hald-reconfig-wlan-script.diff;patch=1"
 
 PACKAGES = "${PN}"
 FILES_${PN} += "/wlan"
