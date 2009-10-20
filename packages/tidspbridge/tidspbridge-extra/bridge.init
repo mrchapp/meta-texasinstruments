@@ -15,7 +15,7 @@
 . /etc/default/bridge
 
 # if an image is  specified on the command-line, override the default:
-if [ -n "$2" ]; then
+if [ ! -z "$2" ]; then
     BASEIMAGE=$2
 else
     BASEIMAGE=$DEFAULT_BASEIMAGE
@@ -38,7 +38,7 @@ start ()
 {
     cd /dspbridge
     echo -n "Loading up Bridge driver: "
-    if [ -n $DSPBRIDGE ]; then
+    if [ ! -z "$DSPBRIDGE" ]; then
         insmod $DSPBRIDGE
         insmod $BRIDGE_DRIVER shm_size=0x500000
     else
@@ -70,7 +70,7 @@ stop ()
 
     echo -n "Unloading Bridge driver: "
     rmmod bridgedriver
-    if [ -n $DSPBRIDGE ]; then
+    if [ ! -z "$DSPBRIDGE" ]; then
         rmmod dspbridge
     fi
     echo "OK"
