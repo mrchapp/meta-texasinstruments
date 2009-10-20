@@ -37,8 +37,8 @@ do_configure_prepend() {
 				;;
 			omap-3430sdp)
 				yes '' | oe_runmake omap_3430sdp_defconfig
-#				sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
-#					${S}/.config
+				sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
+					${S}/.config
 				;;
 			zoom2)
 				yes '' | oe_runmake omap_zoom2_defconfig
