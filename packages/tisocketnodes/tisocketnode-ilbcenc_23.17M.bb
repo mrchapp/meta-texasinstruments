@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments iLBC Encoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-ilbcenc-codec"
 
-CCASE_SPEC = "%\
-              element /vobs/wtbu/OMAPSW_DSP/speech/node/iLBC/enc/... DSP-MM-TII_RLS_3.2%\
-              element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/iLBC/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments MPEG4 720p Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-mpeg4-xdm720penc-codec"
 
-CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_DSP/video/node/mpeg4_720PX/... DSP-MM-TII_RLS_3.4%\
-	element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/node/mpeg4_720PX/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

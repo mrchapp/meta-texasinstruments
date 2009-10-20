@@ -4,9 +4,7 @@ LICENSE = "LGPL"
 PR = "r1"
 DEPENDS = "baseimage"
 
-CCASE_SPEC = "%\
-              element /vobs/wtbu/OMAPSW_DSP/system/usn/... DSP-MM-TII_RLS_3.2%\
-              element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/usn"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

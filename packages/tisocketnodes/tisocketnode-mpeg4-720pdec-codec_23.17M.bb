@@ -4,9 +4,7 @@ LICENSE = "LGPL"
 PR = "r0"
 DEPENDS = "baseimage"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/video/DivX_3430/... DSP-MM-TII_RLS_3.4%\
-	      element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/video/DivX_3430"
 CCASE_PATHCOMPONENT = "DivX_3430"

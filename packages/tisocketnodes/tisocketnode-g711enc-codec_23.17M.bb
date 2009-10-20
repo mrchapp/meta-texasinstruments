@@ -2,9 +2,7 @@ DESCRIPTION = "Texas Instruments G711 Encoder Socket Node Codec."
 PR = "r0"
 DEPENDS = "baseimage"
 
-CCASE_SPEC = "%\
-              element /vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_enc/c64x/mm_tiicodecs/... DSP-MM-TII_RLS_3.2%\
-              element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_enc/c64x/mm_tiicodecs"
 CCASE_PATHCOMPONENT = "mm_tiicodecs"

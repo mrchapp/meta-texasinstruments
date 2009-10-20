@@ -4,9 +4,7 @@ LICENSE = "LGPL"
 PR = "r1"
 DEPENDS = "baseimage tisocketnode-usn"
 
-CCASE_SPEC = "%\
-              element /vobs/wtbu/OMAPSW_DSP/video/... DSP-MM-TII_RLS_3.2%\
-              element * /main/LATEST%"
+require tisocketnode-cs_${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/lib/conversions"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
@@ -58,7 +56,7 @@ do_compile() {
 
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/video/lib/conversions
-	cp -a ${S}/video/lib/conversions/inc/* ${STAGING_BINDIR}/dspbridge/video/lib/conversions
+	cp -a ${S}/video/lib/conversions/* ${STAGING_BINDIR}/dspbridge/video/lib/conversions
 }
 
 do_install() {
