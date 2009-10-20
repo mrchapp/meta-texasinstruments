@@ -10,16 +10,12 @@ DEPENDS = virtual/kernel
 inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-#PACKAGES = "${PN} ${PN}-dbg"
-#FILES_${PN} = "${bindir} ${libdir} ${sysconfdir} ${libdir}/*.so*"
 
 SRC_URI = "file://noxsupport.patch;patch=1"
 
 CCASE_SPEC = "%\
-	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_DB20090916%\
-	element * /main/LATEST%\
-	"
+	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_DB20091020%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
@@ -80,12 +76,6 @@ do_install() {
 	install -m 755 rc.pvr ${D}${sysconfdir}/init.d/
 
 	sed -i "s#local/##" ${D}${sysconfdir}/init.d/rc.pvr
-
-#	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
-# FIXME: make install doesn't seem to work...
-#	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-#		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
-#		BISON=bison-1.875 SUPPORT_XWS=0 install
 }
 
 
