@@ -12,7 +12,7 @@ DEPENDS = "baseimage-avsync \
    baseimage-make-system \
    baseimage-utils \
    baseimage-masterconfig \
-   tidspbridge-samples"
+   tidspbridge-dspsamples"
 FILES_${PN}="\
 	${base_libdir}/dsp/baseimage.dof \
 	${base_libdir}/dsp/baseimage.map \
