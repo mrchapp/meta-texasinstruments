@@ -6,9 +6,8 @@ LICENSE = "LGPL"
 PR = "r0"
 
 CCASE_SPEC = "%\
-element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_DB20090916%\
-element * /main/LATEST%\
-"
+	element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_DB20091020%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_L/mmframework/plugins/gstcommon/gst-omap3"
 CCASE_PATHCOMPONENT = "gst-omap3"
