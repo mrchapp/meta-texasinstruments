@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r17"
+PR = "r18"
 
 PACKAGES = "\
     task-omap-gst \
@@ -62,4 +62,5 @@ RDEPENDS_task-omap-gst-plugins = "\
 
 RDEPENDS_task-omap-gst-apps = "\
     gst-pyapps \
+    shot \
     "
