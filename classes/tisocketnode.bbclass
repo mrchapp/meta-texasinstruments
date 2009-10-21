@@ -5,11 +5,12 @@ DEPENDS += "baseimage"
 
 
 XDCPATH += "\
+${S};\
+${S}/OMAPSW_DSP;\
 ${STAGING_BINDIR}/dspbridge/dsp;\
 ${STAGING_BINDIR}/dspbridge/dsp/bdsptools/packages;\
 ${STAGING_BINDIR}/dspbridge;\
 ${STAGING_BINDIR}/dspbridge/OMAPSW_DSP;\
-${S}/OMAPSW_DSP;\
 "        
 
 XDCBUILDCFG="${STAGING_BINDIR}/dspbridge/OMAPSW_DSP/make/config.bld"
