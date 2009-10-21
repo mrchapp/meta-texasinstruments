@@ -8,11 +8,11 @@ cc VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1
 d 0x4E000100=0x80301000
 
 #load up the u-boot,kernel and file system
-[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]l 0x88e80000 -bin <path to u-boot-omap-4430sdp.bin>
+[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]l 0x90e80000 -bin <path to u-boot-omap-4430sdp.bin>
 [VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]l 0x80300000 -bin <path to uImage-omap-4430sdp.bin>
 [VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]l 0x81600000 -bin <path to omap-image-omap42-omap-4430sdp.ext2>
 
-# set bootargs root=/dev/ram0 rw mem=114M console=ttyS0,115200n8 initrd=0x81600000,46M ramdisk_size=46080; bootm 0x80300000
+# set bootargs root=/dev/ram0 rw mem=128M console=ttyS0,115200n8 initrd=0x81600000,46M ramdisk_size=46080; bootm 0x80300000
 
 # PRCM setup
 # WKUP Domain
@@ -169,8 +169,8 @@ d 0x4a20c08c=0xffffffff
 d 0x4a21208c=0xffffffff
 d 0x4a22808c=0xffffffff
 
-[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]r r15=0x88e80000
-[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_2]r r15=0x88e80000
+[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_1]r r15=0x90e80000
+[VPOM4430::SDP::OMAP4430::CPU_SS::Cortex_2]r r15=0x90e80000
 g
 
 #Uncomment these when using Ducati samples with Loader.
