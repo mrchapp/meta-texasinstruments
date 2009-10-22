@@ -1,0 +1,49 @@
+Index: git/gst/multifile/gstmultifilesink.c
+===================================================================
+--- git.orig/gst/multifile/gstmultifilesink.c	2009-10-21 23:30:48.000000000 -0500
++++ git/gst/multifile/gstmultifilesink.c	2009-10-21 23:46:32.000000000 -0500
+@@ -375,6 +375,34 @@
+   }
+ }
+ 
++static void
++gst_multi_file_sink_post_timestamp (GstElement* element,
++    gchar* structure_name)
++{
++  GstMessage *msg = NULL;
++  GstStructure *stru = NULL;
++  gdouble timestamp;
++  GTimeVal current_time;
++
++  /* Get the current time */
++  g_get_current_time (&current_time);
++  timestamp = current_time.tv_sec + current_time.tv_usec / 1e6;
++
++  GST_DEBUG_OBJECT (element, "%f", timestamp);
++
++  if (structure_name) {
++    stru = gst_structure_new (structure_name,
++        structure_name, G_TYPE_DOUBLE, timestamp,
++        NULL);
++  }
++
++  /* Create the message and send it to the bus */
++  msg = gst_message_new_custom (GST_MESSAGE_ELEMENT, GST_OBJECT (element), stru);
++  g_assert (gst_element_post_message (GST_ELEMENT_CAST (element), msg));
++
++  return;
++}
++
+ static GstFlowReturn
+ gst_multi_file_sink_render (GstBaseSink * sink, GstBuffer * buffer)
+ {
+@@ -403,6 +431,9 @@
+       multifilesink->index++;
+ 
+       g_free (filename);
++
++      gst_multi_file_sink_post_timestamp (GST_ELEMENT (sink),
++          "end-point-save");
+       break;
+     case GST_MULTI_FILE_SINK_NEXT_DISCONT:
+       if (GST_BUFFER_IS_DISCONT (buffer)) {
