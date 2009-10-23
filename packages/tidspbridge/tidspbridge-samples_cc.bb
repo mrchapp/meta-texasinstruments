@@ -30,7 +30,7 @@ CCASE_PATHCOMPONENT = "Bridge"
 CCASE_PATHCOMPONENTS = "3"
 
 ENV_VAR = " \
-        DEPOT=${STAGING_BINDIR}/titools \
+        DEPOT=${STAGING_BINDIR_NATIVE}/titools \
         DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
         FC_VER=3_00_00_48_eng\
         "       

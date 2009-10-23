@@ -1,6 +1,6 @@
 # This is a class for accessing SDO tools internally at TI.
 
-inherit base
+inherit native
 
 SDOSERVER="http://www.sanb.design.ti.com/tisb_releases"
 

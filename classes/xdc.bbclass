@@ -22,7 +22,7 @@ def rm_space(v):
 	import re
 	return re.sub(" ", "", v)
 
-TITOOLS_DIR= ${STAGING_BINDIR}/titools
+TITOOLS_DIR= ${STAGING_BINDIR_NATIVE}/titools
 
 BIOS_VER   = ${@pv_underscore("${PREFERRED_VERSION_titools-bios}")}
 XDC_VER    = ${@pv_underscore("${PREFERRED_VERSION_titools-xdc}")}

@@ -26,7 +26,7 @@ do_compile() {
     oenote "COFF_BLD=${COFFBLD_tidspbridge-ducatisamples}"
     chmod -R +w ${S}/*
     export ${COFFBLD_tidspbridge-ducatisamples}
-    export DEPOT=${STAGING_BINDIR}/titools
+    export DEPOT=${STAGING_BINDIR_NATIVE}/titools
     oe_runmake -f gmakefile .ducati_samples  
 }
 
