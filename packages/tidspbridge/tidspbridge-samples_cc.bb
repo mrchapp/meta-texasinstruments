@@ -32,7 +32,8 @@ CCASE_PATHCOMPONENTS = "3"
 ENV_VAR = " \
         DEPOT=${STAGING_BINDIR}/titools \
         DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
-        FC_VER=3_00_00_48_eng\
+        FC_VER=3_00_00_50_eng \
+	DSP_JOBS="${PARALLEL_MAKE}" \
         "       
 
 SRC_URI = "file://tidspbridge.patch;patch=1"
@@ -47,12 +48,6 @@ do_compile() {
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/dsp
 	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
-
-# FIXME: I think this is no longer necessary since Tesla base image builds with XDC
-#	install -d ${STAGING_LIBDIR}/dspbridge/exports/lib
-#	install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/lib/* ${STAGING_LIBDIR}/dspbridge/exports/lib
-#	install -d ${STAGING_INCDIR}/dspbridge/exports/include
-#	install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/include/*.h ${STAGING_INCDIR}/dspbridge/exports/include
 }
 
 do_install() {

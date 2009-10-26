@@ -1,0 +1,10 @@
+--- a/samples/Makefile.am
++++ b/samples/Makefile.am
+@@ -26,7 +26,6 @@
+ 	ipc \
+ 	notify \
+ 	procmgr \
+-	proc_sample/krnl \
+ 	rcm \
+ 	tiler
+

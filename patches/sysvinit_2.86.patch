@@ -274,6 +274,6 @@
 --- meta/packages/sysvinit/sysvinit/sysconfig
 +++ meta/packages/sysvinit/sysvinit/sysconfig
 @@ -0,0 +1,2 @@
-+HOSTNAME=OMAP4.Virtio
-+RELEASE_ID=24.0.12
++HOSTNAME=OMAP4
++RELEASE_ID=L24.x
 
