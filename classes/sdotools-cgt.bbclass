@@ -1,6 +1,6 @@
 # This is a class for accessing SDO CGT internally at TI.
 
-inherit base
+inherit native
 
 SERVER="http://syntaxerror.dal.design.ti.com/release/releases"
 

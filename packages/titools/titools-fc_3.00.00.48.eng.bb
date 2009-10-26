@@ -4,22 +4,10 @@ DESCRIPTION = "Texas Instruments Framework Components"
 LICENSE = "Texas Instruments"
 PR = "r1"
 
-#inherit sdotools-tar
-#
-#SDOVERS = 3_00_00_48
-#
-#SDOFILE = framework_components_${SDOVERS}_eng.tar.gz
-#
-#SDOPATH = "Framework_Components/${SDOVERS}/exports/${SDOFILE}"
+inherit sdotools-tar
 
-inherit dfetch
+SDOVERS = 3_00_00_48
 
-DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/framework_components_3_00_00_48_eng"
-DIRAC_PATHCOMPONENT = "framework_components_3_00_00_48_eng"
-DIRAC_PATHCOMPONENTS = 4 
+SDOFILE = framework_components_${SDOVERS}_eng.tar.gz
 
-do_stage() {
-	chmod -R +rw ${S}/*
-	install -d ${STAGING_BINDIR}/titools/framework_components_3_00_00_48_eng
-	cp -a ${S}/* ${STAGING_BINDIR}/titools/	
-}
+SDOPATH = "Framework_Components/${SDOVERS}/exports/${SDOFILE}"
