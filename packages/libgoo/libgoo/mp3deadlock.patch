@@ -1,0 +1,187 @@
+From 2f45126f4b4dfa3961b4d5c95e2f9ef22183956d Mon Sep 17 00:00:00 2001
+From: Jorge Bustamante <jbustamante@dextratech.com>
+Date: Thu, 20 Aug 2009 16:35:16 +0900
+Subject: [PATCH] Patch for mp3 deadlock issue
+
+---
+ libgoo/goo-component.c |   28 ++++++++++++++++++---
+ libgoo/goo-semaphore.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++++
+ libgoo/goo-semaphore.h |    4 +++
+ 3 files changed, 90 insertions(+), 4 deletions(-)
+
+diff --git a/libgoo/goo-component.c b/libgoo/goo-component.c
+index cc9b383..38a6097 100644
+--- a/libgoo/goo-component.c
++++ b/libgoo/goo-component.c
+@@ -106,6 +106,19 @@ _goo_component_command_state_set (GooComponent* self, OMX_STATETYPE state)
+ 		goo_semaphore_up (self->state_sem);
+ 	}
+ 
++	/* If we just got Idle from Executing or Pause, ensure that EOS semaphore doesnt wait forever 
++	 * this was added for solving a mp3 deadlock issue (race condition between EOS signal and Idle command).
++	 */
++	if(self->cur_state==OMX_StateIdle && 
++	   (self->prev_state==OMX_StateExecuting || self->prev_state==OMX_StatePause))
++	{
++		
++		if(self->done == FALSE) {
++			self->done = TRUE;
++			goo_semaphore_binary_up (self->done_sem);
++		}
++	}
++
+ 	return;
+ }
+ 
+@@ -1014,6 +1027,10 @@ goo_component_set_state_executing_default (GooComponent* self)
+ {
+ 	self->next_state = OMX_StateExecuting;
+ 
++	/* Reset this when executing state command will been send. */
++	self->done = FALSE;
++	goo_semaphore_reset(self->done_sem);
++
+ 	/* When we propage states we might have already changed our state */
+ 	if (!goo_component_propagate_state (self, OMX_StateExecuting))
+ 	{
+@@ -2808,10 +2825,14 @@ goo_component_set_done (GooComponent* self)
+ 		  (self->prev_state == OMX_StateIdle || self->prev_state == OMX_StatePause));
+ 
+ 	/* GOO_OBJECT_LOCK (self); */
+-	self->done = TRUE;
++	/* self->done = TRUE; */
+ 	/* GOO_OBJECT_UNLOCK (self); */
+ 
+-	goo_semaphore_up (self->done_sem);
++	
++	if(self->done == FALSE) {
++		self->done = TRUE;
++		goo_semaphore_binary_up (self->done_sem);
++	}
+ 
+ 	GOO_OBJECT_DEBUG (self, "");
+ 
+@@ -2830,8 +2851,7 @@ gboolean
+ goo_component_is_done (GooComponent* self)
+ {
+ 	g_assert (GOO_IS_COMPONENT (self));
+-	g_assert ((self->cur_state == OMX_StateExecuting) &&
+-		  (self->prev_state == OMX_StateIdle || self->prev_state == OMX_StatePause));
++	g_assert (((self->cur_state == OMX_StateExecuting) && (self->prev_state == OMX_StateIdle || self->prev_state == OMX_StatePause)) || ((self->cur_state == OMX_StateIdle) && (self->prev_state == OMX_StateExecuting || self->prev_state == OMX_StatePause)));
+ 
+ 	gboolean retval;
+ 
+diff --git a/libgoo/goo-semaphore.c b/libgoo/goo-semaphore.c
+index 30e779f..59c5365 100644
+--- a/libgoo/goo-semaphore.c
++++ b/libgoo/goo-semaphore.c
+@@ -47,6 +47,7 @@ goo_semaphore_new (gint counter)
+         g_assert (self != NULL);
+ 
+         self->counter = counter;
++	    self->waiting = FALSE;
+ 
+         self->condition = g_cond_new ();
+         self->mutex = g_mutex_new ();
+@@ -89,6 +90,7 @@ goo_semaphore_down (GooSemaphore *self, gboolean timeout)
+ 
+         while (self->counter == 0)
+         {
++		self->waiting = TRUE;
+                 if (timeout)
+                 {
+                         GTimeVal time;
+@@ -106,6 +108,7 @@ goo_semaphore_down (GooSemaphore *self, gboolean timeout)
+                 }
+         }
+ 
++	self->waiting = FALSE;
+         self->counter--;
+ 
+         g_mutex_unlock (self->mutex);
+@@ -132,3 +135,62 @@ goo_semaphore_up (GooSemaphore *self)
+ 
+         return;
+ }
++
++/**
++ * goo_semaphore_binary_up:
++ * @self: an #GooSemaphore structure
++ *
++ * Let any semaphore_down continue execution and ends the execution with counter = 0.
++ * This implements a binary semaphore.
++ */
++void
++goo_semaphore_binary_up (GooSemaphore *self)
++{
++        g_assert (self != NULL);
++
++        g_mutex_lock (self->mutex);
++	if (self->waiting == TRUE) {
++        	self->counter = 1;
++        	g_cond_signal (self->condition);
++	}
++        g_mutex_unlock (self->mutex);
++
++        return;
++}
++
++
++/**
++ * goo_semaphore_is_waiting:
++ * @self: an #GooSemaphore structure
++ *
++ * Checks if semaphore is actually blocked waiting for an up call.
++ *
++ * Returns: a boolean set to TRUE if a semaphore_down call is waiting for signal.
++ */
++gboolean 
++goo_semaphore_is_waiting (GooSemaphore *self)
++{
++        g_assert (self != NULL);
++
++	return self->waiting;
++}
++
++/**
++ * goo_semaphore_reset:
++ * @self: an #GooSemaphore structure
++ *
++ * Resets the semaphore count to 0.
++ */
++void 
++goo_semaphore_reset (GooSemaphore *self)
++{
++        g_assert (self != NULL);
++
++	self->counter = 0;
++
++	return;
++}
++
++
++
++
+diff --git a/libgoo/goo-semaphore.h b/libgoo/goo-semaphore.h
+index f3df161..0a1b399 100644
+--- a/libgoo/goo-semaphore.h
++++ b/libgoo/goo-semaphore.h
+@@ -39,12 +39,16 @@ struct _GooSemaphore
+         GCond *condition;
+         GMutex *mutex;
+         gint counter;
++		gboolean waiting;
+ };
+ 
+ GooSemaphore* goo_semaphore_new (gint counter);
+ void goo_semaphore_free (GooSemaphore* self);
+ void goo_semaphore_down (GooSemaphore* self, gboolean timeout);
+ void goo_semaphore_up   (GooSemaphore* self);
++void goo_semaphore_binary_up (GooSemaphore *self);
++gboolean goo_semaphore_is_waiting (GooSemaphore *self);
++void goo_semaphore_reset (GooSemaphore *self);
+ 
+ G_END_DECLS
+ 
+-- 
+1.5.6.3
