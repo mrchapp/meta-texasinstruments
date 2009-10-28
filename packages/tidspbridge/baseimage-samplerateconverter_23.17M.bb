@@ -3,7 +3,7 @@ DESCRIPTION = "Texas Instruments Baseimage Audio Algorithm SampleRateConverter."
 LICENSE = "LGPL"
 PR = "r0"
 
-require baseimage-dasf-cspec-${PV}.inc
+require baseimage-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/alg/SampleRateConverter"
 CCASE_PATHCOMPONENT = "SampleRateConverter"

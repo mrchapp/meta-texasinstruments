@@ -3,7 +3,7 @@ DESCRIPTION = "Texas Instruments Baseimage hal."
 LICENSE = "LGPL"
 PR = "r0"
 
-require baseimage-dasf-cspec-${PV}.inc
+require baseimage-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/hal"
 CCASE_PATHCOMPONENT = "hal"
