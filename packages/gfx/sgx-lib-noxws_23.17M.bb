@@ -10,16 +10,12 @@ DEPENDS = virtual/kernel
 inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-#PACKAGES = "${PN} ${PN}-dbg"
-#FILES_${PN} = "${bindir} ${libdir} ${sysconfdir} ${libdir}/*.so*"
 
 SRC_URI = "file://noxsupport.patch;patch=1"
 
 CCASE_SPEC = "%\
-	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+	element /vobs/wtbu/OMAPSW_GFX/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
@@ -33,7 +29,7 @@ do_chmod() {
 do_compile() {
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} BISON=bison-1.875 V=1 SUPPORT_XWS=0
+		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} BISON=/usr/bin/bison V=1 SUPPORT_XWS=0
 }
 
 do_install() {
@@ -69,7 +65,6 @@ do_install() {
 	install -m 755 sgx_blit_test ${D}${bindir}
 	install -m 755 sgx_flip_test ${D}${bindir}
 	install -m 755 sgx_render_flip_test ${D}${bindir}
-	install -m 755 sgx_render_test ${D}${bindir}
 	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
 
@@ -81,12 +76,6 @@ do_install() {
 	install -m 755 rc.pvr ${D}${sysconfdir}/init.d/
 
 	sed -i "s#local/##" ${D}${sysconfdir}/init.d/rc.pvr
-
-#	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
-# FIXME: make install doesn't seem to work...
-#	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-#		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
-#		BISON=bison-1.875 SUPPORT_XWS=0 install
 }
 
 
