@@ -12,19 +12,12 @@ inherit module ccasefetch
 
 SRC_URI = "\
 	file://23.12-mkcross-driver.patch;patch=1 \
-	file://23.17-start-mk.patch;patch=1 \
-	"
-
-#SRC_URI = "\
-#	file://23.12-mpu-driver-armv7a.patch;patch=1 \
-#	file://23.12-mpu-driver-mkcross.patch;patch=1 \
-#	"
+	file://23.17-start-mk.patch;patch=1"
 
 CCASE_SPEC = "%\
-	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_MPU/dspbridge/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+	element /vobs/wtbu/OMAPSW_MPU/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
+
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/dspbridge"
 CCASE_PATHCOMPONENT = "dspbridge"
 CCASE_PATHCOMPONENTS = "3"

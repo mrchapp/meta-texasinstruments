@@ -5,27 +5,26 @@ LICENSE = "LGPL"
 PR = "r0"
 DEPENDS = "tidspbridge-module"
 
-inherit ccasefetch
+inherit ccasefetch pkgconfig
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 FILES_${PN} = "${libdir}/libbridge.so ${libdir}/libbridge.so.2 ${libdir}/libqos.a ${libdir}/libqos.so.2"
 FILES_${PN}-dev = "${includedir}/dspbridge"
 
-SRC_URI = " \
-	file://23.12-mkcross-api.patch;patch=1 \
-	"
+inherit ccasefetch
 
 CCASE_SPEC = "%\
-	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_MPU/dspbridge/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+        element /vobs/wtbu/OMAPSW_MPU/... LINUX_RLS_DB20091026%\
+        element * /main/LATEST"
+
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/dspbridge"
 CCASE_PATHCOMPONENT = "dspbridge"
 CCASE_PATHCOMPONENTS = "3"
 
+SRC_URI = " \
+	file://23.12-mkcross-api.patch;patch=1"
+
 do_compile() {
-	#mkdir ${S}/target
 	cd ${S}/mpu_api/src
 	oe_runmake PREFIX=${S} TGTROOT=${S} KRNLSRC=${STAGING_KERNEL_DIR} \
 		BUILD=rel CMDDEFS='GT_TRACE DEBUG'
@@ -44,12 +43,16 @@ do_stage() {
 	oe_libinstall -so -C ${S}/mpu_api/src/bridge libbridge ${STAGING_LIBDIR}
 	oe_libinstall -so -C ${S}/mpu_api/src/qos libqos ${STAGING_LIBDIR}
 	install -d ${STAGING_INCDIR}/dspbridge
-	install -m 0644 ${S}/mpu_api/inc/*.h ${STAGING_INCDIR}/dspbridge/
+	install -m 0644 ${S}/mpu_api/inc/*.h ${STAGING_INCDIR}/dspbridge
+
+	install -d ${STAGING_DIR_HOST}/mpu_api_samples/samples
+	install -d ${STAGING_DIR_HOST}/mpu_api_samples/target/lib
+	cp -r ${S}/samples/mpu ${STAGING_DIR_HOST}/mpu_api_samples/samples
 }
 
 do_install() {
 	oe_libinstall -so -C ${S}/mpu_api/src/bridge libbridge ${D}/${libdir}
 	oe_libinstall -so -C ${S}/mpu_api/src/qos libqos ${D}/${libdir}
 	install -d ${D}${includedir}/dspbridge
-	install -m 0644 ${S}/mpu_api/inc/*.h ${D}${includedir}/dspbridge/
+	install -m 0644 ${S}/mpu_api/inc/*.h ${D}${includedir}/dspbridge
 }

@@ -8,9 +8,8 @@ DEPENDS = "tidspbridge-bios-native \
 FILES_${PN}="/dspbridge"
 
 CCASE_SPEC = "%\
-	      element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_${PV}2RC1%\
-	      element /vobs/SDS/Source/Bridge/dsp/... -error%\
-	      element * /main/LATEST%"
+	element /vobs/SDS/Source/Bridge/dsp/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/SDS/Source/Bridge/dsp"
 CCASE_PATHCOMPONENT = "dsp"
@@ -21,8 +20,7 @@ ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
 	   DBS_SABIOS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
 	   DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools/cgt6x-6.0.7 \
 	   DBS_FC=${S}/bdsptools/framework_components_1_10_04/packages-bld \
-	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
-"
+	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate"
 
 SRC_URI = "file://tidspbridge.patch;patch=1"
 
@@ -31,12 +29,13 @@ inherit ccasefetch
 do_compile() {
 	chmod -R +w ${S}/*
 	${ENV_VAR} oe_runmake -f gmakefile .clean
-	${ENV_VAR} oe_runmake -f gmakefile .bridge_samples
+	${ENV_VAR} oe_runmake -f gmakefile .exports
+        ${ENV_VAR} oe_runmake -f gmakefile .bridge_samples
 }
 
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/dsp
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
+	cp -af ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
 	install -d ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/lib/*.a64P ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -d ${STAGING_INCDIR}/dspbridge/exports/include
