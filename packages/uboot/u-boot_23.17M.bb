@@ -4,10 +4,8 @@ inherit ccasefetch
 PR="r0"
 
 CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_L/u-boot/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/wtbu/OMAPSW_L /main/LATEST%\
-	element * /main/0%\
-	"
+	element /vobs/wtbu/OMAPSW_L/u-boot/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_L/u-boot"
 CCASE_PATHCOMPONENT = "u-boot"
