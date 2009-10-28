@@ -11,4 +11,4 @@ ALLOW_EMPTY = "1"
 RDEPENDS = "\
 	gst-pyapps \
 	cheese \
-	"
+	mtd-utils"
