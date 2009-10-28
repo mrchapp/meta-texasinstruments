@@ -5,9 +5,8 @@ DESCRIPTION = "GStreamer plug-ins for OpenMAX IL based on LibGoo"
 PR = "r0"
 
 CCASE_SPEC = "%\
-element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_${PV}2RC1%\
-element * /main/LATEST%\
-"
+	element /vobs/wtbu/OMAPSW_L/mmframework/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_L/mmframework/apps/pyapps"
 CCASE_PATHCOMPONENT = "pyapps"
