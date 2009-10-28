@@ -1,7 +1,9 @@
 DESCRIPTION = "Texas Instruments PCM Encoder Socket Node."
 PR = "r0"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/audio/node/pcm/enc/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/pcm/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

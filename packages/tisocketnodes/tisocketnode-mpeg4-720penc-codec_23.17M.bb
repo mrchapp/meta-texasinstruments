@@ -4,7 +4,9 @@ LICENSE = "LGPL"
 PR = "r0"
 DEPENDS = "baseimage"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/CSSD_MM_Releases/Codecs/video/mpeg4_ari_enc/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/video/mpeg4_ari_enc"
 CCASE_PATHCOMPONENT = "mpeg4_ari_enc"

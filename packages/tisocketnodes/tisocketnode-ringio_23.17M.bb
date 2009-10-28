@@ -4,7 +4,9 @@ LICENSE = "LGPL"
 PR = "r1"
 DEPENDS = "baseimage"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/system/ringio/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/ringio"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

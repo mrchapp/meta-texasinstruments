@@ -1,7 +1,9 @@
 DESCRIPTION = "Texas Instruments DASF Control Task Node Node."
 PR = "r0"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/system/dfgm/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/dfgm"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

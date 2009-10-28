@@ -2,7 +2,9 @@ DESCRIPTION = "Texas Instruments MP3 Decoder Socket Node."
 PR = "r0"
 DEPENDS += "tisocketnode-mp3-codec"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+              element /vobs/wtbu/OMAPSW_DSP/audio/node/mp3/dec/... DSP-MM-TII_RLS_3.2%\
+              element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/mp3/dec"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

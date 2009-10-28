@@ -1,7 +1,9 @@
 DESCRIPTION = "Texas Instruments JPEG Decoder Socket Node Codec."
 PR = "r0"
 
-require tisocketnode-cs_${PV}.inc
+CCASE_SPEC = "%\
+        element /vobs/wtbu/CSSD_MM_Releases/Codecs/image/jpeg_dec/c64x/mm_tiicodecs/... DSP-MM-TII_RLS_3.2%\
+        element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/image/jpeg_dec/c64x/mm_tiicodecs/"
 CCASE_PATHCOMPONENT = "mm_tiicodecs"
