@@ -4,7 +4,7 @@
 
 TARGET_VENDOR = "-none"
 
-EXTERNAL_TOOLCHAIN = "/data/tools/arm-2008q3"
+EXTERNAL_TOOLCHAIN = "/tools/arm-2008q3"
 
 PATH =. "${EXTERNAL_TOOLCHAIN}/bin:"
 
