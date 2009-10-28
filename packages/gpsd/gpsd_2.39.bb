@@ -12,7 +12,7 @@ EXTRA_OECONF = "--x-includes=${STAGING_INCDIR}/X11 \
                 --enable-python"
  
 
-SRC_URI = "http://download.berlios.de/gpsd/gpsd-${PV}.tar.gz \
+SRC_URI = "http://www.openadk.org/distfiles/gpsd-${PV}.tar.gz \
            file://gpsd-default \
            file://gps-hardware \
            file://gpsd"
