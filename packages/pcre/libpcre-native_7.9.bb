@@ -3,7 +3,7 @@ SECTION = "base"
 LICENSE = "GPL"
 PR = "r0"
 
-SRC_URI = "http://www.sfr-fresh.com/fresh/unix/misc/pcre-${PV}.tar.gz"
+SRC_URI = "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PV}.tar.gz"
 
 inherit autotools native
 

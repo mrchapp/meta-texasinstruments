@@ -6,7 +6,7 @@ PR = "r0"
 
 COMPATIBLE_MACHINE = "omap-3430(l|s)dp"
 
-SRC_URI = "http://www.sfr-fresh.com/fresh/unix/misc/pcre-${PV}.tar.gz"
+SRC_URI = "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-${PV}.tar.gz"
 
 inherit autotools pkgconfig
 
