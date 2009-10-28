@@ -11,20 +11,19 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-zoom2-(alpha|beta)"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/WCGDev/... LINUX_RLS_${PV}2RC1%\
-	"
+	element /vobs/WiLink/... LINUX_RLS_DB20091026%\
+	element /vobs/WCGDev/... LINUX_RLS_DB20091026"
 
 CCASE_PATHFETCH = "/vobs/WiLink/ \
-	/vobs/WCGDev \
-	"
+	/vobs/WCGDev"
+
 CCASE_PATHCOMPONENTS = 0
 CCASE_PATHCOMPONENT = "vobs"
 
-SRC_URI = "file://fix-libestadrv-makefile.diff;patch=1 \
-	file://fix-libuadrv-makefile.diff;patch=1 \
-	file://fix-CUDK-makefile.diff;patch=1 \
-	"
+SRC_URI = "file://fix-libestadrv-makefile.diff;patch=1\
+	file://fix-libuadrv-makefile.diff;patch=1\
+	file://fix-CUDK-makefile.diff;patch=1\
+	file://remove-hald-reconfig-wlan-script.diff;patch=1"
 
 PACKAGES = "${PN}"
 FILES_${PN} += "/wlan"
@@ -58,12 +57,13 @@ do_install() {
 	install -d ${D}/etc/rc6.d
 
 	install -m 755 ${S}/WiLink/CUDK/wlan ${D}/etc/init.d/
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc0.d/K23Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc3.d/S23Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc2.d/S23Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc5.d/S23Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc6.d/K23Wlan
-	ln -s ${D}/etc/init.d/wlan ${D}/etc/rc1.d/K23Wlan
+	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
+
 #CHANGES end
 
 	install -m 755 ${S}/WiLink/platforms/os/linux/wlan_cu ${D}/wlan
