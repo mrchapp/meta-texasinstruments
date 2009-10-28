@@ -9,27 +9,15 @@ inherit ccasefetch
 COMPATIBLE_MACHINE = "omap-3430(s|l)dp"
 
 CCASE_SPEC =   "%\
-	element /vobs/WCGDev/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/MCP_Common/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/HSW_FMStack/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+	element /vobs/WCGDev/... LINUX_RLS_DB20091026%\
+	element /vobs/MCP_Common/... LINUX_RLS_DB20091026%\
+	element /vobs/HSW_FMStack/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/MCP_Common/ \
 	/vobs/HSW_FMStack \
-	/vobs/WCGDev \
-	"
-#CCASE_PATHFETCH = "/vobs/MCP_Common/Platform/fmhal/inc/int \
-#	/vobs/MCP_Common/Platform/fmhal/inc \
-#	/vobs/MCP_Common/Platform/os/linux \
-#	/vobs/MCP_Common/Platform/inc \
-#	/vobs/MCP_Common/tran \
-#	/vobs/MCP_Common/inc \
-#	/vobs/HSW_FMStack/stack/inc/int \
-#	/vobs/HSW_FMStack/stack/inc \
-#	/vobs/WCGDev/linux/fm_app \
-#	/vobs/WCGDev/linux/build \
-#	"
+	/vobs/WCGDev"
+
 CCASE_PATHCOMPONENT = "vobs"
 CCASE_PATHCOMPONENTS = "0"
 

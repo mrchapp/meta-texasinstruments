@@ -9,9 +9,8 @@ inherit ccasefetch
 COMPATIBLE_MACHINE = "omap-3430(l|s)dp"
 
 CCASE_SPEC =   "%\
-	element /vobs/WCGDev/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+	element /vobs/WCGDev/... LINUX_RLS_DB20091026%\
+	element * /main/LATEST"
 
 CCASE_PATHFETCH = "/vobs/WCGDev/linux/init_scripts"
 CCASE_PATHCOMPONENT = "init_scripts"
