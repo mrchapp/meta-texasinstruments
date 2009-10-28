@@ -8,12 +8,8 @@ PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 # We need to override this and make sure it's only -j1
 PARALLEL_MAKE = "-j1"
 
-CCASE_SPEC = "\
-	# MM ISP%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX_RLS_${PV}2RC1%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX_RLS_${PV}2RC1%\
-	element * /main/LATEST%\
-	"
+require tiopenmax-cspec-${PV}.inc
+
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/linux/mm_isp /vobs/wtbu/OMAPSW_MPU/algo"
 CCASE_PATHCOMPONENTS = 2
 CCASE_PATHCOMPONENT = "OMAPSW_MPU"
