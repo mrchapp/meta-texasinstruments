@@ -21,8 +21,7 @@ echo "Installing v$VERSION ccfetch scripts"
 
 function move_to_remote() {
   file="$1"
-  scp $file $CCF_REMOTEUSER@$CCF_REMOTEHOST:$CCF_REMOTEBIN/`basename $file` &&
-    rm $file
+  scp $file $CCF_REMOTEUSER@$CCF_REMOTEHOST:$CCF_REMOTEBIN/`basename $file`
 }
 
 function prompt() {
