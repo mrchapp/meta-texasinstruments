@@ -1,21 +1,21 @@
-DEPENDS = "gstreamer virtual/openmax-il"
+DEPENDS = "gst-plugins-base virtual/openmax-il"
+PR = "r7"
 
-SRC_URI = "git://github.com/felipec/gst-openmax.git;protocol=git \
-	file://common-20090128.tar.gz \
-	file://nogstcheck.patch;patch=1 \
-	file://colorformatdec.patch;patch=1"
+SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
 # From omap branch:
-SRCREV = "18fdb2371e1e893daa40af31da21026bb32a72f5"
+SRCREV = "f1e9f392840edf8cc4228052ed699af56d53eb6d"
 S = "${WORKDIR}/git"
 
 inherit autotools
 
 EXTRA_OECONF += "--disable-valgrind"
 
-do_configure_prepend() {
-	mv ${WORKDIR}/common ${S}
+do_patch2() {
+	echo ${SRCREV} > ${S}/.version
 }
 
 FILES_${PN} += "${libdir}/gstreamer-0.10/libgstomx.so"
 FILES_${PN}-dev += "${libdir}/gstreamer-0.10/libgstomx.*a"
 FILES_${PN}-dbg += "${libdir}/gstreamer-0.10/.debug/"
+
+addtask patch2 after do_patch before do_configure
