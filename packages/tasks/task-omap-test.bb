@@ -3,12 +3,10 @@
 #
 
 DESCRIPTION = "Tasks for testing software releases"
-PR = "r0"
+PR = "r1"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
-	gst-pyapps \
-	cheese \
 	"
