@@ -1,9 +1,12 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
-PR = "r7"
+PR = "r8"
 
 SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
+# This patch holds the camera's horses until OMX is ready for it.
+SRC_URI += "file://revert-cam-video.patch;patch=1"
+
 # From omap branch:
-SRCREV = "f1e9f392840edf8cc4228052ed699af56d53eb6d"
+SRCREV = "bbc6e3fd66f41057bdf8c3ea08902883ec0f48a1"
 S = "${WORKDIR}/git"
 
 inherit autotools
