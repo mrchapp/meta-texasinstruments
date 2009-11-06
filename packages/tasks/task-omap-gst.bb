@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r8"
+PR = "r17"
 
 PACKAGES = "\
     task-omap-gst \
@@ -24,7 +24,6 @@ RDEPENDS_task-omap-gst = "\
 RDEPENDS_task-omap-gst-libs = "\
     check	\
     gstreamer	\
-    libgoo	\
     "
 
 RDEPENDS_task-omap-gst-plugins = "\
@@ -32,8 +31,6 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugins-good	\
     gst-plugins-bad	\
     gst-plugins-ugly	\
-    gst-goo		\
-    gst-omap3		\
     gst-plugin-mpegaudioparse \
     gst-plugin-audiotestsrc \
     gst-plugin-videotestsrc \
@@ -45,12 +42,20 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-wavparse \
     gst-plugin-rtsp \
     gst-plugin-rtp \
-    gst-plugin-rtpmanager \
     gst-plugin-amrnb \
-    gst-plugin-amrwb \
-    gst-plugin-mms \
+    gst-plugin-amrwbenc \
+    gst-plugin-amrwbdec \
     gst-plugin-freeze \
     gst-plugin-multifile \
+    gst-plugin-gconfelements \
+    gst-plugin-aacparse \
+    gst-plugin-decodebin2 \
+    gst-plugin-flv \
+    gst-plugin-jpegparse \
+    gst-plugin-qtmux \
+    gst-plugin-stridetransform \
+    gst-qa \
+    gst-openmax \
     "
 
 RDEPENDS_task-omap-gst-apps = ""

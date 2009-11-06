@@ -13,7 +13,7 @@ acpaths = "-I ${S}/common/m4 -I ${S}/m4"
 
 LIBV = "0.10"
 PACKAGES_DYNAMIC = "gst-plugin-*"
-FILES_${PN} += "${libdir}/gstreamer-${LIBV}/*.so"
+#FILES_${PN} += "${libdir}/gstreamer-${LIBV}/*.so"
 #FILES_${PN}-dev += "${libdir}/gstreamer-${LIBV}/*.la ${libdir}/gstreamer-${LIBV}/*.a"
 FILES_${PN}-dbg += "${libdir}/gstreamer-${LIBV}/.debug"
 
@@ -26,6 +26,12 @@ python populate_packages_prepend () {
 	do_split_packages(d, gst_libdir, 'libgst(.*)\.so$', 'gst-plugin-%s', 'GStreamer plugin for %s', postinst=postinst, extra_depends=bb.data.expand('${PN}',d))
 	do_split_packages(d, gst_libdir, 'libgst(.*)\.l?a$', 'gst-plugin-%s-dev', 'GStreamer plugin for %s (development files)', extra_depends=bb.data.expand('${PN}-dev',d))
 }
+
+do_configure_prepend() {
+	# This m4 file contains nastiness which conflicts with libtool 2.2.2
+	rm ${S}/m4/lib-link.m4 || true
+}
+
 
 do_stage() {
 	autotools_stage_all

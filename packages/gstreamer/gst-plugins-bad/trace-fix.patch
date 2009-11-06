@@ -1,0 +1,13 @@
+Index: gst-plugins-bad-0.10.8/ext/alsaspdif/alsaspdifsink.c
+===================================================================
+--- gst-plugins-bad-0.10.8.orig/ext/alsaspdif/alsaspdifsink.c	2009-05-06 12:35:39.000000000 -0500
++++ gst-plugins-bad-0.10.8/ext/alsaspdif/alsaspdifsink.c	2009-05-06 12:35:56.000000000 -0500
+@@ -348,7 +348,7 @@
+ 
+   err = snd_pcm_open (&(sink->pcm), pcm_name, SND_PCM_STREAM_PLAYBACK, 0);
+   if (err < 0) {
+-    GST_DEBUG_OBJECT ("Open failed for %s - searching for IEC958 manually\n",
++    GST_DEBUG ("Open failed for %s - searching for IEC958 manually\n",
+         pcm_name);
+ 
+     err = alsaspdifsink_find_pcm_device (sink);
