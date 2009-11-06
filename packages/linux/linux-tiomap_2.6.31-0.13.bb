@@ -1,6 +1,6 @@
 require linux-omap.inc
 
-PR = "r1"
+PR = "r2"
 
 COMPATIBLE_MACHINE = "omap-4430sdp"
 DEFAULT_PREFERENCE = "1"
@@ -10,9 +10,9 @@ FILESDIR = "${FILE_DIRNAME}/${PN}-git/${MACHINE}"
 RPROVIDES += "virtual/dspbridge-driver"
 PROVIDES += "virtual/dspbridge-driver"
 
-SRCREV = "c5e0ca6ed25424bbd883e441bb3a9411294fe7b4"
+SRCREV = "ti-2.6.31-omap4-24.0.13-P1"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;branch=L24.0.13;protocol=git"
+SRC_URI = " git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;protocol=git"
 
 S = "${WORKDIR}/git"
 

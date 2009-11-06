@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for TI's syslink"
-PR = "r0"
+PR = "r1"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
@@ -11,8 +11,6 @@ ALLOW_EMPTY = "1"
 RDEPENDS = "\
     tisyslink-lib\
     tisyslink-ducati\
-    tisyslink-memmgr\
-    tisyslink-d2c\
     tisyslink-ducati-mm \
    "
 

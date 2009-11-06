@@ -19,6 +19,7 @@ inherit xdc ccasefetch
 PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
+   element * ACT_DUCATI_OCT-PRERLS-14%\
    element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
    element * /main/LATEST%"
 

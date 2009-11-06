@@ -3,7 +3,7 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 SECTION = "libs"
 
-DEPENDS = "virtual/kernel tisyslink-memmgr"
+DEPENDS = "virtual/kernel titiler-memmgr"
 inherit  pkgconfig autotools
 
 PR = "r6"
