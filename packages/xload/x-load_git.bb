@@ -36,6 +36,7 @@ ${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/x-loade
 ${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/x-loader.git;branch=zoom3;protocol=git", "", d)} \
 "
 
+PV = "git${SRCREV}"
 
 do_configure() {
 cd ${S}/include
