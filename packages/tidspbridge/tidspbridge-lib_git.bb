@@ -6,8 +6,9 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel "
 inherit pkgconfig autotools
 
-PR = "r1"
+PR = "r3"
 PV = "0.0+git+${SRCREV}"
+
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git \
            file://dynreg-makefile.patch \
@@ -21,5 +22,6 @@ FILES_${PN}-dbg += "${libdir}/.debug/"
 
 do_stage() {
         autotools_stage_all
+		cp ${S}/api/inc/* ${STAGING_INCDIR}
 }
 

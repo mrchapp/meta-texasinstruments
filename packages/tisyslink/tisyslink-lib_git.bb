@@ -6,8 +6,8 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel titiler-memmgr"
 inherit  pkgconfig autotools
 
-PR = "r6"
-PV = "0.00+git+${SRCREV}"
+PR = "r7"
+PV = "0.0+git+${SRCREV}"
 
 SRC_URI = "\
     git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git \
@@ -23,9 +23,7 @@ FILES_${PN} += "${libdir}/*.so /dspbridge/install_syslink"
 FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/"
 
-#EXTRA_OECONF += "--enable-tilermgr --enable-unit-tests"
 export TILER_INC_PATH="${STAGING_DIR}/armv7a-none-linux-gnueabi/usr/lib/"
-#export KRNLSRC="/work/kernel-omap4"
 
 do_stage() {
         autotools_stage_all
