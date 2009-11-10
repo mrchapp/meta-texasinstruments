@@ -17,3 +17,9 @@ do_stage() {
     install -d ${INSTALL_DIR}
     HOME=${S} ${DL_DIR}/${SDOFILE} --mode silent --prefix ${INSTALL_DIR}/${SDONAME}-${PV}
 }
+
+PREMIRRORS_prepend () {
+ftp://.*/.*    http://pokysources.tif.ti.com/files/
+http://.*/.*   http://pokysources.tif.ti.com/files/
+https://.*/.*  http://pokysources.tif.ti.com/files/
+}
