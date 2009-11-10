@@ -4,17 +4,19 @@ PROVIDES += "xserver-xf86-lite"
 
 PROTO_DEPS = "randrproto renderproto fixesproto damageproto xextproto xproto xf86dgaproto xf86miscproto xf86rushproto xf86vidmodeproto xf86bigfontproto compositeproto recordproto resourceproto videoproto scrnsaverproto evieext trapproto xineramaproto fontsproto kbproto inputproto bigreqsproto xcmiscproto glproto"
 
-LIB_DEPS = "pixman libxfont xtrans libxau libxext libxdmcp libdrm libxkbfile libpciaccess openssl"
+LIB_DEPS = "pixman libxcalibrate libxfont xtrans libxau libxext libxdmcp libdrm libxkbfile libpciaccess openssl tslib"
 
 DEPENDS = "${PROTO_DEPS} ${LIB_DEPS}"
 
-RDEPENDS = "hal xorg-minimal-fonts"
+RDEPENDS_${PN} += "hal xorg-minimal-fonts"
 
 FILES_${PN} += "${bindir}/Xorg "
 
 EXTRA_OECONF += "--disable-cfb \
                  --disable-afb \
                  --disable-mfb \
+                 --enable-tslib \
+                 --enable-xcalibrate \
                  --disable-dga \
                  --disable-xinerama \
                  --disable-xf86misc \
