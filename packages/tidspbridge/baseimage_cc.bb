@@ -12,28 +12,28 @@ inherit xdc ccasefetch
 PV = "4.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-   element /vobs/wtbu/OMAPSW_DSP/system/baseimage/...              ${SRCREV}%\
-   element /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock/...       ${SRCREV}%\
+   element /vobs/wtbu/OMAPSW_DSP/audio/alg/SampleRateConverter/... ${SRCREV}%\
+   element /vobs/wtbu/OMAPSW_DSP/speech/node/ModemTaskNode/...     ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/system/dasf/...                   ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/system/hal/...                    ${SRCREV}%\
-   element /vobs/wtbu/OMAPSW_DSP/system/inst2/...                  ${SRCREV}%\
-   element /vobs/wtbu/OMAPSW_DSP/make/...                          ${SRCREV}%\
-   element /vobs/wtbu/OMAPSW_DSP/audio/alg/SampleRateConverter/... ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/system/tmon/...                   ${SRCREV}%\
+   element /vobs/wtbu/OMAPSW_DSP/system/baseimage/...              ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/system/utils/...                  ${SRCREV}%\
+   element /vobs/wtbu/OMAPSW_DSP/make/...                          ${SRCREV}%\
+   element /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock/...       ${SRCREV}%\
    element * /main/LATEST%"
 
 
 CCASE_PATHFETCH = " \
-   /vobs/wtbu/OMAPSW_DSP/system/baseimage \
-   /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock \
+   /vobs/wtbu/OMAPSW_DSP/audio/alg/SampleRateConverter \
+   /vobs/wtbu/OMAPSW_DSP/speech/node/ModemTaskNode/ \
    /vobs/wtbu/OMAPSW_DSP/system/dasf \
    /vobs/wtbu/OMAPSW_DSP/system/hal \
-   /vobs/wtbu/OMAPSW_DSP/system/inst2 \
-   /vobs/wtbu/OMAPSW_DSP/make \
-   /vobs/wtbu/OMAPSW_DSP/audio/alg/SampleRateConverter \
    /vobs/wtbu/OMAPSW_DSP/system/tmon \
+   /vobs/wtbu/OMAPSW_DSP/system/baseimage \
    /vobs/wtbu/OMAPSW_DSP/system/utils \
+   /vobs/wtbu/OMAPSW_DSP/make \
+   /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock \
    "
 
 CCASE_PATHCOMPONENT = "wtbu"

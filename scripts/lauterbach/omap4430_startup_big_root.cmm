@@ -1,0 +1,53 @@
+; CMM file to load and boot minimium Linux System on OMAP4430
+; Replace paths with your own binaries.	
+; 2 Nov 2009 - rkw
+
+system.cpu omap4430app1
+system.jc rtck
+etm.on
+trace.method onchip
+
+if run()
+(
+	system.up
+	system.down
+	system.up
+)
+
+system.mode attach
+
+if run()
+	break
+
+to.set dabort off
+to.set pabort off
+to.set undef off
+to.set swi off
+to.set reset off
+break.select.program onchip
+
+; Load up X-Loader to target (12kB)
+r.s t 0
+r.s PC 0x40304000
+data.load.binary x-load.bin 0x40304000
+go
+wait 100.ms
+break
+
+; Load U-boot to target  (200KB)
+data.load.elf u-boot 0x80000000 /gnu
+go
+wait 200.ms
+break
+y.reset
+
+; run kernel and filesystem (2MB + xx MB)
+data.load.binary uImage-omap-4430sdp.bin 0x80300000
+data.load.binary omap-image-omap42-omap-4430sdp.ext2 0x81600000
+
+D.S NSD:0x4A009100 %LE %LONG 0x2
+D.S NSD:0x4A009120 %LE %LONG 0xf02
+D.S NSD:0x4A009100 %LE %LONG 0x0
+D.S NSD:0x4A307100 %LE %LONG 0x3
+go
+

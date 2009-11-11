@@ -1,0 +1,1617 @@
+"Configuration"
+"Configuration2"
+"OMAP4430"
+[
+"BuildNumber"
+"BuildNumber"
+"~"
+value "1"
+]
+[
+"Podbus Device Chain"
+"Podbus Device Chain"
+"~"
+[
+"Power Debug USB"
+"Power Debug USB"
+"~"
+[
+"ListBasedCombo"
+"ConnectionType"
+"~"
+value "USB"
+]
+[
+"USB Settings"
+""
+"~"
+]
+[
+"Parallel Port Settings"
+"Parallel Port Settings"
+"~"
+[
+"ParallelPortNumber"
+"Port"
+"~"
+value "1"
+]
+[
+"ParallelAccesMode"
+"Access Mode"
+"~"
+value "PARPORT"
+]
+[
+"ParallelConnectionMode"
+"Connection Mode"
+"~"
+value "Standard"
+]
+]
+[
+"Ethernet Settings"
+"Ethernet Settings"
+"~"
+[
+"EthernetNodeName"
+"EthernetNodeName"
+"Node Name / IP Address"
+value ""
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"SMALLBLOCKS"
+"SMALLBLOCKS"
+"Packet Burst Limitation"
+value "no"
+]
+]
+[
+"Core"
+"Core"
+"CortexA9_CPU0"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20000"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10000"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_cortexA9_CPU0.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000009"
+]
+]
+[
+"Core"
+"Core2"
+"CortexA9_CPU1"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20001"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10001"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_cortexA9_CPU1.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value ""
+]
+]
+[
+"Core"
+"Core3"
+"CortexM3_RTOS"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20002"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10002"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_cortexM3_RTOS.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000010"
+]
+]
+[
+"Core"
+"Core4"
+"CortexM3 SIMCOP"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20003"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10003"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_cortexM3_SIMCOP.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000011"
+]
+]
+[
+"Core"
+"Core5"
+"Tesla C64"
+[
+"T32Executable"
+"Target"
+"~"
+value "TMS320C6000"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20004"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10004"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_c64.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000014"
+]
+]
+[
+"Core"
+"Core6"
+"IvaHD iCount1"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20005"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10005"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_iva1.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000015"
+]
+]
+[
+"Core"
+"Core7"
+"IvaHD iCount2"
+[
+"T32Executable"
+"Target"
+"~"
+value "ARM"
+]
+[
+"CoreAdvancedOptions"
+"CoreAdvancedOptions"
+"Advanced Settings"
+[
+"DirectorySettings"
+"Directories"
+"Paths"
+[
+"String"
+"WorkingPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"SystemPath"
+"~"
+value "C:\T32"
+]
+[
+"String"
+"TempPath"
+"~"
+value "C:\DOCUME~1\a0919316\LOCALS~1\Temp"
+]
+[
+"String"
+"HelpPath"
+"~"
+value "C:\T32\pdf"
+]
+[
+"String"
+"LicenseFile"
+"~"
+value ""
+]
+]
+[
+"DisplaySettings"
+"Display"
+"~"
+[
+"String"
+"Title"
+"~"
+value "Trace32 %T [%D @%N]"
+]
+[
+"Boolean"
+"SmallFontSize"
+"~"
+value "yes"
+]
+[
+"Boolean"
+"FullScreen"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Iconic"
+"~"
+value "no"
+]
+[
+"Boolean"
+"MDI"
+"~"
+value "no"
+]
+]
+[
+"InternalSettings"
+"InternalSettings"
+"Internal"
+[
+"Boolean"
+"Debug"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Attach"
+"~"
+value "no"
+]
+[
+"Boolean"
+"Passive"
+"~"
+value "no"
+]
+[
+"String"
+"T32Executable"
+"~"
+value ""
+]
+]
+[
+"Port"
+"APIPort"
+"API Port"
+[
+"Boolean"
+"APIPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"APIPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"APIPort.PortStartValue"
+"Port Start Value"
+value "20000"
+]
+[
+"Int"
+"APIPort.PortValue"
+"Port Value"
+value "20006"
+]
+]
+[
+"Port"
+"IntercomPort"
+"Intercom Port"
+[
+"Boolean"
+"IntercomPort.UsePort"
+"Use Port"
+value "no"
+]
+[
+"PACKLEN"
+"PACKLEN"
+"Max UDP Packet Size"
+value "1024"
+]
+[
+"Boolean"
+"IntercomPort.AutoIncrementPort"
+"Use Auto Increment Port"
+value "yes"
+]
+[
+"Int"
+"IntercomPort.PortStartValue"
+"Port Start Value"
+value "10000"
+]
+[
+"Int"
+"IntercomPort.PortValue"
+"Port Value"
+value "10006"
+]
+]
+[
+"StartupScript"
+"StartupScript"
+"~"
+[
+"ListBasedCombo"
+"Source"
+"~"
+value "File"
+]
+[
+"String"
+"File"
+"~"
+value "Q:\tcomap4430\ref_tc\lauterbach\cmm\omap4430_iva2.cmm"
+]
+[
+"BuiltinScript"
+"BuiltinScript"
+"Built-in Script"
+value ""
+]
+[
+"String"
+"Parameters"
+"~"
+value ""
+]
+]
+]
+[
+"String"
+"T32ID"
+"~"
+value "T32_1000016"
+]
+]
+]
+]
+

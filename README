@@ -1,3 +1,4 @@
 meta-texasinstruments is a small repository of bitbake recipes and other
-OpenEmbedded metadata for the TI OMAP3 line of processors. The goal of the
-recipes is to extend Poky Linux to include support for TI’s multimedia stack.
+OpenEmbedded metadata for the TIand OMAP4 line of processors. 
+The goal of the recipes is to extend Poky Linux to include support
+for TI's multimedia stack.

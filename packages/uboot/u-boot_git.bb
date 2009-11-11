@@ -28,6 +28,7 @@ do_stage() {
 	install -m 644 ${S}/include/malloc.h ${STAGING_INCDIR}/${PN}/
 	install -m 644 ${S}/include/mmc.h ${STAGING_INCDIR}/${PN}/
 	install -m 644 ${S}/include/part.h ${STAGING_INCDIR}/${PN}/
+	install -m 644 ${S}/include/environment.h ${STAGING_INCDIR}/${PN}/
 
 	install -m 644 ${S}/include/asm-arm/byteorder.h \
 		${STAGING_INCDIR}/${PN}/asm-arm/
@@ -42,8 +43,8 @@ do_stage() {
 		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
 	install -m 644 ${S}/include/asm-arm/arch-omap4/mem.h \
 		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
-	#install -m 644 ${S}/include/asm-arm/arch-omap4/mux.h \
-	#	${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
+	install -m 644 ${S}/include/asm-arm/arch-omap4/mux.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
 	install -m 644 ${S}/include/asm-arm/arch-omap4/omap4430.h \
 		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
 	install -m 644 ${S}/include/asm-arm/arch-omap4/sizes.h \
@@ -52,6 +53,18 @@ do_stage() {
 		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
 	install -m 644 ${S}/include/asm-arm/arch-omap4/sys_proto.h \
 		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
+	install -m 644 ${S}/include/asm-arm/arch-omap4/rev.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/arch-omap4/
+	install -m 644 ${S}/include/asm-arm/types.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/
+	install -m 644 ${S}/include/asm-arm/mach-types.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/
+	install -m 644 ${S}/include/asm-arm/io.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/
+	install -m 644 ${S}/include/asm-arm/memory.h \
+		${STAGING_INCDIR}/${PN}/asm-arm/
+	install -m 644 ${S}/include/i2c.h \
+		${STAGING_INCDIR}/${PN}/
 
 	install -m 644 ${S}/include/linux/byteorder/* \
 		${STAGING_INCDIR}/${PN}/linux/byteorder/

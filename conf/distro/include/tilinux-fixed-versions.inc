@@ -12,12 +12,13 @@ PREFERRED_VERSION_omap-image-mm.bb =			"1.0"
 PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
 # baseport
-SRCREV_pn-x-load =		            "X-LOAD_RLS_4.63"
-SRCREV_pn-u-boot =		            "ti-omap4-v0.2"
-PREFERRED_VERSION_linux-tiomap =	"2.6.31-0.13"
+SRCREV_pn-x-load =		            "85a222ea2f8fe93a8ac2313ca8157abf8c51d69c"
+SRCREV_pn-u-boot =		            "9ed9ab009ca2ad6334101b4f9dc064e8333e8a25"
+PREFERRED_VERSION_linux-tiomap =	"2.6.31-sdc"
 
 # Device driver test
-SRCREV_pn-driver-test = "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
+SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
+PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
 SRCREV_pn-tidspbridge-lib                =		"ti-syslink-mpu-rls-24.0.13"
@@ -144,9 +145,13 @@ SRCREV_pn-tiopenmax-lcml              = "L24.0.13"
 SRCREV_pn-tiopenmax-osal              = "L24.0.13"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.12"
-PREFERRED_VERSION_gst-goo =		"5.12-P1"
 PREFERRED_VERSION_gst-pyapps =		"5.11"
+# open source dependencies
+PREFERRED_VERSION_gst-plugins-bad =     "git"
+PREFERRED_VERSION_gst-plugins-ugly =    "git"
+PREFERRED_VERSION_gst-plugins-good =    "git"
+PREFERRED_VERSION_gst-plugins-base =    "git"
+PREFERRED_VERSION_gstreamer =           "git"
 
 # connectivity
 PREFERRED_VERSION_wilink = 		"23-1.2-P1"
