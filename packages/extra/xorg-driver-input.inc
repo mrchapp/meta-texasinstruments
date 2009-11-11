@@ -1,4 +1,4 @@
 include xorg-driver-common.inc
 
-DEPENDS = "randrproto inputproto xserver-xorg xproto"
+DEPENDS = "randrproto inputproto virtual/xserver xproto"
 
