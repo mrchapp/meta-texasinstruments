@@ -144,14 +144,6 @@ SRCREV_pn-tiopenmax-core              = "L24.0.13"
 SRCREV_pn-tiopenmax-lcml              = "L24.0.13"
 SRCREV_pn-tiopenmax-osal              = "L24.0.13"
 
-# gstreamer
-PREFERRED_VERSION_gst-pyapps =		"5.11"
-# open source dependencies
-PREFERRED_VERSION_gst-plugins-bad =     "git"
-PREFERRED_VERSION_gst-plugins-ugly =    "git"
-PREFERRED_VERSION_gst-plugins-good =    "git"
-PREFERRED_VERSION_gst-plugins-base =    "git"
-PREFERRED_VERSION_gstreamer =           "git"
 
 # connectivity
 PREFERRED_VERSION_wilink = 		"23-1.2-P1"
@@ -162,9 +154,13 @@ SRCREV_pn-sgx-kernel-module =	"GFX-LINUX-SGX-DDK-L24_RLS_0.1"
 SRCREV_pn-sgx-lib-noxws =	"GFX-LINUX-SGX-DDK-L24_RLS_0.1"
 
 # open source dependencies
-PREFERRED_VERSION_gst-plugins-bad =	"0.10.8"
-PREFERRED_VERSION_gst-plugins-ugly =	"0.10.9"
-PREFERRED_VERSION_gst-plugins-good =	"0.10.7"
+# gstreamer
+PREFERRED_VERSION_gst-pyapps =		"5.11"
+PREFERRED_VERSION_gst-plugins-bad =     "git"
+PREFERRED_VERSION_gst-plugins-ugly =    "git"
+PREFERRED_VERSION_gst-plugins-good =    "git"
+PREFERRED_VERSION_gst-plugins-base =    "git"
+PREFERRED_VERSION_gstreamer =           "git"
 PREFERRED_VERSION_gst-qtmux =		"svn"
 PREFERRED_VERSION_check =		"0.9.5"
 PREFERRED_VERSION_amrnb =		"7.0.0.2"

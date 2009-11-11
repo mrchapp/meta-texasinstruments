@@ -9,4 +9,6 @@ EXTRA_OECONF += "--disable-aalib --disable-esd --disable-shout2 --disable-libcac
 PACKAGES += "gst-plugin-id3demux"
 
 SRCREV = "f81575cf2692e6b4fd7b39c6b6b1326e2c6267e5"
-SRC_URI += "file://v4l2sink-update-20091013.patch;patch=1"
+SRC_URI += "file://v4l2sink-update-20091013.patch;patch=1 \
+            file://0001-gst-plugins-good-add-rowstride-patch-for-omap4.patch \
+"

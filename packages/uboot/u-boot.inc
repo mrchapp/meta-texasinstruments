@@ -10,8 +10,10 @@ PARALLEL_MAKE=""
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX}"
 
 UBOOT_MACHINE ?= "${MACHINE}_config"
-UBOOT_IMAGE ?= "u-boot-${MACHINE}-${PV}-${PR}.bin"
-UBOOT_SYMLINK ?= "u-boot-${MACHINE}.bin"
+UBOOT_IMAGE_ELF ?= "u-boot-${MACHINE}-${PV}-${PR}"
+UBOOT_IMAGE ?= "${UBOOT_IMAGE_ELF}.bin"
+UBOOT_SYMLINK_ELF ?= "u-boot-${MACHINE}"
+UBOOT_SYMLINK ?= "${UBOOT_SYMLINK_ELF}.bin"
 
 do_compile () {
 	unset LDFLAGS
@@ -25,12 +27,17 @@ do_compile () {
 
 do_deploy () {
 	install -d ${DEPLOY_DIR_IMAGE}
+	install ${S}/u-boot ${DEPLOY_DIR_IMAGE}/${UBOOT_IMAGE_ELF}
 	install ${S}/u-boot.bin ${DEPLOY_DIR_IMAGE}/${UBOOT_IMAGE}
+	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${UBOOT_IMAGE_ELF}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${UBOOT_IMAGE}
 
 	cd ${DEPLOY_DIR_IMAGE}
+	rm -f ${UBOOT_SYMLINK_ELF}
 	rm -f ${UBOOT_SYMLINK}
+	ln -sf ${UBOOT_IMAGE_ELF} ${UBOOT_SYMLINK_ELF}
 	ln -sf ${UBOOT_IMAGE} ${UBOOT_SYMLINK}
+	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${UBOOT_SYMLINK_ELF}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${UBOOT_SYMLINK}
 }
 do_deploy[dirs] = "${S}"
