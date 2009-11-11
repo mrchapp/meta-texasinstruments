@@ -7,7 +7,7 @@
 +#define CONFIG_BOOTDELAY         30
 -
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"bootcmd=setenv bootargs 'root/dev/ram0 rw mem=512M console=ttyS0,115200n8 initrd=0x81600000,128M ramdisk_size=131072; bootm 0x80300000\0"
++	"bootcmd=setenv bootargs 'root/dev/ram0 rw mem=512M console=ttyS0,115200n8 initrd=0x81600000,128M ramdisk_size=131072'; bootm 0x80300000\0"
  #endif /*CONFIG_4430ZEBU */
  
  #ifdef NFS_BOOT_DEFAULTS
