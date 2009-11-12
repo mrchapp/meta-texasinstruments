@@ -1,11 +1,5 @@
-#
-# Copyright (C) 2007 OpenedHand Ltd.
-#
-IMAGE_INSTALL = "task-poky-boot task-omap-bridge task-omap-syslink ${ROOTFS_PKGMANAGE}"
+require omap-image-minimal.bb
 
-IMAGE_LINGUAS = " "
+IMAGE_INSTALL += "task-omap-bridge"
+IMAGE_INSTALL += "task-omap-syslink"
 
-inherit poky-image
-
-# remove not needed ipkg informations
-ROOTFS_POSTPROCESS_COMMAND += "remove_packaging_data_files"

@@ -82,16 +82,18 @@ POKY_BASE_INSTALL = '\
     ${@base_contains("IMAGE_FEATURES", ["nfs-server", "dev-pkgs"], "task-poky-nfs-server-dev", "",d)} \
     \
     ${@base_contains("IMAGE_FEATURES", "omap-bridge", "task-omap-bridge", "",d)} \
+    ${@base_contains("IMAGE_FEATURES", "omap-syslink", "task-omap-syslink", "",d)} \
+    ${@base_contains("IMAGE_FEATURES", "omap-tiler", "task-omap-tiler", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-omx", "task-omap-omx", "",d)} \
-    ${@base_contains("IMAGE_FEATURES", "omap-gst", "task-omap-gst", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-sn", "task-omap-sn", "",d)} \
-    ${@base_contains("IMAGE_FEATURES", "omap-conn", "task-omap-connectivity", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-test", "task-omap-test", "",d)} \
+    ${@base_contains("IMAGE_FEATURES", "omap-gst", "task-omap-gst", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-gfx", "task-omap-gfx", "",d)} \
+    ${@base_contains("IMAGE_FEATURES", "omap-conn", "task-omap-connectivity", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-tools", "task-omap-tools", "",d)} \
     \
-    ${@base_contains("IMAGE_FEATURES", "package-management", "${ROOTFS_PKGMANAGE}", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-security", "task-omap-security", "",d)} \
+    ${@base_contains("IMAGE_FEATURES", "package-management", "${ROOTFS_PKGMANAGE}", "",d)} \
     ${POKY_EXTRA_INSTALL} \
     '
 
