@@ -10,11 +10,10 @@ FILESDIR = "${FILE_DIRNAME}/${PN}-git/${MACHINE}"
 RPROVIDES += "virtual/dspbridge-driver"
 PROVIDES += "virtual/dspbridge-driver"
 
-SRCREV = "798fbae1f49fea8b3d02dee3b190a92317d5d0bf"
+SRCREV = "3f447fbfa2cd0de88fd7b227e7ea4231e54003ef"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;branch=L24x-20091110;protocol=git \
           file://defconfig-omap-4430sdp \
-          file://driver-Makefile.patch;patch=1 \
 "
 
 S = "${WORKDIR}/git"
