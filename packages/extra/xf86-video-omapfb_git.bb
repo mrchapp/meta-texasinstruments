@@ -5,7 +5,7 @@ DEPENDS += "virtual/libx11"
 
 PE = "1"
 PR = "r0"
-PV = "0.1.1+git${SRCPV}"
+PV = "0.1.1+git${SRCREV}"
 
 SRC_URI = "git://git.pingu.fi/xf86-video-omapfb.git;protocol=http \
 	"
