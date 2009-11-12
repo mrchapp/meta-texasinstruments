@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r16"
+PR = "r17"
 
 PACKAGES = "\
     task-omap-gst \
@@ -24,6 +24,7 @@ RDEPENDS_task-omap-gst = "\
 RDEPENDS_task-omap-gst-libs = "\
     check	\
     gstreamer	\
+    gst-tracelib	\
     "
 
 RDEPENDS_task-omap-gst-plugins = "\
