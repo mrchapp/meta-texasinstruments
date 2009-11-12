@@ -45,7 +45,7 @@ EXTRA_OECONF = " \
         --enable-swscale \
         --arch=${TARGET_ARCH} \
         --enable-cross-compile \
-        --extra-cflags="${TARGET_CFLAGS} ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}" \
+        --extra-cflags="${TARGET_CFLAGS} ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -fPIC -DPIC" \
         --extra-ldflags="-L${STAGING_DIR_TARGET}${layout_libdir}" \
         --enable-hardcoded-tables \
         ${EXTRA_FFCONF} \
