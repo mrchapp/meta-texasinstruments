@@ -6,14 +6,14 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel"
 inherit autotools pkgconfig
 
-PR = "r2"
+PR = "r3"
 PV = "0.00+git+${SRCREV}"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/tiler/tiler-userspace.git;protocol=git"
 S = "${WORKDIR}/git/memmgr"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-FILES_${PN} += "${libdir}/*.so ${libdir}/*.la"
+FILES_${PN} += "${libdir}/*.so"
 FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/"
 
