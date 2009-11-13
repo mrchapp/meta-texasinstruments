@@ -1,6 +1,6 @@
 CCASE_SPEC = "#****** SYSTEM ******%\
 # Baseimage%\
-element /vobs/wtbu/OMAPSW_DSP/system/baseimage/...  DSP-DASF-SYSTEM_RLS_${PV}%\
+element /vobs/wtbu/OMAPSW_DSP/system/baseimage/...  DSP-DASF-SYSTEM_RLS_${PV}-P1%\
 element /vobs/wtbu/OMAPSW_DSP/system/utils/...  DSP-DASF-SYSTEM_RLS_${PV}%\
 # Build system%\
 element /vobs/wtbu/OMAPSW_DSP/make/... DSP-DASF-SYSTEM_RLS_${PV}%\
