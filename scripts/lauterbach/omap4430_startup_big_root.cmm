@@ -42,7 +42,7 @@ break
 y.reset
 
 ; run kernel and filesystem (2MB + xx MB)
-data.load.binary uImage-omap-4430sdp.bin 0x80300000
+data.load.binary uImage-omap-4430sdp.bin 0x80200000
 data.load.binary omap-image-omap42-omap-4430sdp.ext2 0x81600000
 
 D.S NSD:0x4A009100 %LE %LONG 0x2

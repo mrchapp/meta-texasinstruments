@@ -6,11 +6,11 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel "
 inherit pkgconfig autotools
 
-PR = "r3"
+PR = "r4"
 PV = "0.0+git+${SRCREV}"
 
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git \
+SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git \
            file://dynreg-makefile.patch \
 "
 S = "${WORKDIR}/git/bridge"

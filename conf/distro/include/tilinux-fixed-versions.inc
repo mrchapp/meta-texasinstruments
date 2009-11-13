@@ -6,14 +6,13 @@ PREFERRED_VERSION_task-omap-gst.bb =			"1.0"
 PREFERRED_VERSION_task-omap-omx.bb =			"1.0"
 PREFERRED_VERSION_task-omap-sn =	    		"4430"
 PREFERRED_VERSION_task-omap-test.bb =			"1.0"
-PREFERRED_VERSION_omap-image-minimal-mtdutils.bb =	"1.0"
 PREFERRED_VERSION_omap-image-minimal.bb =		"1.0"
 PREFERRED_VERSION_omap-image-mm.bb =			"1.0"
 PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
 # baseport
-SRCREV_pn-x-load =		            "85a222ea2f8fe93a8ac2313ca8157abf8c51d69c"
-SRCREV_pn-u-boot =		            "9ed9ab009ca2ad6334101b4f9dc064e8333e8a25"
+SRCREV_pn-x-load =		            "3a709ae49d0adda5a6f202ebbf40dfd42caa7d77"
+SRCREV_pn-u-boot =		            "94e95329ddc526c2827b72d7677e342709628d9e"
 PREFERRED_VERSION_linux-tiomap =	"2.6.31-sdc"
 
 # Device driver test
@@ -21,14 +20,14 @@ SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
-SRCREV_pn-tidspbridge-lib                =		"ti-syslink-mpu-rls-24.0.13"
+SRCREV_pn-tidspbridge-lib                =		"7c729c0826eaf8472be475730020416bebad9307"
 SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
 PREFERRED_VERSION_tidspbridge-dllcreate  =	    "24.0.6"
 
 # Ducati syslink
-SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.0.13"
-SRCREV_pn-titiler-memmgr             =      "l24.0.13.rel"
-SRCREV_pn-titiler-d2cmap             =      "l24.0.13.rel"
+SRCREV_pn-tisyslink-lib              =      "7c729c0826eaf8472be475730020416bebad9307"
+SRCREV_pn-titiler-memmgr             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
+SRCREV_pn-titiler-d2cmap             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.12-P1"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 
@@ -137,12 +136,12 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "L24.0.13"
-SRCREV_pn-tiopenmax-audioencode       = "L24.0.13"
-SRCREV_pn-tiopenmax-base              = "L24.0.13"
-SRCREV_pn-tiopenmax-core              = "L24.0.13"
-SRCREV_pn-tiopenmax-lcml              = "L24.0.13"
-SRCREV_pn-tiopenmax-osal              = "L24.0.13"
+SRCREV_pn-tiopenmax-audiodecode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-audioencode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-lcml              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 
 
 # connectivity

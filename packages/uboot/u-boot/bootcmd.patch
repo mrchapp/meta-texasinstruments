@@ -1,14 +1,25 @@
+diff --git a/include/configs/omap4430sdp.h b/include/configs/omap4430sdp.h
+index 3386a84..163bce2 100644
 --- a/include/configs/omap4430sdp.h
 +++ b/include/configs/omap4430sdp.h
-@@ -131,7 +131,8 @@
-        "bootcmd=go 0x80008000\0"
+@@ -134,16 +134,17 @@
+ 	"bootcmd=go 0x80008000\0"
  #else
--#define CONFIG_BOOTDELAY         3
-+#define CONFIG_BOOTDELAY         30
+ #define CONFIG_BOOTDELAY         3
 -
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"bootcmd=setenv bootargs 'root/dev/ram0 rw mem=512M console=ttyS0,115200n8 initrd=0x81600000,128M ramdisk_size=131072'; bootm 0x80300000\0"
++	"bootcmd=setenv bootargs 'root=/dev/ram0 rw mem=512M console=ttyS0,115200n8 initrd=0x81600000,160M ramdisk_size=163840'; bootm 0x80200000\0"
  #endif /*CONFIG_4430ZEBU */
  
  #ifdef NFS_BOOT_DEFAULTS
-
+-#define CONFIG_BOOTARGS "mem=64M console=ttyS0,115200n8 noinitrd \
++#define CONFIG_BOOTARGS "mem=512M console=ttyS0,115200n8 noinitrd \
+ 	root=/dev/nfs rw nfsroot=128.247.77.158:/home/a0384864/wtbu/rootfs \
+ 	ip=dhcp"
+ #else
+ #define CONFIG_BOOTARGS "root=/dev/ram0 rw mem=512M console=ttyS2,115200n8 \
+-initrd=0x81600000,20M ramdisk_size=20480"
++initrd=0x81600000,160M ramdisk_size=163840"
+ #endif
+ 
+ #define CONFIG_NETMASK           255.255.254.0
