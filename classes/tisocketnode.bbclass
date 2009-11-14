@@ -1,6 +1,7 @@
 DEPENDS += "baseimage \
 	   tisocketnode-ringio \
-	   tisocketnode-usn"
+	   tisocketnode-usn \
+	   tisocketnode-conversions"
 
 ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
            MMCODEC_ROOT=${STAGING_BINDIR}/dspbridge \
@@ -15,6 +16,9 @@ ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
 RELEASE ?= "release"
 
 do_compile() {
+## Getting conversions files
+	mkdir -p ${S}/system/utils/inc
+	cp -a ${STAGING_BINDIR}/dspbridge/video/lib/conversions/* ${S}/system/utils/inc
 ## Getting MasterConfig files
         mkdir -p ${S}/include
         cp -a ${STAGING_INCDIR}/dspbridge/include/* ${S}/include
