@@ -10,10 +10,10 @@ DEPENDS = virtual/kernel
 inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-#PACKAGES = "${PN} ${PN}-dbg"
-#FILES_${PN} = "${bindir} ${libdir} ${sysconfdir} ${libdir}/*.so*"
+PACKAGES = "${PN}"
+FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* ${libdir}/*.so*"
 
-SRC_URI = " "
+SRC_URI = " file://bison-version-check.patch;patch=1 "
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
@@ -31,13 +31,13 @@ do_chmod() {
 }
 
 do_compile() {
-	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
+	cd ${S}/src/eurasia/eurasiacon/build/linux/omap4430_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} BISON=bison-1.875 V=1 SUPPORT_XWS=0
+		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} V=1 SUPPORT_XWS=0
 }
 
 do_install() {
-	cd ${S}/src/eurasia/eurasiacon/binary_omap3430_linux_release
+	cd ${S}/src/eurasia/eurasiacon/binary_omap4430_linux_release
 	
 	install -d ${D}/lib/modules/2.6.24.7-omap1-arm2
 	install -d ${D}${libdir}
@@ -60,40 +60,40 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 755 pvrsrvinit ${D}${bindir}
 	install -m 755 sgx_init_test ${D}${bindir}
-	install -m 755 gles2test1 ${D}${bindir}
-	install -m 755 gles1test1 ${D}${bindir}
-	install -m 755 gles1_texture_stream ${D}${bindir}
-	install -m 755 gles2_texture_stream ${D}${bindir}
-	install -m 755 ovg_unit_test ${D}${bindir}
-	install -m 755 services_test ${D}${bindir}
-	install -m 755 sgx_blit_test ${D}${bindir}
-	install -m 755 sgx_flip_test ${D}${bindir}
-	install -m 755 sgx_render_flip_test ${D}${bindir}
-	install -m 755 sgx_render_test ${D}${bindir}
-	install -m 755 pvr2d_test ${D}${bindir}
+#	install -m 755 gles2test1 ${D}${bindir}
+#	install -m 755 gles1test1 ${D}${bindir}
+#	install -m 755 gles1_texture_stream ${D}${bindir}
+#	install -m 755 gles2_texture_stream ${D}${bindir}
+#	install -m 755 ovg_unit_test ${D}${bindir}
+#	install -m 755 services_test ${D}${bindir}
+#	install -m 755 sgx_blit_test ${D}${bindir}
+#	install -m 755 sgx_flip_test ${D}${bindir}
+#	install -m 755 sgx_render_flip_test ${D}${bindir}
+#	install -m 755 sgx_render_test ${D}${bindir}
+#	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
 
-	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
-	install -m 644 glsltest1_fragshaderA.txt ${D}${bindir}
-	install -m 644 glsltest1_fragshaderB.txt ${D}${bindir}
+#	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
+#	install -m 644 glsltest1_fragshaderA.txt ${D}${bindir}
+#	install -m 644 glsltest1_fragshaderB.txt ${D}${bindir}
 
 	install -d ${D}${sysconfdir}/init.d
 	install -m 755 rc.pvr ${D}${sysconfdir}/init.d/
 
 	sed -i "s#local/##" ${D}${sysconfdir}/init.d/rc.pvr
 
-#	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3430_linux
+#	cd ${S}/src/eurasia/eurasiacon/build/linux/omap4430_linux
 # FIXME: make install doesn't seem to work...
 #	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
-#		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
-#		BISON=bison-1.875 SUPPORT_XWS=0 install
+#		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- SUPPORT_XWS=0 V=1\
+#		install
 }
 
 
 
 do_stage() {
 	install -d ${STAGING_LIBDIR}
-	cd ${S}/src/eurasia/eurasiacon/binary_omap3430_linux_release
+	cd ${S}/src/eurasia/eurasiacon/binary_omap4430_linux_release
 	oe_libinstall -so libGLES_CM ${STAGING_LIBDIR}
 	oe_libinstall -so libGLESv2 ${STAGING_LIBDIR}
 	oe_libinstall -so libglslcompiler ${STAGING_LIBDIR}
