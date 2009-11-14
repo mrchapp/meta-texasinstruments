@@ -6,7 +6,7 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel titiler-memmgr"
 inherit  pkgconfig autotools
 
-PR = "r8"
+PR = "r9"
 PV = "0.0+git+${SRCREV}"
 
 SRC_URI = "\
@@ -19,7 +19,7 @@ SRC_URI = "\
 S = "${WORKDIR}/git/syslink"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-FILES_${PN} += "${libdir}/*.so /dspbridge/install_syslink"
+FILES_${PN} += "${libdir}/*.so ${bindir}/*"
 FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/"
 
@@ -30,8 +30,7 @@ do_stage() {
 }
 
 do_install_append() {
-	install -d ${D}/dspbridge
-	install -m 0777 ${S}/scripts/install_syslink ${D}/dspbridge
+	install -m 0777 ${S}/scripts/install_syslink ${D}${bindir}
 }
 
 

@@ -11,5 +11,5 @@ IMAGE_INSTALL += "task-omap-test"
 #IMAGE_INSTALL += "task-omap-conn"
 IMAGE_INSTALL += "task-omap-tools"
 
-IMAGE_ROOTFS_SIZE = "40000"
+IMAGE_ROOTFS_SIZE = "65536"
 
