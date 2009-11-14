@@ -13,7 +13,7 @@ PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 # baseport
 SRCREV_pn-x-load =		            "8ec7f1caf74e48a0265e11ee1b4303069f9c151d"
 SRCREV_pn-u-boot =		            "9e9550855c71d548c2aedc4f9302413b304a3944"
-PREFERRED_VERSION_linux-tiomap =	"2.6.31-sdc"
+SRCREV_pn-linux-tiomap =            "87295702a81f35c171115b0f771d89e3317d3669"
 
 # Device driver test
 SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
