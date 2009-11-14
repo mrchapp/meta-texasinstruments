@@ -5,7 +5,6 @@ LICENSE = "GPL"
 PR = "r1"
 DEPENDS = " \
 	linux-tiomap \
-#        tidspbridge-samples-dsp \
 	"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
@@ -20,10 +19,6 @@ S = "${WORKDIR}/git"
 PV = "23.0+git+${SRCREV}"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/tidspbridge/userspace-dspbridge.git;protocol=git;branch=bridge-2.6.31"
-
-#SRC_URI += " \
-#	file://23.12-mkcross-api.patch;patch=1 \
-#	"
 
 do_compile() {
 
