@@ -1,0 +1,93 @@
+Index: tslib-1.0/plugins/input-raw.c
+===================================================================
+--- tslib-1.0.orig/plugins/input-raw.c	2006-08-24 16:02:54.000000000 -0500
++++ tslib-1.0/plugins/input-raw.c	2009-11-13 12:38:16.000000000 -0600
+@@ -44,6 +44,37 @@
+ 	int	using_syn;
+ };
+ 
++
++///// capacitive touchscreen hack /////
++#include <sys/time.h>
++
++static void simulate_pressure(struct ts_sample *samp)
++{
++	static unsigned int pressure = 0;
++	static unsigned long lasttime = 0;
++	unsigned long currenttime, deltatime;
++	struct timeval t;
++
++	gettimeofday(&t, NULL);
++
++	currenttime = (t.tv_sec * 1000000) + t.tv_usec;
++	deltatime = currenttime - lasttime;
++	lasttime = currenttime;
++
++	if(deltatime > 20000)
++	{
++		pressure = 220;
++	}
++
++	if(pressure > 0)
++	{
++		samp->pressure = 220;
++		pressure -= 20;
++	}
++}
++
++///////////////////////////////////////
++
+ static int check_fd(struct tslib_input *i)
+ {
+ 	struct tsdev *ts = i->module.dev;
+@@ -57,7 +88,7 @@
+ 		(bit & (1 << EV_ABS)) &&
+ 		(ioctl(ts->fd, EVIOCGBIT(EV_ABS, sizeof(absbit) * 8), &absbit) >= 0) &&
+ 		(absbit & (1 << ABS_X)) &&
+-		(absbit & (1 << ABS_Y)) && (absbit & (1 << ABS_PRESSURE)))) {
++		(absbit & (1 << ABS_Y)))) {
+ 		fprintf(stderr, "selected device is not a touchscreen I understand\n");
+ 		return -1;
+ 	}
+@@ -101,6 +132,7 @@
+ 						samp->y = 0;
+ 						samp->pressure = 0;
+ 						samp->tv = ev.time;
++						simulate_pressure(samp);
+ 						samp++;
+ 						total++;
+ 					}
+@@ -118,6 +150,7 @@
+ 						samp->x, samp->y, samp->pressure, samp->tv.tv_sec,
+ 						samp->tv.tv_usec);
+ 	#endif		 /*DEBUG*/
++				simulate_pressure(samp);
+ 					samp++;
+ 				total++;
+ 				break;
+@@ -193,6 +226,7 @@
+ 				fprintf(stderr, "RAW---------------------------> %d %d %d\n",
+ 					samp->x, samp->y, samp->pressure);
+ 	#endif	 /*DEBUG*/
++				simulate_pressure(samp);
+ 				samp++;
+ 				total++;
+ 			} else if (ev.type == EV_KEY) {
+@@ -204,6 +238,7 @@
+ 						samp->y = 0;
+ 						samp->pressure = 0;
+ 						samp->tv = ev.time;
++						simulate_pressure(samp);
+ 						samp++;
+ 						total++;
+ 					}
+@@ -217,6 +252,9 @@
+ 		ret = total;
+ 	}
+ 
++	if(ret > 0)
++		simulate_pressure(samp);
++
+ 	return ret;
+ }
+ 
