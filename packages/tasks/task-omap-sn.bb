@@ -18,20 +18,10 @@ RDEPENDS = "\
     \
     tisocketnode-g711dec \
     tisocketnode-g711enc \
-    tisocketnode-g722dec \
-    tisocketnode-g722enc \
-    tisocketnode-g723dec \
-    tisocketnode-g723enc \
-    tisocketnode-g726dec \
-    tisocketnode-g726enc \
-    tisocketnode-g729dec \
-    tisocketnode-g729enc \
     tisocketnode-gsmfrdec \
     tisocketnode-gsmfrenc \
     tisocketnode-gsmhrdec \
     tisocketnode-gsmhrenc \
-    tisocketnode-ilbcdec \
-    tisocketnode-ilbcenc \
     tisocketnode-ima-adpcmdec \
     tisocketnode-ima-adpcmenc \
     tisocketnode-mp3 \

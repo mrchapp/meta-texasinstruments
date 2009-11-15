@@ -19,20 +19,10 @@ RDEPENDS = "\
 	tiopenmax-core \
 	tiopenmax-g711dec \
 	tiopenmax-g711enc \
-	tiopenmax-g722dec \
-	tiopenmax-g722enc \
-	tiopenmax-g723dec \
-	tiopenmax-g723enc \
-	tiopenmax-g726dec \
-	tiopenmax-g726enc \
-	tiopenmax-g729dec \
-	tiopenmax-g729enc \
 	tiopenmax-gsmfrdec \
 	tiopenmax-gsmfrenc \
 	tiopenmax-gsmhrdec \
 	tiopenmax-gsmhrenc \
-	tiopenmax-ilbcdec \
-	tiopenmax-ilbcenc \
 	tiopenmax-imaadpcmdec \
 	tiopenmax-imaadpcmenc \
 	tiopenmax-imagecapturetest \
