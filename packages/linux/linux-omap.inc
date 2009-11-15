@@ -74,6 +74,7 @@ do_stage_append() {
     for ii in arch/arm/mach-omap2 \
               arch/arm/plat-omap/include/dspbridge \
               arch/arm/plat-omap/include/mach \
+              arch/arm/plat-omap/include/plat \
               arch/arm/include/asm \
               arch/arm/include/asm/mach \
               arch/arm/include/asm/hardware \
@@ -84,6 +85,8 @@ do_stage_append() {
         install -d ${STAGING_KERNEL_DIR}/$ii
         install -m 0644 ${S}/$ii/*.h ${STAGING_KERNEL_DIR}/$ii
     done
+    install -m 0644 ${STAGING_KERNEL_DIR}/arch/arm/plat-omap/include/plat/*.h ${STAGING_KERNEL_DIR}/arch/arm/plat-omap/include/mach
+    install -m 0644 ${S}/arch/arm/mach-omap1/include/mach/vmalloc.h ${STAGING_KERNEL_DIR}/arch/arm/plat-omap/include/mach
 
 }
 
