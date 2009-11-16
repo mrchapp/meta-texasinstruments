@@ -9,7 +9,7 @@ inherit autotools pkgconfig
 PR = "r2"
 PV = "0.00+git+${SRCREV}"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/tiler/tiler-userspace.git;protocol=git"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/tiler/tiler-userspace.git;branch=L24.0.13;protocol=git"
 S = "${WORKDIR}/git/d2c"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
