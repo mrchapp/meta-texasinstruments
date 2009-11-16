@@ -10,11 +10,11 @@ PR = "r8"
 PV = "0.0+git+${SRCREV}"
 
 SRC_URI = "\
-    git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git \
+    git://sealion.sc.ti.com/git/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git \
     file://install_syslink.patch;patch=1 \
     file://tiler_makefile.patch;patch=1 \
-    file://proc_sample_removal.patch;patch=1 \
 "
+SRCREV = "1e79a1584c9495a695e6924aeb295075e2582d74"
 
 S = "${WORKDIR}/git/syslink"
 
