@@ -33,7 +33,7 @@ S = ${WORKDIR}/git
 
 SRC_URI = " \
 ${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/x-loader.git;branch=3630v0.1;protocol=git", "", d)} \
-${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/x-loader.git;branch=zoom3;protocol=git", "", d)} \
+${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/x-loader.git;branch=master;protocol=git", "", d)} \
 "
 
 PV = "git${SRCREV}"
