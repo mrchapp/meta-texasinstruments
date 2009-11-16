@@ -2,7 +2,7 @@ DESCRIPTION = "Texas Instruments OpenMAX IL Operating System Abstraction Layer (
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r2"
 
-require tiopenmax-audio-git.inc
+require tiopenmax-system-git.inc
 
 S = "${WORKDIR}/git/system/mm_osal/"
 

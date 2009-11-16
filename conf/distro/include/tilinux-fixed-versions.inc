@@ -20,14 +20,14 @@ SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
-SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
+#SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
 SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
 PREFERRED_VERSION_tidspbridge-dllcreate  =	    "24.0.6"
 
 # Ducati syslink
-SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
-SRCREV_pn-titiler-memmgr             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
-SRCREV_pn-titiler-d2cmap             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
+#SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
+#SRCREV_pn-titiler-memmgr             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
+#SRCREV_pn-titiler-d2cmap             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.12-P1"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 
@@ -139,9 +139,10 @@ PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
 SRCREV_pn-tiopenmax-audiodecode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 SRCREV_pn-tiopenmax-audioencode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+#SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 SRCREV_pn-tiopenmax-lcml              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+#SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+#SRCREV_pn-tiopenmax-domx              = "???"
 
 
 # connectivity
