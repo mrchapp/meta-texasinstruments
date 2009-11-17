@@ -21,7 +21,9 @@ CCASE_SPEC = "%\
    element /vobs/wtbu/OMAPSW_DSP/system/utils/...                  ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/make/...                          ${SRCREV}%\
    element /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock/...       ${SRCREV}%\
-   element * /main/LATEST%"
+   element /vobs/wtbu/OMAPSW_DSP/system/inst2/...                  ${SRCREV}%\
+   element * /main/LATEST%\
+   "
 
 
 CCASE_PATHFETCH = " \
@@ -34,6 +36,7 @@ CCASE_PATHFETCH = " \
    /vobs/wtbu/OMAPSW_DSP/system/utils \
    /vobs/wtbu/OMAPSW_DSP/make \
    /vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock \
+   /vobs/wtbu/OMAPSW_DSP/system/inst2 \
    "
 
 CCASE_PATHCOMPONENT = "wtbu"
