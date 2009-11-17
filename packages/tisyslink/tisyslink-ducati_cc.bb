@@ -1,13 +1,13 @@
 PRIORITY = "optional"
-DESCRIPTION = "Texas Instruments DSP Ducati Samples."
+DESCRIPTION = "Texas Instruments Ducati Samples."
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r1"
 DEPENDS = "titools-cgtarm \
-	   titools-bios \
+           titools-bios \
            titools-fc \
            titools-xdc "
 
-PV = "1.0+cc+${SRCREV}"
+PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
 	      element /vobs/WTSD_MultiCoreSW/Ducati/Bridge/... ${SRCREV}%\
@@ -18,6 +18,7 @@ CCASE_PATHFETCH = "/vobs/WTSD_MultiCoreSW/Ducati/Bridge"
 CCASE_PATHCOMPONENT = "Bridge"
 CCASE_PATHCOMPONENTS = "3"
 
+FILES_${PN}="/syslink/"
 
 inherit ccasefetch
 
@@ -38,18 +39,11 @@ do_stage() {
 
 
 do_install() {
-    install -d ${D}/syslink/ducati
+    install -d ${D}/syslink/
     cd ${S}/ipc/ti/sdo/samples
-#    install -m 0644 ammu/debug/*      ${D}/syslink/ducati
-#    install bios6boot/debug/* ${D}/syslink/ducati
-#    install -m 0644 frameq/debug/*    ${D}/syslink/ducati
-#    install -m 0644 heapbuf/debug/*   ${D}/syslink/ducati
-#    install -m 0644 listmp/debug/*    ${D}/syslink/ducati
-#    install -m 0644 messageq/debug/*  ${D}/syslink/ducati
-#    install -m 0644 notify/debug/*    ${D}/syslink/ducati
-#    install -m 0644 dmm/debug/*       ${D}/syslink/ducati
-#    install -m 0644 rcm/debug/*       ${D}/syslink/ducati
-#    install -m 0644 sysmgr/debug/*    ${D}/syslink/ducati
+	for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/*; do
+        ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
+        install -m 0644 ${xem3}      ${D}/syslink/
+	done
 }
 
-FILES_${PN}="/syslink/ducati"

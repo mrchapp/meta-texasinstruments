@@ -11,23 +11,23 @@ PREFERRED_VERSION_omap-image-mm.bb =			"1.0"
 PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
 # baseport
-SRCREV_pn-x-load =		            "3a709ae49d0adda5a6f202ebbf40dfd42caa7d77"
-SRCREV_pn-u-boot =		            "94e95329ddc526c2827b72d7677e342709628d9e"
-PREFERRED_VERSION_linux-tiomap =	"2.6.31-sdc"
+SRCREV_pn-x-load =		            "8ec7f1caf74e48a0265e11ee1b4303069f9c151d"
+SRCREV_pn-u-boot =		            "9e9550855c71d548c2aedc4f9302413b304a3944"
+SRCREV_pn-linux-tiomap =            "3e8ab1f33ee3a0fed86eaa5eb45db0c81917db84"
 
 # Device driver test
 SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
-#SRCREV_pn-tidspbridge-lib                =		"7c729c0826eaf8472be475730020416bebad9307"
+#SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
 SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
 PREFERRED_VERSION_tidspbridge-dllcreate  =	    "24.0.6"
 
 # Ducati syslink
-#SRCREV_pn-tisyslink-lib              =      "7c729c0826eaf8472be475730020416bebad9307"
-#SRCREV_pn-titiler-memmgr             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
-#SRCREV_pn-titiler-d2cmap             =      "a12ec643bd99130fb29d65c337645b7541bbe5ba"
+#SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
+#SRCREV_pn-titiler-memmgr             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
+#SRCREV_pn-titiler-d2cmap             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.12-P1"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 
@@ -150,8 +150,8 @@ PREFERRED_VERSION_wilink = 		"23-1.2-P1"
 PREFERRED_VERSION_btfm = 		"23-1.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	"GFX-LINUX-SGX-DDK-L24_RLS_0.1"
-SRCREV_pn-sgx-lib-noxws =	"GFX-LINUX-SGX-DDK-L24_RLS_0.1"
+SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_2"
+SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_2"
 
 # open source dependencies
 # gstreamer

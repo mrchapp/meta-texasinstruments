@@ -6,16 +6,11 @@ KERNEL_OUTPUT = "arch/${ARCH}/boot/compressed/${KERNEL_IMAGETYPE}"
 
 inherit kernel
 
-COMPATIBLE_MACHINE = "omap-3430(l|s)dp|omap-4430sdp"
+COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-3630sdp|zoom2|zoom3|omap-4430sdp"
 
-ADD_DISTRO_FEATURES_omap-3430ldp ?= "	${@base_contains("DISTRO_FEATURES", "720p", "sed -i 's/# CONFIG_FB_OMAP_720P_STREAMING is not set/CONFIG_FB_OMAP_720P_STREAMING=y/' ${S}/.config;", "", d)}"
-
-ADD_DISTRO_FEATURES_omap-3430sdp ?= "   ${@base_contains("DISTRO_FEATURES", "720p", "sed -i 's/# CONFIG_FB_OMAP_720P_STREAMING is not set/CONFIG_FB_OMAP_720P_STREAMING=y/' ${S}/.config;", "", d)}"
-
+ADD_DISTRO_FEATURES = "	${@base_contains("DISTRO_FEATURES", "720p", "sed -i 's/# CONFIG_FB_OMAP_720P_STREAMING is not set/CONFIG_FB_OMAP_720P_STREAMING=y/' ${S}/.config;", "", d)}"
 
 do_configure_prepend() {
-#	mv ${S}/arch/arm/configs/omap_4430sdp_defconfig ${S}/arch/arm/configs/omap_4430sdp_defconfig.old
-#        mv ${WORKDIR}/defconfig-omap-4430sdp ${S}/arch/arm/configs/omap_4430sdp_defconfig
 
 	if [ -f '${WORKDIR}/defconfig-${MACHINE}' ]; then
 		rm -f ${S}/.config || true
@@ -36,24 +31,32 @@ do_configure_prepend() {
 	else
 		case ${MACHINE} in
 			omap-3430ldp)
-                                yes '' | oe_runmake omap_3430ldp_defconfig
-                                sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
-                                        ${S}/.config
-                                ;;
-                        omap-3430sdp)
-                                yes '' | oe_runmake omap_3430sdp_defconfig
-                                sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
-                                        ${S}/.config
-                                ;;
-                        omap-4430sdp)
-                                yes '' | oe_runmake omap_4430sdp_defconfig
- 
-                                ;;
-                        *)
+				yes '' | oe_runmake omap_3430ldp_defconfig
+				sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
+					${S}/.config
+				;;
+			omap-3430sdp)
+				yes '' | oe_runmake omap_3430sdp_defconfig
+#				sed -i "s/# CONFIG_FB_OMAP_LCD_VGA is not set/CONFIG_FB_OMAP_LCD_VGA=y/" \
+#					${S}/.config
+				;;
+			omap-3630sdp)
+				yes '' | oe_runmake omap_3630sdp_defconfig
+				;;
+			zoom2)
+				yes '' | oe_runmake omap_zoom2_defconfig
+				;;
+			zoom3)
+				yes '' | oe_runmake omap_zoom3_defconfig
+				;;
+            omap-4430sdp)
+                yes '' | oe_runmake omap_4430sdp_defconfig
+                ;;
+			*)
 				yes '' | oe_runmake ${MACHINE}_defconfig
 				;;
 		esac
-	fi
+    fi
 	${ADD_DISTRO_FEATURES}
 }
 
@@ -61,26 +64,39 @@ do_configure_prepend() {
 do_deploy() {
 	install -d ${DEPLOY_DIR_IMAGE}
 	install -m 0644 arch/${ARCH}/boot/${KERNEL_IMAGETYPE} ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${PV}-${MACHINE}-${DATETIME}.bin
-	#case ${MACHINE} in
-	#	omap-4430sdp)
-	#		${AR%-*}-objcopy -O binary -R .note -R .note.gnu.build-id -R .comment -S vmlinux ${DEPLOY_DIR_IMAGE}/kernel-${PV}-${MACHINE}-${DATETIME}.bin
-	#		;;
-	#esac
 	cd ${DEPLOY_DIR_IMAGE}
 	ln -sf ${KERNEL_IMAGETYPE}-${PV}-${MACHINE}-${DATETIME}.bin ${KERNEL_IMAGETYPE}-${MACHINE}.bin
 	tar -cvzf ${DEPLOY_DIR_IMAGE}/modules-${KERNEL_RELEASE}-${MACHINE}.tgz -C ${D} lib
-	case ${MACHINE} in
-                omap-4430sdp)
-	#		ln -sf kernel-${PV}-${MACHINE}-${DATETIME}.bin kernel-${MACHINE}.bin
-			install -d ${STAGING_LIBDIR}/modules ${D}/lib/modules
-			tar -C ${D}/lib -cf - modules | tar -C ${STAGING_LIBDIR} -xf -
-			oenote "Modules in ${D}/lib ..."
-			oenote "Modules copied to ${STAGING_LIBDIR} "
-			;;
-	esac
+#	case ${MACHINE} in
+#                omap-4430sdp)
+#	#		ln -sf kernel-${PV}-${MACHINE}-${DATETIME}.bin kernel-${MACHINE}.bin
+#			install -d ${STAGING_LIBDIR}/modules ${D}/lib/modules
+#			tar -C ${D}/lib -cf - modules | tar -C ${STAGING_LIBDIR} -xf -
+#			oenote "Modules in ${D}/lib ..."
+#			oenote "Modules copied to ${STAGING_LIBDIR} "
+#			;;
+#	esac
 }
 
 do_deploy[dirs] = "${S}"
 
 addtask deploy before do_populate_staging after do_install
+
+do_stage_append() {
+
+    for ii in arch/arm/mach-omap2 \
+              arch/arm/plat-omap/include/dspbridge \
+              arch/arm/plat-omap/include/mach \
+              arch/arm/include/asm \
+              arch/arm/include/asm/mach \
+              arch/arm/include/asm/hardware \
+              include/trace \
+              include/trace/events
+    do
+        install -d ${STAGING_KERNEL_DIR}/$ii
+        install -m 0644 ${S}/$ii/*.h ${STAGING_KERNEL_DIR}/$ii
+    done
+
+}
+
 
