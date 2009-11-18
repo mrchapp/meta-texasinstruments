@@ -230,7 +230,7 @@ PREFERRED_VERSION_bison-native-1.875 =	"1.875"
 PREFERRED_VERSION_flex =		"2.5.35"
 PREFERRED_VERSION_flex-native =		"2.5.35"
 PREFERRED_VERSION_iperf =		"2.0.4"
-PREFERRED_VERSION_libmms =		"0.3"
+PREFERRED_VERSION_libmms =		"0.4"
 
 # toolchain
 PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
