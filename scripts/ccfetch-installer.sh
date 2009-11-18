@@ -13,7 +13,7 @@
 #  5) allow alternate ssh keys..
 
 
-VERSION="2.1.3"
+VERSION="2.1.4"
 echo "Installing v$VERSION ccfetch scripts"
 
 ################################################################################
@@ -384,6 +384,37 @@ function clean_lock() {
         rm -f \${CCF_LOCKFILE}
 }
 
+function mount_vobs() {
+        # extract all paths required from ccase spec file
+        paths_required=\`sed 's/^[ \t]*//' \${CCF_CONFIGSPEC} | grep -E ^element | cut -d " " -f 2 | tr -d '*' | sort -r | uniq\`
+
+        # extract all vobs registered on server not mounted
+        vobs_list=\`\${CCF_REMOTECLEARTOOL} lsvob | grep -v '^*' | cut -c 3- | cut -d " " -f 1 | sort -r\`
+
+        matching='none'
+
+        for path in \$paths_required
+        do
+        # if path contains vob already processed then skip
+                echo \$path | grep -q -E ^\$matching
+                if [ \$? -eq 0 ]
+                then
+                        # echo "No need to process: \$path"
+                        continue
+                fi
+                for vob in \$vobs_list
+                do
+                        echo \$path | grep -q -E ^\$vob
+                        if [ \$? -eq 0 ]
+                        then
+                                echo >&2  "ccase_fetch is mounting vob: \$vob needed by \$path"
+                                \${CCF_REMOTECLEARTOOL} mount \$vob
+                                matching=\$vob
+                                break
+                        fi
+                done
+        done
+}
 
 
 # Lock here
@@ -413,6 +444,7 @@ done
 # Work here
 cat > \${CCF_CONFIGSPEC}
 CMD="\${CCF_REMOTEBIN}/sfetchcc-mktar.sh \${TAROPTS} \$@"
+mount_vobs
 \${CCF_REMOTECLEARTOOL} setcs -tag \${CCF_REMOTEVIEW} \${CCF_CONFIGSPEC}
 \${CCF_REMOTECLEARTOOL} setview -exec "\${CMD}" \${CCF_REMOTEVIEW}
 
