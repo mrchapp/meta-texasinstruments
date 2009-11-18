@@ -10,8 +10,9 @@ DEPENDS = virtual/kernel
 inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-PACKAGES = "${PN}"
+PACKAGES = "${PN} ${PN}-dbg"
 FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* ${libdir}/*.so*"
+FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* ${libdir}/.debug/*.so*"
 
 SRC_URI = " file://bison-version-check.patch;patch=1 "
 
@@ -61,16 +62,16 @@ do_install() {
 	install -m 755 pvrsrvinit ${D}${bindir}
 	install -m 755 sgx_init_test ${D}${bindir}
 #	install -m 755 gles2test1 ${D}${bindir}
-#	install -m 755 gles1test1 ${D}${bindir}
-#	install -m 755 gles1_texture_stream ${D}${bindir}
+	install -m 755 gles1test1 ${D}${bindir}
+	install -m 755 gles1_texture_stream ${D}${bindir}
 #	install -m 755 gles2_texture_stream ${D}${bindir}
 #	install -m 755 ovg_unit_test ${D}${bindir}
-#	install -m 755 services_test ${D}${bindir}
-#	install -m 755 sgx_blit_test ${D}${bindir}
-#	install -m 755 sgx_flip_test ${D}${bindir}
-#	install -m 755 sgx_render_flip_test ${D}${bindir}
+	install -m 755 services_test ${D}${bindir}
+	install -m 755 sgx_blit_test ${D}${bindir}
+	install -m 755 sgx_flip_test ${D}${bindir}
+	install -m 755 sgx_render_flip_test ${D}${bindir}
 #	install -m 755 sgx_render_test ${D}${bindir}
-#	install -m 755 pvr2d_test ${D}${bindir}
+	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
 
 #	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
