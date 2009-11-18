@@ -17,8 +17,10 @@ PV = "0.0+git+${SRCREV}"
 EXTRA_OEMAKE = "CROSS_COMPILE=${TARGET_PREFIX}"
 PARALLEL_MAKE = ""
 
-XLOAD_IMAGE ?= "${PN}-${MACHINE}-${PV}-${PR}-${DATETIME}.bin"
-XLOAD_SYMLINK ?= "${PN}-${MACHINE}.bin"
+XLOAD_IMAGE_ELF ?= "${PN}-${MACHINE}-${PV}-${PR}-${DATETIME}"
+XLOAD_IMAGE ?= "${XLOAD_IMAGE_ELF}.bin"
+XLOAD_SYMLINK_ELF ?= "${PN}-${MACHINE}"
+XLOAD_SYMLINK ?= "${XLOAD_SYMLINK_ELF}.bin"
 
 XLOAD_MLO_IMAGE ?= "MLO-${MACHINE}-${PV}-${PR}-${DATETIME}"
 XLOAD_MLO_SYMLINK ?= "MLO"
@@ -75,12 +77,17 @@ do_compile () {
 
 do_deploy () {
 	install -d ${DEPLOY_DIR_IMAGE}
+	install ${S}/x-load     ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_ELF}
+	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_ELF}
 	install ${S}/x-load.bin ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 	install ${S}/MLO ${DEPLOY_DIR_IMAGE}/${XLOAD_MLO_IMAGE}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 
 	cd ${DEPLOY_DIR_IMAGE}
+	rm -f ${XLOAD_SYMLINK_ELF}
+	ln -sf ${XLOAD_IMAGE_ELF} ${XLOAD_SYMLINK_ELF}
+	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK_ELF}
 	rm -f ${XLOAD_SYMLINK}
 	ln -sf ${XLOAD_IMAGE} ${XLOAD_SYMLINK}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK}
