@@ -9,6 +9,7 @@ SRC_URI += "file://0005-add-support-for-dynamic-port-enable-disable.patch;patch=
 #SRC_URI += "file://0006-camera-add-support-for-image-capture-and-switching-b.patch;patch=1"
 SRC_URI += "file://0007-omap4-component-names.patch;patch=1"
 SRC_URI += "file://0008-omap4-for-now-use-OMX_AllocateBuffer-by-default.patch;patch=1"
+SRC_URI += "file://0009-remove-omap3-specific-custom-index-s.patch;patch=1"
 
 # From omap branch:
 SRCREV = "bbc6e3fd66f41057bdf8c3ea08902883ec0f48a1"
