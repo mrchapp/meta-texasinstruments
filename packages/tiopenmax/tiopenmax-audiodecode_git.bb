@@ -2,11 +2,11 @@ DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-util
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 RDEPENDS = "alsa-utils-aplay"
-PR = "r5"
+PR = "r6"
 
 require tiopenmax-audio-git.inc
 
-SRC_URI +="file://more_snddevices"
+SRC_URI +="file://more_snddevices file://amixer.sh"
 
 S = "${WORKDIR}/git/audio/audio_decode/"
 
@@ -24,5 +24,6 @@ do_stage() {
 
 do_install_append() {
 	install -m 0777 ${WORKDIR}/more_snddevices ${D}${bindir}
+	install -m 0777 ${WORKDIR}/amixer.sh       ${D}${bindir}
 }
 
