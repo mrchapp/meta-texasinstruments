@@ -9,9 +9,9 @@ inherit  pkgconfig autotools
 PR = "r11"
 PV = "0.0+git+${SRCREV}"
 
-SRCREV = "1e79a1584c9495a695e6924aeb295075e2582d74"
+SRCREV = "7a2935beab81e1b15b796111e4b18a97b387f0e1"
 SRC_URI = "\
-    git://sealion.sc.ti.com/git/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git \
+    git://sealion.sc.ti.com/git/userspace-syslink.git;branch=devel_robclark;protocol=git \
     file://install_syslink.patch;patch=1 \
     file://tiler_makefile.patch;patch=1 \
 "
