@@ -10,9 +10,7 @@ PR = "r7"
 PV = "0.0+git+${SRCREV}"
 
 SRCREV = "8457b8a302945d57319123726b65c297cd493daa"
-SRC_URI = "git://sealion.sc.ti.com/git/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git \
-           file://dynreg-makefile.patch \
-"
+SRC_URI = "git://sealion.sc.ti.com/git/userspace-syslink.git;branch=syslink-bridge-devsdc;protocol=git "
 #SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-#syslink.git;branch=syslink-bridge-devsdc;protocol=git \
 #           file://dynreg-makefile.patch \
 #"

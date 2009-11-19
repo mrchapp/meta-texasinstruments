@@ -47,6 +47,8 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;
 			zoom3)
+				echo "CONFIG_MPU_BRIDGE=m" >> ${S}/arch/arm/configs/omap_zoom3_defconfig
+				echo "CONFIG_BRIDGE_MEMPOOL_SIZE=0x600000" >> ${S}/arch/arm/configs/omap_zoom3_defconfig				
 				yes '' | oe_runmake omap_zoom3_defconfig
 				;;
             omap-4430sdp)
@@ -64,6 +66,7 @@ do_configure_prepend() {
 do_deploy() {
 	install -d ${DEPLOY_DIR_IMAGE}
 	install -m 0644 arch/${ARCH}/boot/${KERNEL_IMAGETYPE} ${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGETYPE}-${PV}-${MACHINE}-${DATETIME}.bin
+	install -m 0644 vmlinux ${DEPLOY_DIR_IMAGE}/vmlinux-${MACHINE}-${DATETIME}
 	cd ${DEPLOY_DIR_IMAGE}
 	ln -sf ${KERNEL_IMAGETYPE}-${PV}-${MACHINE}-${DATETIME}.bin ${KERNEL_IMAGETYPE}-${MACHINE}.bin
 	tar -cvzf ${DEPLOY_DIR_IMAGE}/modules-${KERNEL_RELEASE}-${MACHINE}.tgz -C ${D} lib
@@ -87,9 +90,11 @@ do_stage_append() {
     for ii in arch/arm/mach-omap2 \
               arch/arm/plat-omap/include/dspbridge \
               arch/arm/plat-omap/include/mach \
+              arch/arm/plat-omap/include/syslink \
               arch/arm/include/asm \
               arch/arm/include/asm/mach \
               arch/arm/include/asm/hardware \
+              drivers/media/video/tiler \
               include/trace \
               include/trace/events
     do
