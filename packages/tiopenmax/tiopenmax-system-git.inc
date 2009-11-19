@@ -1,5 +1,5 @@
 
 SRC_URI = "git://sealion.sc.ti.com/git/system-omx.git;protocol=git"
-SRCREV = "bdc84d67436fce2d6aa7722b740b5563eb4d277f"
+SRCREV = "c50a9c2064cbc656cdcb7db9be72617c29c0e122"
 PV = "0.0+git+${SRCREV}"
 
