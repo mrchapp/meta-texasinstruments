@@ -14,8 +14,6 @@ PACKAGES = "${PN} ${PN}-dbg"
 FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* ${libdir}/*.so*"
 FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* ${libdir}/.debug/*.so*"
 
-SRC_URI = " file://bison-version-check.patch;patch=1 "
-
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
 	element /vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK/... ${SRCREV}%\
