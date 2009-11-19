@@ -87,6 +87,8 @@ while `true`; do
   prompt CCF_REMOTEHOME "remote home directory path"     &&
     CCF_REMOTEBIN="$CCF_REMOTEHOME/bin"
   prompt CCF_REMOTEBIN  "remote bin directory (must be in \$PATH on $CCF_REMOTEHOST)"
+  prompt CCF_REMOTECLEARTOOL "path to cleartool"
+
   echo "Ok, I've got:"
   echo "  local bin directory   : $CCF_LOCALBIN"
   echo "  remote hostname       : $CCF_REMOTEHOST"
@@ -94,6 +96,7 @@ while `true`; do
   echo "  remote viewname       : $CCF_REMOTEVIEW"
   echo "  remote home directory : $CCF_REMOTEHOME"
   echo "  remote bin directory  : $CCF_REMOTEBIN"
+  echo "  path to cleartool     : $CCF_REMOTECLEARTOOL"
   echo "Is this correct?"
   prompt_yes_no &&
     break
@@ -184,7 +187,7 @@ if [ -z $CCF_REMOTECLEARTOOL ]; then
   if [ $? != 0 ]; then
     CCF_REMOTECLEARTOOL=""
     echo -n "  Hmm, I can't find your clearcase installation."
-    prompt CCF_REMOTECLEARTOOL "path to cleartool"
+	break
   fi
 fi
 
