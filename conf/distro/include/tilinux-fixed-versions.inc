@@ -22,7 +22,7 @@ PREFERRED_VERSION_htop =	        "0.7"
 # Tesla Bridge
 #SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
 SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
-SRCREV_pn_tidspbridge-dllcreate          =	    "DYN-LOADER_RLS_1.72"
+PREFERRED_VERSION_tidspbridge-dllcreate  =	    "24.0.6"
 
 # Ducati syslink
 #SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
