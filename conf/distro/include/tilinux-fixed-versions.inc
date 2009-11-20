@@ -136,11 +136,11 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-audioencode       = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-audiodecode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
+SRCREV_pn-tiopenmax-audioencode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
+#SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 #SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-lcml              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-lcml              = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
 #SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
 #SRCREV_pn-tiopenmax-domx              = "???"
 
