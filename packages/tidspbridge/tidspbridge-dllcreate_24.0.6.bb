@@ -4,7 +4,7 @@ LICENSE = "Texas Instruments"
 PR = "r1"
 
 CCASE_SPEC = "%\
-          element /vobs/SDS/Source/Dload/dload/... .../dyn-load_rel_1.x/${SRCREV}%\
+              element /vobs/SDS/Source/Dload/dload/... .../dyn-load_rel_1.x/LATEST%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"
@@ -24,10 +24,10 @@ export GCC = "gcc -m32"
 do_compile() {
 	# this file conflicts with headers from newer GCC compilers 
 	# (ie. v4.3.x), so we must remove it (even if gcc-4.2
-    # is also installed):
-	rm -f shared/stdint.h
+        # is also installed):
+	rm shared/stdint.h
 	cd DLLcreate
-    chmod -R +w *
+        chmod -R +w *
 	mkdir -p linux/release
 	oe_runmake -f makefile.lin	
 }
