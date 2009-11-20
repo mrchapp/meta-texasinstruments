@@ -211,8 +211,8 @@ PREFERRED_VERSION_fmapp = 		"23.17.1"
 PREFERRED_VERSION_gps-navilink =	"23.17.0"
 
 # graphics
-PREFERRED_VERSION_sgx-kernel-module =	"1.3.2.6"
-PREFFERED_VERSION_sgx-lib-noxws =	"1.3.2.6"
+PREFERRED_VERSION_sgx-kernel-module =	"1.4.1.0"
+PREFFERED_VERSION_sgx-lib-noxws =	"1.4.1.0"
 
 # open source dependencies
 PREFERRED_VERSION_gst-plugins-bad =	"git"
@@ -225,8 +225,8 @@ PREFERRED_VERSION_check =		"0.9.5"
 PREFERRED_VERSION_amrnb =		"7.0.0.2"
 PREFERRED_VERSION_amrwb =		"7.0.0.1"
 #PREFERRED_VERSION_openobex =		"0.22"
-PREFERRED_VERSION_bison-1.875 =		"1.875"
-PREFERRED_VERSION_bison-native-1.875 =	"1.875"
+PREFERRED_VERSION_bison =		"2.3"
+PREFERRED_VERSION_bison-native =	"2.3"
 PREFERRED_VERSION_flex =		"2.5.35"
 PREFERRED_VERSION_flex-native =		"2.5.35"
 PREFERRED_VERSION_iperf =		"2.0.4"

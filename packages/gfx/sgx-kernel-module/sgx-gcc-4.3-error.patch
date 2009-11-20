@@ -1,0 +1,13 @@
+Index: eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common
+===================================================================
+--- eurasia_km.orig/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:14.000000000 +0100
++++ eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:30.000000000 +0100
+@@ -30,7 +30,7 @@
+ 
+ EXTRA_CFLAGS = $(INCLUDES)  \
+ 				$(ALL_CFLAGS_kbuild)	\
+-				-Wall -fno-strict-aliasing -Werror
++				-Wall -fno-strict-aliasing
+ 
+ ifeq ($(SILENT),@)
+ 	KBUILD_VERBOSE ?= 0
