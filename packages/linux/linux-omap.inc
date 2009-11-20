@@ -47,8 +47,6 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
-				echo "CONFIG_MPU_BRIDGE=m" >> ${S}/arch/arm/configs/omap_zoom3_defconfig
-				echo "CONFIG_BRIDGE_MEMPOOL_SIZE=0x600000" >> ${S}/arch/arm/configs/omap_zoom3_defconfig				
 				yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
