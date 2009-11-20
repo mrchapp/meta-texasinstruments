@@ -24,7 +24,7 @@ CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
 CCASE_PATHCOMPONENTS = "5"
 
-# stupid hack.  Carlos knows to fix it in future revisions.
+# hack.  Carlos knows to fix it in future revisions.
 do_chmod() {
 	chmod -R +w ${S}/src/eurasia
 }
@@ -79,7 +79,10 @@ do_install() {
 	install -d ${D}${sysconfdir}/init.d
 	install -m 755 rc.pvr ${D}${sysconfdir}/init.d/
 
-	sed -i "s#local/##" ${D}${sysconfdir}/init.d/rc.pvr
+    cat > ${D}${sysconfdir}/powervr.ini <<EOF
+[default]
+WindowSystem=libpvrPVR2D_FRONTWSEGL.so
+EOF
 
 #	cd ${S}/src/eurasia/eurasiacon/build/linux/omap4430_linux
 # FIXME: make install doesn't seem to work...
