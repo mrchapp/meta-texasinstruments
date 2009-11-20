@@ -1,5 +1,6 @@
 DESCRIPTION = "Texas Instruments OpenMAX IL AV Record Test Application."
-DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-lcml tiopenmax-rmproxy tiopenmax-resourcemanager tiopenmax-postproc tiopenmax-videoenc tiopenmax-nbamrenc tiopenmax-aacenc tiopenmax-wbamrenc"
+DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-lcml tiopenmax-rmproxy tiopenmax-resourcemanager \
+tiopenmax-postproc tiopenmax-videoenc tiopenmax-nbamrenc tiopenmax-aacenc tiopenmax-wbamrenc tiopenmax-camera"
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-patterns ${PN}-dev ${PN}"
 
