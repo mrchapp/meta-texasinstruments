@@ -1,10 +1,12 @@
 From 8f38eb4ba613f07dd170b4cf2b3a9af706c09880 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Mon, 2 Nov 2009 11:18:25 -0600
-Subject: [PATCH 4/8] Fix for allocating buffers when the first buffer_alloc() triggers a change in caps
+Subject: [PATCH 04/12] Fix for allocating buffers when the first buffer_alloc() triggers a change in caps
 To: gst_omap4@list.ti.com
 
 We shouldn't call g_omx_port_allocate_buffers() recursively now that we use whether port->buffers is NULL or not to decide if buffers are already allocated.
+
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_port.c |    5 +++--
  1 files changed, 3 insertions(+), 2 deletions(-)

@@ -1,9 +1,10 @@
 From 24ada728b15b804e9e1c4e6fabe4dc80e3aef8a0 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Mon, 16 Nov 2009 21:25:54 -0600
-Subject: [PATCH 7/8] omap4 component names
+Subject: [PATCH 07/12] omap4 component names
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx.c |   10 +++++-----
  1 files changed, 5 insertions(+), 5 deletions(-)
