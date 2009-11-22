@@ -1,9 +1,10 @@
 From fbe82c905b9ff418b9fe2049982ce5a12f486906 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Tue, 27 Oct 2009 11:08:24 -0500
-Subject: [PATCH 3/8] work-around for bug in OMX, returning errors in case of non-error conditions
+Subject: [PATCH 03/12] work-around for bug in OMX, returning errors in case of non-error conditions
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_core.c |   19 +++++++++++++++++++
  1 files changed, 19 insertions(+), 0 deletions(-)
