@@ -176,5 +176,5 @@ PREFERRED_VERSION_iperf =		"2.0.4"
 PREFERRED_VERSION_libmms =		"0.3"
 
 # toolchain
-PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
+PREFERRED_VERSION_external-csl-toolchain =	"2009q1-203"
 
