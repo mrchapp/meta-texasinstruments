@@ -1,0 +1,49 @@
+From 7f86b33186e610679f054ce3041cf6ac4fd8cadd Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Sat, 21 Nov 2009 12:31:46 -0600
+Subject: [PATCH 10/11] add NV12 support
+To: gst_omap4@list.ti.com
+
+---
+ omx/gstomx_port.h |    2 +-
+ omx/gstomx_util.c |    4 ++++
+ 2 files changed, 5 insertions(+), 1 deletions(-)
+
+diff --git a/omx/gstomx_port.h b/omx/gstomx_port.h
+index eff8332..35bef63 100644
+--- a/omx/gstomx_port.h
++++ b/omx/gstomx_port.h
+@@ -115,7 +115,7 @@ gpointer g_omx_port_recv (GOmxPort *port);
+  * Some domain specific port related utility functions:
+  */
+ 
+-#define GSTOMX_ALL_FORMATS  "{ I420, YUY2, UYVY }"
++#define GSTOMX_ALL_FORMATS  "{ I420, YUY2, UYVY, NV12 }"
+ 
+ GstCaps * g_omx_port_set_video_formats (GOmxPort *port, GstCaps *caps);
+ 
+diff --git a/omx/gstomx_util.c b/omx/gstomx_util.c
+index 5122442..944cb33 100644
+--- a/omx/gstomx_util.c
++++ b/omx/gstomx_util.c
+@@ -318,6 +318,8 @@ OMX_COLOR_FORMATTYPE g_omx_fourcc_to_colorformat (guint32 fourcc)
+             return OMX_COLOR_FormatYCbYCr;
+         case GST_MAKE_FOURCC ('U', 'Y', 'V', 'Y'):
+             return OMX_COLOR_FormatCbYCrY;
++        case GST_MAKE_FOURCC ('N', 'V', '1', '2'):
++            return OMX_COLOR_FormatYUV420PackedSemiPlanar;
+         default:
+             /* TODO, add other needed color formats.. */
+             return OMX_COLOR_FormatUnused;
+@@ -334,6 +336,8 @@ guint32 g_omx_colorformat_to_fourcc (OMX_COLOR_FORMATTYPE eColorFormat)
+             return GST_MAKE_FOURCC ('Y', 'U', 'Y', '2');
+         case OMX_COLOR_FormatCbYCrY:
+             return GST_MAKE_FOURCC ('U', 'Y', 'V', 'Y');
++        case OMX_COLOR_FormatYUV420PackedSemiPlanar:
++            return GST_MAKE_FOURCC ('N', 'V', '1', '2');
+         default:
+             /* TODO, add other needed color formats.. */
+             return 0;
+-- 
+1.6.3.2
+
