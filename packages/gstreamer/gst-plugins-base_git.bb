@@ -7,6 +7,7 @@ PR = "r3"
 
 EXTRA_OECONF += "--disable-freetypetest --disable-pango --disable-theora"
 
-SRC_URI += "file://rowstride.patch;patch=1"
-
-SRCREV = "319baefeba6c293603b8c949fa3861b01d2ecc6b"
+# TODO: regenerate rowstride patch, and go back to pulling from freedesktop.org git repo
+SRC_URI = "git://gitorious.org/robclark-gstreamer/gst-plugins-base.git;protocol=git"
+SRC_URI += "file://common-20091119.tar.gz"
+SRCREV  = "c8fc7161f10ef417a32c88f47077daaafb313549"

@@ -10,12 +10,11 @@ DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native"
 inherit autotools pkgconfig
 
 SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
-           file://common-20090928.tar.gz \
+           file://common-20091119.tar.gz \
            file://configurable-buffer-alignment.patch;patch=1 \
-	   file://fixatecapsmultiplestructs.patch;patch=1 \
            file://0001-Changes-to-make-it-possible-to-LD_PRELOAD-libttif.patch;patch=1 \
           "
-SRCREV = "7fcd73875fbd377384bf7401c9af6eca3f1a1095"
+SRCREV = "022970e9f911da45215ae4faa4cf40d0bf1ddce2"
 S = "${WORKDIR}/git"
 
 EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=no --disable-examples --disable-tests --disable-valgrind --disable-debug --with-buffer-alignment=128"
@@ -24,7 +23,7 @@ EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=
 do_configure_prepend() {
 	# This m4 file contains nastiness which conflicts with libtool 2.2.2
 	rm -f ${S}/common/m4/lib-link.m4 || true
-	mv ${WORKDIR}/common-20090928/* ${S}/common/
+	mv ${WORKDIR}/common*/* ${S}/common/
 	(cd ${S}/; NOCONFIGURE=1 ./autogen.sh)
 }
 
