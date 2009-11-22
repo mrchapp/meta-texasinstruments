@@ -1,9 +1,10 @@
 From 2937f70b81ec999497873423efd2694e769cb38d Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Thu, 19 Nov 2009 15:23:30 -0600
-Subject: [PATCH 9/9] remove omap3 specific custom index's
+Subject: [PATCH 09/12] remove omap3 specific custom index's
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_jpegdec.c |    5 ++++-
  1 files changed, 4 insertions(+), 1 deletions(-)

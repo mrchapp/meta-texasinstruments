@@ -1,9 +1,10 @@
 From 7f86b33186e610679f054ce3041cf6ac4fd8cadd Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Sat, 21 Nov 2009 12:31:46 -0600
-Subject: [PATCH 10/11] add NV12 support
+Subject: [PATCH 10/12] add NV12 support
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_port.h |    2 +-
  omx/gstomx_util.c |    4 ++++

@@ -1,9 +1,10 @@
 From 2133ca3318acea1065d9e88db49b8d8b3740f42e Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Mon, 16 Nov 2009 21:26:17 -0600
-Subject: [PATCH 8/8] omap4:  for now use OMX_AllocateBuffer() by default
+Subject: [PATCH 08/12] omap4:  for now use OMX_AllocateBuffer() by default
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_base_filter.c |    6 ++++--
  1 files changed, 4 insertions(+), 2 deletions(-)

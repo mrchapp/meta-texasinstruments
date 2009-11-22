@@ -1,9 +1,10 @@
 From b2e858146cd770f2d3606ec9306b53cfc6659bf1 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Fri, 13 Nov 2009 09:12:05 -0600
-Subject: [PATCH 6/8] camera:  add support for image capture, and switching between preview/image/video modes
+Subject: [PATCH 06/12] camera:  add support for image capture, and switching between preview/image/video modes
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_base_src.c |   58 +++++----
  omx/gstomx_camera.c   |  351 ++++++++++++++++++++++++++++++++++++-------------

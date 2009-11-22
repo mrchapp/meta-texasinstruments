@@ -1,9 +1,10 @@
 From 0d27c1903748975b8afeb56e6bcc88e500411762 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Fri, 13 Nov 2009 09:06:43 -0600
-Subject: [PATCH 5/8] add support for dynamic port enable/disable
+Subject: [PATCH 05/12] add support for dynamic port enable/disable
 To: gst_omap4@list.ti.com
 
+Signed-off-by: Rob Clark <rob@ti.com>
 ---
  omx/gstomx_core.c       |   10 +++++-
  omx/gstomx_port.c       |   19 +++++++---
