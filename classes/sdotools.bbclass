@@ -13,9 +13,10 @@ do_unpack(){
 }
 
 do_stage() {
-    chmod +x ${DL_DIR}/${SDOFILE}
+	cp ${DL_DIR}/${SDOFILE} ${WORKDIR}
+    chmod +x ${WORKDIR}/${SDOFILE}
     install -d ${SDO_INSTALL_DIR}
-    HOME=${S} ${DL_DIR}/${SDOFILE} --mode silent --prefix ${SDO_INSTALL_DIR}
+    HOME=${S} ${WORKDIR}/${SDOFILE} --mode silent --prefix ${SDO_INSTALL_DIR}
 }
 
 PREMIRRORS_prepend () {
