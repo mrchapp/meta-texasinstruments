@@ -7,7 +7,7 @@ inherit autotools gnome pkgconfig
 
 DEPENDS = "gtk+ libgcrypt"
 
-EXTRA_OECONF = "--disable-gtk-doc"
+EXTRA_OECONF = "--disable-gtk-doc --disable-pam"
 
 SRC_URI += "file://org.gnome.keyring.service \
 	file://no-ucred-def.patch;patch=1"
