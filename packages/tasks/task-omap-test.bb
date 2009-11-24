@@ -9,4 +9,5 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
-	"
+	${@base_contains("DISTRO_FEATURES", "ddt", "device-driver-test", "", d)} \
+"
