@@ -16,7 +16,7 @@ SRCREV_pn-u-boot =                  "9e9550855c71d548c2aedc4f9302413b304a3944"
 SRCREV_pn-linux-tiomap =            "da275624682d45a28fdd8020f4095cd1d1e8913a"
 
 # Device driver test
-SRCREV_pn-driver-test =             "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
+SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
