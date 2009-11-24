@@ -1,0 +1,39 @@
+diff --git a/syslink/api/src/ipc/MessageQ.c b/syslink/api/src/ipc/MessageQ.c
+index a1f75d2..1913864 100644
+--- a/syslink/api/src/ipc/MessageQ.c
++++ b/syslink/api/src/ipc/MessageQ.c
+@@ -938,11 +938,16 @@ MessageQ_get (MessageQ_Handle handle, MessageQ_Msg * msg ,UInt timeout)
+ 
+ #if !defined(SYSLINK_BUILD_OPTIMIZE)
+         if (status < 0) {
+-            GT_setFailureReason (curTrace,
+-                                 GT_4CLASS,
+-                                 "MessageQ_get",
+-                                 status,
+-                                 "API (through IOCTL) failed on kernel-side!");
++            /* TIMEOUT isn't really an error.. so don't spam the user
++             * with error msgs
++             */
++            if (status != MESSAGEQ_E_TIMEOUT) {
++                GT_setFailureReason (curTrace,
++                        GT_4CLASS,
++                        "MessageQ_get",
++                        status,
++                        "API (through IOCTL) failed on kernel-side!");
++            }
+         }
+         else {
+ #endif /* if !defined(SYSLINK_BUILD_OPTIMIZE) */
+diff --git a/syslink/api/src/rcm/RcmClient.c b/syslink/api/src/rcm/RcmClient.c
+index 1563294..c0c5842 100644
+--- a/syslink/api/src/rcm/RcmClient.c
++++ b/syslink/api/src/rcm/RcmClient.c
+@@ -1624,7 +1624,7 @@ Int getReturnMsg(RcmClient_Handle handle,
+             while (!messageFound) {
+                 /* get message from queue if available (non-blocking) */
+                 if (NULL == msgqMsg) {
+-                    retval = MessageQ_get(msgQ, &msgqMsg, WAIT_NONE);
++                    retval = MessageQ_get(msgQ, &msgqMsg, 100);
+                     if ((retval < 0) && (retval != MESSAGEQ_E_TIMEOUT)) {
+                         GT_setFailureReason (curTrace,
+                                      GT_4CLASS,
