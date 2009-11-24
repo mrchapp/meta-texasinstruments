@@ -1,5 +1,5 @@
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/abraham/audio-omx.git;branch=omx-audio-sdc;protocol=git"
-SRCREV = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
+SRCREV = "20ba7989cc577c128d2e26e80db5397bfdd31dce"
 PV = "0.0+git+${SRCREV}"
 

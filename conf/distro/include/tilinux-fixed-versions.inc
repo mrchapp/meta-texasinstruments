@@ -13,21 +13,21 @@ PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 # baseport
 SRCREV_pn-x-load =                  "d9b17e77fbce56c8ad713301056b78afc174b8f0"
 SRCREV_pn-u-boot =                  "9e9550855c71d548c2aedc4f9302413b304a3944"
-SRCREV_pn-linux-tiomap =            "f5459d920b185c75680c56088190f704b417974f"
+SRCREV_pn-linux-tiomap =            "da275624682d45a28fdd8020f4095cd1d1e8913a"
 
 # Device driver test
-SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
+SRCREV_pn-driver-test =             "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
-#SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
+SRCREV_pn-tidspbridge-lib                =		"d15def02e46d0d575d1fd1f91eaf825fbdaf72d0"
 SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
 SRCREV_pn-tidspbridge-dllcreate          =	    "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
-#SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
-#SRCREV_pn-titiler-memmgr             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
-#SRCREV_pn-titiler-d2cmap             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
+SRCREV_pn-tisyslink-lib              =      "d15def02e46d0d575d1fd1f91eaf825fbdaf72d0"
+SRCREV_pn-titiler-memmgr             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
+SRCREV_pn-titiler-d2cmap             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.12-P1"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
 
@@ -136,12 +136,12 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-SRCREV_pn-tiopenmax-audioencode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-#SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-#SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-lcml              = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-#SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+#SRCREV_pn-tiopenmax-audiodecode       = "???"
+#SRCREV_pn-tiopenmax-audioencode       = "???"
+#SRCREV_pn-tiopenmax-base              = "???"
+#SRCREV_pn-tiopenmax-lcml              = "???"
+#SRCREV_pn-tiopenmax-core              = "???"
+#SRCREV_pn-tiopenmax-osal              = "???"
 #SRCREV_pn-tiopenmax-domx              = "???"
 
 

@@ -2,7 +2,7 @@ require linux-omap.inc
 
 PR = "r1"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;branch=L24x-20091110;protocol=git \
+SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;branch=L24x-20091121;protocol=git \
           file://defconfig-omap-4430sdp \
 "
 

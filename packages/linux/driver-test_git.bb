@@ -14,7 +14,7 @@ SRC_URI = "git://dev.omapzoom.org/pub/scm/richo/device_driver_test.git;protocol=
 S = "${WORKDIR}/git/"
 
 PACKAGES = "${PN} ${PN}-dbg"
-FILES_${PN} = "/testsuites/i2c/bin/*"
+FILES_${PN} = "/testsuites/* /testsuites/*/* /testsuites/*/*/*"
 FILES_${PN}-dbg += "/testsuites/*/*/.debug/ /testsuites/*/.debug/ /testsuites/.debug/"
 
 do_compile() {
@@ -26,5 +26,6 @@ do_compile() {
 }
 
 do_install() {
+	cp -R ${S}/testsuites ${D}
 }
 
