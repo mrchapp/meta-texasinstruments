@@ -8,12 +8,12 @@ index 3386a84..163bce2 100644
  #define CONFIG_BOOTDELAY         3
 -
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"bootcmd=setenv bootargs 'root=/dev/ram0 rw mem=512M console=ttyS0,115200n8 initrd=0x81600000,160M ramdisk_size=163840'; bootm 0x80200000\0"
++	"bootcmd=setenv bootargs 'root=/dev/ram0 rw mem=463M console=ttyS2,115200n8 initrd=0x81600000,160M ramdisk_size=163840'; bootm 0x80200000\0"
  #endif /*CONFIG_4430ZEBU */
  
  #ifdef NFS_BOOT_DEFAULTS
 -#define CONFIG_BOOTARGS "mem=64M console=ttyS0,115200n8 noinitrd \
-+#define CONFIG_BOOTARGS "mem=463M console=ttyS0,115200n8 noinitrd \
++#define CONFIG_BOOTARGS "mem=463M console=ttyS2,115200n8 noinitrd \
  	root=/dev/nfs rw nfsroot=128.247.77.158:/home/a0384864/wtbu/rootfs \
  	ip=dhcp"
  #else
