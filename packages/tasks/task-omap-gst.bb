@@ -59,7 +59,6 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-stridetransform \
     gst-plugin-amrparse \
     gst-plugin-mms \
-    gst-openmax \
     "
 
 RDEPENDS_task-omap-gst-apps = "\
