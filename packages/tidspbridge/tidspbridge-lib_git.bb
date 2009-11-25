@@ -9,7 +9,7 @@ inherit pkgconfig autotools
 PR = "r7"
 PV = "0.0+git+${SRCREV}"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;branch=syslink-bridge-devsdc1;protocol=git "
+SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;branch=syslink-bridge-24.1;protocol=git "
 S = "${WORKDIR}/git/bridge"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"

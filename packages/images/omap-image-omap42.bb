@@ -7,10 +7,10 @@ IMAGE_INSTALL += "task-omap-omx"
 IMAGE_INSTALL += "task-omap-sn"
 #IMAGE_INSTALL += "task-omap-gst"
 IMAGE_INSTALL += "task-omap-gfx"
-IMAGE_INSTALL += "task-omap-connectivity"
+#IMAGE_INSTALL += "task-omap-connectivity"
 IMAGE_INSTALL += "task-omap-tools"
 IMAGE_INSTALL += "task-omap-test"
 #IMAGE_INSTALL += "task-omap-security"
 
-IMAGE_ROOTFS_SIZE = "65536"
+IMAGE_ROOTFS_SIZE = "75000"
 

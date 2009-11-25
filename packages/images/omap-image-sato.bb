@@ -9,10 +9,10 @@ IMAGE_FEATURES += "omap-omx"
 IMAGE_FEATURES += "omap-sn"
 IMAGE_FEATURES += "omap-gst"
 IMAGE_FEATURES += "omap-gfx"
-IMAGE_FEATURES += "omap-conn"
+#IMAGE_FEATURES += "omap-conn"
 IMAGE_FEATURES += "omap-tools"
 IMAGE_FEATURES += "omap-test"
 #IMAGE_FEATURES += "omap-security"
 
-IMAGE_ROOTFS_SIZE = "160000"
+IMAGE_ROOTFS_SIZE = "205000"
 
