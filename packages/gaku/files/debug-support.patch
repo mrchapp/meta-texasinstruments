@@ -1,0 +1,338 @@
+Index: gaku/Makefile.am
+===================================================================
+--- gaku.orig/Makefile.am	2009-11-29 17:31:12.000000000 -0600
++++ gaku/Makefile.am	2009-11-29 17:31:22.000000000 -0600
+@@ -8,6 +8,7 @@
+ 
+ gaku_SOURCES = \
+ 	main.c \
++	debug.c debug.h \
+ 	audio-player.c audio-player.h \
+ 	playlist-parser.c playlist-parser.h \
+ 	tag-reader.c tag-reader.h \
+Index: gaku/debug.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ gaku/debug.c	2009-11-29 17:30:31.000000000 -0600
+@@ -0,0 +1,234 @@
++/* Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
++ *
++ *  Created on: Aug 4, 2009
++ *      Author: Rob Clark <rob@ti.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++
++/**
++ * Debug message handling..  adds functionality to dump the pipeline to
++ * .dot files, and various other useful debug output.
++ */
++
++#include <gdk/gdkx.h>
++#include <gst/gst.h>
++
++#define _(x) x
++
++
++/**
++ * Copied from gst-launch
++ **/
++static void
++print_tag (const GstTagList * list, const gchar * tag, gpointer unused)
++{
++  gint i, count;
++
++  count = gst_tag_list_get_tag_size (list, tag);
++
++  for (i = 0; i < count; i++) {
++    gchar *str;
++
++    if (gst_tag_get_type (tag) == G_TYPE_STRING) {
++      if (!gst_tag_list_get_string_index (list, tag, i, &str))
++        g_assert_not_reached ();
++    } else if (gst_tag_get_type (tag) == GST_TYPE_BUFFER) {
++      GstBuffer *img;
++
++      img = gst_value_get_buffer (gst_tag_list_get_value_index (list, tag, i));
++      if (img) {
++        gchar *caps_str;
++
++        caps_str = GST_BUFFER_CAPS (img) ?
++            gst_caps_to_string (GST_BUFFER_CAPS (img)) : g_strdup ("unknown");
++        str = g_strdup_printf ("buffer of %u bytes, type: %s",
++            GST_BUFFER_SIZE (img), caps_str);
++        g_free (caps_str);
++      } else {
++        str = g_strdup ("NULL buffer");
++      }
++    } else {
++      str =
++          g_strdup_value_contents (gst_tag_list_get_value_index (list, tag, i));
++    }
++
++    if (i == 0) {
++      g_print ("%16s: %s\n", gst_tag_get_nick (tag), str);
++    } else {
++      g_print ("%16s: %s\n", "", str);
++    }
++
++    g_free (str);
++  }
++}
++
++
++/**
++ * Dumping the pipeline to a dot file must not be done synchronously
++ **/
++typedef struct {
++	GstElement  *pipeline;
++	const gchar *dump_name;
++} BinToDotArgs;
++static gboolean async_bin_to_dot (BinToDotArgs *args)
++{
++	GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS (GST_BIN (args->pipeline),
++			GST_DEBUG_GRAPH_SHOW_ALL, args->dump_name);
++	if (args->dump_name) {
++		g_free (args->dump_name);
++	}
++	g_object_unref (args->pipeline);
++	g_free (args);
++	return FALSE;
++}
++static void bin_to_dot (GstElement *pipeline, const gchar *dump_name)
++{
++	BinToDotArgs *args = g_new0 (BinToDotArgs, 1);
++	args->pipeline  = g_object_ref (pipeline);
++	args->dump_name = dump_name;
++	gdk_threads_add_idle ((GSourceFunc) async_bin_to_dot, args);
++}
++
++
++/**
++ * Some generic debug message handling, not really application specific.. mostly
++ * copied from gst-launch..  But this is only debug, it doesn't perform any
++ * functionality..
++ **/
++void
++debug_bus_message_handler (GstBus *bus, GstMessage *message, GstElement *pipeline)
++{
++	static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
++
++	g_static_mutex_lock (&mutex);
++
++    switch (GST_MESSAGE_TYPE (message)) {
++		case GST_MESSAGE_NEW_CLOCK: {
++			GstClock *clock;
++
++			gst_message_parse_new_clock (message, &clock);
++
++			g_print ("New clock: %s\n", (clock ? GST_OBJECT_NAME (clock) : "NULL"));
++			break;
++		}
++		case GST_MESSAGE_EOS: {
++	        g_print (_("Got EOS from element \"%s\".\n"), GST_MESSAGE_SRC_NAME (message));
++	        break;
++		}
++		case GST_MESSAGE_TAG: {
++			GstTagList *tags;
++
++			if (GST_IS_ELEMENT (GST_MESSAGE_SRC (message))) {
++				g_print (_("FOUND TAG      : found by element \"%s\".\n"),
++						GST_MESSAGE_SRC_NAME (message));
++			} else if (GST_IS_PAD (GST_MESSAGE_SRC (message))) {
++				g_print (_("FOUND TAG      : found by pad \"%s:%s\".\n"),
++						GST_DEBUG_PAD_NAME (GST_MESSAGE_SRC (message)));
++			} else if (GST_IS_OBJECT (GST_MESSAGE_SRC (message))) {
++				g_print (_("FOUND TAG      : found by object \"%s\".\n"),
++						GST_MESSAGE_SRC_NAME (message));
++			} else {
++				g_print (_("FOUND TAG\n"));
++			}
++
++			gst_message_parse_tag (message, &tags);
++			gst_tag_list_foreach (tags, print_tag, NULL);
++			gst_tag_list_free (tags);
++			break;
++		}
++		case GST_MESSAGE_INFO: {
++			GError *gerror;
++			gchar *debug;
++			gchar *name = gst_object_get_path_string (GST_MESSAGE_SRC (message));
++
++			gst_message_parse_info (message, &gerror, &debug);
++			if (debug) {
++				g_print (_("INFO:\n%s\n"), debug);
++			}
++			g_error_free (gerror);
++			g_free (debug);
++			g_free (name);
++			break;
++		}
++		case GST_MESSAGE_WARNING: {
++			GError *gerror;
++			gchar *debug;
++			gchar *name = gst_object_get_path_string (GST_MESSAGE_SRC (message));
++
++			gst_message_parse_warning (message, &gerror, &debug);
++			g_print (_("WARNING: from element %s: %s\n"), name, gerror->message);
++			if (debug) {
++				g_print (_("Additional debug info:\n%s\n"), debug);
++			}
++			g_error_free (gerror);
++			g_free (debug);
++			g_free (name);
++
++			/* dump graph on warning */
++			bin_to_dot (pipeline, NULL);
++
++			break;
++		}
++		case GST_MESSAGE_ERROR: {
++			GError *gerror;
++			gchar *debug;
++
++			gst_message_parse_error (message, &gerror, &debug);
++			gst_object_default_error (GST_MESSAGE_SRC (message), gerror, debug);
++			g_error_free (gerror);
++			g_free (debug);
++
++			/* dump graph on error */
++			bin_to_dot (pipeline, NULL);
++
++			break;
++		}
++		case GST_MESSAGE_STATE_CHANGED: {
++			GstState old, new, pending;
++
++			gst_message_parse_state_changed (message, &old, &new, &pending);
++
++			/* we only care about pipeline state change messages */
++			if (GST_MESSAGE_SRC (message) != GST_OBJECT_CAST (pipeline))
++				break;
++
++			/* dump graph for pipeline state changes */
++			{
++				gchar *dump_name = g_strdup_printf ("%s.%s_%s",
++						g_get_application_name(),
++						gst_element_state_get_name (old),
++						gst_element_state_get_name (new));
++				bin_to_dot (pipeline, dump_name);
++			}
++
++			break;
++		}
++		case GST_MESSAGE_BUFFERING: {
++			gint percent;
++
++			gst_message_parse_buffering (message, &percent);
++			g_print ("%s %d%%  \r", _("buffering..."), percent);
++			break;
++		}
++		default: {
++			/* ignore */
++			break;
++		}
++    }
++	g_static_mutex_unlock (&mutex);
++}
+Index: gaku/debug.h
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ gaku/debug.h	2009-11-29 17:30:31.000000000 -0600
+@@ -0,0 +1,29 @@
++/* Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
++ *
++ *  Created on: Aug 4, 2009
++ *      Author: Rob Clark <rob@ti.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++
++#ifndef __OWLDEBUG_H__
++#define __OWLDEBUG_H__
++
++void debug_bus_message_handler (GstBus *bus, GstMessage *message, GstElement *pipeline);
++
++
++#endif /* __OWLDEBUG_H__ */
+Index: gaku/audio-player.c
+===================================================================
+--- gaku.orig/audio-player.c	2009-11-29 17:35:54.000000000 -0600
++++ gaku/audio-player.c	2009-11-29 17:41:49.000000000 -0600
+@@ -22,6 +22,7 @@
+ #include <gst/gst.h>
+ 
+ #include "audio-player.h"
++#include "debug.h"
+ 
+ G_DEFINE_TYPE (AudioPlayer,
+                audio_player,
+@@ -69,6 +70,20 @@
+ #define GST_VOL_MAX     4.0
+ 
+ /**
++ * A message arrived synchronously on the bus
++ **/
++static GstBusSyncReply
++bus_sync_handler_cb (GstBus            *bus,
++                     GstMessage        *message,
++                     AudioPlayer       *audio_player)
++{
++        debug_bus_message_handler (bus, message, audio_player->priv->playbin);
++
++        return GST_BUS_PASS;
++}
++
++
++/**
+  * An error occured.
+  **/
+ static void
+@@ -285,7 +300,7 @@
+                 return;
+         }
+ 
+-        g_object_set (G_OBJECT (video_widget->priv->playbin),
++        g_object_set (G_OBJECT (audio_player->priv->playbin),
+                       "flags", 0x00000012,  /* soft-volume | audio */
+                       NULL);
+ 
+@@ -326,6 +341,10 @@
+ 
+         gst_bus_add_signal_watch (bus);
+ 
++        gst_bus_set_sync_handler (bus,
++                                  (GstBusSyncHandler) bus_sync_handler_cb,
++                                  audio_player);
++
+         g_signal_connect_object (bus,
+                                  "message::error",
+                                  G_CALLBACK (bus_message_error_cb),
