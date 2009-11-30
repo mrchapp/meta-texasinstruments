@@ -1,18 +1,8 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
 PR = "r9"
 
-SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
-SRC_URI += "file://0001-Add-extra-TI-error-codes-for-debugging.patch;patch=1"
-SRC_URI += "file://0003-work-around-for-bug-in-OMX-returning-errors-in-case-.patch;patch=1"
-SRC_URI += "file://0004-Fix-for-allocating-buffers-when-the-first-buffer_all.patch;patch=1"
-SRC_URI += "file://0005-add-support-for-dynamic-port-enable-disable.patch;patch=1"
-#SRC_URI += "file://0006-camera-add-support-for-image-capture-and-switching-b.patch;patch=1"
-SRC_URI += "file://0007-omap4-component-names.patch;patch=1"
-SRC_URI += "file://0008-omap4-for-now-use-OMX_AllocateBuffer-by-default.patch;patch=1"
-SRC_URI += "file://0009-remove-omap3-specific-custom-index-s.patch;patch=1"
-
-# From omap branch:
-SRCREV = "bbc6e3fd66f41057bdf8c3ea08902883ec0f48a1"
+SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap4-temp20091124"
+SRCREV = "182e14ab02a49594a4f3ee89ed2cf115f0ae3a3d"
 S = "${WORKDIR}/git"
 
 inherit autotools

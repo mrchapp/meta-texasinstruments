@@ -6,7 +6,7 @@ PR = "r6"
 
 require tiopenmax-audio-git.inc
 
-SRC_URI +="file://more_snddevices file://amixer.sh"
+SRC_URI +="file://amixer.sh"
 
 S = "${WORKDIR}/git/audio/audio_decode/"
 
@@ -23,7 +23,6 @@ do_stage() {
 }
 
 do_install_append() {
-	install -m 0777 ${WORKDIR}/more_snddevices ${D}${bindir}
 	install -m 0777 ${WORKDIR}/amixer.sh       ${D}${bindir}
 }
 

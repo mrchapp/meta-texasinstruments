@@ -1,0 +1,36 @@
+From d8b1ed80283cc8025f18b816f5e4b205edfddc2e Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Sat, 21 Nov 2009 12:32:22 -0600
+Subject: [PATCH 11/12] hard-code NV12 instead of UYVY for now
+To: gst_omap4@list.ti.com
+
+Signed-off-by: Rob Clark <rob@ti.com>
+---
+ omx/gstomx_jpegdec.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/omx/gstomx_jpegdec.c b/omx/gstomx_jpegdec.c
+index decb92c..7051c98 100644
+--- a/omx/gstomx_jpegdec.c
++++ b/omx/gstomx_jpegdec.c
+@@ -37,7 +37,7 @@ static GstStaticPadTemplate src_template =
+ GST_STATIC_PAD_TEMPLATE ("src",
+     GST_PAD_SRC,
+     GST_PAD_ALWAYS,
+-    GST_STATIC_CAPS ( GST_VIDEO_CAPS_YUV ("{ UYVY }") )
++    GST_STATIC_CAPS ( GST_VIDEO_CAPS_YUV ("{ NV12 }") )
+ );
+ 
+ static GstStaticPadTemplate sink_template =
+@@ -289,7 +289,7 @@ omx_setup (GstOmxBaseFilter *omx_base)
+             param.nBufferCountActual = 1;
+ 
+             /** @todo get this from the srcpad */
+-            param.format.image.eColorFormat = OMX_COLOR_FormatCbYCrY;
++            param.format.image.eColorFormat = OMX_COLOR_FormatYUV420PackedSemiPlanar;
+             color_format = param.format.image.eColorFormat;
+             fourcc = g_omx_colorformat_to_fourcc (color_format);
+ 
+-- 
+1.6.3.2
+
