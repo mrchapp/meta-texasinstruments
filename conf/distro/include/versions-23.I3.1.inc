@@ -240,4 +240,4 @@ PREFERRED_VERSION_cheese	=	"2.24.3"
 PREFERRED_VERSION_intltool	=	"0.40.0"
 
 # extra (will be replaced by pokyomap in subsequent releases)
-PREFERRED_VERSION_pixman	=	"0.14.0"
+# none
