@@ -1,0 +1,20 @@
+Index: libowl-av/libowl-av/owl-video-widget.c
+===================================================================
+--- libowl-av.orig/libowl-av/owl-video-widget.c	2009-11-29 20:46:38.000000000 -0600
++++ libowl-av/libowl-av/owl-video-widget.c	2009-11-29 20:48:07.000000000 -0600
+@@ -362,8 +362,13 @@
+                                          &new_state,
+                                          NULL);
+ 
+-        if (old_state == GST_STATE_READY &&
+-            new_state == GST_STATE_PAUSED) {
++        /* note: duration query should be done on transition to playing, as it
++         * will fail during ready->null thanks to the fix to this issue:
++         *
++         * https://bugzilla.gnome.org/show_bug.cgi?id=585969
++         */
++        if (old_state == GST_STATE_PAUSED &&
++            new_state == GST_STATE_PLAYING) {
+                 GstQuery *query;
+ 
+                 /**
