@@ -3,6 +3,8 @@ DESCRIPTION = "Texas Instruments DSP Bridge tool DLLcreate"
 LICENSE = "Texas Instruments"
 PR = "r1"
 
+PV = "0.0+cc+${SRCREV}"
+
 CCASE_SPEC = "%\
           element /vobs/SDS/Source/Dload/dload/... .../dyn-load_rel_1.x/${SRCREV}%\
 	      element * /main/LATEST%"
