@@ -1,7 +1,7 @@
 Index: libowl-av/libowl-av/Makefile.am
 ===================================================================
 --- libowl-av.orig/libowl-av/Makefile.am	2008-08-23 09:16:54.000000000 -0500
-+++ libowl-av/libowl-av/Makefile.am	2009-08-04 15:09:06.000000000 -0500
++++ libowl-av/libowl-av/Makefile.am	2009-11-29 16:03:56.000000000 -0600
 @@ -13,6 +13,8 @@
  	owl-tag-reader.h	\
  	owl-video-widget.c	\
@@ -14,11 +14,10 @@ Index: libowl-av/libowl-av/Makefile.am
 Index: libowl-av/libowl-av/owl-debug.c
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ libowl-av/libowl-av/owl-debug.c	2009-08-04 15:15:01.000000000 -0500
-@@ -0,0 +1,235 @@
++++ libowl-av/libowl-av/owl-debug.c	2009-11-29 17:25:18.000000000 -0600
+@@ -0,0 +1,234 @@
 +/* Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
 + *
-+ * Description: V4L2 sink element
 + *  Created on: Aug 4, 2009
 + *      Author: Rob Clark <rob@ti.com>
 + *
@@ -254,11 +253,10 @@ Index: libowl-av/libowl-av/owl-debug.c
 Index: libowl-av/libowl-av/owl-debug.h
 ===================================================================
 --- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ libowl-av/libowl-av/owl-debug.h	2009-08-04 15:15:01.000000000 -0500
-@@ -0,0 +1,30 @@
++++ libowl-av/libowl-av/owl-debug.h	2009-11-29 17:25:22.000000000 -0600
+@@ -0,0 +1,29 @@
 +/* Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
 + *
-+ * Description: V4L2 sink element
 + *  Created on: Aug 4, 2009
 + *      Author: Rob Clark <rob@ti.com>
 + *
@@ -288,8 +286,8 @@ Index: libowl-av/libowl-av/owl-debug.h
 +#endif /* __OWLDEBUG_H__ */
 Index: libowl-av/libowl-av/owl-video-widget.c
 ===================================================================
---- libowl-av.orig/libowl-av/owl-video-widget.c	2009-08-04 15:09:06.000000000 -0500
-+++ libowl-av/libowl-av/owl-video-widget.c	2009-08-04 15:15:01.000000000 -0500
+--- libowl-av.orig/libowl-av/owl-video-widget.c	2009-11-29 16:03:56.000000000 -0600
++++ libowl-av/libowl-av/owl-video-widget.c	2009-11-29 16:12:42.000000000 -0600
 @@ -24,6 +24,7 @@
  #include <gst/interfaces/xoverlay.h>
  
