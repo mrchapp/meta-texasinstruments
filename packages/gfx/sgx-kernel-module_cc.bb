@@ -10,10 +10,13 @@ DEPENDS = " virtual/kernel "
 inherit module ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-PACKAGES = "${PN}"
-FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* /lib/modules/"
+PACKAGES = "${PN} ${PN}-dbg"
+FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* /lib/modules/*"
+FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* /lib/modules/.debug/*"
 
 SRC_URI = " file://regtool"
+
+PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
