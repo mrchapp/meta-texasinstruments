@@ -37,6 +37,6 @@ do_stage() {
 	autotools_stage_all
 }
 
-FILES_${PN} += " ${libdir}/gstreamer-0.10/*.so"
+FILES_${PN} += " ${libdir}/gstreamer-0.10/*.so ${libexecdir}/gstreamer-0.10/*"
 FILES_${PN}-dev += " ${libdir}/gstreamer-0.10/*.la ${libdir}/gstreamer-0.10/*.a"
-FILES_${PN}-dbg += " ${libdir}/gstreamer-0.10/.debug/"
+FILES_${PN}-dbg += " ${libdir}/gstreamer-0.10/.debug/* ${libexecdir}/gstreamer-0.10/.debug/*"
