@@ -13,6 +13,7 @@ S = "${WORKDIR}/${PN}"
 SRC_URI = "svn://svn.o-hand.com/repos/misc/trunk;module=${PN};proto=http"
 SRC_URI += "file://playbin2.patch;patch=1"
 SRC_URI += "file://debug-support.patch;patch=1"
+SRC_URI += "file://duration-fix.patch;patch=1"
 
 inherit autotools pkgconfig
 
