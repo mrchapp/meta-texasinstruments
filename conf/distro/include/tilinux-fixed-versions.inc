@@ -1,8 +1,8 @@
 
 # baseport
 SRCREV_pn-x-load =                  "812e8b320c0d240788cbcb1ee0bce8108c93984f"
-SRCREV_pn-u-boot =                  "9e9550855c71d548c2aedc4f9302413b304a3944"
-SRCREV_pn-linux-tiomap =            "b8abd9f322135d3b26e7939de5c582e7fdeee141"
+SRCREV_pn-u-boot =                  "0693c5aadf91d56d5dc6f490b7399d77c9bfb896"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
@@ -125,10 +125,10 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "2118359f6d82afcd8071c81f60e2c0cd5d3cc253"
-SRCREV_pn-tiopenmax-audioencode       = "2118359f6d82afcd8071c81f60e2c0cd5d3cc253"
-SRCREV_pn-tiopenmax-base              = "2118359f6d82afcd8071c81f60e2c0cd5d3cc253"
-SRCREV_pn-tiopenmax-lcml              = "2118359f6d82afcd8071c81f60e2c0cd5d3cc253"
+SRCREV_pn-tiopenmax-audiodecode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-audioencode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-base              = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-lcml              = "f7fa2b176347953821d643f9da434409ffd9e27e"
 #SRCREV_pn-tiopenmax-core              = "???"
 #SRCREV_pn-tiopenmax-osal              = "???"
 #SRCREV_pn-tiopenmax-domx              = "???"
@@ -139,8 +139,8 @@ PREFERRED_VERSION_wilink = 		"23-1.2-P1"
 PREFERRED_VERSION_btfm = 		"23-1.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_3"
-SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_3"
+SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
+SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
 
 # open source dependencies
 # gstreamer
