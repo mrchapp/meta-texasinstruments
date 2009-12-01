@@ -6,7 +6,7 @@
  #define CONFIG_BOOTDELAY         3
 -
 +#define CONFIG_EXTRA_ENV_SETTINGS \
-+	"bootcmd=setenv bootargs 'root=/dev/ram0 rw mem=463M console=ttyS2,115200n8 initrd=0x81600000,205M ramdisk_size=209920'; bootm 0x80200000\0"
++	"bootcmd=setenv bootargs 'root=/dev/ram0 rw mem=463M console=ttyS2,115200n8 initrd=0x81600000,250M ramdisk_size=256000'; bootm 0x80200000\0"
  #endif /*CONFIG_4430ZEBU */
  
  #ifdef NFS_BOOT_DEFAULTS
@@ -18,7 +18,7 @@
 -#define CONFIG_BOOTARGS "root=/dev/ram0 rw mem=512M console=ttyS2,115200n8 \
 -initrd=0x81600000,64M ramdisk_size=65536"
 +#define CONFIG_BOOTARGS "root=/dev/ram0 rw mem=463M console=ttyS2,115200n8 \
-+initrd=0x81600000,205M ramdisk_size=209920"
++initrd=0x81600000,250M ramdisk_size=256000"
  #endif
  
  #define CONFIG_NETMASK           255.255.254.0
