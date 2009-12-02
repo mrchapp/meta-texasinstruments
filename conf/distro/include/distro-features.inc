@@ -10,6 +10,7 @@
 # * gps		- Include support for TI's GPS
 # * rarv    - Enable readaudio/realvideo codecs
 # * testpatterns - Include OMX test patterns
+# * ddt     - Device driver tests
 
 # The following are standard Poky DISTRO_FEATURES, not specific to
 # OMAP.  Do not touch these unless you know what you are doing.
@@ -37,4 +38,7 @@ DISTRO_FEATURES += "camera jpegdec jpegenc"
 
 # Enable support for TI's GPS
 #DISTRO_FEATURES += "gps"
+
+# Enable support for TI's device driver test
+#DISTRO_FEATURES += "ddt"
 

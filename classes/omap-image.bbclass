@@ -23,9 +23,18 @@
 # - nfs-server          - NFS server (exports / over NFS to everybody)
 # - dev-pkgs            - development packages
 # - dbg-pkgs            - debug packages
-# - omap-bridge		- TI's dspbridge
+
+# - omap-bridge		- TI's DSP Bridge
+# - omap-syslink	- TI's Syslink
+# - omap-tiler   	- TI's Tiler
 # - omap-omx		- TI's OpenMAX IL
+# - omap-sn      	- TI's Socket Nodes
 # - omap-gst		- TI's GStreamer plug-ins
+# - omap-gfx		- TI's GFX
+# - omap-conn		- TI's Connectivity
+# - omap-tools		- TI's Tools
+# - omap-test		- TI's test suite
+# - omap-security	- TI's Security
 #
 
 POKY_BASE_INSTALL = '\
@@ -86,11 +95,12 @@ POKY_BASE_INSTALL = '\
     ${@base_contains("IMAGE_FEATURES", "omap-tiler", "task-omap-tiler", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-omx", "task-omap-omx", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-sn", "task-omap-sn", "",d)} \
-    ${@base_contains("IMAGE_FEATURES", "omap-test", "task-omap-test", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-gst", "task-omap-gst", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-gfx", "task-omap-gfx", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-conn", "task-omap-connectivity", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "omap-tools", "task-omap-tools", "",d)} \
+    \
+    ${@base_contains("IMAGE_FEATURES", "omap-test", "task-omap-test", "",d)} \
     \
     ${@base_contains("IMAGE_FEATURES", "omap-security", "task-omap-security", "",d)} \
     ${@base_contains("IMAGE_FEATURES", "package-management", "${ROOTFS_PKGMANAGE}", "",d)} \

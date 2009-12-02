@@ -1,40 +1,29 @@
-# tasks and images
-PREFERRED_VERSION_task-omap-bridge =			"1.1"
-PREFERRED_VERSION_task-omap-connectivity.bb =	        "1.0"
-PREFERRED_VERSION_task-omap-gfx.bb =			"1.0"
-PREFERRED_VERSION_task-omap-gst.bb =			"1.0"
-PREFERRED_VERSION_task-omap-omx.bb =			"1.0"
-PREFERRED_VERSION_task-omap-sn =	    		"4430"
-PREFERRED_VERSION_task-omap-test.bb =			"1.0"
-PREFERRED_VERSION_omap-image-minimal.bb =		"1.0"
-PREFERRED_VERSION_omap-image-mm.bb =			"1.0"
-PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
 # baseport
-SRCREV_pn-x-load =		            "8ec7f1caf74e48a0265e11ee1b4303069f9c151d"
-SRCREV_pn-u-boot =		            "9e9550855c71d548c2aedc4f9302413b304a3944"
-SRCREV_pn-linux-tiomap =            "3e8ab1f33ee3a0fed86eaa5eb45db0c81917db84"
+SRCREV_pn-x-load =                  "812e8b320c0d240788cbcb1ee0bce8108c93984f"
+SRCREV_pn-u-boot =                  "0693c5aadf91d56d5dc6f490b7399d77c9bfb896"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1"
 
 # Device driver test
-SRCREV_pn-driver-test =             "f90f2da22e5d8bf6b867b5fccfd74c2303990be8"
+SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
 PREFERRED_VERSION_htop =	        "0.7"
 
 # Tesla Bridge
-#SRCREV_pn-tidspbridge-lib                =		"93f9f8cc3e0c07166c2560a58278be6a9263e90f"
-SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.11"
+SRCREV_pn-tidspbridge-lib                =		"ti-syslink-mpu-pre-rls-24.1"
+SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.12"
 SRCREV_pn-tidspbridge-dllcreate          =	    "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
-#SRCREV_pn-tisyslink-lib              =      "93f9f8cc3e0c07166c2560a58278be6a9263e90f"
-#SRCREV_pn-titiler-memmgr             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
-#SRCREV_pn-titiler-d2cmap             =      "88454f6ad0fc4cdb86d3996a9fe857d69082969d"
-SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.12-P1"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.08.00.00"
+SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-pre-rls-24.1"
+SRCREV_pn-titiler-memmgr             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
+SRCREV_pn-titiler-d2cmap             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
+SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.13"
+SRCREV_pn-tisyslink-ducati-mm        =      "ACT_DUCATI_OCT-PRERLS-21"
 
 # Tesla/Ducati external tools
 PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B2"
 PREFERRED_VERSION_titools-cgtarm =          "4.6.0"
-PREFERRED_VERSION_titools-bios   =    	    "6.20.02.43"
+PREFERRED_VERSION_titools-bios   =    	    "6.20.03.44.eng"
 PREFERRED_VERSION_titools-fc     =          "3.00.00.50.eng"
 PREFERRED_VERSION_titools-xdc    =          "3.15.03.67"
 PREFERRED_VERSION_titools-ipc    =          "1.00.03.54.eng"
@@ -43,13 +32,13 @@ PREFERRED_VERSION_titools-ce     =          "3.00.00.24"
 PREFERRED_VERSION_titools-xdais  =          "7.00.00.18.eng"
 
 # baseimage
-SRCREV_pn-baseimage ?=				"DSP-DASF-SYSTEM-TESLA_RLS_4.3"
+SRCREV_pn-baseimage ?=				"DSP-DASF-SYSTEM-TESLA_RLS_4.4"
 PREFERRED_VERSION_baseimage-masterconfig =	"23.x"
 
 # socket nodes and codecs
 PREFERRED_VERSION_tisocketnode-algo =			"3.02"
 PREFERRED_VERSION_tisocketnode-dfgm =			"3.02"
-SRCREV_pn-tisocketnode-usn =				"DSP-MM-TESLA_RLS_4.3-P1"
+SRCREV_pn-tisocketnode-usn =				"DSP-MM-TESLA_RLS_4.4"
 PREFERRED_VERSION_tisocketnode-control-task =		"3.40"
 PREFERRED_VERSION_tisocketnode-ringio =			"3.02"
 #
@@ -89,12 +78,12 @@ PREFERRED_VERSION_tisocketnode-ima-adpcmdec =		"3.17.1"
 PREFERRED_VERSION_tisocketnode-ima-adpcmdec-code =	"3.17.1"	
 PREFERRED_VERSION_tisocketnode-ima-adpcmenc =		"3.17.1"
 PREFERRED_VERSION_tisocketnode-ima-adpcmenc-codec =	"3.17.1"
-SRCREV_pn-tisocketnode-mp3               =              "DSP-MM-TESLA_RLS_4.3-P1"
-SRCREV_pn-tisocketnode-mp3-codec         =              "DSP-MM-TESLA_RLS_4.3-P1"
-SRCREV_pn-tisocketnode-mpeg4aacdec       =              "DSP-MM-TESLA_RLS_4.3-P1"
-SRCREV_pn-tisocketnode-mpeg4aacdec-codec =              "DSP-MM-TESLA_RLS_4.3-P1"
-SRCREV_pn-tisocketnode-mpeg4aacenc       =              "DSP-MM-TESLA_RLS_4.3-P1"
-SRCREV_pn-tisocketnode-mpeg4aacenc-codec =              "DSP-MM-TESLA_RLS_4.3-P1"
+SRCREV_pn-tisocketnode-mp3               =              "DSP-MM-TESLA_RLS_4.4"
+SRCREV_pn-tisocketnode-mp3-codec         =              "DSP-MM-TESLA_RLS_4.4"
+SRCREV_pn-tisocketnode-mpeg4aacdec       =              "DSP-MM-TESLA_RLS_4.4"
+SRCREV_pn-tisocketnode-mpeg4aacdec-codec =              "DSP-MM-TESLA_RLS_4.4"
+SRCREV_pn-tisocketnode-mpeg4aacenc       =              "DSP-MM-TESLA_RLS_4.4"
+SRCREV_pn-tisocketnode-mpeg4aacenc-codec =              "DSP-MM-TESLA_RLS_4.4"
 SRCREV_pn-tisocketnode-nbamrdec          =              "DSP-MM-TESLA_RLS_4.3-P1"
 SRCREV_pn-tisocketnode-nbamrdec-codec    =              "DSP-MM-TESLA_RLS_4.3-P1"
 SRCREV_pn-tisocketnode-nbamrenc          =              "DSP-MM-TESLA_RLS_4.3-P1"
@@ -136,12 +125,12 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-SRCREV_pn-tiopenmax-audioencode       = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-#SRCREV_pn-tiopenmax-base              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-#SRCREV_pn-tiopenmax-core              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
-SRCREV_pn-tiopenmax-lcml              = "0da2cf2bfbb398f2f3909449530a772fdb38a27a"
-#SRCREV_pn-tiopenmax-osal              = "1fd38d1cdba275f2ebaec97d261ff2f6251a9947"
+SRCREV_pn-tiopenmax-audiodecode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-audioencode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-base              = "f7fa2b176347953821d643f9da434409ffd9e27e"
+SRCREV_pn-tiopenmax-lcml              = "f7fa2b176347953821d643f9da434409ffd9e27e"
+#SRCREV_pn-tiopenmax-core              = "???"
+#SRCREV_pn-tiopenmax-osal              = "???"
 #SRCREV_pn-tiopenmax-domx              = "???"
 
 
@@ -150,8 +139,8 @@ PREFERRED_VERSION_wilink = 		"23-1.2-P1"
 PREFERRED_VERSION_btfm = 		"23-1.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_2"
-SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_2"
+SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
+SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
 
 # open source dependencies
 # gstreamer
