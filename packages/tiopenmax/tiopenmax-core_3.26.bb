@@ -49,6 +49,8 @@ do_stage() {
 		BRIDGEINCLUDEDIR=${STAGING_INCDIR}/dspbridge BRIDGELIBDIR=${STAGING_LIBDIR} \
 		TARGETDIR=${STAGING_DIR_TARGET}/usr OMXROOT=${S} \
 		core.install
+	# Poky upstream migration patch
+	install -m 0644 libomxil.pc ${STAGING_LIBDIR}/pkgconfig
 }
 
 FILES_${PN} = "\
