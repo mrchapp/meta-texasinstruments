@@ -19,4 +19,6 @@ do_stage() {
         do
 		install -m 0644 include/$f ${STAGING_INCDIR}/bluetooth/$f
         done
+	# Poky upstream migration patch
+	install -m 0644 bluez.pc ${STAGING_LIBDIR}/pkgconfig
 }
