@@ -1,8 +1,8 @@
 
 # baseport
-SRCREV_pn-x-load =                  "812e8b320c0d240788cbcb1ee0bce8108c93984f"
-SRCREV_pn-u-boot =                  "0693c5aadf91d56d5dc6f490b7399d77c9bfb896"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1"
+SRCREV_pn-x-load =                  "L24.1"
+SRCREV_pn-u-boot =                  "L24.1"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-v2"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
@@ -27,9 +27,9 @@ PREFERRED_VERSION_titools-bios   =    	    "6.20.03.44.eng"
 PREFERRED_VERSION_titools-fc     =          "3.00.00.50.eng"
 PREFERRED_VERSION_titools-xdc    =          "3.15.03.67"
 PREFERRED_VERSION_titools-ipc    =          "1.00.03.54.eng"
-PREFERRED_VERSION_titools-osal   =          "1.00.00.36"
-PREFERRED_VERSION_titools-ce     =          "3.00.00.24"
-PREFERRED_VERSION_titools-xdais  =          "7.00.00.18.eng"
+PREFERRED_VERSION_titools-osal   =          "1.00.00.38"
+PREFERRED_VERSION_titools-ce     =          "3.00.00.26"
+PREFERRED_VERSION_titools-xdais  =          "7.00.00.20.eng"
 
 # baseimage
 SRCREV_pn-baseimage ?=				"DSP-DASF-SYSTEM-TESLA_RLS_4.4"
