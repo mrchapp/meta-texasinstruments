@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Multimedia S/w"
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r2"
 
 DEPENDS = " \
    tisyslink-ducati \
@@ -19,8 +19,8 @@ inherit xdc ccasefetch
 PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-   element * ACT_DUCATI_OCT-PRERLS-14%\
-   element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
+   element * ACT_DUCATI_OCT-PRERLS-20%\
+   element /vobs/WTSD_DucatiMMSW/...   TI-MM-DUCATI_RLS.01.08.00.00%\
    element * /main/LATEST%"
 
 # Note: WTSD_DucatiMMSW is used in the XDC package name, so it must be put
@@ -28,6 +28,10 @@ CCASE_SPEC = "%\
 CCASE_PATHFETCH = "/vobs/WTSD_DucatiMMSW"
 CCASE_PATHCOMPONENT = "vobs"
 CCASE_PATHCOMPONENTS = "0"
+
+
+SRC_URI += "file://padding.patch;patch=1"
+SRC_URI += "file://jpegdec-fixes.patch;patch=1"
 
 XDCPATH += "\
 ${STAGING_BINDIR}/syslink/ducati/ipc;\
@@ -37,7 +41,7 @@ ${S}/WTSD_DucatiMMSW/ext_rel/ivahd_codecs/packages;\
 
 XDCBUILDROOT="${S}/WTSD_DucatiMMSW/platform/base_image"
 
-XDCARGS="profile=debug core=sys_m3 core=app_m3"
+XDCARGS="profile=debug core=app_m3"
 
 XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 

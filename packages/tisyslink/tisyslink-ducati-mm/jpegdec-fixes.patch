@@ -1,0 +1,69 @@
+Index: tisyslink-ducati-mm-0.0+cc+TI-MM-DUCATI_RLS.01.08.00.00-20/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_iss_jpeg_dec/src/omx_jpegdec.c
+===================================================================
+--- tisyslink-ducati-mm-0.0+cc+TI-MM-DUCATI_RLS.01.08.00.00-20.orig/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_iss_jpeg_dec/src/omx_jpegdec.c	2009-12-02 18:09:45.000000000 -0600
++++ tisyslink-ducati-mm-0.0+cc+TI-MM-DUCATI_RLS.01.08.00.00-20/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_iss_jpeg_dec/src/omx_jpegdec.c	2009-12-02 18:09:51.000000000 -0600
+@@ -503,10 +503,12 @@
+ 			{
+ 			    TIMM_OSAL_Memcpy(pParamStruct, pComponentPrivate->pPortdefs[JPEGDEC_OUTPUT_PORT],
+ 				                         sizeof (OMX_PARAM_PORTDEFINITIONTYPE));
++/*                                         
+ 					pComponentPrivate->pPortdefs[JPEGDEC_OUTPUT_PORT]->format.image.
+                                                eCompressionFormat  = OMX_IMAGE_CodingUnused;
+                     pComponentPrivate->pPortdefs[JPEGDEC_OUTPUT_PORT]->format.image.
+                                           eColorFormat = OMX_COLOR_FormatYUV420PackedSemiPlanar;
++*/                                          
+                            //pImagePortDef->format.image.eColorFormat = OMX_COLOR_FormatYUV420PackedSemiPlanar;
+                            //pImagePortDef->format.image.eCompressionFormat = OMX_IMAGE_CodingUnused;
+            	}
+@@ -1641,14 +1643,40 @@
+     pComponentPrivate->fpDioGetCount(hComponent, JPEGDEC_OUTPUT_PORT, (OMX_PTR)&nOutMsgCount);
+ 
+ 
+-  if(nInMsgCount > 0 && nOutMsgCount > 0)
++  while(nInMsgCount > 0 && nOutMsgCount > 0)
+   {
+ 
+-    while(nInMsgCount > 0)
++    if(nInMsgCount > 0)
+     {
+         if(OMX_BASE_IsCmdPending(hComponent))
+             break;
+         pComponentPrivate->fpDioDequeue(hComponent, JPEGDEC_INPUT_PORT, (OMX_PTR)(&sInBufHeader));
++        
++        //Tmp fix for empty EOS buffer
++        if(sInBufHeader.nFilledLen == 0)
++        {
++            pComponentPrivate->fpDioDequeue(hComponent, JPEGDEC_OUTPUT_PORT, (OMX_PTR)(&sOutBufHeader));
++            sOutBufHeader.nFilledLen = 0;
++            
++            if(sInBufHeader.nFlags == OMX_BUFFERFLAG_EOS) 
++			{
++				sOutBufHeader.nFlags = sInBufHeader.nFlags;
++				sInBufHeader.nFlags = 0;
++				/* Notify EOS event flag to the Base Component via ReturnEventNotify
++				  * call , which communciates with the IL Client  */
++				pComponentPrivate->fpReturnEventNotify(hComponent, 
++                                                 OMX_EventBufferFlag,
++												 sOutBufHeader.nOutputPortIndex,
++												 sOutBufHeader.nFlags, NULL);
++			}
++            pComponentPrivate->fpDioSend(hComponent, JPEGDEC_INPUT_PORT, (OMX_PTR)(&sInBufHeader));
++            pComponentPrivate->fpDioSend(hComponent, JPEGDEC_OUTPUT_PORT, (OMX_PTR)(&sOutBufHeader));
++            
++            nInMsgCount--;
++            nOutMsgCount--;
++            goto EXIT;
++        }
++        
+         if(!(pComponentPrivate->pfirstbuffer))
+         {
+ 	        MSP_BUFHEADER_TYPE mspBuff;
+@@ -1702,7 +1730,7 @@
+         pComponentPrivate->fpDioGetCount(hComponent, JPEGDEC_INPUT_PORT, (OMX_PTR)&nInMsgCount);
+     }
+ 
+-    while(nOutMsgCount>0)
++    if(nOutMsgCount>0)
+     {
+         MSP_BUFHEADER_TYPE mspBuff;
+         MSP_U32 mspBuffSize;
