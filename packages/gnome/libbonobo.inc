@@ -57,6 +57,9 @@ do_stage() {
 	install idl/*.idl ${STAGING_DATADIR}/idl/bonobo-activation-2.0/
 	oe_libinstall -so -C bonobo libbonobo-2 ${STAGING_LIBDIR}
 	oe_libinstall -so -C bonobo-activation libbonobo-activation ${STAGING_LIBDIR}
+	# Poky upstream migration patch
+	install -m 0644 bonobo-activation/bonobo-activation-2.0.pc ${STAGING_LIBDIR}/pkgconfig
+	install -m 0644 bonobo/libbonobo-2.0.pc ${STAGING_LIBDIR}/pkgconfig
 }
 
 do_install() {
