@@ -143,6 +143,10 @@ SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
 SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
 
 # open source dependencies
+# ALSA
+PREFERRED_VERSION_alsa-lib =		"1.0.18"
+PREFERRED_VERSION_alsa-utils =          "1.0.18"
+
 # gstreamer
 PREFERRED_VERSION_gst-pyapps =		"5.11"
 PREFERRED_VERSION_gst-plugins-bad =     "git"
