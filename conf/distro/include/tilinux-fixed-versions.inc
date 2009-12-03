@@ -164,6 +164,13 @@ PREFERRED_VERSION_flex-native =		"2.5.35"
 PREFERRED_VERSION_iperf =		"2.0.4"
 PREFERRED_VERSION_libmms =		"0.3"
 
+PREFERRED_VERSION_glib-2.0	=	"2.22.1"
+PREFERRED_VERSION_glib-2.0-native =	"2.22.1"
+PREFERRED_VERSION_pango		=	"1.22.4"
+PREFERRED_VERSION_cairo		=	"1.8.6"
+PREFERRED_VERSION_pixman	=	"0.14.0"
+SRCREV_pn-webkit-gtk = "50081"
+
 # toolchain
 PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
 

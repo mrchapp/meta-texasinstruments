@@ -146,7 +146,7 @@ index 3985216..78024e7 100644
 +} GstDebugTraceLocation;
 +
 +#define GST_DEBUG_TRACE_LOCATION() \
-+	{ .file = __FILE__, .function = GST_FUNCTION, .line = __LINE__ }
++	{ __FILE__, GST_FUNCTION, __LINE__ }
  
  #ifdef GST_USING_PRINTF_EXTENSION
  

@@ -1,0 +1,22 @@
+Index: webkit/src/web2-main.c
+===================================================================
+--- webkit.orig/src/web2-main.c	2009-12-02 09:24:46.000000000 -0600
++++ webkit/src/web2-main.c	2009-12-02 09:24:54.000000000 -0600
+@@ -22,7 +22,7 @@
+ back_clicked_cb (GtkButton *button, Web2Data *data)
+ {
+ 	if (!data->current_page) return;
+-	webkit_web_view_go_backward (data->current_page);
++	webkit_web_view_go_back (data->current_page);
+ }
+ 
+ static void
+@@ -60,7 +60,7 @@
+ 	if (!data->current_page) return;
+ 	
+ 	g_object_set (G_OBJECT (data->back_button), "sensitive",
+-		webkit_web_view_can_go_backward (data->current_page), NULL);
++		webkit_web_view_can_go_back (data->current_page), NULL);
+ 	g_object_set (G_OBJECT (data->forward_button), "sensitive",
+ 		webkit_web_view_can_go_forward (data->current_page), NULL);
+ }
