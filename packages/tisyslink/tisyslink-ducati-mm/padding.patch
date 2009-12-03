@@ -1,0 +1,20 @@
+--- a/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_core/omx_core.h
++++ b/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_core/omx_core.h
+@@ -428,6 +428,8 @@
+                                      to determine absolute time.  This is an
+                                      optional entry and not all components
+                                      will update it.*/
++    OMX_U32 __padding1;         /**< padding to force structure size to be same
++                                     accross different compilers and processors */
+  OMX_TICKS nTimeStamp;          /**< Timestamp corresponding to the sample 
+                                      starting at the first logical sample 
+                                      boundary in the buffer. Timestamps of 
+@@ -440,6 +442,8 @@
+                                      this buffer */
+   OMX_U32 nInputPortIndex;      /**< The index of the input port (if any) using
+                                      this buffer */
++    OMX_U32 __padding2;         /**< padding to force structure size to be same
++                                     accross different compilers and processors */
+ } OMX_BUFFERHEADERTYPE;
+ 
+ /** The OMX_EXTRADATATYPE enumeration is used to define the 
