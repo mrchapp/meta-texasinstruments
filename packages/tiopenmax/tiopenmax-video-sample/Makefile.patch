@@ -1,0 +1,103 @@
+--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/src/system/domx/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/src/system/domx/Makefile
+@@ -83,7 +83,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/system/omx_core \
+     $(PROJROOT)/system/mm_osal \
+     $(PROJROOT)/system/domx \
+--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/src/video/omx_proxy_component/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/src/video/omx_proxy_component/Makefile
+@@ -84,7 +84,7 @@
+     $(PROJROOT)/system/mm_osal \
+     $(PROJROOT)/system/domx \
+     $(PROJROOT)/system/domx/omx_rpc/inc \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+ 
+ 
+ # Libraries needed for linking.--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/src/mmplatform/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/src/mmplatform/Makefile
+@@ -79,7 +79,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/system/omx_core \
+ 	$(PROJROOT)/system/domx \
+ 	
+--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/Makefile
+@@ -66,8 +66,6 @@
+ SUBMODULES  = sample_proxy \
+  h264enc \
+  h264dec \
+- camera \
+- jpegdec \
+  daemon \
+ 
+ # Filename must not begin with '.', '/' or '\'--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/h264dec/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/h264dec/Makefile
+@@ -77,7 +77,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/h264enc/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/h264enc/Makefile
+@@ -78,7 +78,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/sample_proxy/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/sample_proxy/Makefile
+@@ -75,7 +75,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/camera/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/camera/Makefile
+@@ -77,7 +77,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/jpegdec/Makefile
++++ b/WTSD_DucatiMMSW/framework/domx_linux_sample/test/jpegdec/Makefile
+@@ -80,7 +80,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \--- a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/daemon/Makefile
++++ a/WTSD_DucatiMMSW/framework/domx_linux_sample/test/daemon/Makefile
+@@ -75,7 +75,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/syslink/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \

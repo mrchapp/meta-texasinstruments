@@ -17,5 +17,6 @@ ALLOW_EMPTY = "1"
 RDEPENDS = "\
    	tiopenmax-audiodecode \
 	tiopenmax-audioencode \
-	tiopenmax-domx \
+#	tiopenmax-domx \
+	tiopenmax-video-sample \
 "

@@ -47,6 +47,8 @@ XDCARGS="profile=debug core=sys_m3 core=app_m3"
 
 XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 
+DSP_JOBS="${PARALLEL_MAKE}"
+
 FILES_${PN}="/syslink/"
 
 do_install() {

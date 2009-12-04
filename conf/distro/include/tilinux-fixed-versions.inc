@@ -2,7 +2,7 @@
 # baseport
 SRCREV_pn-x-load =                  "L24.1"
 SRCREV_pn-u-boot =                  "L24.1"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-v2"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-p1"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
@@ -125,13 +125,14 @@ PREFERRED_VERSION_tisocketnode-mpeg4-720pdec-codec =	"4.13"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il =	"meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
-SRCREV_pn-tiopenmax-audioencode       = "f7fa2b176347953821d643f9da434409ffd9e27e"
-SRCREV_pn-tiopenmax-base              = "f7fa2b176347953821d643f9da434409ffd9e27e"
-SRCREV_pn-tiopenmax-lcml              = "f7fa2b176347953821d643f9da434409ffd9e27e"
-#SRCREV_pn-tiopenmax-core              = "???"
-#SRCREV_pn-tiopenmax-osal              = "???"
-#SRCREV_pn-tiopenmax-domx              = "???"
+SRCREV_pn-tiopenmax-audiodecode       = "L24.1"
+SRCREV_pn-tiopenmax-audioencode       = "L24.1"
+SRCREV_pn-tiopenmax-base              = "L24.1"
+SRCREV_pn-tiopenmax-lcml              = "L24.1"
+SRCREV_pn-tiopenmax-core              = "L24.1"
+SRCREV_pn-tiopenmax-osal              = "L24.1"
+#SRCREV_pn-tiopenmax-domx              = ""
+SRCREV_pn-tiopenmax-video-sample      = "ACT_DUCATI_OCT-PRERLS-21"
 
 
 # connectivity
