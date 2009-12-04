@@ -1,0 +1,29 @@
+From eaefc1a414759e21fa7b10a204a6ec1c0b0ce527 Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Thu, 3 Dec 2009 09:38:33 -0600
+Subject: [PATCH 2/3] h264enc:  needs to copy width/height from input port to output port
+
+---
+ .../omx_h264_enc/src/OMX_H264VideoEncoder.c        |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_h264_enc/src/OMX_H264VideoEncoder.c b/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_h264_enc/src/OMX_H264VideoEncoder.c
+index e5d6658..6582285 100644
+--- a/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_h264_enc/src/OMX_H264VideoEncoder.c
++++ b/WTSD_DucatiMMSW/omx/omx_il_1_x/omx_h264_enc/src/OMX_H264VideoEncoder.c
+@@ -1018,6 +1018,12 @@ static OMX_ERRORTYPE OMX_TI_H264VE_SetParameter(OMX_HANDLETYPE hComponent,
+ 					/*output buffer requirements: TODO: set the correct size depending on CPB Sizes*/
+ 					pH264VEComPvt->pPortdefs[OMX_H264VE_OUTPUT_PORT]->nBufferSize=pPortDef->format.video.nFrameHeight*pPortDef->format.video.nFrameWidth;
+ 
++	                /* copy width/height information to output port */
++					pH264VEComPvt->pPortdefs[OMX_H264VE_OUTPUT_PORT]->format.video.nFrameHeight =
++							pPortDef->format.video.nFrameHeight;
++					pH264VEComPvt->pPortdefs[OMX_H264VE_OUTPUT_PORT]->format.video.nFrameWidth =
++							pPortDef->format.video.nFrameWidth;
++
+ 					/*Update the Codec Params accordingly */
+ 					pH264VEComPvt->tVidEncStaticParams.videnc2Params.maxHeight=pPortDef->format.video.nFrameHeight;
+ 					pH264VEComPvt->tVidEncStaticParams.videnc2Params.maxWidth=pPortDef->format.video.nFrameWidth;
+-- 
+1.6.3.2
+

@@ -32,6 +32,8 @@ CCASE_PATHCOMPONENTS = "0"
 
 SRC_URI += "file://padding.patch;patch=1"
 SRC_URI += "file://jpegdec-fixes.patch;patch=1"
+SRC_URI += "file://h264dec-needs-to-copy-width-height-from-input-port-t.patch;patch=1"
+SRC_URI += "file://h264enc-needs-to-copy-width-height-from-input-port-t.patch;patch=1"
 
 XDCPATH += "\
 ${STAGING_BINDIR}/syslink/ducati/ipc;\
