@@ -4,7 +4,7 @@ SECTION = "multimedia"
 PRIORITY = "optional"
 LICENSE = "LGPL"
 HOMEPAGE = "http://www.gstreamer.net/"
-PR = "r4"
+PR = "r6"
 DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native"
 
 inherit autotools pkgconfig
@@ -23,7 +23,7 @@ EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=
 do_configure_prepend() {
 	# This m4 file contains nastiness which conflicts with libtool 2.2.2
 	rm -f ${S}/common/m4/lib-link.m4 || true
-	mv ${WORKDIR}/common*/* ${S}/common/
+	mv ${WORKDIR}/common/* ${S}/common/
 	(cd ${S}/; NOCONFIGURE=1 ./autogen.sh)
 }
 
