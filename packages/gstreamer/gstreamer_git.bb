@@ -23,7 +23,7 @@ EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=
 do_configure_prepend() {
 	# This m4 file contains nastiness which conflicts with libtool 2.2.2
 	rm -f ${S}/common/m4/lib-link.m4 || true
-	mv -f ${WORKDIR}/common/* ${S}/common/
+	mv ${WORKDIR}/common-20091119/* ${S}/common/
 	(cd ${S}/; NOCONFIGURE=1 ./autogen.sh)
 }
 
