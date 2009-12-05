@@ -179,3 +179,5 @@ SRCREV_pn-webkit-gtk = "50081"
 # toolchain
 PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
 
+# xserver
+SRCREV_pn-xf86-video-omapfb = "5317aae587a2bf48f07a8c06bfaf7bcbfd23bafc"
