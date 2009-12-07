@@ -2,10 +2,10 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r1"
+PR = "r2"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
-DEPENDS = virtual/kernel
+DEPENDS = "virtual/kernel bison-native"
 
 inherit ccasefetch
 
@@ -15,6 +15,10 @@ FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* ${libdir}/*.so*"
 FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* ${libdir}/.debug/*.so*"
 
 PV = "0.0+cc+${SRCREV}"
+
+SRC_URI = "\
+    file://rc.pvr.m4.patch;patch=1 \
+"
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
@@ -61,10 +65,10 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 755 pvrsrvinit ${D}${bindir}
 	install -m 755 sgx_init_test ${D}${bindir}
-#	install -m 755 gles2test1 ${D}${bindir}
+	install -m 755 gles2test1 ${D}${bindir}
 	install -m 755 gles1test1 ${D}${bindir}
 	install -m 755 gles1_texture_stream ${D}${bindir}
-#	install -m 755 gles2_texture_stream ${D}${bindir}
+	install -m 755 gles2_texture_stream ${D}${bindir}
 #	install -m 755 ovg_unit_test ${D}${bindir}
 	install -m 755 services_test ${D}${bindir}
 	install -m 755 sgx_blit_test ${D}${bindir}

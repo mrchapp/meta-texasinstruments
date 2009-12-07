@@ -2,7 +2,7 @@
 # baseport
 SRCREV_pn-x-load =                  "L24.1"
 SRCREV_pn-u-boot =                  "L24.1"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-p1"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-p2"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
@@ -15,8 +15,8 @@ SRCREV_pn-tidspbridge-dllcreate          =	    "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-pre-rls-24.1"
-SRCREV_pn-titiler-memmgr             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
-SRCREV_pn-titiler-d2cmap             =      "c69e27197699cd39ead6c83612b1cdc13f7cb658"
+SRCREV_pn-titiler-memmgr             =      "l24.1.rel"
+SRCREV_pn-titiler-d2cmap             =      "l24.1.rel"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.13"
 SRCREV_pn-tisyslink-ducati-mm        =      "ACT_DUCATI_OCT-PRERLS-21"
 
@@ -129,8 +129,8 @@ SRCREV_pn-tiopenmax-audiodecode       = "L24.1"
 SRCREV_pn-tiopenmax-audioencode       = "L24.1"
 SRCREV_pn-tiopenmax-base              = "L24.1"
 SRCREV_pn-tiopenmax-lcml              = "L24.1"
-SRCREV_pn-tiopenmax-core              = "L24.1"
-SRCREV_pn-tiopenmax-osal              = "L24.1"
+#SRCREV_pn-tiopenmax-core              = ""
+#SRCREV_pn-tiopenmax-osal              = ""
 #SRCREV_pn-tiopenmax-domx              = ""
 SRCREV_pn-tiopenmax-video-sample      = "ACT_DUCATI_OCT-PRERLS-21"
 
@@ -140,8 +140,8 @@ PREFERRED_VERSION_wilink = 		"23-1.2-P1"
 PREFERRED_VERSION_btfm = 		"23-1.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
-SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_WAKEUP_WK_4"
+SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
+SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
 
 # open source dependencies
 # ALSA
