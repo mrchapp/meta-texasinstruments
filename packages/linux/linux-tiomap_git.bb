@@ -1,8 +1,9 @@
 require linux-omap.inc
 
-PR = "r1"
+PR = "r2"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;branch=L24.1;protocol=git \
+		  file://0001-Reworked-scaling-set-up-to-work-for-NV12-1080p-buffe.patch;patch=1 \
           file://defconfig-omap-4430sdp \
 "
 
