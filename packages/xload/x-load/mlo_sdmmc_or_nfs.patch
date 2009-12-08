@@ -1,0 +1,16 @@
+diff --git a/include/configs/omap4430sdp.h b/include/configs/omap4430sdp.h
+index d277c78..234061a 100644
+--- a/include/configs/omap4430sdp.h
++++ b/include/configs/omap4430sdp.h
+@@ -50,9 +50,9 @@
+ #define CONFIG_MMC               1
+ #if defined(CONFIG_MMC)
+ 	/* To Enable MMC boot for OMAP4430 SDP */
+-	//#define CONFIG_MMC1		1
++	#define CONFIG_MMC1		1
+ 	/* To Enable EMMC boot for OMAP4430 SDP */
+-	#define CONFIG_MMC2		1
++	//#define CONFIG_MMC2		1
+ 	#define CFG_CMD_MMC		1
+ 	#define CFG_CMD_FAT		1
+ #endif

@@ -1,0 +1,29 @@
+diff --git a/include/configs/omap4430sdp.h b/include/configs/omap4430sdp.h
+index f069777..06c8b27 100644
+--- a/include/configs/omap4430sdp.h
++++ b/include/configs/omap4430sdp.h
+@@ -133,10 +133,12 @@
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+ 	"bootcmd=go 0x80008000\0"
+ #else
+-#define CONFIG_BOOTDELAY         3
+-
++#define CONFIG_BOOTDELAY         2
++#define CONFIG_EXTRA_ENV_SETTINGS \
++"bootcmd=setenv bootargs 'console=ttyS2,115200n8 root=/dev/mmcblk1p2 rw rootdelay=1 mem=463M printk.time=1 noinitrd';mmcinit 0;fatload mmc 0 0x80300000 uImage;bootm 0x80300000\0"
+ #endif /*CONFIG_4430ZEBU */
+ 
++
+ #ifdef NFS_BOOT_DEFAULTS
+ #define CONFIG_BOOTARGS "mem=64M console=ttyS0,115200n8 noinitrd \
+ 	root=/dev/nfs rw nfsroot=128.247.77.158:/home/a0384864/wtbu/rootfs \
+@@ -146,6 +148,9 @@
+ initrd=0x81600000,64M ramdisk_size=65536"
+ #endif
+ 
++#define CONFIG_BOOTARGS "console=ttyS2,115200n8 root=/dev/nfs rw nfsroot=<your IP address>:<path to your file system> rw rootdelay=1 mem=463MM printk.time=1 noinitrd ip=dhcp"
++
++
+ #define CONFIG_NETMASK           255.255.254.0
+ #define CONFIG_IPADDR            128.247.77.90
+ #define CONFIG_SERVERIP          128.247.77.158

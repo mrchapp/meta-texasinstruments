@@ -2,7 +2,7 @@ SECTION = "bootloaders"
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments X-Loader boot utility"
 LICENSE = "GPL"
-PR="r1"
+PR="r2"
 DEPENDS="u-boot"
 
 DEFAULT_PREFERENCE = "1"
@@ -31,7 +31,9 @@ S = "${WORKDIR}/git"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/bootloader/x-loader.git;branch=omap4_dev;protocol=git \
            file://configuration-header.bin \
+	       file://mlo_sdmmc_or_nfs.patch;patch=1 \
 "
+
 
 do_configure() {
 	cd ${S}/include
