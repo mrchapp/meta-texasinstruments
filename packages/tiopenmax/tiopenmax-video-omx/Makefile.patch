@@ -1,0 +1,11 @@
+--- a/test/omx/video_playback/h264dec/Makefile
++++ b/test/omx/video_playback/h264dec/Makefile
+@@ -78,7 +78,7 @@
+ # Search path for include files
+ 
+ INCLUDES    = \
+-    $(BRIDGEROOT)/api/include \
++    $(TILER_INC_PATH)/syslink \
+     $(PROJROOT)/../src/system/omx_core \
+     $(PROJROOT)/../src/system/mm_osal \
+     $(PROJROOT)/../src/mmplatform \

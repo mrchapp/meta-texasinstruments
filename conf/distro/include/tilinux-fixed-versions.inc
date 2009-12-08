@@ -133,6 +133,7 @@ SRCREV_pn-tiopenmax-lcml              = "L24.1"
 #SRCREV_pn-tiopenmax-osal              = ""
 #SRCREV_pn-tiopenmax-domx              = ""
 SRCREV_pn-tiopenmax-video-sample      = "ACT_DUCATI_OCT-PRERLS-21"
+SRCREV_pn-tiopenmax-video-omx         = "l24.1.rel"
 
 
 # connectivity

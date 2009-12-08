@@ -42,39 +42,31 @@ do_compile() {
 	install -d ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target
 	install -d ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib
 
+
+	oenote "Compilation of DOMX core:"
 	cd ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/src
 
+	oenote "Cleaning DOMX src:"
 	oe_runmake \
 		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/src \ 
 		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux \
+		BRIDGEROOT=${S} \
                 clean
 
-	oenote "Compiling DOMX sample src:"
+	oenote "Compiling DOMX src:"
 	oe_runmake \
 		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/src \ 
 		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux 
+		BRIDGEROOT=${S} 
 
-	oenote "Installing DOMX sample src:"
+	oenote "Installing DOMX src:"
 	oe_runmake \
 		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/src \ 
 		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux \
+		BRIDGEROOT=${S} \
                 install
 
-	cd ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test
-
-	oe_runmake \
-		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux \
-                clean
-
-	install -d ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target
-	install -d ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib
-
-	oenote "Copying DOMX sample test libraries:"
+	oenote "Copying DOMX dynamic libraries:"
         cp ${STAGING_LIBDIR}/libutils.so ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib 
         cp ${STAGING_LIBDIR}/libprocmgr.so ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib 
         cp ${STAGING_LIBDIR}/libipc.so ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib 
@@ -85,17 +77,34 @@ do_compile() {
         cp ${STAGING_LIBDIR}/libmemmgr.so ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib 
         cp ${STAGING_LIBDIR}/libd2cmap.so ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/target/lib 
 
+
+	oenote "Compilation of DOMX samples:"
+	cd ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test
+
+	oenote "Cleaning DOMX sample test:"
+	oe_runmake \
+		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test \ 
+		TILER_INC_PATH=${STAGING_INCDIR} \
+		BRIDGEROOT=${S} \
+                clean
+
 	oenote "Compiling DOMX sample test:"
 	oe_runmake \
 		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test \ 
 		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux 
+		BRIDGEROOT=${S} 
 	oe_runmake \
 		PROJROOT=${S}/WTSD_DucatiMMSW/framework/domx_linux_sample/test \ 
 		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S}/WTSD_MultiCoreSW/MPU/Linux \
+		BRIDGEROOT=${S} \
                 install
 }
+
+do_stage() {
+	install -d ${STAGING_DIR}/video
+	(cd ${S}/WTSD_DucatiMMSW/framework/domx_linux_sample; cp -r * ${STAGING_DIR}/video/)
+}
+
 do_install() {
 	oenote "Installing Ducati test application:"
 	install -d ${D}/vidbinaries

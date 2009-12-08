@@ -1,0 +1,11 @@
+--- a/test/omx/video_playback/h264dec/src/H264_Playback_ILClient.c
++++ b/test/omx/video_playback/h264dec/src/H264_Playback_ILClient.c
+@@ -75,7 +75,7 @@
+    #endif
+    
+    #ifdef OMX_H264D_LINUX_TILERTEST
+-      #include <memmgr/memmgr.h>
++      #include <tiler/memmgr.h>
+       #include <mmplatform.h>
+    #endif
+    #ifdef OMX_H264D_BUF_HEAP
