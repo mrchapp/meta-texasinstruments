@@ -2,7 +2,7 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r2"
+PR = "r3"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
 DEPENDS = "virtual/kernel bison-native"
@@ -69,7 +69,7 @@ do_install() {
 	install -m 755 gles1test1 ${D}${bindir}
 	install -m 755 gles1_texture_stream ${D}${bindir}
 	install -m 755 gles2_texture_stream ${D}${bindir}
-#	install -m 755 ovg_unit_test ${D}${bindir}
+	install -m 755 ovg_unit_test ${D}${bindir}
 	install -m 755 services_test ${D}${bindir}
 	install -m 755 sgx_blit_test ${D}${bindir}
 	install -m 755 sgx_flip_test ${D}${bindir}
@@ -78,9 +78,9 @@ do_install() {
 	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
 
-#	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
-#	install -m 644 glsltest1_fragshaderA.txt ${D}${bindir}
-#	install -m 644 glsltest1_fragshaderB.txt ${D}${bindir}
+	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
+	install -m 644 glsltest1_fragshaderA.txt ${D}${bindir}
+	install -m 644 glsltest1_fragshaderB.txt ${D}${bindir}
 
 	install -d ${D}${sysconfdir}/init.d
 	install -m 755 rc.pvr ${D}${sysconfdir}/init.d/
