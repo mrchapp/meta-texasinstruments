@@ -1,0 +1,51 @@
+From a4b5850590e8753516677cfeca00f0fb04634329 Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Sun, 22 Nov 2009 10:06:42 -0600
+Subject: [PATCH] fix compile errors with busybox an csl2009q1 toolchain
+
+---
+ meta/packages/busybox/busybox-1.9.1/iphdr.patch |   19 +++++++++++++++++++
+ meta/packages/busybox/busybox_1.9.1.bb          |    1 +
+ 2 files changed, 20 insertions(+), 0 deletions(-)
+ create mode 100644 meta/packages/busybox/busybox-1.9.1/iphdr.patch
+
+diff --git a/meta/packages/busybox/busybox-1.9.1/iphdr.patch b/meta/packages/busybox/busybox-1.9.1/iphdr.patch
+new file mode 100644
+index 0000000..561e0b9
+--- /dev/null
++++ b/meta/packages/busybox/busybox-1.9.1/iphdr.patch
+@@ -0,0 +1,19 @@
++Index: busybox-1.9.1/networking/libiproute/iptunnel.c
++===================================================================
++--- busybox-1.9.1.orig/networking/libiproute/iptunnel.c	2009-11-21 14:50:06.000000000 -0600
+++++ busybox-1.9.1/networking/libiproute/iptunnel.c	2009-11-21 14:59:47.000000000 -0600
++@@ -14,13 +14,12 @@
++  * Phil Karn <karn@ka9q.ampr.org>	990408:	"pmtudisc" flag
++  */
++ 
++-#include <netinet/ip.h>
++-#include <net/if.h>
++ #include <net/if_arp.h>
++ #include <asm/types.h>
++ #ifndef __constant_htons
++ #define __constant_htons htons
++ #endif
+++#include <linux/if.h>
++ #include <linux/if_tunnel.h>
++ 
++ #include "ip_common.h"  /* #include "libbb.h" is inside */
+diff --git a/meta/packages/busybox/busybox_1.9.1.bb b/meta/packages/busybox/busybox_1.9.1.bb
+index fb6ff70..ce5bc99 100644
+--- a/meta/packages/busybox/busybox_1.9.1.bb
++++ b/meta/packages/busybox/busybox_1.9.1.bb
+@@ -6,6 +6,7 @@ SRC_URI = "http://www.busybox.net/downloads/busybox-${PV}.tar.gz \
+            file://udhcpscript.patch;patch=1 \
+            file://adduser-longops.patch;patch=1 \
+            file://sort-z-nul.patch;patch=1;status=upstream \
++           file://iphdr.patch;patch=1 \
+            file://busybox-cron \
+            file://busybox-httpd \
+            file://busybox-udhcpd \
+-- 
+1.5.6.3
+
