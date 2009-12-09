@@ -1,27 +1,26 @@
 
 # baseport
-SRCREV_pn-x-load =                  "L24.1"
-SRCREV_pn-u-boot =                  "L24.1"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.1-p2"
+SRCREV_pn-x-load =                  "L24.2"
+SRCREV_pn-u-boot =                  "L24.2"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.2"
 
 # Device driver test
-SRCREV_pn-device-driver-test =      "7618cdc739ba4310e116d97e97c2642ffbc4ae95"
-PREFERRED_VERSION_htop =	        "0.7"
+SRCREV_pn-device-driver-test =      "79a9207b43499221b3b027f069fa0426e8bafdb1"
 
 # Tesla Bridge
-SRCREV_pn-tidspbridge-lib                =		"ti-syslink-mpu-pre-rls-24.1"
-SRCREV_pn-tidspbridge-samples            =		"BRIDGE-DSP_RLS_0.12"
+SRCREV_pn-tidspbridge-lib                =		"ti-syslink-mpu-rls-24.2"
+SRCREV_pn-tidspbridge-tesla              =		"BRIDGE-DSP_RLS_0.13"
 SRCREV_pn-tidspbridge-dllcreate          =	    "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
-SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-pre-rls-24.1"
+SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.2"
 SRCREV_pn-titiler-memmgr             =      "l24.1.rel"
 SRCREV_pn-titiler-d2cmap             =      "l24.1.rel"
-SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.13"
+SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.14"
 SRCREV_pn-tisyslink-ducati-mm        =      "ACT_DUCATI_OCT-PRERLS-21"
 
 # Tesla/Ducati external tools
-PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B2"
+PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B4"
 PREFERRED_VERSION_titools-cgtarm =          "4.6.0"
 PREFERRED_VERSION_titools-bios   =    	    "6.20.03.44.eng"
 PREFERRED_VERSION_titools-fc     =          "3.00.00.50.eng"
@@ -145,6 +144,7 @@ SRCREV_pn-sgx-kernel-module =	        "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
 SRCREV_pn-sgx-lib-noxws =	            "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
 
 # open source dependencies
+
 # ALSA
 PREFERRED_VERSION_alsa-lib =		"1.0.18"
 PREFERRED_VERSION_alsa-utils =          "1.0.18"
@@ -162,6 +162,7 @@ PREFERRED_VERSION_amrnb =		"7.0.0.2"
 PREFERRED_VERSION_amrwb =		"7.0.0.1"
 #PREFERRED_VERSION_openobex =		"0.22"
 PREFERRED_VERSION_bison-1.875 =		"1.875"
+PREFERRED_VERSION_htop =	        "0.7"
 PREFERRED_VERSION_bison-native-1.875 =	"1.875"
 PREFERRED_VERSION_bison =		"2.3"
 PREFERRED_VERSION_bison-native =	"2.3"
@@ -177,8 +178,12 @@ PREFERRED_VERSION_cairo		=	"1.8.6"
 PREFERRED_VERSION_pixman	=	"0.14.0"
 SRCREV_pn-webkit-gtk = "50081"
 
+# tools
+PREFERRED_VERSION_htop =	        "0.7"
+
 # toolchain
 PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
 
 # xserver
 SRCREV_pn-xf86-video-omapfb = "5317aae587a2bf48f07a8c06bfaf7bcbfd23bafc"
+

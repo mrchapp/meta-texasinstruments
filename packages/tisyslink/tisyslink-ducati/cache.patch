@@ -4,8 +4,7 @@
   */
   
  Cache = xdc.useModule('ti.sysbios.hal.unicache.Cache');
--Cache.enableCache = true;
-+Cache.enableCache = false
+ Cache.enableCache = false;
 +
 +var hCache = xdc.useModule('ti.sysbios.hal.Cache');
 +hCache.CacheProxy = xdc.useModule('ti.sysbios.hal.CacheNull');

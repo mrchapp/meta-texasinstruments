@@ -6,13 +6,12 @@ SECTION = "libs"
 DEPENDS = "virtual/kernel titiler-memmgr"
 inherit  pkgconfig autotools
 
-PR = "r11"
+PR = "r12"
 PV = "0.0+git+${SRCREV}"
 
 SRC_URI = "\
-    git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;branch=syslink-bridge-24.1;protocol=git \
+    git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git \
     file://install_syslink.patch;patch=1 \
-    file://tiler_makefile.patch;patch=1 \
     file://timeout-no-error.patch;patch=1;pnum=2 \
 "
 S = "${WORKDIR}/git/syslink"

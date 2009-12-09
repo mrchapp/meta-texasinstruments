@@ -1,10 +1,10 @@
 DESCRIPTION = "Texas Instruments Baseimage."
 LICENSE = "LGPL"
-PR = "r1"
+PR = "r2"
 
 DEPENDS = " \
    baseimage-masterconfig \
-   tidspbridge-samples \
+   tidspbridge-tesla \
    "
 
 inherit xdc ccasefetch
@@ -53,7 +53,7 @@ XDCBUILDCFG="${S}/OMAPSW_DSP/make/config.bld"
 XDCBUILDROOT="${S}/OMAPSW_DSP/system/baseimage"
 
 do_compile_prepend() {
-    # import the stupid masterconfig files
+    # import the masterconfig files
     mkdir -p ${S}/OMAPSW_DSP/include
     cp -fa ${STAGING_INCDIR}/dspbridge/include/MasterConfig.* ${S}/OMAPSW_DSP/include
 }

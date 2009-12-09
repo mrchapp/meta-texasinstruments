@@ -44,6 +44,9 @@ do_install() {
     install -d ${D}/syslink/
     cd ${S}/ipc/ti/sdo/samples
 	for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/*; do
+		if [ ! -e ${xem3} ]; then
+            continue
+        fi
 		cp ${xem3} ${xem3}.old
         ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
         install -m 0644 ${xem3}      ${D}/syslink/
