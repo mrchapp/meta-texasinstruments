@@ -9,7 +9,7 @@ PACKAGES = "${PN}-dbg ${PN}-patterns ${PN}-dev ${PN}"
 CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 	# OMX INST2 utilities%\
-        element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.03%\
+        element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.04%\
 	# ROOT folder & Make files%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/... LINUX-MMROOT_RLS_3.20%\
 	element * /main/LATEST%\

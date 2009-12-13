@@ -17,9 +17,9 @@ PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 SRCREV_pn-linux-tiomap ?= "497c511edefdf8b432c561aa12fd308765a37752"
 
 # bridge and friends
-SRCREV_pn-tidspbridge-lib = "264f19327fac5a3a4c5f71697262d2ab9cd73952"
-SRCREV_pn-tidspbridge-mpusamples = "264f19327fac5a3a4c5f71697262d2ab9cd73952"
-PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.55"
+SRCREV_pn-tidspbridge-lib = "7fe4431bf55b144795b49e6197b3e7e88ff0cd8a"
+SRCREV_pn-tidspbridge-mpusamples = "7fe4431bf55b144795b49e6197b3e7e88ff0cd8a"
+PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.56"
 PREFERRED_VERSION_tidspbridge-extra =		"23.13"
 PREFERRED_VERSION_tidspbridge-cgt6x =		"6.0.7"
 PREFERRED_VERSION_tidspbridge-bios =		"5.33.04"
