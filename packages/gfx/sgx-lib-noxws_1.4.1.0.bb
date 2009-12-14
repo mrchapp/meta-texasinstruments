@@ -37,7 +37,7 @@ do_compile() {
 }
 
 do_install() {
-	install -d ${D}/lib/modules/2.6.32-rc5
+	install -d ${D}/lib/modules/2.6.32-rc7
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
 		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
