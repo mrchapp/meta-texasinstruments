@@ -2,13 +2,13 @@ require u-boot.inc
  
 PR = "r0"
  
-#SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=zoom3;protocol=git \
-#"
-
-SRC_URI = " \
-${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/u-boot.git;branch=3630v0.1;protocol=git", "", d)} \
-${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git", "", d)} \
+SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=next;protocol=git \
 "
+
+#SRC_URI = " \
+#${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/u-boot.git;branch=3630v0.1;protocol=git", "", d)} \
+#${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git", "", d)} \
+#"
 
 PV = "git${SRCREV}"
 

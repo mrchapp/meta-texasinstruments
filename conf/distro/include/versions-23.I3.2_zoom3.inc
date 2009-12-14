@@ -1,6 +1,6 @@
 # omap3630 zoom3 specific versions
 
 # baseport
-SRCREV_pn-x-load ?= "cfb391293e15cf4685ef9029933a4ea1ea621be0"
-SRCREV_pn-u-boot ?= "5589e8145624d6ad06414b5704ea1e0354b063b8"
+SRCREV_pn-x-load ?= "fd512cfe75a3107f548fca377d08fca8e16b5288"
+SRCREV_pn-u-boot ?= "acf147c514cae8ca467621683546e49c33d03dd0"
 
