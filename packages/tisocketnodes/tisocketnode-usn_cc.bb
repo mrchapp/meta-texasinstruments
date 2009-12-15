@@ -1,16 +1,15 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments USN Socket Node."
 LICENSE = "LGPL"
-PR = "r2"
+PR = "r3"
 
 inherit tisocketnode
 
 PV = "4.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
-              "
-#	      element * /main/LATEST%"
+	element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
+	"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/usn"
 CCASE_PATHCOMPONENT = "wtbu"
