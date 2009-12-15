@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Multimedia S/w"
 LICENSE = "LGPL"
-PR = "r3"
+PR = "r4"
 
 DEPENDS = " \
    tisyslink-ducati \
@@ -20,7 +20,6 @@ PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
    element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
-   element /vobs/WTSD_DucatiMMSW/...   TI-MM-DUCATI_RLS.01.08.00.00%\
    element * /main/LATEST%"
 
 # Note: WTSD_DucatiMMSW is used in the XDC package name, so it must be put
@@ -29,11 +28,6 @@ CCASE_PATHFETCH = "/vobs/WTSD_DucatiMMSW"
 CCASE_PATHCOMPONENT = "vobs"
 CCASE_PATHCOMPONENTS = "0"
 
-
-SRC_URI += "file://padding.patch;patch=1"
-SRC_URI += "file://jpegdec-fixes.patch;patch=1"
-SRC_URI += "file://h264dec-needs-to-copy-width-height-from-input-port-t.patch;patch=1"
-SRC_URI += "file://h264enc-needs-to-copy-width-height-from-input-port-t.patch;patch=1"
 
 XDCPATH += "\
 ${STAGING_BINDIR}/syslink/ducati/ipc;\

@@ -17,7 +17,7 @@ SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.2"
 SRCREV_pn-titiler-memmgr             =      "l24.1.rel"
 SRCREV_pn-titiler-d2cmap             =      "l24.1.rel"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.14"
-SRCREV_pn-tisyslink-ducati-mm        =      "ACT_DUCATI_OCT-PRERLS-21"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.09.00.00"
 
 # Tesla/Ducati external tools
 PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B4"
