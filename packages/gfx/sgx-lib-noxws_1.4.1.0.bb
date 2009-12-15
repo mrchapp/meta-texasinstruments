@@ -25,6 +25,8 @@ CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
 CCASE_PATHCOMPONENTS = "5"
 
+KERNEL_VERSION=`cat ${STAGING_KERNEL_DIR}/kernel-abiversion`
+
 # hack.  Carlos knows to fix it in future revisions.
 do_chmod() {
 	chmod -R +w ${S}/src/eurasia
@@ -37,7 +39,7 @@ do_compile() {
 }
 
 do_install() {
-	install -d ${D}/lib/modules/2.6.32-rc7
+	install -d ${D}/lib/modules/${KERNEL_VERSION}
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
 		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
