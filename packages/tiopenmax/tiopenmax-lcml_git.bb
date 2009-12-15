@@ -18,6 +18,6 @@ FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/"
 
 do_stage() {
-	autotools_stage_all
+    autotools_stage_all
 }
 

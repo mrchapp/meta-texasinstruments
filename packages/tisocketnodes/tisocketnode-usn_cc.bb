@@ -8,8 +8,8 @@ inherit tisocketnode
 PV = "4.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
-	"
+    element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
+"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/usn"
 CCASE_PATHCOMPONENT = "wtbu"

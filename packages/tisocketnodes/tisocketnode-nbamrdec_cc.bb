@@ -3,8 +3,8 @@ PR = "r0"
 DEPENDS += "tisocketnode-usn tisocketnode-nbamrdec-codec"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
-	     "
+          element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
+         "
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/nbamr/dec/"
 CCASE_PATHCOMPONENT = "wtbu"

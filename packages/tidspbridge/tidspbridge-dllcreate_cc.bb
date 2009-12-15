@@ -7,7 +7,7 @@ PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
           element /vobs/SDS/Source/Dload/dload/... .../dyn-load_rel_1.x/${SRCREV}%\
-	      element * /main/LATEST%"
+          element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"
 CCASE_PATHCOMPONENT = "src"
@@ -24,18 +24,18 @@ export GCC = "gcc -m32"
 
 
 do_compile() {
-	# this file conflicts with headers from newer GCC compilers 
-	# (ie. v4.3.x), so we must remove it (even if gcc-4.2
+    # this file conflicts with headers from newer GCC compilers
+    # (ie. v4.3.x), so we must remove it (even if gcc-4.2
     # is also installed):
-	rm -f shared/stdint.h
-	cd DLLcreate
+    rm -f shared/stdint.h
+    cd DLLcreate
     chmod -R +w *
-	mkdir -p linux/release
-	oe_runmake -f makefile.lin	
+    mkdir -p linux/release
+    oe_runmake -f makefile.lin
 }
 
 do_stage() {
-	cd ${STAGING_BINDIR}
-	install -d ${STAGING_BINDIR}/DLLcreate
-	install -m 0755 ${S}/DLLcreate/linux/release/DLLcreate ${STAGING_BINDIR}/DLLcreate
+    cd ${STAGING_BINDIR}
+    install -d ${STAGING_BINDIR}/DLLcreate
+    install -m 0755 ${S}/DLLcreate/linux/release/DLLcreate ${STAGING_BINDIR}/DLLcreate
 }

@@ -30,10 +30,10 @@ FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/"
 
 do_stage() {
-	autotools_stage_all
+    autotools_stage_all
 }
 
 do_install_append() {
-	install -m 0777 ${WORKDIR}/amixer.sh       ${D}${bindir}
+    install -m 0777 ${WORKDIR}/amixer.sh       ${D}${bindir}
 }
 

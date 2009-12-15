@@ -20,7 +20,7 @@ FILES_${PN}-dbg += "${libdir}/.debug/"
 EXTRA_OECONF += "--enable-tilermgr --enable-unit-tests"
 
 do_compile_prepend() {
-	ln -s ${S}/../utils/testlib.c ${S}/tests/testlib.c
+    ln -s ${S}/../utils/testlib.c ${S}/tests/testlib.c
 }
 
 do_stage() {

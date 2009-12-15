@@ -3,8 +3,8 @@ DESCRIPTION = "Texas Instruments NB-AMR Encoder Socket Node Codec."
 PR = "r0"
 
 CCASE_SPEC = "%\
-	element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
-	"
+    element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%\
+    "
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/alg/nbamrenc/100_s_gsmamr_e_all_1_xx_yy_tesla"
 CCASE_PATHCOMPONENT = "wtbu"

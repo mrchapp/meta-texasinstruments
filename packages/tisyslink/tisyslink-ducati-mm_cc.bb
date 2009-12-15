@@ -54,11 +54,11 @@ FILES_${PN}="/syslink/"
 do_install() {
     install -d ${D}/syslink
     cd ${S}/WTSD_DucatiMMSW/platform/base_image
-	for xem3 in ./out/app_m3/debug/base_image_app_m3.xem3 ./out/sys_m3/debug/base_image_sys_m3.xem3; do
-		cp ${xem3} ${xem3}.old
+    for xem3 in ./out/app_m3/debug/base_image_app_m3.xem3 ./out/sys_m3/debug/base_image_sys_m3.xem3; do
+        cp ${xem3} ${xem3}.old
         ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
         install -m 0644 ${xem3}      ${D}/syslink/
-		mv ${xem3}.old ${xem3}
-	done
+        mv ${xem3}.old ${xem3}
+    done
 }
 

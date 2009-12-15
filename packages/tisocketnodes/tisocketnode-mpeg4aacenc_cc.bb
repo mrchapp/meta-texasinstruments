@@ -4,7 +4,7 @@ PR = "r1"
 DEPENDS += "tisocketnode-mpeg4aacenc-codec tisocketnode-usn"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%"
+          element /vobs/wtbu/OMAPSW_DSP/... ${SRCREV}%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/mpeg4aac/enc"
 CCASE_PATHCOMPONENT = "wtbu"

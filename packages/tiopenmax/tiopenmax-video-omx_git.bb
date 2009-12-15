@@ -5,11 +5,11 @@ LICENSE = "LGPL"
 PR = "r0"
 
 DEPENDS = " \
-	tisyslink-lib \
-	titiler-d2cmap \
-	titiler-memmgr\
-	tiopenmax-video-sample \
-	"
+    tisyslink-lib \
+    titiler-d2cmap \
+    titiler-memmgr\
+    tiopenmax-video-sample \
+    "
 inherit pkgconfig
 
 PV = "0.0+git+${SRCREV}"
@@ -28,40 +28,40 @@ FILES_${PN}-dbg += "/vidbinaries/.debug/*.out"
 
 
 do_compile_prepend() {
-	install -d ${S}/src
-	cp -r -f ${STAGING_DIR}/video/src/* ${S}/src
-	cp -r -f ${STAGING_DIR}/video/test/make ${S}/test
+    install -d ${S}/src
+    cp -r -f ${STAGING_DIR}/video/src/* ${S}/src
+    cp -r -f ${STAGING_DIR}/video/test/make ${S}/test
 }
 
 do_compile() {
-	install -d ${S}/target
-	install -d ${S}/target/lib
+    install -d ${S}/target
+    install -d ${S}/target/lib
 
 
-	oenote "Make again compilation of DOMX core libraries:"
-	cd ${S}/src
+    oenote "Make again compilation of DOMX core libraries:"
+    cd ${S}/src
 
-	oenote "Cleaning DOMX src:"
-	oe_runmake \
-		PROJROOT=${S}/src \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} \
+    oenote "Cleaning DOMX src:"
+    oe_runmake \
+        PROJROOT=${S}/src \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S} \
                 clean
 
-	oenote "Compiling DOMX src:"
-	oe_runmake \
-		PROJROOT=${S}/src \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} 
+    oenote "Compiling DOMX src:"
+    oe_runmake \
+        PROJROOT=${S}/src \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S}
 
-	oenote "Installing DOMX src:"
-	oe_runmake \
-		PROJROOT=${S}/src \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} \
+    oenote "Installing DOMX src:"
+    oe_runmake \
+        PROJROOT=${S}/src \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S} \
                 install
 
-	oenote "Copying DOMX dynamic libraries:"
+    oenote "Copying DOMX dynamic libraries:"
         cp ${STAGING_LIBDIR}/libutils.so ${S}/target/lib 
         cp ${STAGING_LIBDIR}/libprocmgr.so ${S}/target/lib 
         cp ${STAGING_LIBDIR}/libipc.so ${S}/target/lib 
@@ -72,33 +72,33 @@ do_compile() {
         cp ${STAGING_LIBDIR}/libmemmgr.so ${S}/target/lib 
         cp ${STAGING_LIBDIR}/libd2cmap.so ${S}/target/lib 
 
-	oenote "Compilation of DOMX samples:"
-	cd ${S}/test/omx/video_playback/h264dec
+    oenote "Compilation of DOMX samples:"
+    cd ${S}/test/omx/video_playback/h264dec
 
-	oenote "Cleaning DOMX sample src:"
-	oe_runmake \
-		PROJROOT=${S}/test \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} \
+    oenote "Cleaning DOMX sample src:"
+    oe_runmake \
+        PROJROOT=${S}/test \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S} \
                 clean
 
-	oenote "Compiling DOMX sample src:"
-	oe_runmake \
-		PROJROOT=${S}/test \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} \
+    oenote "Compiling DOMX sample src:"
+    oe_runmake \
+        PROJROOT=${S}/test \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S} \
 
-	oenote "Installing DOMX sample src:"
-	oe_runmake \
-		PROJROOT=${S}/test \ 
-		TILER_INC_PATH=${STAGING_INCDIR} \
-		BRIDGEROOT=${S} \
+    oenote "Installing DOMX sample src:"
+    oe_runmake \
+        PROJROOT=${S}/test \
+        TILER_INC_PATH=${STAGING_INCDIR} \
+        BRIDGEROOT=${S} \
                 install
 
 }
 do_install() {
-	oenote "Installing Ducati test application:"
-	install -d ${D}/vidbinaries
-	install -D ${S}/target/binaries/h264playtest.out ${D}/vidbinaries/
+    oenote "Installing Ducati test application:"
+    install -d ${D}/vidbinaries
+    install -D ${S}/target/binaries/h264playtest.out ${D}/vidbinaries/
 }
 

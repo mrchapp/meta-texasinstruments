@@ -10,9 +10,9 @@ DEPENDS = "titools-cgtarm \
 PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
-	      element /vobs/WTSD_MultiCoreSW/Ducati/Bridge/... ${SRCREV}%\
-	      element /vobs/WTSD_MultiCoreSW/Ducati/Bridge/... -error%\
-	      element * /main/LATEST%"
+          element /vobs/WTSD_MultiCoreSW/Ducati/Bridge/... ${SRCREV}%\
+          element /vobs/WTSD_MultiCoreSW/Ducati/Bridge/... -error%\
+          element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/WTSD_MultiCoreSW/Ducati/Bridge"
 CCASE_PATHCOMPONENT = "Bridge"
@@ -43,14 +43,15 @@ do_stage() {
 do_install() {
     install -d ${D}/syslink/
     cd ${S}/ipc/ti/sdo/samples
-	for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/*; do
-		if [ ! -e ${xem3} ]; then
+    for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/*; do
+        if [ ! -e ${xem3} ]; then
             continue
         fi
-		cp ${xem3} ${xem3}.old
+        cp ${xem3} ${xem3}.old
+tisyslink/tisyslink-ducati_cc.bb
         ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
         install -m 0644 ${xem3}      ${D}/syslink/
-		mv ${xem3}.old ${xem3}
-	done
+        mv ${xem3}.old ${xem3}
+    done
 }
 

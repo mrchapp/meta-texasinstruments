@@ -28,7 +28,7 @@ do_stage() {
 }
 
 do_install_append() {
-	install -m 0777 ${S}/scripts/install_syslink ${D}${bindir}
+    install -m 0777 ${S}/scripts/install_syslink ${D}${bindir}
 }
 
 
