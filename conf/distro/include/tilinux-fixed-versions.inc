@@ -136,7 +136,8 @@ SRCREV_pn-tiopenmax-video-omx         = "l24.1.rel"
 
 
 # connectivity
-#PREFERRED_VERSION_wilink =              "23-1.2-P1"
+SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.2"
+SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 #PREFERRED_VERSION_btfm =                "23-1.2"
 
 # graphics

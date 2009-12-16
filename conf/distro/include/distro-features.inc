@@ -5,8 +5,8 @@
 # * 720p	- Enable 720p OpenMAX components, kernel.
 # * spark	- Enable Sorenson spark video decoder.
 # * gfx		- Include 3D GFX module and libraries.
-# * tiwifi	- Include support for TI's WLAN stack.
 # * tibluetooth	- Include support for TI's Bluetooth and FM stack.
+# * tiwifi	- Include support for TI's WLAN stack.
 # * gps		- Include support for TI's GPS
 # * rarv    - Enable readaudio/realvideo codecs
 # * testpatterns - Include OMX test patterns
@@ -33,8 +33,11 @@ DISTRO_FEATURES += "camera jpegdec jpegenc"
 # Enable 720p OpenMAX components
 #DISTRO_FEATURES += "720p"
 
-# Enable support for TI's WLAN stack, Bluetooth and FM stack
-#DISTRO_FEATURES += "tibluetooth tiwifi"
+# Enable support for TI's Bluetooth and FM stack
+#DISTRO_FEATURES += "tibluetooth"
+
+# Enable support for TI's WLAN stack
+DISTRO_FEATURES += "tiwifi"
 
 # Enable support for TI's GPS
 #DISTRO_FEATURES += "gps"
