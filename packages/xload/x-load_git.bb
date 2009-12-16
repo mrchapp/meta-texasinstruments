@@ -28,7 +28,7 @@ XLOAD_MLO_SYMLINK ?= "MLO"
  
 S = ${WORKDIR}/git
  
-SRC_URI = "git://git.omapzoom.org/repo/x-loader.git;branch=next;protocol=git \
+SRC_URI = "git://git.omapzoom.org/repo/x-loader.git;branch=master;protocol=git \
  "
 
 #SRC_URI = " \
@@ -62,8 +62,11 @@ ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/sizes.h
 ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/sys_info.h
 ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/sys_proto.h
 ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/rev.h
-if [ "${MACHINE}" = "zoom3" ]; then
+if [ "${MACHINE}" = "zoom3" -o "${MACHINE}" = "omap-3630sdp" ]; then
 ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/dpll_table_36xx.S
+fi
+if [ "${MACHINE}" = "zoom2" ]; then
+ln -sf ${STAGING_INCDIR}/u-boot/asm-arm/arch-omap3/dpll_table_34xx.S
 fi
 
 cd ${S}/include/linux

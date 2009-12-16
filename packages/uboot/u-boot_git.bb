@@ -2,7 +2,7 @@ require u-boot.inc
  
 PR = "r0"
  
-SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=next;protocol=git \
+SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git \
 "
 
 #SRC_URI = " \
@@ -65,8 +65,12 @@ install -m 644 ${S}/include/asm-arm/arch-omap3/sys_proto.h \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
 install -m 644 ${S}/include/asm-arm/arch-omap3/rev.h \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
-if [ "${MACHINE}" = "zoom3" ]; then
+if [ "${MACHINE}" = "zoom3" -o "${MACHINE}" = "omap-3630sdp" ]; then
 install -m 644 ${S}/include/asm-arm/arch-omap3/dpll_table_36xx.S \
+${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
+fi
+if [ "${MACHINE}" = "zoom2" ]; then
+install -m 644 ${S}/include/asm-arm/arch-omap3/dpll_table_34xx.S \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
 fi
 
