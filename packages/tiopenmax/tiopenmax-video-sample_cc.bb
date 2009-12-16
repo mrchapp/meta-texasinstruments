@@ -21,7 +21,6 @@ SRC_URI = "\
 
 CCASE_SPEC = "%\
    element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
-   element /vobs/WTSD_DucatiMMSW/...  TI-MM-DUCATI_RLS.01.08.00.00%\
    element * /main/LATEST%\
 "
 

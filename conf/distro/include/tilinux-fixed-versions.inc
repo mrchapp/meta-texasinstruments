@@ -131,7 +131,7 @@ SRCREV_pn-tiopenmax-lcml              = "L24.1"
 SRCREV_pn-tiopenmax-core              = "L24.1"
 SRCREV_pn-tiopenmax-osal              = "L24.1"
 #SRCREV_pn-tiopenmax-domx             = ""
-SRCREV_pn-tiopenmax-video-sample      = "ACT_DUCATI_OCT-PRERLS-21"
+SRCREV_pn-tiopenmax-video-sample      = "TI-MM-DUCATI_RLS.01.09.00.00"
 SRCREV_pn-tiopenmax-video-omx         = "l24.1.rel"
 
 
