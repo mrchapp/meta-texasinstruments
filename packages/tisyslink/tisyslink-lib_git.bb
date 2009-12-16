@@ -4,9 +4,10 @@ LICENSE = "LGPL"
 SECTION = "libs"
 
 DEPENDS = "virtual/kernel titiler-memmgr"
+RDEPENDS = "libgcc"
 inherit  pkgconfig autotools
 
-PR = "r12"
+PR = "r13"
 PV = "0.0+git+${SRCREV}"
 
 SRC_URI = "\

@@ -48,7 +48,6 @@ do_install() {
             continue
         fi
         cp ${xem3} ${xem3}.old
-tisyslink/tisyslink-ducati_cc.bb
         ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
         install -m 0644 ${xem3}      ${D}/syslink/
         mv ${xem3}.old ${xem3}
