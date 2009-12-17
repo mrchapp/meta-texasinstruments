@@ -21,6 +21,7 @@ SRC_URI = "git://dev.omapzoom.org/pub/scm/video/video-omx.git;protocol=git \
 
 S = "${WORKDIR}/git"
 
+EXTRA_OECONF = "--enable-tests"
 
 FILES_${PN} += "/vidbinaries/*.out"
 FILES_${PN}-dev += ""

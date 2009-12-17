@@ -5,5 +5,5 @@ PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 
 FILES_${PN} += "${libdir}/*.so ${bindir}/*"
 FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
-FILES_${PN}-dbg += "${libdir}/.debug/"
+FILES_${PN}-dbg += "${libdir}/.debug/ ${bindir}/.debug/"
 

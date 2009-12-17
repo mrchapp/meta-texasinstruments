@@ -3,23 +3,19 @@
 #
 
 DESCRIPTION = "Tasks for TI's OpenMAX IL"
-PR = "r5"
+PR = "r6"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
 
-# NOTE! The contents of this file should be replaced by the contents of
-# meta-tiopenmax-modular.bb after the original tiopenmax_*.bb is phased out.
-# Until then this file simply RDEPENDS on virtual/openmax-il.  Food for thought:
-# should we keep this mechanism around to allow for other OpenMAX
-# implementations?
-
 RDEPENDS = "\
    	tiopenmax-audiodecode \
 	tiopenmax-audioencode \
-	tiopenmax-video-sample \
-	tiopenmax-video-omx \
+    tiopenmax-base \
+    tiopenmax-core \
+    tiopenmax-lcml \
+    tiopenmax-osal \
+    ${@base_contains("DISTRO_FEATURES", "domx", "tiopenmax-domx", "", d)} \
 "
 
-#	tiopenmax-domx \
 
