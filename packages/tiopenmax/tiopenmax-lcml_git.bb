@@ -3,19 +3,14 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 SECTION = "libs"
 
-DEPENDS = "tiopenmax-core tidspbridge-lib"
-inherit pkgconfig autotools
-
-PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r2"
 
 require tiopenmax-audio-git.inc
 
-S = "${WORKDIR}/git/system/lcml/"
+DEPENDS = "tiopenmax-osal tiopenmax-core tidspbridge-lib"
+inherit pkgconfig autotools
 
-FILES_${PN} += "${libdir}/*.so"
-FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
-FILES_${PN}-dbg += "${libdir}/.debug/"
+S = "${WORKDIR}/git/system/lcml/"
 
 do_stage() {
     autotools_stage_all

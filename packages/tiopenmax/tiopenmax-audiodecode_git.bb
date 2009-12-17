@@ -1,6 +1,14 @@
-DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
 DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
-PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
+PRIORITY = "optional"
+LICENSE = "LGPL"
+SECTION = "libs"
+
+PR = "r8"
+
+require tiopenmax-audio-git.inc
+
+DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
+
 RDEPENDS = " alsa-utils-alsamixer \
              alsa-utils-midi \
              alsa-utils-aplay \
@@ -13,21 +21,13 @@ RDEPENDS = " alsa-utils-alsamixer \
              alsa-utils-alsaconf \
              alsa-utils-alsactl "
 
-PR = "r7"
-
-require tiopenmax-audio-git.inc
-
-SRC_URI +="file://amixer.sh"
+EXTRA_OECONF = "--enable-tests"
 
 S = "${WORKDIR}/git/audio/audio_decode/"
 
-EXTRA_OECONF = "--enable-tests"
-
 inherit pkgconfig autotools
 
-FILES_${PN} += "${libdir}/*.so ${bindir}/*"
-FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
-FILES_${PN}-dbg += "${libdir}/.debug/"
+SRC_URI +="file://amixer.sh"
 
 do_stage() {
     autotools_stage_all

@@ -1,17 +1,16 @@
-DEPENDS = "tiopenmax-osal tiopenmax-core"
-DESCRIPTION = "Texas Instruments OpenMAX IL (Old) Base Component."
-PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r1"
+DESCRIPTION = "Texas Instruments OpenMAX IL Base Component."
+PRIORITY = "optional"
+LICENSE = "LGPL"
+SECTION = "libs"
+
+PR = "r2"
 
 require tiopenmax-audio-git.inc
 
-S = "${WORKDIR}/git/system/omx_base/"
-
+DEPENDS = "tiopenmax-osal tiopenmax-core"
 inherit pkgconfig autotools
 
-FILES_${PN} += "${libdir}/*.so"
-FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
-FILES_${PN}-dbg += "${libdir}/.debug/"
+S = "${WORKDIR}/git/system/omx_base/"
 
 do_stage() {
     autotools_stage_all

@@ -1,8 +1,8 @@
 DESCRIPTION = "Texas Instruments OpenMAX IL Operating System Abstraction Layer (OSAL)."
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r3"
+PR = "r4"
 
-require tiopenmax-audio-git.inc
+require tiopenmax-system-git.inc
 
 S = "${WORKDIR}/git/system/mm_osal/"
 

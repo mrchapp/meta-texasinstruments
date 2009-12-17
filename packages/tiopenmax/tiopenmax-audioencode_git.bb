@@ -1,20 +1,31 @@
-DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
-DESCRIPTION = "Texas Instruments OpenMAX IL Audio Decoder."
-PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-RDEPENDS = "alsa-utils-aplay"
-PR = "r2"
+DESCRIPTION = "Texas Instruments OpenMAX IL Audio Encoder."
+PRIORITY = "optional"
+LICENSE = "LGPL"
+SECTION = "libs"
+
+PR = "r3"
 
 require tiopenmax-audio-git.inc
 
-S = "${WORKDIR}/git/audio/audio_encode/"
+DEPENDS = "tiopenmax-base tiopenmax-core tiopenmax-osal tiopenmax-lcml alsa-utils"
+
+RDEPENDS = " alsa-utils-alsamixer \
+             alsa-utils-midi \
+             alsa-utils-aplay \
+             alsa-utils-amixer \
+             alsa-utils-aconnect \
+             alsa-utils-iecset \
+             alsa-utils-speakertest \
+             alsa-utils-aseqnet \
+             alsa-utils-aseqdump \
+             alsa-utils-alsaconf \
+             alsa-utils-alsactl "
 
 EXTRA_OECONF = "--enable-tests"
 
-inherit pkgconfig autotools
+S = "${WORKDIR}/git/audio/audio_encode/"
 
-FILES_${PN} += "${libdir}/*.so"
-FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
-FILES_${PN}-dbg += "${libdir}/.debug/"
+inherit pkgconfig autotools
 
 do_stage() {
     autotools_stage_all
