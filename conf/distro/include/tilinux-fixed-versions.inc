@@ -1,6 +1,7 @@
 
 # baseport
-SRCREV_pn-x-load =                  "L24.2"
+SRCREV_pn-x-load-emmc  =            "L24.2"
+SRCREV_pn-x-load-sdmmc  =           "L24.2"
 SRCREV_pn-u-boot =                  "L24.2"
 SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.2-p1"
 

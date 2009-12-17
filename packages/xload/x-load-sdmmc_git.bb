@@ -10,7 +10,7 @@ DEFAULT_PREFERENCE = "1"
 XLOAD_MACHINE_omap-4430sdp = "omap4430sdp_config"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "omap-4430sdp"
+COMPATIBLE_MACHINE = "omap-4430sdp|omap-4430sdphigh"
 
 PV = "0.0+git+${SRCREV}"
 
@@ -19,21 +19,19 @@ PARALLEL_MAKE = ""
 
 XLOAD_IMAGE_ELF ?= "${PN}-${MACHINE}-${PV}-${PR}-${DATETIME}"
 XLOAD_IMAGE ?= "${XLOAD_IMAGE_ELF}.bin"
-XLOAD_IMAGE_CH ?= "${XLOAD_IMAGE_ELF}.ch.bin"
+#XLOAD_IMAGE_CH ?= "${XLOAD_IMAGE_ELF}.ch.bin"
 XLOAD_SYMLINK_ELF ?= "${PN}-${MACHINE}"
 XLOAD_SYMLINK ?= "${XLOAD_SYMLINK_ELF}.bin"
-XLOAD_SYMLINK_CH ?= "${XLOAD_SYMLINK_ELF}.ch.bin"
+#XLOAD_SYMLINK_CH ?= "${XLOAD_SYMLINK_ELF}.ch.bin"
 
 XLOAD_MLO_IMAGE ?= "MLO-${MACHINE}-${PV}-${PR}-${DATETIME}"
 XLOAD_MLO_SYMLINK ?= "MLO"
 
 S = "${WORKDIR}/git"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/bootloader/x-loader.git;branch=omap4_dev;protocol=git \
-           file://configuration-header.bin \
-	       file://mlo_sdmmc_or_nfs.patch;patch=1 \
+SRC_URI = "git://dev.omapzoom.org/pub/scm/bootloader/x-loader.git;protocol=git \
+           file://mlo_sdmmc_or_nfs.patch;patch=1 \
 "
-
 
 do_configure() {
 	cd ${S}/include
@@ -89,10 +87,10 @@ do_deploy () {
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 	install ${S}/MLO ${DEPLOY_DIR_IMAGE}/${XLOAD_MLO_IMAGE}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
-	cp ${WORKDIR}/configuration-header.bin ${S}/x-load.ch.bin
-	cat ${S}/MLO >> ${S}/x-load.ch.bin
-	install ${S}/x-load.ch.bin ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_CH}
-	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_CH}
+	#cp ${WORKDIR}/configuration-header.bin ${S}/x-load.ch.bin
+	#cat ${S}/MLO >> ${S}/x-load.ch.bin
+	#install ${S}/x-load.ch.bin ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_CH}
+	#package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_CH}
 
 	cd ${DEPLOY_DIR_IMAGE}
 	rm -f ${XLOAD_SYMLINK_ELF}
@@ -104,9 +102,9 @@ do_deploy () {
 	rm -f ${XLOAD_MLO_SYMLINK}
 	ln -sf ${XLOAD_MLO_IMAGE} ${XLOAD_MLO_SYMLINK}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK}
-	rm -f ${XLOAD_SYMLINK_CH}
-	ln -sf ${XLOAD_IMAGE_CH} ${XLOAD_SYMLINK_CH}
-	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK_CH}
+	#rm -f ${XLOAD_SYMLINK_CH}
+	#ln -sf ${XLOAD_IMAGE_CH} ${XLOAD_SYMLINK_CH}
+	#package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK_CH}
 }
 
 do_deploy[dirs] = "${S}"
