@@ -2,7 +2,7 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r3"
+PR = "r4"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
 DEPENDS = "virtual/kernel bison-native"
@@ -30,6 +30,8 @@ CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
 CCASE_PATHCOMPONENTS = "5"
 
+KERNEL_VERSION=`cat ${STAGING_KERNEL_DIR}/kernel-abiversion`
+
 # hack.  Carlos knows to fix it in future revisions.
 do_chmod() {
 	chmod -R +w ${S}/src/eurasia
@@ -44,7 +46,7 @@ do_compile() {
 do_install() {
 	cd ${S}/src/eurasia/eurasiacon/binary_omap4430_linux_release
 	
-	install -d ${D}/lib/modules/2.6.24.7-omap1-arm2
+    install -d ${D}/lib/modules/${KERNEL_VERSION}
 	install -d ${D}${libdir}
 	
 	oe_libinstall -so libGLES_CM ${D}${libdir}
