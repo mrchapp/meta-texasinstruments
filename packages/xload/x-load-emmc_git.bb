@@ -24,8 +24,8 @@ XLOAD_SYMLINK_ELF ?= "${PN}-${MACHINE}"
 XLOAD_SYMLINK ?= "${XLOAD_SYMLINK_ELF}.bin"
 XLOAD_SYMLINK_CH ?= "${XLOAD_SYMLINK_ELF}.ch.bin"
 
-XLOAD_MLO_IMAGE ?= "MLO-${MACHINE}-${PV}-${PR}-${DATETIME}"
-XLOAD_MLO_SYMLINK ?= "MLO"
+#XLOAD_MLO_IMAGE ?= "MLO-${MACHINE}-${PV}-${PR}-${DATETIME}"
+#XLOAD_MLO_SYMLINK ?= "MLO"
 
 S = "${WORKDIR}/git"
 
@@ -86,8 +86,8 @@ do_deploy () {
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_ELF}
 	install ${S}/x-load.bin ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
-	install ${S}/MLO ${DEPLOY_DIR_IMAGE}/${XLOAD_MLO_IMAGE}
-	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
+#	install ${S}/MLO ${DEPLOY_DIR_IMAGE}/${XLOAD_MLO_IMAGE}
+#	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE}
 	cp ${WORKDIR}/configuration-header.bin ${S}/x-load.ch.bin
 	cat ${S}/MLO >> ${S}/x-load.ch.bin
 	install ${S}/x-load.ch.bin ${DEPLOY_DIR_IMAGE}/${XLOAD_IMAGE_CH}
@@ -100,9 +100,9 @@ do_deploy () {
 	rm -f ${XLOAD_SYMLINK}
 	ln -sf ${XLOAD_IMAGE} ${XLOAD_SYMLINK}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK}
-	rm -f ${XLOAD_MLO_SYMLINK}
-	ln -sf ${XLOAD_MLO_IMAGE} ${XLOAD_MLO_SYMLINK}
-	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK}
+#	rm -f ${XLOAD_MLO_SYMLINK}
+#	ln -sf ${XLOAD_MLO_IMAGE} ${XLOAD_MLO_SYMLINK}
+#	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK}
 	rm -f ${XLOAD_SYMLINK_CH}
 	ln -sf ${XLOAD_IMAGE_CH} ${XLOAD_SYMLINK_CH}
 	package_stagefile_shell ${DEPLOY_DIR_IMAGE}/${XLOAD_SYMLINK_CH}
