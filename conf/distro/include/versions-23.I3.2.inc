@@ -197,7 +197,7 @@ PREFERRED_VERSION_tiopenmax-imagecapturetest =	"3.27"
 PREFERRED_VERSION_tiopenmax-imagedisplaytest =	"3.27"
 PREFERRED_VERSION_tiopenmax-videodisplaytest =	"3.27"
 PREFERRED_VERSION_tiopenmax-videocapturetest =	"3.27"
-PREFERRED_VERSION_mm-isp =			"1.16"
+PREFERRED_VERSION_mm-isp =			"1.17"
 
 # gstreamer
 PREFERRED_VERSION_libgoo =		"5.i3.1"

@@ -11,6 +11,7 @@ PARALLEL_MAKE = "-j1"
 CCASE_SPEC = "\
 	# MM ISP%\
 	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX-TID-MMISP_RLS_${PV}%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/camera/vstab/doc/... LINUX-TID-MMISP_RLS_1.16%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX-TID-MMISP_RLS_${PV}%\
 	element * /main/LATEST%\
 	"
@@ -22,6 +23,7 @@ SRC_URI="\
     file://23.11-ippmk.patch;patch=1 \
     file://23.11-il3pmk.patch;patch=1 \
     file://23.11-cafmk.patch;patch=1 \
+    file://update-makefile-install.patch;patch=1 \
     ${@base_contains("MACHINE", "omap-3430sdp", "file://sdp-device.patch;patch=1", "", d)} \
     "
 
