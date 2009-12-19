@@ -1,0 +1,13 @@
+Index: git/gst/aacparse/gstaacparse.c
+===================================================================
+--- git.orig/gst/aacparse/gstaacparse.c	2009-12-17 09:03:36.000000000 -0600
++++ git/gst/aacparse/gstaacparse.c	2009-12-17 09:05:41.000000000 -0600
+@@ -91,7 +91,7 @@
+ #define STATIC_INT_CAPS(bpp) \
+   "audio/mpeg, " \
+     "mpegversion = (int) 4, " \
+-    "channels = (int) [ 1, 2 ], " \
++    "channels = (int) [ 1, 8 ], " \
+     "rate = (int) [ 8000, 96000 ], " \
+     "object_type = (int) [ 1, 6 ], " \
+     "parsed = (boolean) true"
