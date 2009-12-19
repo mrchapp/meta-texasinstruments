@@ -1,9 +1,9 @@
-From 32a7af0874fe13774c65919941c3be59b72c646a Mon Sep 17 00:00:00 2001
+From 721d7d13215f239c579846cbc327952e1fe70f4f Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Thu, 30 Jul 2009 14:50:05 -0500
-Subject: [PATCH] add rowstride support to video utility functions
+Subject: [PATCH] This is a combination of 13 commits.
 
-This is a combination of 7 commits:
+The 13 commits are:
 * add rowstride support to video utility functions
 * stridetransform: skeletal implementation of stridetransform element
 * stridetransform: implement caps negotiation and related parts
@@ -11,32 +11,54 @@ This is a combination of 7 commits:
 * audioconvert: add NEON acceleration for some conversions
 * add gst_stride_transform_transform_size()
 * fix a small typo..  need to use the smaller of {new_width, orig_width} for the line-by-line copy to avoid overwriting past end of buffer
+* Add NV12 support in stridetransform
+* add basic support for I420->NV12 colorspace conversion
+* fix to avoid parsing caps on every frame
+* refactor stridetransform to make it easier to add new transforms (stride and/or colorspace)
+* add some neon
+* add support to convert to YUY2/YUYV color format
+
+They all come from http://gitorious.org/robclark-gstreamer/gst-plugins-base/commits/master
+
+Signed-off-by: Daniel Diaz <ddiaz@ti.com>
 ---
- configure.ac                        |    2 +
+ configure.ac                        |    3 +
  gst-libs/gst/video/gstvideofilter.c |    8 +-
- gst-libs/gst/video/video.c          |  234 +++++++++++++++---
- gst-libs/gst/video/video.h          |   39 ++-
+ gst-libs/gst/video/video.c          |  237 ++++++++++++++++++----
+ gst-libs/gst/video/video.h          |   39 +++-
  gst/audioconvert/Makefile.am        |    1 +
- gst/audioconvert/armv7.c            |  209 ++++++++++++++++
+ gst/audioconvert/armv7.c            |  209 +++++++++++++++++++
  gst/audioconvert/audioconvert.c     |   20 +-
  gst/audioconvert/gstaudioquantize.c |    4 +-
  gst/audioconvert/gstchannelmix.c    |    4 +-
- gst/stride/Makefile.am              |   15 ++
- gst/stride/gststridetransform.c     |  471 +++++++++++++++++++++++++++++++++++
- gst/stride/gststridetransform.h     |   80 ++++++
+ gst/stride/Makefile.am              |   17 ++
+ gst/stride/armv7.s                  |  182 +++++++++++++++++
+ gst/stride/convert.c                |  339 ++++++++++++++++++++++++++++++
+ gst/stride/gststridetransform.c     |  385 +++++++++++++++++++++++++++++++++++
+ gst/stride/gststridetransform.h     |   92 +++++++++
  gst/stride/plugin.c                 |   45 ++++
- 13 files changed, 1064 insertions(+), 68 deletions(-)
+ 15 files changed, 1517 insertions(+), 68 deletions(-)
  create mode 100644 gst/audioconvert/armv7.c
  create mode 100644 gst/stride/Makefile.am
+ create mode 100644 gst/stride/armv7.s
+ create mode 100644 gst/stride/convert.c
  create mode 100644 gst/stride/gststridetransform.c
  create mode 100644 gst/stride/gststridetransform.h
  create mode 100644 gst/stride/plugin.c
 
 diff --git a/configure.ac b/configure.ac
-index 6a39c73..5da8ac2 100644
+index e461d86..25912fc 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -319,6 +319,7 @@ AG_GST_CHECK_PLUGIN(ffmpegcolorspace)
+@@ -53,6 +53,7 @@ dnl AS_LIBTOOL_TAGS
+ 
+ AC_LIBTOOL_WIN32_DLL
+ AM_PROG_LIBTOOL
++AM_PROG_AS
+ 
+ dnl *** required versions of GStreamer stuff ***
+ GST_REQ=0.10.25.1
+@@ -325,6 +326,7 @@ AG_GST_CHECK_PLUGIN(ffmpegcolorspace)
  AG_GST_CHECK_PLUGIN(gdp)
  AG_GST_CHECK_PLUGIN(playback)
  AG_GST_CHECK_PLUGIN(audioresample)
@@ -44,7 +66,7 @@ index 6a39c73..5da8ac2 100644
  AG_GST_CHECK_PLUGIN(subparse)
  AG_GST_CHECK_PLUGIN(tcp)
  AG_GST_CHECK_PLUGIN(typefind)
-@@ -739,6 +740,7 @@ gst/ffmpegcolorspace/Makefile
+@@ -791,6 +793,7 @@ gst/ffmpegcolorspace/Makefile
  gst/gdp/Makefile
  gst/playback/Makefile
  gst/audioresample/Makefile
@@ -84,7 +106,7 @@ index 2d08a60..6b2d7b7 100644
    GST_DEBUG_OBJECT (btrans, "Returning size %u bytes for caps %"
        GST_PTR_FORMAT, *size, caps);
 diff --git a/gst-libs/gst/video/video.c b/gst-libs/gst/video/video.c
-index ab1d8c0..1815bf1 100644
+index 84e32a1..8b8fd62 100644
 --- a/gst-libs/gst/video/video.c
 +++ b/gst-libs/gst/video/video.c
 @@ -31,7 +31,7 @@
@@ -338,12 +360,12 @@ index ab1d8c0..1815bf1 100644
 -    return caps;
 +  } else {
 +    return NULL;
-+  }
+   }
+-  return NULL;
 +
 +  if (rowstride) {
 +    gst_caps_set_simple (caps, "rowstride", G_TYPE_INT, rowstride, NULL);
-   }
--  return NULL;
++  }
 +
 +  return caps;
 +}
@@ -373,7 +395,7 @@ index ab1d8c0..1815bf1 100644
  }
  
  /**
-@@ -643,7 +734,7 @@ gst_video_format_to_fourcc (GstVideoFormat format)
+@@ -651,7 +742,7 @@ gst_video_format_to_fourcc (GstVideoFormat format)
   * @blue_mask: blue bit mask
   *
   * Converts red, green, blue bit masks into the corresponding
@@ -382,7 +404,7 @@ index ab1d8c0..1815bf1 100644
   *
   * Since: 0.10.16
   *
-@@ -796,7 +887,7 @@ gst_video_format_is_yuv (GstVideoFormat format)
+@@ -808,7 +899,7 @@ gst_video_format_is_yuv (GstVideoFormat format)
  /**
   * gst_video_format_has_alpha:
   * @format: a #GstVideoFormat
@@ -391,7 +413,7 @@ index ab1d8c0..1815bf1 100644
   * Returns TRUE or FALSE depending on if the video format provides an
   * alpha channel.
   *
-@@ -1328,6 +1419,71 @@ gst_video_format_get_size (GstVideoFormat format, int width, int height)
+@@ -1374,6 +1465,74 @@ gst_video_format_get_size (GstVideoFormat format, int width, int height)
  }
  
  /**
@@ -454,6 +476,9 @@ index ab1d8c0..1815bf1 100644
 +    case GST_VIDEO_FORMAT_Y42B:
 +    case GST_VIDEO_FORMAT_Y444:
 +      return GST_ROUND_UP_4 (3 * rowstride * height);
++    case GST_VIDEO_FORMAT_NV12:
++    case GST_VIDEO_FORMAT_NV21:
++      return GST_ROUND_UP_4 (rowstride) * GST_ROUND_UP_2 (height) * 3 / 2;
 +    default:
 +      return 0;
 +  }
@@ -464,7 +489,7 @@ index ab1d8c0..1815bf1 100644
   * @format: a #GstVideoFormat
   * @width: the width of video
 diff --git a/gst-libs/gst/video/video.h b/gst-libs/gst/video/video.h
-index 162a766..ed20179 100644
+index 20946dc..3c5bc46 100644
 --- a/gst-libs/gst/video/video.h
 +++ b/gst-libs/gst/video/video.h
 @@ -33,7 +33,7 @@ G_BEGIN_DECLS
@@ -476,7 +501,7 @@ index 162a766..ed20179 100644
   * @GST_VIDEO_FORMAT_AYUV: packed 4:4:4 YUV with alpha channel (A0-Y0-U0-V0 ...)
   * @GST_VIDEO_FORMAT_RGBx: sparse rgb packed into 32 bit, space last
   * @GST_VIDEO_FORMAT_BGRx: sparse reverse rgb packed into 32 bit, space last
-@@ -167,13 +167,13 @@ typedef enum {
+@@ -171,13 +171,13 @@ typedef enum {
  
  #define GST_VIDEO_CAPS_RGBx \
      __GST_VIDEO_CAPS_MAKE_32 (1, 2, 3)
@@ -493,7 +518,7 @@ index 162a766..ed20179 100644
  #define GST_VIDEO_CAPS_xBGR \
      __GST_VIDEO_CAPS_MAKE_32 (4, 3, 2)
  
-@@ -181,13 +181,13 @@ typedef enum {
+@@ -185,13 +185,13 @@ typedef enum {
  
  #define GST_VIDEO_CAPS_RGBA \
      __GST_VIDEO_CAPS_MAKE_32A (1, 2, 3, 4)
@@ -510,7 +535,7 @@ index 162a766..ed20179 100644
  #define GST_VIDEO_CAPS_ABGR \
      __GST_VIDEO_CAPS_MAKE_32A (4, 3, 2, 1)
  
-@@ -203,9 +203,9 @@ typedef enum {
+@@ -207,9 +207,9 @@ typedef enum {
    #define GST_VIDEO_CAPS_BGRx_HOST_ENDIAN \
        GST_VIDEO_CAPS_xRGB
  #endif
@@ -522,7 +547,7 @@ index 162a766..ed20179 100644
  #define GST_VIDEO_CAPS_RGB_16                                           \
              "video/x-raw-rgb, "                                         \
              "bpp = (int) 16, "                                          \
-@@ -237,6 +237,16 @@ typedef enum {
+@@ -241,6 +241,16 @@ typedef enum {
          "height = " GST_VIDEO_SIZE_RANGE ", "                           \
          "framerate = " GST_VIDEO_FPS_RANGE
  
@@ -539,7 +564,7 @@ index 162a766..ed20179 100644
  /* buffer flags */
  
  /**
-@@ -276,13 +286,15 @@ gboolean gst_video_get_size   (GstPad *pad,
+@@ -280,13 +290,15 @@ gboolean gst_video_get_size   (GstPad *pad,
                                 gint   *height);
  
  gboolean gst_video_calculate_display_ratio (guint *dar_n, guint *dar_d,
@@ -557,7 +582,7 @@ index 162a766..ed20179 100644
  gboolean gst_video_parse_caps_framerate (GstCaps *caps,
      int *fps_n, int *fps_d);
  gboolean gst_video_parse_caps_pixel_aspect_ratio (GstCaps *caps,
-@@ -293,6 +305,9 @@ GstCaps * gst_video_format_new_caps (GstVideoFormat format,
+@@ -297,6 +309,9 @@ GstCaps * gst_video_format_new_caps (GstVideoFormat format,
  GstCaps * gst_video_format_new_caps_interlaced (GstVideoFormat format,
      int width, int height, int framerate_n, int framerate_d,
  						int par_n, int par_d, gboolean interlaced);
@@ -567,7 +592,7 @@ index 162a766..ed20179 100644
  GstVideoFormat gst_video_format_from_fourcc (guint32 fourcc);
  guint32 gst_video_format_to_fourcc (GstVideoFormat format);
  gboolean gst_video_format_is_rgb (GstVideoFormat format);
-@@ -308,6 +323,8 @@ int gst_video_format_get_component_height (GstVideoFormat format, int component,
+@@ -312,6 +327,8 @@ int gst_video_format_get_component_height (GstVideoFormat format, int component,
  int gst_video_format_get_component_offset (GstVideoFormat format, int component,
      int width, int height);
  int gst_video_format_get_size (GstVideoFormat format, int width, int height);
@@ -916,7 +941,7 @@ index 2155397..be959c4 100644
                                  gdouble *dst, gint count)               \
  {                                                                       \
 diff --git a/gst/audioconvert/gstchannelmix.c b/gst/audioconvert/gstchannelmix.c
-index 1dbfcce..9ace1cb 100644
+index 055f28d..ea7c4a0 100644
 --- a/gst/audioconvert/gstchannelmix.c
 +++ b/gst/audioconvert/gstchannelmix.c
 @@ -663,7 +663,7 @@ gst_channel_mix_passthrough (AudioConvertCtx * this)
@@ -939,14 +964,16 @@ index 1dbfcce..9ace1cb 100644
  {
 diff --git a/gst/stride/Makefile.am b/gst/stride/Makefile.am
 new file mode 100644
-index 0000000..1adc197
+index 0000000..3b466de
 --- /dev/null
 +++ b/gst/stride/Makefile.am
-@@ -0,0 +1,15 @@
+@@ -0,0 +1,17 @@
 +plugin_LTLIBRARIES = libgststridetransform.la
 +
 +libgststridetransform_la_SOURCES = \
 +	gststridetransform.c \
++	convert.c \
++	armv7.s \
 +	plugin.c
 +
 +libgststridetransform_la_CFLAGS = $(GST_PLUGINS_BASE_CFLAGS) $(GST_BASE_CFLAGS) $(GST_CFLAGS)
@@ -958,17 +985,550 @@ index 0000000..1adc197
 +
 +noinst_HEADERS = \
 +	gststridetransform.h
-diff --git a/gst/stride/gststridetransform.c b/gst/stride/gststridetransform.c
+diff --git a/gst/stride/armv7.s b/gst/stride/armv7.s
 new file mode 100644
-index 0000000..ea52500
+index 0000000..2697a14
 --- /dev/null
-+++ b/gst/stride/gststridetransform.c
-@@ -0,0 +1,471 @@
++++ b/gst/stride/armv7.s
+@@ -0,0 +1,182 @@
++@ GStreamer
++@
++@ Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
++@
++@ Description: NEON/VFP accelerated functions for armv7 architecture
++@  Created on: Nov 27, 2009
++@      Author: Rob Clark <rob@ti.com>
++@
++@ This library is free software; you can redistribute it and/or
++@ modify it under the terms of the GNU Library General Public
++@ License as published by the Free Software Foundation; either
++@ version 2 of the License, or (at your option) any later version.
++@
++@ This library is distributed in the hope that it will be useful,
++@ but WITHOUT ANY WARRANTY; without even the implied warranty of
++@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++@ Library General Public License for more details.
++@
++@ You should have received a copy of the GNU Library General Public
++@ License along with this library; if not, write to the
++@ Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++@ Boston, MA 02111-1307, USA.
++
++       .fpu neon
++       .text
++
++       .align
++       .global stride_copy_zip2
++       .type   stride_copy_zip2, %function
++@void
++@stride_copy_zip2 (guchar *new_buf, guchar *orig_buf1, guchar *orig_buf2, gint sz)
++@{
++@@@@ note: r0-r3, q0-3, and q8-q15 do not need to be preserved
++stride_copy_zip2:
++@ interleave remaining >= 16 bytes:
++       pld [r1, #64]
++       pld [r2, #64]
++       cmp r3, #16
++       blt stride_copy_zip2_2
++stride_copy_zip2_1:
++       vld1.8 {q8}, [r1]!
++       vld1.8 {q9}, [r2]!
++
++       vzip.8 q8, q9
++
++       pld [r1, #64]
++       vst1.8 {q8,q9}, [r0]!
++       pld [r2, #64]
++       sub r3, r3, #16
++
++       cmp r3, #16
++       bge stride_copy_zip2_1
++@ interleave remaining >= 8 bytes:
++stride_copy_zip2_2:
++       cmp r3, #8
++       blt stride_copy_zip2_3
++
++       vld1.8 {d16}, [r1]!
++       vld1.8 {d17}, [r2]!
++
++       vzip.8 d16, d17
++
++       vst1.8 {d16,d17}, [r0]!
++       sub r3, r3, #8
++
++@ interleave remaining < 8 bytes:
++stride_copy_zip2_3:
++@XXX
++       bx lr
++@}
++
++
++       .align
++       .global stride_copy_zip3a
++       .type   stride_copy_zip3a, %function
++@void
++@stride_copy_zip3a (guchar *new_buf,
++@    guchar *orig_buf1, guchar *orig_buf2, guchar *orig_buf3, gint sz)
++@{
++@@@@ note: r0-r3, q0-3, and q8-q15 do not need to be preserved
++stride_copy_zip3a:
++       pld [r1, #64]
++       pld [r2, #64]
++       pld [r3, #64]
++       ldr ip, [sp]     @ the sz arg
++@ interleave remaining >= 32 bytes:
++       cmp ip, #32
++       blt stride_copy_zip3a_2
++stride_copy_zip3a_1:
++       vld1.8 {q8},      [r1]!  @ Y
++       vld1.8 {q10},     [r1]!  @ Y
++       vld1.8 {q9},      [r2]!  @ U
++       vld1.8 {q11},     [r3]!  @ V
++
++       pld [r1, #64]
++       pld [r2, #64]
++       pld [r3, #64]
++
++       vzip.8 q9, q11           @ interleave U&V
++       vzip.8 q8, q9            @ interleave Y1UV1
++       vzip.8 q10, q11          @ interleave Y2UV2
++
++       vst1.8 {q8,q9},   [r0]!
++       vst1.8 {q10,q11}, [r0]!
++
++       sub ip, ip, #32
++
++       cmp ip, #32
++       bge stride_copy_zip3a_1
++@ interleave remaining >= 16 bytes:
++stride_copy_zip3a_2:
++       cmp ip, #16
++       blt stride_copy_zip3a_3
++
++       vld1.8 {d16},     [r1]!  @ Y
++       vld1.8 {d18},     [r1]!  @ Y
++       vld1.8 {d17},     [r2]!  @ U
++       vld1.8 {d19},     [r3]!  @ V
++
++       vzip.8 d17, d19          @ interleave U&V
++       vzip.8 d16, d17          @ interleave Y1UV1
++       vzip.8 d18, d19          @ interleave Y2UV2
++
++       vst1.8 {d16,d17}, [r0]!
++       vst1.8 {d18,d19}, [r0]!
++
++       sub ip, ip, #16
++@ copy remaining >= 8 bytes:
++stride_copy_zip3a_3:
++@XXX
++       bx lr
++@}
++
++
++       .align
++       .global stride_copy
++       .type   stride_copy, %function
++@void
++@stride_copy (guchar *new_buf, guchar *orig_buf, gint sz)
++@{
++@@@@ note: r0-r3, q0-3, and q8-q15 do not need to be preserved
++stride_copy:
++@ copy remaining >= 64 bytes:
++       pld [r1, #64]
++       cmp r2, #64
++       blt stride_copy_2
++stride_copy_1:
++       vld1.8 {q8-q9},  [r1]!
++       sub r2, r2, #64
++       vld1.8 {q10-q11},[r1]!
++       vst1.8 {q8-q9},  [r0]!
++       pld [r1, #64]
++       cmp r2, #64
++       vst1.8 {q10-q11},[r0]!
++       bge stride_copy_1
++@ copy remaining >= 32 bytes:
++stride_copy_2:
++       cmp r2, #32
++       blt stride_copy_3
++       vld1.8 {q8-q9}, [r1]!
++       sub r2, r2, #32
++       vst1.8 {q8-q9}, [r0]!
++@ copy remaining >= 16 bytes:
++stride_copy_3:
++       cmp r2, #16
++       blt stride_copy_4
++       vld1.8 {q8}, [r1]!
++       sub r2, r2, #16
++       vst1.8 {q8}, [r0]!
++@ copy remaining >= 8 bytes:
++stride_copy_4:
++       cmp r2, #8
++       blt stride_copy_5
++       vld1.8 {d16}, [r1]!
++       sub r2, r2, #8
++       vst1.8 {d16}, [r0]!
++@ copy remaining < 8 bytes:
++stride_copy_5:
++@XXX
++       bx lr
++@}
++
+diff --git a/gst/stride/convert.c b/gst/stride/convert.c
+new file mode 100644
+index 0000000..0f59e78
+--- /dev/null
++++ b/gst/stride/convert.c
+@@ -0,0 +1,339 @@
 +/* GStreamer
 + *
 + * Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
 + *
-+ * Description: V4L2 sink element
++ * Description: stride transform conversion utilities
++ *  Created on: Nov 27, 2009
++ *      Author: Rob Clark <rob@ti.com>
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Library General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * Library General Public License for more details.
++ *
++ * You should have received a copy of the GNU Library General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <string.h>
++#include <gst/video/video.h>
++
++#include "gststridetransform.h"
++
++
++GST_DEBUG_CATEGORY_EXTERN (stridetransform_debug);
++#define GST_CAT_DEFAULT stridetransform_debug
++
++
++/* note: some parts of code support in-place transform.. some do not..  I'm
++ * not sure if zip/interleave functions could really support in-place copy..
++ * I need to think about this after having some sleep ;-)
++ */
++
++#define WEAK __attribute__((weak))
++
++/*
++ * Conversion utilities:
++ */
++
++WEAK void
++stride_copy_zip2 (guchar *new_buf, guchar *orig_buf1, guchar *orig_buf2, gint sz)
++{
++  while (sz--) {
++    *new_buf++ = *orig_buf1++;
++    *new_buf++ = *orig_buf2++;
++  }
++}
++
++WEAK void
++stride_copy_zip3a (guchar *new_buf,
++    guchar *orig_buf1, guchar *orig_buf2, guchar *orig_buf3, gint sz)
++{
++  while (sz > 1) {
++    *new_buf++ = *orig_buf1++;
++    *new_buf++ = *orig_buf2++;
++    *new_buf++ = *orig_buf1++;
++    *new_buf++ = *orig_buf3++;
++    sz -= 2;
++  }
++}
++
++WEAK void
++stride_copy (guchar *new_buf, guchar *orig_buf, gint sz)
++{
++  memcpy (new_buf, orig_buf, sz);
++}
++
++
++/**
++ * move to strided buffer, interleaving two planes of identical dimensions
++ */
++static void
++stridemove_zip2 (guchar *new_buf, guchar *orig_buf1, guchar *orig_buf2, gint new_width, gint orig_width, gint height)
++{
++  int row;
++
++  GST_DEBUG ("new_buf=%p, orig_buf1=%p, orig_buf2=%p, new_width=%d, orig_width=%d, height=%d",
++      new_buf, orig_buf1, orig_buf2, new_width, orig_width, height);
++
++  /* if increasing the stride, work from bottom-up to avoid overwriting data
++   * that has not been moved yet.. otherwise, work in the opposite order,
++   * for the same reason.
++   */
++  if (new_width > orig_width) {
++    for (row=height-1; row>=0; row--) {
++      stride_copy_zip2 (
++          new_buf+(new_width*row),
++          orig_buf1+(orig_width*row),
++          orig_buf2+(orig_width*row),
++          orig_width);
++    }
++  } else {
++    for (row=0; row<height; row++) {
++      stride_copy_zip2 (
++          new_buf+(new_width*row),
++          orig_buf1+(orig_width*row),
++          orig_buf2+(orig_width*row),
++          new_width);
++    }
++  }
++}
++
++/**
++ * move to strided buffer, interleaving three planes, where the first plane
++ * (orig_buf1) has 2x as many samples.. Ie. ABACABAC..
++ */
++static void
++stridemove_zip3a (guchar *new_buf,
++    guchar *orig_buf1, guchar *orig_buf2, guchar *orig_buf3,
++    guint new_width, gint orig_width, gint height)
++{
++  gint copy_width = (new_width < orig_width) ? new_width : orig_width;
++
++  while (height > 0) {
++
++    /* even row */
++    stride_copy_zip3a (new_buf, orig_buf1, orig_buf2, orig_buf3, copy_width);
++    new_buf += new_width;
++    orig_buf1 += orig_width;
++
++    /* odd row, recycles same U & V */
++    stride_copy_zip3a (new_buf, orig_buf1, orig_buf2, orig_buf3, copy_width);
++    new_buf += new_width;
++    orig_buf1 += orig_width;
++
++    orig_buf2 += orig_width/2;
++    orig_buf3 += orig_width/2;
++
++    height -= 2;
++  }
++}
++
++/**
++ * Convert from one stride to another... like memmove, but can convert stride in
++ * the process.  This function is not aware of pixels, only of bytes.  So widths
++ * are given in bytes, not pixels.  The new_buf and orig_buf can point to the
++ * same buffers to do an in-place conversion, but the buffer should be large
++ * enough.
++ */
++static void
++stridemove (guchar *new_buf, guchar *orig_buf, gint new_width, gint orig_width, gint height)
++{
++  int row;
++
++  GST_DEBUG ("new_buf=%p, orig_buf=%p, new_width=%d, orig_width=%d, height=%d",
++      new_buf, orig_buf, new_width, orig_width, height);
++
++  /* if increasing the stride, work from bottom-up to avoid overwriting data
++   * that has not been moved yet.. otherwise, work in the opposite order,
++   * for the same reason.
++   */
++  if (new_width > orig_width) {
++    for (row=height-1; row>=0; row--) {
++      stride_copy (new_buf+(new_width*row), orig_buf+(orig_width*row), orig_width);
++    }
++  } else {
++    for (row=0; row<height; row++) {
++      stride_copy (new_buf+(new_width*row), orig_buf+(orig_width*row), new_width);
++    }
++  }
++}
++
++/*
++ * Conversion Functions:
++ */
++
++/** convert 4:2:0 semiplanar to same 4:2:0 semiplanar */
++static GstFlowReturn
++unstridify_420sp_420sp (GstStrideTransform *self, guchar *unstrided, guchar *strided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->in_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  stridemove (unstrided, strided, width, stride,
++      (GST_ROUND_UP_2 (height) * 3) / 2);
++
++  return GST_FLOW_OK;
++}
++static GstFlowReturn
++stridify_420sp_420sp (GstStrideTransform *self, guchar *strided, guchar *unstrided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->out_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++  stridemove (strided, unstrided, stride, width,
++      (GST_ROUND_UP_2 (height) * 3) / 2);
++
++  return GST_FLOW_OK;
++}
++
++/** convert 4:2:0 planar to same 4:2:0 planar */
++static GstFlowReturn
++unstridify_420p_420p (GstStrideTransform *self, guchar *unstrided, guchar *strided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->in_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  stridemove (unstrided, strided, width, stride, height);   /* move Y */
++  stridemove (
++      unstrided + (height*width),
++      strided + (height*stride),
++      width/2, stride, height);                             /* move V/U */
++  /* XXX odd widths/heights/strides: */
++  stridemove (
++      unstrided + (int)(height*width*1.5),
++      strided + (int)(height*stride*1.5),
++      width/2, stride, height);                             /* move U/V */
++
++  return GST_FLOW_OK;
++}
++static GstFlowReturn
++stridify_420p_420p (GstStrideTransform *self, guchar *strided, guchar *unstrided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->out_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  /* XXX odd widths/heights/strides: */
++  stridemove (
++      strided + (int)(height*stride*1.5),
++      unstrided + (int)(height*width*1.5),
++      stride, width/2, height);                             /* move U/V */
++  stridemove (
++      strided + (height*stride),
++      unstrided + (height*width),
++      stride, width/2, height);                             /* move V/U */
++  stridemove (strided, unstrided, stride, width, height);   /* move Y */
++
++  return GST_FLOW_OK;
++}
++
++/** convert 4:2:2 packed to same 4:2:2 packed */
++static GstFlowReturn
++unstridify_422i_422i (GstStrideTransform *self, guchar *unstrided, guchar *strided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->in_rowstride;
++
++  g_return_val_if_fail (stride >= (width*2), GST_FLOW_ERROR);
++
++  stridemove (unstrided, strided, width*2, stride, height);
++
++  return GST_FLOW_OK;
++}
++static GstFlowReturn
++stridify_422i_422i (GstStrideTransform *self, guchar *strided, guchar *unstrided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->out_rowstride;
++
++  g_return_val_if_fail (stride >= (width*2), GST_FLOW_ERROR);
++
++  stridemove (strided, unstrided, stride, width*2, height);
++
++  return GST_FLOW_OK;
++}
++
++/** convert I420 unstrided to NV12 strided */
++static GstFlowReturn
++stridify_i420_nv12 (GstStrideTransform *self, guchar *strided, guchar *unstrided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->out_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  /* XXX widths/heights/strides that are not multiple of four??: */
++  stridemove_zip2 (
++      strided + (height*stride),
++      unstrided + (height*width),                           /* U */
++      unstrided + (int)(height*width*1.25),                 /* V */
++      stride, width/2, height/2);
++  stridemove (strided, unstrided, stride, width, height);   /* Y */
++
++  return GST_FLOW_OK;
++}
++
++/** convert I420 unstrided to YUY2 strided */
++static GstFlowReturn
++stridify_i420_yuy2 (GstStrideTransform *self, guchar *strided, guchar *unstrided)
++{
++  gint width  = self->width;
++  gint height = self->height;
++  gint stride = self->out_rowstride;
++
++  g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
++
++  /* XXX widths/heights/strides that are not multiple of four??: */
++  stridemove_zip3a (
++      strided,
++      unstrided,                                            /* Y */
++      unstrided + (height*width),                           /* U */
++      unstrided + (int)(height*width*1.25),                 /* V */
++      stride, width, height);
++
++  return GST_FLOW_OK;
++}
++
++
++/* last entry has GST_VIDEO_FORMAT_UNKNOWN for in/out formats */
++Conversion stride_conversions[] = {
++  { { GST_VIDEO_FORMAT_NV12, GST_VIDEO_FORMAT_NV12 }, stridify_420sp_420sp, unstridify_420sp_420sp },
++  { { GST_VIDEO_FORMAT_I420, GST_VIDEO_FORMAT_I420 }, stridify_420p_420p,   unstridify_420p_420p },
++  { { GST_VIDEO_FORMAT_YV12, GST_VIDEO_FORMAT_YV12 }, stridify_420p_420p,   unstridify_420p_420p },
++  { { GST_VIDEO_FORMAT_YUY2, GST_VIDEO_FORMAT_YUY2 }, stridify_422i_422i,   unstridify_422i_422i },
++  { { GST_VIDEO_FORMAT_UYVY, GST_VIDEO_FORMAT_UYVY }, stridify_422i_422i,   unstridify_422i_422i },
++  { { GST_VIDEO_FORMAT_I420, GST_VIDEO_FORMAT_NV12 }, stridify_i420_nv12,   NULL },
++  { { GST_VIDEO_FORMAT_I420, GST_VIDEO_FORMAT_YUY2 }, stridify_i420_yuy2,   NULL },
++  /* add new entries before here */
++  { { GST_VIDEO_FORMAT_UNKNOWN } }
++};
++
++
+diff --git a/gst/stride/gststridetransform.c b/gst/stride/gststridetransform.c
+new file mode 100644
+index 0000000..6ab0479
+--- /dev/null
++++ b/gst/stride/gststridetransform.c
+@@ -0,0 +1,385 @@
++/* GStreamer
++ *
++ * Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
++ *
++ * Description: stride transform element
 + *  Created on: Jul 30, 2009
 + *      Author: Rob Clark <rob@ti.com>
 + *
@@ -1013,10 +1573,15 @@ index 0000000..ea52500
 +#endif
 +
 +#include <string.h>
++
 +#include <gst/video/video.h>
 +
 +#include "gst/gst-i18n-plugin.h"
 +#include "gststridetransform.h"
++
++
++/* last entry has GST_VIDEO_FORMAT_UNKNOWN for in/out formats */
++extern const Conversion stride_conversions[];
 +
 +
 +static const GstElementDetails stridetransform_details =
@@ -1028,7 +1593,7 @@ index 0000000..ea52500
 +
 +/* TODO: add rgb formats too! */
 +#define SUPPORTED_CAPS                                                        \
-+  GST_VIDEO_CAPS_YUV_STRIDED ("{ I420, YV12, YUY2, UYVY }", "[ 0, max ]")
++  GST_VIDEO_CAPS_YUV_STRIDED ("{ I420, YV12, YUY2, UYVY, NV12 }", "[ 0, max ]")
 +
 +
 +static GstStaticPadTemplate src_template =
@@ -1036,14 +1601,14 @@ index 0000000..ea52500
 +    GST_PAD_SRC,
 +    GST_PAD_ALWAYS,
 +    GST_STATIC_CAPS (SUPPORTED_CAPS)
-+    );
++);
 +
 +static GstStaticPadTemplate sink_template =
 +GST_STATIC_PAD_TEMPLATE ("sink",
 +    GST_PAD_SINK,
 +    GST_PAD_ALWAYS,
 +    GST_STATIC_CAPS (SUPPORTED_CAPS)
-+    );
++);
 +
 +
 +GST_DEBUG_CATEGORY (stridetransform_debug);
@@ -1065,8 +1630,6 @@ index 0000000..ea52500
 +    GstCaps *incaps, GstCaps *outcaps);
 +static GstFlowReturn gst_stride_transform_transform (GstBaseTransform *base,
 +    GstBuffer *inbuf, GstBuffer *outbuf);
-+static GstFlowReturn gst_stride_transform_transform_ip (GstBaseTransform *base,
-+    GstBuffer *buf);
 +
 +GST_BOILERPLATE (GstStrideTransform, gst_stride_transform, GstVideoFilter, GST_TYPE_VIDEO_FILTER);
 +
@@ -1102,8 +1665,6 @@ index 0000000..ea52500
 +      GST_DEBUG_FUNCPTR (gst_stride_transform_transform_caps);
 +  basetransform_class->set_caps =
 +      GST_DEBUG_FUNCPTR (gst_stride_transform_set_caps);
-+  basetransform_class->transform_ip =
-+      GST_DEBUG_FUNCPTR (gst_stride_transform_transform_ip);
 +  basetransform_class->transform =
 +      GST_DEBUG_FUNCPTR (gst_stride_transform_transform);
 +
@@ -1163,11 +1724,15 @@ index 0000000..ea52500
 +
 +  if (self->cached_caps[idx] != othercaps)
 +  {
-+    if (!gst_stride_transform_get_unit_size (base, othercaps,
-+        &(self->cached_size[idx])))
-+    {
++    guint sz;
++    if (!gst_stride_transform_get_unit_size (base, othercaps, &sz)) {
 +      return FALSE;
 +    }
++    if (self->cached_caps[idx]) {
++      gst_caps_unref (self->cached_caps[idx]);
++    }
++    self->cached_size[idx] = sz;
++    self->cached_caps[idx] = gst_caps_ref (othercaps);
 +  }
 +
 +  *othersize = self->cached_size[idx];
@@ -1181,7 +1746,7 @@ index 0000000..ea52500
 + * helper to add all fields, other than rowstride to @caps, copied from @s.
 + */
 +static void
-+add_all_fields (GstCaps *caps, const gchar *name, GstStructure *s, gboolean rowstride)
++add_all_fields (GstCaps *caps, const gchar *name, GstStructure *s, gboolean rowstride, GstPadDirection direction)
 +{
 +  gint idx;
 +  GstStructure *new_s = gst_structure_new (name, NULL);
@@ -1193,11 +1758,44 @@ index 0000000..ea52500
 +  idx = gst_structure_n_fields (s) - 1;
 +  while (idx >= 0) {
 +    const gchar *name = gst_structure_nth_field_name (s, idx);
++    idx--;
++
++    /* for format field, check the stride_conversions table to see what
++     * we can support:
++     */
++    if (!strcmp ("format", name)) {
++      guint fourcc;
++
++      /* XXX double check this: */
++      gint to_format = (direction == GST_PAD_SINK) ? 1 : 0;
++      gint from_format = (direction == GST_PAD_SRC) ? 1 : 0;
++
++      if (gst_structure_get_fourcc (s, "format", &fourcc)) {
++        GValue formats = {0};
++        GValue fourccval = {0};
++        gint i;
++        GstVideoFormat format = gst_video_format_from_fourcc (fourcc);
++
++        g_value_init (&formats, GST_TYPE_LIST);
++        g_value_init (&fourccval, GST_TYPE_FOURCC);
++
++        for (i=0; stride_conversions[i].format[0]!=GST_VIDEO_FORMAT_UNKNOWN; i++) {
++          if (stride_conversions[i].format[from_format] == format) {
++            gst_value_set_fourcc (&fourccval, gst_video_format_to_fourcc
++                (stride_conversions[i].format[to_format]));
++            gst_value_list_append_value (&formats, &fourccval);
++          }
++        }
++
++        continue;
++      }
++    }
++
++    /* copy over all other non-rowstride fields: */
 +    if (strcmp ("rowstride", name)) {
 +      const GValue *val = gst_structure_get_value (s, name);
 +      gst_structure_set_value (new_s, name, val);
 +    }
-+    idx--;
 +  }
 +
 +  gst_caps_merge_structure (caps, new_s);
@@ -1227,14 +1825,14 @@ index 0000000..ea52500
 +  if (gst_structure_has_name (s, "video/x-raw-yuv") ||
 +      gst_structure_has_name (s, "video/x-raw-yuv-strided")) {
 +
-+    add_all_fields (ret, "video/x-raw-yuv", s, FALSE);
-+    add_all_fields (ret, "video/x-raw-yuv-strided", s, TRUE);
++    add_all_fields (ret, "video/x-raw-yuv", s, FALSE, direction);
++    add_all_fields (ret, "video/x-raw-yuv-strided", s, TRUE, direction);
 +
 +  } else if (gst_structure_has_name (s, "video/x-raw-rgb") ||
 +      gst_structure_has_name (s, "video/x-raw-rgb-strided")) {
 +
-+    add_all_fields (ret, "video/x-raw-rgb", s, FALSE);
-+    add_all_fields (ret, "video/x-raw-rgb-strided", s, TRUE);
++    add_all_fields (ret, "video/x-raw-rgb", s, FALSE, direction);
++    add_all_fields (ret, "video/x-raw-rgb-strided", s, TRUE, direction);
 +
 +  }
 +
@@ -1253,152 +1851,37 @@ index 0000000..ea52500
 +    GstCaps *incaps, GstCaps *outcaps)
 +{
 +  GstStrideTransform *self = GST_STRIDE_TRANSFORM (base);
-+  GstVideoFormat format;
 +  gint width, height;
++  GstVideoFormat in_format, out_format;
++  gint i;
 +
 +  LOG_CAPS (self, incaps);
 +  LOG_CAPS (self, outcaps);
 +
 +  g_return_val_if_fail (gst_video_format_parse_caps_strided (incaps,
-+      &self->format, &self->width, &self->height, &self->in_rowstride), FALSE);
++      &in_format, &self->width, &self->height, &self->in_rowstride), FALSE);
 +  g_return_val_if_fail (gst_video_format_parse_caps_strided (outcaps,
-+      &format, &width, &height, &self->out_rowstride), FALSE);
++      &out_format, &width, &height, &self->out_rowstride), FALSE);
 +
-+  g_return_val_if_fail (self->format == format, FALSE);
++  self->conversion = NULL;
++
++  for (i=0; stride_conversions[i].format[0]!=GST_VIDEO_FORMAT_UNKNOWN; i++) {
++    if ((stride_conversions[i].format[0] == in_format) &&
++        (stride_conversions[i].format[1] == out_format)) {
++      GST_DEBUG_OBJECT (self, "found stride_conversion: %d", i);
++      self->conversion = &stride_conversions[i];
++      break;
++    }
++  }
++
++  g_return_val_if_fail (self->conversion, FALSE);
++  g_return_val_if_fail (self->conversion->unstridify || !self->in_rowstride, FALSE);
++  g_return_val_if_fail (self->conversion->stridify || !self->out_rowstride, FALSE);
 +  g_return_val_if_fail (self->width  == width,  FALSE);
 +  g_return_val_if_fail (self->height == height, FALSE);
 +
 +  return TRUE;
 +}
-+
-+/* ************************************************************************* */
-+
-+/**
-+ * Convert from one stride to another... like memmove, but can convert stride in
-+ * the process.  This function is not aware of pixels, only of bytes.  So widths
-+ * are given in bytes, not pixels.  The new_buf and orig_buf can point to the
-+ * same buffers to do an in-place conversion, but the buffer should be large
-+ * enough.
-+ */
-+static void
-+stridemove (guchar *new_buf, guchar *orig_buf, gint new_width, gint orig_width, gint height)
-+{
-+  int row;
-+
-+  GST_DEBUG ("new_buf=%p, orig_buf=%p, new_width=%d, orig_width=%d, height=%d",
-+      new_buf, orig_buf, new_width, orig_width, height);
-+  /* if increasing the stride, work from bottom-up to avoid overwriting data
-+   * that has not been moved yet.. otherwise, work in the opposite order,
-+   * for the same reason.
-+   */
-+  if (new_width > orig_width) {
-+    for (row=height-1; row>=0; row--) {
-+      memmove (new_buf+(new_width*row), orig_buf+(orig_width*row), orig_width);
-+    }
-+  } else {
-+    for (row=0; row<height; row++) {
-+      memmove (new_buf+(new_width*row), orig_buf+(orig_width*row), new_width);
-+    }
-+  }
-+}
-+
-+
-+/**
-+ * Convert from a non-strided buffer to strided.  The two buffer pointers could
-+ * be pointing to the same memory block for in-place transform.. assuming that
-+ * the buffer is large enough
-+ *
-+ * @strided:    the pointer to the resulting strided buffer
-+ * @unstrided:  the pointer to the initial unstrided buffer
-+ * @fourcc:     the color format
-+ * @stride:     the stride, in bytes
-+ * @width:      the width in pixels
-+ * @height:     the height in pixels
-+ */
-+static GstFlowReturn
-+stridify (GstStrideTransform *self, guchar *strided, guchar *unstrided)
-+{
-+  gint width  = self->width;
-+  gint height = self->height;
-+  gint stride = self->out_rowstride;
-+
-+  switch (self->format) {
-+#if 0 /* TODO */
-+    case GST_VIDEO_FORMAT_NV12:
-+      g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
-+      stridemove (strided, unstrided, stride, width, height * 1.5);
-+      return GST_FLOW_OK;
-+#endif
-+    case GST_VIDEO_FORMAT_I420:
-+    case GST_VIDEO_FORMAT_YV12:
-+      g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
-+      stridemove (
-+          strided + (int)(height*stride*1.5),
-+          unstrided + (int)(height*width*1.5),
-+          stride, width/2, height);                             /* move U/V */
-+      stridemove (
-+          strided + (height*stride),
-+          unstrided + (height*width),
-+          stride, width/2, height);                             /* move V/U */
-+      stridemove (strided, unstrided, stride, width, height);   /* move Y */
-+      return GST_FLOW_OK;
-+    case GST_VIDEO_FORMAT_YUY2:
-+    case GST_VIDEO_FORMAT_UYVY:
-+      g_return_val_if_fail (stride >= (width*2), GST_FLOW_ERROR);
-+      stridemove (strided, unstrided, stride, width*2, height);
-+      return GST_FLOW_OK;
-+    default:
-+      GST_WARNING ("unknown color format!\n");
-+      return GST_FLOW_ERROR;
-+  }
-+}
-+
-+
-+/**
-+ * Convert from a strided buffer to non-strided.  The two buffer pointers could
-+ * be pointing to the same memory block for in-place transform..
-+ *
-+ * @unstrided:  the pointer to the resulting unstrided buffer
-+ * @strided:    the pointer to the initial strided buffer
-+ */
-+static GstFlowReturn
-+unstridify (GstStrideTransform *self, guchar *unstrided, guchar *strided)
-+{
-+  gint width  = self->width;
-+  gint height = self->height;
-+  gint stride = self->in_rowstride;
-+
-+  switch (self->format) {
-+#if 0 /* TODO */
-+    case GST_VIDEO_FORMAT_NV12:
-+      g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
-+      stridemove (unstrided, strided, width, stride, height * 1.5);
-+      return GST_FLOW_OK;
-+#endif
-+    case GST_VIDEO_FORMAT_I420:
-+    case GST_VIDEO_FORMAT_YV12:
-+      g_return_val_if_fail (stride >= width, GST_FLOW_ERROR);
-+      stridemove (unstrided, strided, width, stride, height);   /* move Y */
-+      stridemove (
-+          unstrided + (height*width),
-+          strided + (height*stride),
-+          width/2, stride, height);                             /* move V/U */
-+      stridemove (
-+          unstrided + (int)(height*width*1.5),
-+          strided + (int)(height*stride*1.5),
-+          width/2, stride, height);                             /* move U/V */
-+      return GST_FLOW_OK;
-+    case GST_VIDEO_FORMAT_YUY2:
-+    case GST_VIDEO_FORMAT_UYVY:
-+      g_return_val_if_fail (stride >= (width*2), GST_FLOW_ERROR);
-+      stridemove (unstrided, strided, width*2, stride, height);
-+      return GST_FLOW_OK;
-+    default:
-+      GST_WARNING ("unknown color format!\n");
-+      return GST_FLOW_ERROR;
-+  }
-+}
-+
 +
 +static GstFlowReturn
 +gst_stride_transform_transform (GstBaseTransform *base,
@@ -1414,10 +1897,10 @@ index 0000000..ea52500
 +    GST_DEBUG_OBJECT (self, "not implemented");  // TODO
 +    return GST_FLOW_ERROR;
 +  } else if (self->in_rowstride) {
-+    return unstridify (self,
++    return self->conversion->unstridify (self,
 +        GST_BUFFER_DATA (outbuf), GST_BUFFER_DATA (inbuf));
 +  } else if (self->out_rowstride) {
-+    return stridify (self,
++    return self->conversion->stridify (self,
 +        GST_BUFFER_DATA (outbuf), GST_BUFFER_DATA (inbuf));
 +  }
 +
@@ -1426,26 +1909,17 @@ index 0000000..ea52500
 +
 +  return GST_FLOW_ERROR;
 +}
-+
-+static GstFlowReturn
-+gst_stride_transform_transform_ip (GstBaseTransform *base,
-+    GstBuffer *buf)
-+{
-+  /* transform function is safe to call with same buffer ptr:
-+   */
-+  return gst_stride_transform_transform (base, buf, buf);
-+}
 diff --git a/gst/stride/gststridetransform.h b/gst/stride/gststridetransform.h
 new file mode 100644
-index 0000000..481959e
+index 0000000..bce2526
 --- /dev/null
 +++ b/gst/stride/gststridetransform.h
-@@ -0,0 +1,80 @@
+@@ -0,0 +1,92 @@
 +/* GStreamer
 + *
 + * Copyright (C) 2009 Texas Instruments, Inc - http://www.ti.com/
 + *
-+ * Description: V4L2 sink element
++ * Description: stride transform element
 + *  Created on: Jul 2, 2009
 + *      Author: Rob Clark <rob@ti.com>
 + *
@@ -1472,7 +1946,6 @@ index 0000000..481959e
 +#include <gst/video/gstvideofilter.h>
 +#include <gst/video/video.h>
 +
-+
 +G_BEGIN_DECLS
 +
 +#define GST_TYPE_STRIDE_TRANSFORM \
@@ -1490,6 +1963,19 @@ index 0000000..481959e
 +typedef struct _GstStrideTransformClass GstStrideTransformClass;
 +
 +/**
++ * stride/colorspace conversion table (used internally)
++ */
++typedef struct {
++
++  GstVideoFormat format[2];   /* in_format, out_format */
++
++  GstFlowReturn (*stridify) (GstStrideTransform *self, guchar *strided, guchar *unstrided);
++  GstFlowReturn (*unstridify) (GstStrideTransform *self, guchar *unstrided, guchar *strided);
++
++} Conversion;
++
++
++/**
 + * GstStrideTransform:
 + *
 + * Opaque datastructure.
@@ -1498,10 +1984,10 @@ index 0000000..481959e
 +  GstVideoFilter videofilter;
 +
 +  /*< private >*/
-+  GstVideoFormat format;
 +  gint width, height;
 +  gint in_rowstride;
 +  gint out_rowstride;
++  const Conversion *conversion;
 +
 +  /* for caching the tranform_size() results.. */
 +  GstCaps *cached_caps[2];

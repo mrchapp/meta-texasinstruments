@@ -3,13 +3,9 @@ DEPENDS += "virtual/libx11 alsa-lib freetype gnome-vfs liboil libogg libvorbis l
 RDEPENDS += "gnome-vfs-plugin-file gnome-vfs-plugin-http gnome-vfs-plugin-ftp \
              gnome-vfs-plugin-sftp"
 PROVIDES_${PN} += "gst-plugins"
-PR = "r3"
+PR = "r4"
 
 EXTRA_OECONF += "--disable-freetypetest --disable-pango --disable-theora"
 
-# TODO: regenerate rowstride patch, and go back to pulling from freedesktop.org git repo
-SRC_URI = "git://gitorious.org/robclark-gstreamer/gst-plugins-base.git;protocol=git"
-SRC_URI += "file://common-20091119.tar.gz"
-SRC_URI += "file://use-stridetransform.patch;patch=1"
-SRCREV = "c4012ade73dea9d6ddf811488272a44aeb07e24e"
-
+SRCREV = "8b4f6dd43bf13d286f11f532033ac46aec33b13b"
+SRC_URI += "file://rowstride.patch;patch=1"

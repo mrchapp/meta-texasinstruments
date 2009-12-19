@@ -1,0 +1,675 @@
+From f6a95d43e8c0b873b6cd347061f5b5b30236d36e Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Sun, 16 Aug 2009 20:49:46 -0500
+Subject: [PATCH] This is a combination of 6 commits.
+
+The 6 commits are:
+* v4l2sink: Improve behavior for shared buffers.
+* v4l2sink: Add support for omap24xxvout and omap_vout drivers.
+* v4l2sink: Add support for blocking dequeue.
+* v4l2sink: bufferpool should be destroyed at end up playback
+* re-enable x-overlay support
+* add properties to control crop
+
+They all come from http://gitorious.org/robclark-gstreamer/gst-plugins-good/commits/master
+
+Signed-off-by: Daniel Diaz <ddiaz@ti.com>
+---
+ sys/v4l2/Makefile.am         |   15 ++--
+ sys/v4l2/gstv4l2bufferpool.c |   18 +++-
+ sys/v4l2/gstv4l2bufferpool.h |    2 +-
+ sys/v4l2/gstv4l2object.c     |    6 +-
+ sys/v4l2/gstv4l2sink.c       |  209 ++++++++++++++++++++++++++++++++++++------
+ sys/v4l2/gstv4l2sink.h       |    9 +-
+ sys/v4l2/gstv4l2src.c        |   12 +-
+ sys/v4l2/gstv4l2xoverlay.c   |    2 +
+ sys/v4l2/v4l2src_calls.c     |    2 +-
+ 9 files changed, 219 insertions(+), 56 deletions(-)
+
+diff --git a/sys/v4l2/Makefile.am b/sys/v4l2/Makefile.am
+index e655bcb..46cefe9 100644
+--- a/sys/v4l2/Makefile.am
++++ b/sys/v4l2/Makefile.am
+@@ -1,13 +1,12 @@
+ plugin_LTLIBRARIES = libgstvideo4linux2.la
+ 
+-# overlay is still not supported in current implementation
+-# if USE_XVIDEO
+-#xv_source = gstv4l2xoverlay.c
+-#xv_libs = $(X_LIBS) $(XVIDEO_LIBS)
+-#else
+-#xv_source =
+-#xv_libs =
+-#endif
++if USE_XVIDEO
++xv_source = gstv4l2xoverlay.c
++xv_libs = $(X_LIBS) $(XVIDEO_LIBS)
++else
++xv_source =
++xv_libs =
++endif
+ 
+ libgstvideo4linux2_la_SOURCES = gstv4l2.c \
+ 				gstv4l2colorbalance.c \
+diff --git a/sys/v4l2/gstv4l2bufferpool.c b/sys/v4l2/gstv4l2bufferpool.c
+index bca07b9..3222ac2 100644
+--- a/sys/v4l2/gstv4l2bufferpool.c
++++ b/sys/v4l2/gstv4l2bufferpool.c
+@@ -451,17 +451,27 @@ gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool)
+ 
+ /**
+  * gst_v4l2_buffer_pool_get:
+- * @pool: the pool
++ * @pool:   the "this" object
++ * @blocking:  should this call suspend until there is a buffer available
++ *    in the buffer pool?
+  *
+  * Get an available buffer in the pool
+  */
+ GstV4l2Buffer *
+-gst_v4l2_buffer_pool_get (GstV4l2BufferPool * pool)
++gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool, gboolean blocking)
+ {
+-  GstV4l2Buffer *buf = g_async_queue_try_pop (pool->avail_buffers);
++  GstV4l2Buffer *buf;
+ 
+-  if (buf)
++  if (blocking) {
++    buf = g_async_queue_pop (pool->avail_buffers);
++  } else {
++    buf = g_async_queue_try_pop (pool->avail_buffers);
++  }
++
++  if (buf) {
+     GST_BUFFER_SIZE (buf) = buf->vbuffer.length;
++    GST_BUFFER_FLAG_UNSET (buf, 0xffffffff);
++  }
+ 
+   pool->running = TRUE;
+ 
+diff --git a/sys/v4l2/gstv4l2bufferpool.h b/sys/v4l2/gstv4l2bufferpool.h
+index 36a4220..1fe4f43 100644
+--- a/sys/v4l2/gstv4l2bufferpool.h
++++ b/sys/v4l2/gstv4l2bufferpool.h
+@@ -84,7 +84,7 @@ void gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool);
+ GstV4l2BufferPool *gst_v4l2_buffer_pool_new (GstElement *v4l2elem, gint fd, gint num_buffers, GstCaps * caps, gboolean requeuebuf, enum v4l2_buf_type type);
+ 
+ 
+-GstV4l2Buffer *gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool);
++GstV4l2Buffer *gst_v4l2_buffer_pool_get (GstV4l2BufferPool *pool, gboolean blocking);
+ gboolean gst_v4l2_buffer_pool_qbuf (GstV4l2BufferPool *pool, GstV4l2Buffer *buf);
+ GstV4l2Buffer *gst_v4l2_buffer_pool_dqbuf (GstV4l2BufferPool *pool);
+ 
+diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
+index 1a15947..5b10cc9 100644
+--- a/sys/v4l2/gstv4l2object.c
++++ b/sys/v4l2/gstv4l2object.c
+@@ -34,7 +34,7 @@
+ 
+ #include "v4l2_calls.h"
+ #include "gstv4l2tuner.h"
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+ #include "gstv4l2xoverlay.h"
+ #endif
+ #include "gstv4l2colorbalance.h"
+@@ -587,7 +587,7 @@ gst_v4l2_object_start (GstV4l2Object * v4l2object)
+   else
+     return FALSE;
+ 
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   gst_v4l2_xoverlay_start (v4l2object);
+ #endif
+ 
+@@ -597,7 +597,7 @@ gst_v4l2_object_start (GstV4l2Object * v4l2object)
+ gboolean
+ gst_v4l2_object_stop (GstV4l2Object * v4l2object)
+ {
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   gst_v4l2_xoverlay_stop (v4l2object);
+ #endif
+ 
+diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
+index d2d5cb3..971bfef 100644
+--- a/sys/v4l2/gstv4l2sink.c
++++ b/sys/v4l2/gstv4l2sink.c
+@@ -43,7 +43,7 @@
+ 
+ 
+ #include "gstv4l2colorbalance.h"
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+ #include "gstv4l2xoverlay.h"
+ #endif
+ #include "gstv4l2vidorient.h"
+@@ -63,7 +63,8 @@ GST_ELEMENT_DETAILS ("Video (video4linux2) Sink",
+ GST_DEBUG_CATEGORY (v4l2sink_debug);
+ #define GST_CAT_DEFAULT v4l2sink_debug
+ 
+-#define PROP_DEF_QUEUE_SIZE         8
++#define PROP_DEF_QUEUE_SIZE         12
++#define PROP_DEF_MIN_QUEUED_BUFS    1
+ #define DEFAULT_PROP_DEVICE   "/dev/video1"
+ 
+ enum
+@@ -71,16 +72,21 @@ enum
+   PROP_0,
+   V4L2_STD_OBJECT_PROPS,
+   PROP_QUEUE_SIZE,
++  PROP_MIN_QUEUED_BUFS,
+   PROP_OVERLAY_TOP,
+   PROP_OVERLAY_LEFT,
+   PROP_OVERLAY_WIDTH,
+   PROP_OVERLAY_HEIGHT,
++  PROP_CROP_TOP,
++  PROP_CROP_LEFT,
++  PROP_CROP_WIDTH,
++  PROP_CROP_HEIGHT,
+ };
+ 
+ 
+ GST_IMPLEMENT_V4L2_PROBE_METHODS (GstV4l2SinkClass, gst_v4l2sink);
+ GST_IMPLEMENT_V4L2_COLOR_BALANCE_METHODS (GstV4l2Sink, gst_v4l2sink);
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+ GST_IMPLEMENT_V4L2_XOVERLAY_METHODS (GstV4l2Sink, gst_v4l2sink);
+ #endif
+ GST_IMPLEMENT_V4L2_VIDORIENT_METHODS (GstV4l2Sink, gst_v4l2sink);
+@@ -90,7 +96,7 @@ gst_v4l2sink_iface_supported (GstImplementsInterface * iface, GType iface_type)
+ {
+   GstV4l2Object *v4l2object = GST_V4L2SINK (iface)->v4l2object;
+ 
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   g_assert (iface_type == GST_TYPE_X_OVERLAY ||
+       iface_type == GST_TYPE_COLOR_BALANCE ||
+       iface_type == GST_TYPE_VIDEO_ORIENTATION);
+@@ -102,7 +108,7 @@ gst_v4l2sink_iface_supported (GstImplementsInterface * iface, GType iface_type)
+   if (v4l2object->video_fd == -1)
+     return FALSE;
+ 
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   if (iface_type == GST_TYPE_X_OVERLAY && !GST_V4L2_IS_OVERLAY (v4l2object))
+     return FALSE;
+ #endif
+@@ -127,7 +133,7 @@ gst_v4l2sink_init_interfaces (GType type)
+     NULL,
+     NULL,
+   };
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   static const GInterfaceInfo v4l2_xoverlay_info = {
+     (GInterfaceInitFunc) gst_v4l2sink_xoverlay_interface_init,
+     NULL,
+@@ -152,7 +158,7 @@ gst_v4l2sink_init_interfaces (GType type)
+ 
+   g_type_add_interface_static (type,
+       GST_TYPE_IMPLEMENTS_INTERFACE, &v4l2iface_info);
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   g_type_add_interface_static (type, GST_TYPE_X_OVERLAY, &v4l2_xoverlay_info);
+ #endif
+   g_type_add_interface_static (type,
+@@ -234,6 +240,12 @@ gst_v4l2sink_class_init (GstV4l2SinkClass * klass)
+           "Number of buffers to be enqueud in the driver in streaming mode",
+           GST_V4L2_MIN_BUFFERS, GST_V4L2_MAX_BUFFERS, PROP_DEF_QUEUE_SIZE,
+           G_PARAM_READWRITE));
++  g_object_class_install_property (gobject_class, PROP_MIN_QUEUED_BUFS,
++      g_param_spec_uint ("min-queued-bufs", "Minimum queued bufs",
++          "Minimum number of queued bufs; v4l2sink won't dqbuf if the driver "
++          "doesn't have more than this number (which normally you shouldn't change)",
++          0, GST_V4L2_MAX_BUFFERS, PROP_DEF_MIN_QUEUED_BUFS,
++          G_PARAM_READWRITE));
+   g_object_class_install_property (gobject_class, PROP_OVERLAY_TOP,
+       g_param_spec_int ("overlay-top", "Overlay top",
+           "The topmost (y) coordinate of the video overlay; top left corner of screen is 0,0",
+@@ -251,10 +263,26 @@ gst_v4l2sink_class_init (GstV4l2SinkClass * klass)
+           "The height of the video overlay; default is equal to negotiated image height",
+           0, 0xffffffff, 0, G_PARAM_READWRITE));
+ 
++  g_object_class_install_property (gobject_class, PROP_CROP_TOP,
++      g_param_spec_int ("crop-top", "Crop top",
++          "The topmost (y) coordinate of the video crop; top left corner of image is 0,0",
++          0x80000000, 0x7fffffff, 0, G_PARAM_READWRITE));
++  g_object_class_install_property (gobject_class, PROP_CROP_LEFT,
++      g_param_spec_int ("crop-left", "Crop left",
++          "The leftmost (x) coordinate of the video crop; top left corner of image is 0,0",
++          0x80000000, 0x7fffffff, 0, G_PARAM_READWRITE));
++  g_object_class_install_property (gobject_class, PROP_CROP_WIDTH,
++      g_param_spec_uint ("crop-width", "Crop width",
++          "The width of the video crop; default is equal to negotiated image width",
++          0, 0xffffffff, 0, G_PARAM_READWRITE));
++  g_object_class_install_property (gobject_class, PROP_CROP_HEIGHT,
++      g_param_spec_uint ("crop-height", "Crop height",
++          "The height of the video crop; default is equal to negotiated image height",
++          0, 0xffffffff, 0, G_PARAM_READWRITE));
++
+   basesink_class->get_caps = GST_DEBUG_FUNCPTR (gst_v4l2sink_get_caps);
+   basesink_class->set_caps = GST_DEBUG_FUNCPTR (gst_v4l2sink_set_caps);
+   basesink_class->buffer_alloc = GST_DEBUG_FUNCPTR (gst_v4l2sink_buffer_alloc);
+-  basesink_class->preroll = GST_DEBUG_FUNCPTR (gst_v4l2sink_show_frame);
+   basesink_class->render = GST_DEBUG_FUNCPTR (gst_v4l2sink_show_frame);
+ }
+ 
+@@ -274,11 +302,13 @@ gst_v4l2sink_init (GstV4l2Sink * v4l2sink, GstV4l2SinkClass * klass)
+ 
+   /* number of buffers requested */
+   v4l2sink->num_buffers = PROP_DEF_QUEUE_SIZE;
++  v4l2sink->min_queued_bufs = PROP_DEF_MIN_QUEUED_BUFS;
+ 
+   v4l2sink->probed_caps = NULL;
+   v4l2sink->current_caps = NULL;
+ 
+   v4l2sink->overlay_fields_set = 0;
++  v4l2sink->crop_fields_set = 0;
+   v4l2sink->state = 0;
+ }
+ 
+@@ -320,15 +350,15 @@ enum
+ };
+ 
+ /*
+- * flags to indicate which overlay properties the user has set (and therefore
+- * which ones should override the defaults from the driver)
++ * flags to indicate which overlay/crop properties the user has set (and
++ * therefore which ones should override the defaults from the driver)
+  */
+ enum
+ {
+-  OVERLAY_TOP_SET = 0x01,
+-  OVERLAY_LEFT_SET = 0x02,
+-  OVERLAY_WIDTH_SET = 0x04,
+-  OVERLAY_HEIGHT_SET = 0x08
++  RECT_TOP_SET = 0x01,
++  RECT_LEFT_SET = 0x02,
++  RECT_WIDTH_SET = 0x04,
++  RECT_HEIGHT_SET = 0x08
+ };
+ 
+ static void
+@@ -345,13 +375,20 @@ gst_v4l2sink_sync_overlay_fields (GstV4l2Sink * v4l2sink)
+     g_return_if_fail (v4l2_ioctl (fd, VIDIOC_G_FMT, &format) >= 0);
+ 
+     if (v4l2sink->overlay_fields_set) {
+-      if (v4l2sink->overlay_fields_set & OVERLAY_TOP_SET)
++
++      GST_DEBUG_OBJECT (v4l2sink,
++          "setting overlay: overlay_fields_set=0x%02, top=%d, left=%d, width=%d, height=%d",
++          v4l2sink->overlay_fields_set,
++          v4l2sink->overlay.top, v4l2sink->overlay.left,
++          v4l2sink->overlay.width, v4l2sink->overlay.height);
++
++      if (v4l2sink->overlay_fields_set & RECT_TOP_SET)
+         format.fmt.win.w.top = v4l2sink->overlay.top;
+-      if (v4l2sink->overlay_fields_set & OVERLAY_LEFT_SET)
++      if (v4l2sink->overlay_fields_set & RECT_LEFT_SET)
+         format.fmt.win.w.left = v4l2sink->overlay.left;
+-      if (v4l2sink->overlay_fields_set & OVERLAY_WIDTH_SET)
++      if (v4l2sink->overlay_fields_set & RECT_WIDTH_SET)
+         format.fmt.win.w.width = v4l2sink->overlay.width;
+-      if (v4l2sink->overlay_fields_set & OVERLAY_HEIGHT_SET)
++      if (v4l2sink->overlay_fields_set & RECT_HEIGHT_SET)
+         format.fmt.win.w.height = v4l2sink->overlay.height;
+ 
+       g_return_if_fail (v4l2_ioctl (fd, VIDIOC_S_FMT, &format) >= 0);
+@@ -362,6 +399,44 @@ gst_v4l2sink_sync_overlay_fields (GstV4l2Sink * v4l2sink)
+   }
+ }
+ 
++static void
++gst_v4l2sink_sync_crop_fields (GstV4l2Sink * v4l2sink)
++{
++  if (GST_V4L2_IS_OPEN (v4l2sink->v4l2object)) {
++
++    gint fd = v4l2sink->v4l2object->video_fd;
++    struct v4l2_crop crop;
++
++    memset (&crop, 0x00, sizeof (struct v4l2_crop));
++    crop.type = V4L2_BUF_TYPE_VIDEO_OUTPUT;
++
++    g_return_if_fail (v4l2_ioctl (fd, VIDIOC_G_CROP, &crop) >= 0);
++
++    if (v4l2sink->crop_fields_set) {
++
++      GST_DEBUG_OBJECT (v4l2sink,
++          "setting crop: crop_fields_set=0x%02, top=%d, left=%d, width=%d, height=%d",
++          v4l2sink->crop_fields_set,
++          v4l2sink->crop.top, v4l2sink->crop.left,
++          v4l2sink->crop.width, v4l2sink->crop.height);
++
++      if (v4l2sink->crop_fields_set & RECT_TOP_SET)
++        crop.c.top = v4l2sink->crop.top;
++      if (v4l2sink->crop_fields_set & RECT_LEFT_SET)
++        crop.c.left = v4l2sink->crop.left;
++      if (v4l2sink->crop_fields_set & RECT_WIDTH_SET)
++        crop.c.width = v4l2sink->crop.width;
++      if (v4l2sink->crop_fields_set & RECT_HEIGHT_SET)
++        crop.c.height = v4l2sink->crop.height;
++
++      g_return_if_fail (v4l2_ioctl (fd, VIDIOC_S_CROP, &crop) >= 0);
++      v4l2sink->crop_fields_set = 0;
++    }
++
++    v4l2sink->crop = crop.c;
++  }
++}
++
+ 
+ static void
+ gst_v4l2sink_set_property (GObject * object,
+@@ -375,26 +450,49 @@ gst_v4l2sink_set_property (GObject * object,
+       case PROP_QUEUE_SIZE:
+         v4l2sink->num_buffers = g_value_get_uint (value);
+         break;
++      case PROP_MIN_QUEUED_BUFS:
++        v4l2sink->min_queued_bufs = g_value_get_uint (value);
++        break;
+       case PROP_OVERLAY_TOP:
+         v4l2sink->overlay.top = g_value_get_int (value);
+-        v4l2sink->overlay_fields_set |= OVERLAY_TOP_SET;
++        v4l2sink->overlay_fields_set |= RECT_TOP_SET;
+         gst_v4l2sink_sync_overlay_fields (v4l2sink);
+         break;
+       case PROP_OVERLAY_LEFT:
+         v4l2sink->overlay.left = g_value_get_int (value);
+-        v4l2sink->overlay_fields_set |= OVERLAY_LEFT_SET;
++        v4l2sink->overlay_fields_set |= RECT_LEFT_SET;
+         gst_v4l2sink_sync_overlay_fields (v4l2sink);
+         break;
+       case PROP_OVERLAY_WIDTH:
+         v4l2sink->overlay.width = g_value_get_uint (value);
+-        v4l2sink->overlay_fields_set |= OVERLAY_WIDTH_SET;
++        v4l2sink->overlay_fields_set |= RECT_WIDTH_SET;
+         gst_v4l2sink_sync_overlay_fields (v4l2sink);
+         break;
+       case PROP_OVERLAY_HEIGHT:
+         v4l2sink->overlay.height = g_value_get_uint (value);
+-        v4l2sink->overlay_fields_set |= OVERLAY_HEIGHT_SET;
++        v4l2sink->overlay_fields_set |= RECT_HEIGHT_SET;
+         gst_v4l2sink_sync_overlay_fields (v4l2sink);
+         break;
++      case PROP_CROP_TOP:
++        v4l2sink->crop.top = g_value_get_int (value);
++        v4l2sink->crop_fields_set |= RECT_TOP_SET;
++        gst_v4l2sink_sync_crop_fields (v4l2sink);
++        break;
++      case PROP_CROP_LEFT:
++        v4l2sink->crop.left = g_value_get_int (value);
++        v4l2sink->crop_fields_set |= RECT_LEFT_SET;
++        gst_v4l2sink_sync_crop_fields (v4l2sink);
++        break;
++      case PROP_CROP_WIDTH:
++        v4l2sink->crop.width = g_value_get_uint (value);
++        v4l2sink->crop_fields_set |= RECT_WIDTH_SET;
++        gst_v4l2sink_sync_crop_fields (v4l2sink);
++        break;
++      case PROP_CROP_HEIGHT:
++        v4l2sink->crop.height = g_value_get_uint (value);
++        v4l2sink->crop_fields_set |= RECT_HEIGHT_SET;
++        gst_v4l2sink_sync_crop_fields (v4l2sink);
++        break;
+       default:
+         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+         break;
+@@ -415,6 +513,9 @@ gst_v4l2sink_get_property (GObject * object,
+       case PROP_QUEUE_SIZE:
+         g_value_set_uint (value, v4l2sink->num_buffers);
+         break;
++      case PROP_MIN_QUEUED_BUFS:
++        g_value_set_uint (value, v4l2sink->min_queued_bufs);
++        break;
+       case PROP_OVERLAY_TOP:
+         g_value_set_int (value, v4l2sink->overlay.top);
+         break;
+@@ -427,6 +528,18 @@ gst_v4l2sink_get_property (GObject * object,
+       case PROP_OVERLAY_HEIGHT:
+         g_value_set_uint (value, v4l2sink->overlay.height);
+         break;
++      case PROP_CROP_TOP:
++        g_value_set_int (value, v4l2sink->crop.top);
++        break;
++      case PROP_CROP_LEFT:
++        g_value_set_int (value, v4l2sink->crop.left);
++        break;
++      case PROP_CROP_WIDTH:
++        g_value_set_uint (value, v4l2sink->crop.width);
++        break;
++      case PROP_CROP_HEIGHT:
++        g_value_set_uint (value, v4l2sink->crop.height);
++        break;
+       default:
+         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+         break;
+@@ -466,6 +579,12 @@ gst_v4l2sink_change_state (GstElement * element, GstStateChange transition)
+       }
+       break;
+     case GST_STATE_CHANGE_READY_TO_NULL:
++      /* destroy the buffer pool */
++      if (v4l2sink->pool)
++      {
++        gst_v4l2_buffer_pool_destroy (v4l2sink->pool);
++        v4l2sink->pool = NULL;
++      }
+       /* close the device */
+       if (!gst_v4l2_object_stop (v4l2sink->v4l2object))
+         return GST_STATE_CHANGE_FAILURE;
+@@ -517,7 +636,7 @@ gst_v4l2sink_get_caps (GstBaseSink * bsink)
+ 
+       tmp =
+           gst_v4l2_object_probe_caps_for_format (v4l2sink->v4l2object,
+-          format->pixelformat, template);
++              format->pixelformat, template);
+       if (tmp)
+         gst_caps_append (ret, tmp);
+ 
+@@ -591,8 +710,6 @@ gst_v4l2sink_set_caps (GstBaseSink * bsink, GstCaps * caps)
+     return FALSE;
+   }
+ 
+-  gst_v4l2sink_sync_overlay_fields (v4l2sink);
+-
+   v4l2sink->current_caps = gst_caps_ref (caps);
+ 
+   return TRUE;
+@@ -611,6 +728,27 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+     /* initialize the buffer pool if not initialized yet (first buffer): */
+     if (G_UNLIKELY (!v4l2sink->pool)) {
+ 
++      gboolean no_pending_streamon = FALSE;
++      char *driver = (char *) v4l2sink->v4l2object->vcap.driver;
++
++      /* the omap24xxvout driver wants us to start streaming before we
++       * queue the first buffer:
++       */
++      if (!strcmp("omap24xxvout", driver)) {
++        GST_DEBUG_OBJECT (v4l2sink, "enabling no_pending_streamon hack for omap24xxvout driver");
++        no_pending_streamon = TRUE;
++      }
++
++      /* temporary workaround for bug in omap_vout driver, when we ask
++       * for more than four buffers:
++       */
++      if (!strcmp("omap_vout", driver)) {
++        if (v4l2sink->num_buffers > 4) {
++          v4l2sink->num_buffers = 4;
++          GST_DEBUG_OBJECT (v4l2sink, "limiting to 4 buffers to work-around omap_vout driver bug");
++        }
++      }
++
+       /* set_caps() might not be called yet.. so just to make sure: */
+       if (!gst_v4l2sink_set_caps (bsink, caps)) {
+         return GST_FLOW_ERROR;
+@@ -624,7 +762,18 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+                   V4L2_BUF_TYPE_VIDEO_OUTPUT))) {
+         return GST_FLOW_ERROR;
+       }
+-      v4l2sink->state = STATE_PENDING_STREAMON;
++
++      gst_v4l2sink_sync_overlay_fields (v4l2sink);
++      gst_v4l2sink_sync_crop_fields (v4l2sink);
++
++      if (no_pending_streamon) {
++        if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
++          return GST_FLOW_ERROR;
++        }
++        v4l2sink->state = STATE_STREAMING;
++      } else {
++        v4l2sink->state = STATE_PENDING_STREAMON;
++      }
+ 
+       GST_INFO_OBJECT (v4l2sink, "outputting buffers via mmap()");
+ 
+@@ -634,7 +783,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+       }
+     }
+ 
+-    v4l2buf = gst_v4l2_buffer_pool_get (v4l2sink->pool);
++    v4l2buf = gst_v4l2_buffer_pool_get (v4l2sink->pool, TRUE);
+ 
+     if (G_LIKELY (v4l2buf)) {
+       GST_DEBUG_OBJECT (v4l2sink, "allocated buffer: %p", v4l2buf);
+@@ -671,7 +820,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+         &newbuf);
+ 
+     if (GST_FLOW_OK != ret) {
+-      return ret;
++      GST_DEBUG_OBJECT (v4l2sink, "dropping frame!  Consider increasing 'queue-size' property!");
++      return GST_FLOW_OK;
+     }
+ 
+     memcpy (GST_BUFFER_DATA (newbuf),
+@@ -686,6 +836,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+   if (!gst_v4l2_buffer_pool_qbuf (v4l2sink->pool, GST_V4L2_BUFFER (buf))) {
+     return GST_FLOW_ERROR;
+   }
++
+   if (v4l2sink->state == STATE_PENDING_STREAMON) {
+     if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
+       return GST_FLOW_ERROR;
+@@ -701,7 +852,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+    * just queued, then dequeue one immediately to make it available via
+    * _buffer_alloc():
+    */
+-  if (gst_v4l2_buffer_pool_available_buffers (v4l2sink->pool) > 1) {
++  if (gst_v4l2_buffer_pool_available_buffers (v4l2sink->pool) > v4l2sink->min_queued_bufs) {
+     GstV4l2Buffer *v4l2buf = gst_v4l2_buffer_pool_dqbuf (v4l2sink->pool);
+ 
+     /* note: if we get a buf, we don't want to use it directly (because
+diff --git a/sys/v4l2/gstv4l2sink.h b/sys/v4l2/gstv4l2sink.h
+index 71553cb..07a32bf 100644
+--- a/sys/v4l2/gstv4l2sink.h
++++ b/sys/v4l2/gstv4l2sink.h
+@@ -58,18 +58,19 @@ struct _GstV4l2Sink {
+   GstCaps *current_caps;        /* the current negotiated caps */
+   GstV4l2BufferPool *pool;
+   guint32 num_buffers;
++  guint32 min_queued_bufs;
+ 
+   /*
+-   * field to store requested overlay-top/left/width/height props:
++   * field to store requested overlay and crop top/left/width/height props:
+    * note, could maybe be combined with 'vwin' field in GstV4l2Object?
+    */
+-  struct v4l2_rect overlay;
++  struct v4l2_rect overlay, crop;
+ 
+   /*
+-   * bitmask to track which 'overlay' fields user has requested by
++   * bitmask to track which overlay and crop fields user has requested by
+    * setting properties:
+    */
+-  guint8 overlay_fields_set;
++  guint8 overlay_fields_set, crop_fields_set;
+ 
+   guint8 state;
+ };
+diff --git a/sys/v4l2/gstv4l2src.c b/sys/v4l2/gstv4l2src.c
+index 581ef5c..eba6039 100644
+--- a/sys/v4l2/gstv4l2src.c
++++ b/sys/v4l2/gstv4l2src.c
+@@ -51,7 +51,7 @@
+ 
+ #include "gstv4l2colorbalance.h"
+ #include "gstv4l2tuner.h"
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+ #include "gstv4l2xoverlay.h"
+ #endif
+ #include "gstv4l2vidorient.h"
+@@ -84,7 +84,7 @@ enum
+ GST_IMPLEMENT_V4L2_PROBE_METHODS (GstV4l2SrcClass, gst_v4l2src);
+ GST_IMPLEMENT_V4L2_COLOR_BALANCE_METHODS (GstV4l2Src, gst_v4l2src);
+ GST_IMPLEMENT_V4L2_TUNER_METHODS (GstV4l2Src, gst_v4l2src);
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+ GST_IMPLEMENT_V4L2_XOVERLAY_METHODS (GstV4l2Src, gst_v4l2src);
+ #endif
+ GST_IMPLEMENT_V4L2_VIDORIENT_METHODS (GstV4l2Src, gst_v4l2src);
+@@ -94,7 +94,7 @@ gst_v4l2src_iface_supported (GstImplementsInterface * iface, GType iface_type)
+ {
+   GstV4l2Object *v4l2object = GST_V4L2SRC (iface)->v4l2object;
+ 
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   g_assert (iface_type == GST_TYPE_TUNER ||
+       iface_type == GST_TYPE_X_OVERLAY ||
+       iface_type == GST_TYPE_COLOR_BALANCE ||
+@@ -108,7 +108,7 @@ gst_v4l2src_iface_supported (GstImplementsInterface * iface, GType iface_type)
+   if (v4l2object->video_fd == -1)
+     return FALSE;
+ 
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   if (iface_type == GST_TYPE_X_OVERLAY && !GST_V4L2_IS_OVERLAY (v4l2object))
+     return FALSE;
+ #endif
+@@ -138,7 +138,7 @@ gst_v4l2src_init_interfaces (GType type)
+     NULL,
+     NULL,
+   };
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   static const GInterfaceInfo v4l2_xoverlay_info = {
+     (GInterfaceInitFunc) gst_v4l2src_xoverlay_interface_init,
+     NULL,
+@@ -164,7 +164,7 @@ gst_v4l2src_init_interfaces (GType type)
+   g_type_add_interface_static (type,
+       GST_TYPE_IMPLEMENTS_INTERFACE, &v4l2iface_info);
+   g_type_add_interface_static (type, GST_TYPE_TUNER, &v4l2_tuner_info);
+-#if 0                           /* overlay is still not implemented #ifdef HAVE_XVIDEO */
++#ifdef HAVE_XVIDEO
+   g_type_add_interface_static (type, GST_TYPE_X_OVERLAY, &v4l2_xoverlay_info);
+ #endif
+   g_type_add_interface_static (type,
+diff --git a/sys/v4l2/gstv4l2xoverlay.c b/sys/v4l2/gstv4l2xoverlay.c
+index 5ac3020..117d295 100644
+--- a/sys/v4l2/gstv4l2xoverlay.c
++++ b/sys/v4l2/gstv4l2xoverlay.c
+@@ -37,6 +37,8 @@
+ #include "gstv4l2object.h"
+ #include "v4l2_calls.h"
+ 
++#include "gst/gst-i18n-plugin.h"
++
+ struct _GstV4l2Xv
+ {
+   Display *dpy;
+diff --git a/sys/v4l2/v4l2src_calls.c b/sys/v4l2/v4l2src_calls.c
+index 73de302..91fac35 100644
+--- a/sys/v4l2/v4l2src_calls.c
++++ b/sys/v4l2/v4l2src_calls.c
+@@ -69,7 +69,7 @@ gst_v4l2src_buffer_pool_activate (GstV4l2BufferPool * pool,
+ {
+   GstV4l2Buffer *buf;
+ 
+-  while ((buf = gst_v4l2_buffer_pool_get (pool)) != NULL)
++  while ((buf = gst_v4l2_buffer_pool_get (pool, FALSE)) != NULL)
+     if (!gst_v4l2_buffer_pool_qbuf (pool, buf))
+       goto queue_failed;
+ 
+-- 
+1.6.3.1
+
