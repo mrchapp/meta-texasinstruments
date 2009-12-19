@@ -61,7 +61,7 @@ do_install() {
 	oe_libinstall -so libpvrscope ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_X11WSEGL ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_BLITWSEGL ${D}${libdir}
-	oe_libinstall -so libpvrPVR2D_FLIPWSEGL ${D}${libdir}
+#	oe_libinstall -so libpvrPVR2D_FLIPWSEGL ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_FRONTWSEGL ${D}${libdir}
 
 	install -d ${D}${bindir}
@@ -79,6 +79,7 @@ do_install() {
 #	install -m 755 sgx_render_test ${D}${bindir}
 	install -m 755 pvr2d_test ${D}${bindir}
 	install -m 755 eglinfo ${D}${bindir}
+	install -m 755 render_on_dual ${D}${bindir}
 
 	install -m 644 glsltest1_vertshader.txt ${D}${bindir}
 	install -m 644 glsltest1_fragshaderA.txt ${D}${bindir}

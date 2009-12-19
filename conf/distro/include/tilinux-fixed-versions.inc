@@ -142,8 +142,8 @@ SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 #PREFERRED_VERSION_btfm =                "23-1.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
-SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.0.2"
+SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.1.1"
+SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.1.1"
 
 # open source dependencies
 
