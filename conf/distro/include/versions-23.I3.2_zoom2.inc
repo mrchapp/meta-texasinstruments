@@ -1,5 +1,5 @@
 # Zoom2 specific versions
 
 # baseport
-SRCREV_pn-x-load ?= "cac29bbbaa2b57b4062e7e0bde711d993ea8eac0"
-SRCREV_pn-u-boot ?= "2c5c4b4c5b44e697147be0d54fe49a12d5680dc1"
+SRCREV_pn-x-load ?= "630f563dd5777be51049f3eae9322b96c618a023"
+SRCREV_pn-u-boot ?= "9c58aa0ebbe49373c12c94d98093122c56a2e6bb"

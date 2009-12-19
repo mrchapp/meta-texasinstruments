@@ -37,8 +37,13 @@ SRC_URI = "git://git.omapzoom.org/repo/x-loader.git;branch=master;protocol=git \
 #"
 
 PV = "git${SRCREV}"
-
+UBOOT_SOURCE = "${TMPDIR}/work/${MULTIMACH_TARGET_SYS}/u-boot-git${SRCREV_pn-u-boot}-r0/git"
 do_configure() {
+cd ${S}/cpu/omap3
+ln -sf ${UBOOT_SOURCE}/cpu/omap3/mmc.c
+ln -sf ${UBOOT_SOURCE}/cpu/omap3/mmc_host_def.h
+ln -sf ${UBOOT_SOURCE}/cpu/omap3/mmc_protocol.h
+
 cd ${S}/include
 ln -sf ${STAGING_INCDIR}/u-boot/command.h
 ln -sf ${STAGING_INCDIR}/u-boot/fat.h
