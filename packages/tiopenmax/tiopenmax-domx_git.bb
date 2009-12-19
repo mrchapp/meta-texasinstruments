@@ -12,7 +12,7 @@ EXTRA_OECONF = "--enable-tests"
 
 inherit pkgconfig autotools
 
-FILES_${PN} += "${libdir}/*.so" ${bindir}/*
+FILES_${PN} += "${libdir}/*.so ${bindir}/*"
 FILES_${PN}-dev += "${libdir}/*.*a ${libdir}/pkgconfig/"
 FILES_${PN}-dbg += "${libdir}/.debug/ ${bindir}/.debug/"
 
