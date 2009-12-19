@@ -1,6 +1,6 @@
 require linux-omap.inc
 
-PR = "r3"
+PR = "r4"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;protocol=git \
           file://defconfig-omap-4430sdp \

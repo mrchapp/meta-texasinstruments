@@ -96,7 +96,8 @@ do_stage_append() {
               arch/arm/include/asm/hardware \
               drivers/media/video/tiler \
               include/trace \
-              include/trace/events
+              include/trace/events \
+              drivers/video/omap2/omapfb
     do
         install -d ${STAGING_KERNEL_DIR}/$ii
         install -m 0644 ${S}/$ii/*.h ${STAGING_KERNEL_DIR}/$ii
