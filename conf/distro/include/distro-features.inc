@@ -31,8 +31,11 @@ DISTRO_FEATURES += "gfx"
 # Enable 720p OpenMAX components
 DISTRO_FEATURES += "720p"
 
-# Enable support for TI's WLAN stack, Bluetooth and FM stack
-#DISTRO_FEATURES += "tibluetooth tiwifi"
+# Enable support for Bluetooth and FM stack
+#DISTRO_FEATURES += "tibluetooth"
+
+# Enable support for TI's WLAN
+DISTRO_FEATURES += "tiwifi"
 
 # Enable support for TI's GPS
 #DISTRO_FEATURES += "gps"
