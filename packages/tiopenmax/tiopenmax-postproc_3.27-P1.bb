@@ -3,7 +3,7 @@ DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-lcml tiopenmax-rmproxy tiope
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-patterns ${PN}-dev ${PN}"
 
-require tiopenmax-cspec-${PV}.inc
+require tiopenmax-cspec-3.27.inc
 
 CCASE_PATHFETCH = "\
 	/vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/post_processor \
