@@ -53,8 +53,6 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
-			echo "CONFIG_WIRELESS=y"  >> ${S}/arch/arm/configs/omap_zoom3_defconfig
-			sed -i "s/CONFIG_MODVERSIONS=y/CONFIG_MODVERSIONS=n/" ${S}/arch/arm/configs/omap_zoom3_defconfig
 			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
