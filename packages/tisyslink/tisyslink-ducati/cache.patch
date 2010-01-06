@@ -1,13 +1,15 @@
 --- a/ducati_cfg/DucatiAmmu.cfg
 +++ b/ducati_cfg/DucatiAmmu.cfg
-@@ -38,7 +38,10 @@
+@@ -37,6 +37,12 @@
+  *  applications running on either Bios6 or Linux.
   */
   
- Cache = xdc.useModule('ti.sysbios.hal.unicache.Cache');
- Cache.enableCache = false;
++Cache = xdc.useModule('ti.sysbios.hal.unicache.Cache');
++Cache.enableCache = false;
 +
 +var hCache = xdc.useModule('ti.sysbios.hal.Cache');
 +hCache.CacheProxy = xdc.useModule('ti.sysbios.hal.CacheNull');
- 
++
  var AMMU = xdc.useModule('ti.sysbios.hal.ammu.AMMU');
  
+ /*********************** Small Pages *************************/

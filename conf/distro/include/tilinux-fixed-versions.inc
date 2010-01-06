@@ -1,23 +1,22 @@
 
 # baseport
-SRCREV_pn-x-load-emmc  =            "L24.2"
-SRCREV_pn-x-load-sdmmc  =           "L24.2"
+SRCREV_pn-x-load  =                 "25648d474286f683ff79d6f3f018b15f8d7b4306"
 SRCREV_pn-u-boot =                  "L24.2"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.2-p1"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.3-for-testing-p1"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "79a9207b43499221b3b027f069fa0426e8bafdb1"
 
 # Tesla Bridge
-SRCREV_pn-tidspbridge-lib            =      "ti-syslink-mpu-rls-24.2"
+SRCREV_pn-tidspbridge-lib            =      "ti-syslink-mpu-pre-rls-24.3"
 SRCREV_pn-tidspbridge-tesla          =      "BRIDGE-DSP_RLS_0.13"
 SRCREV_pn-tidspbridge-dllcreate      =      "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
-SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.2"
+SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-pre-rls-24.3"
 SRCREV_pn-titiler-memmgr             =      "l24.2.rel"
 SRCREV_pn-titiler-d2cmap             =      "l24.2.rel"
-SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.14"
+SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.15"
 SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.09.00.00"
 
 # Tesla/Ducati external tools
