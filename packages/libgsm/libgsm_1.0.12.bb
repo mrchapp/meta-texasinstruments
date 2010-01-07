@@ -4,9 +4,9 @@ PRIORITY = "optional"
 #DEPENDS = ""
 LICENSE = "libgsm"
 
-PR = "r1"
+PR = "r2"
 
-SRC_URI = "http://user.cs.tu-berlin.de/~jutta/gsm/gsm-${PV}.tar.gz \
+SRC_URI = "http://distro.ibiblio.org/pub/linux/distributions/amigolinux/download/Libs/gsm-${PV}/Resources/gsm-${PV}.tar.gz \
 	   file://01_makefile.patch;patch=1 \
            file://02_cplusplus.patch;patch=1 \
            file://03_config.patch;patch=1 \
