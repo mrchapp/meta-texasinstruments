@@ -1,0 +1,13 @@
+Index: git/arch/arm/plat-omap/omap-pm-srf.c
+===================================================================
+--- git.orig/arch/arm/plat-omap/omap-pm-srf.c	2010-01-08 10:15:37.000047000 +0100
++++ git/arch/arm/plat-omap/omap-pm-srf.c	2010-01-08 10:16:28.000026000 +0100
+@@ -91,6 +91,8 @@
+ 	}
+ }
+ 
++EXPORT_SYMBOL(omap_pm_set_min_bus_tput);
++
+ void omap_pm_set_max_dev_wakeup_lat(struct device *dev, long t)
+ {
+ 	struct omap_device *odev;
