@@ -10,7 +10,7 @@ ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "tibluetooth", "btfm", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "tibluetooth", "fmapp", "", d)} \
+#	${@base_contains("DISTRO_FEATURES", "tibluetooth", "fmapp", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "wilink", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "iperf", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
