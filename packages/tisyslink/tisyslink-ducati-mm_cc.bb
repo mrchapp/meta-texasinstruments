@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Multimedia S/w"
 LICENSE = "LGPL"
-PR = "r4"
+PR = "r5"
 
 DEPENDS = " \
    tisyslink-ducati \
@@ -28,6 +28,7 @@ CCASE_PATHFETCH = "/vobs/WTSD_DucatiMMSW"
 CCASE_PATHCOMPONENT = "vobs"
 CCASE_PATHCOMPONENTS = "0"
 
+SRC_URI += "file://lbce_test.patch;patch=1"
 
 XDCPATH += "\
 ${STAGING_BINDIR}/syslink/ducati/ipc;\

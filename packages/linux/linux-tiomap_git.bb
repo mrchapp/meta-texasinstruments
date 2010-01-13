@@ -1,9 +1,10 @@
 require linux-omap.inc
 
-PR = "r4"
+PR = "r5"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap4.git;protocol=git \
           file://defconfig-omap-4430sdp \
+          file://0001-DSS2-SPINLOCK-DEADLOCK-ISSUE-FIX.patch;patch=1 \
           ${@base_contains("DISTRO_FEATURES", "hdmi", "https://gforge01.dal.design.ti.com/gf/download/docmanfileversion/499/2970/OMAP4_HDMI_AV_coreLib_TI_restricted_L24.1_E_EDID_v4.patch;patch=1", "", d)} \
 "
 

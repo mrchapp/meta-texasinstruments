@@ -1,0 +1,52 @@
+From: Mayuresh Janorkar <mayur@ti.com>
+Date: Tue, 12th Jan 2010
+Subject: [PATCH] DSS2 spinlock deadlock issue
+
+        This patch makes use of correct API for spinlock
+        sothat it removes the problem of deadlock which
+	was observed previously. Now manager is making use
+	of spin_lock_irqsave, spin_unlock_irqrestore APIs
+	in dss_apply_irq_handler
+
+	dss_apply_irq_handler is not a function handling irqs.
+	but this function which gets called from interrupt and
+	non-interrupt context as well. That is why we were seeing
+	the deadlock.
+	Now as this function is called from any context, we are
+	storing and restoring the irqs every time. So in case of
+	a call from non-interrupt context, the irqs are saved and
+	restored. So the deadlock is not seen.
+
+Signed-off-by: Mayuresh Janorkar <mayur@ti.com>
+---
+ drivers/video/omap2/dss/manager.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+Index: kernel-omap4/drivers/video/omap2/dss/manager.c
+===================================================================
+--- kernel-omap4.orig/drivers/video/omap2/dss/manager.c	2010-01-12 16:07:40.000000000 +0530
++++ kernel-omap4/drivers/video/omap2/dss/manager.c	2010-01-12 16:10:59.000000000 +0530
+@@ -1112,12 +1112,12 @@
+ 	const int num_mgrs = ARRAY_SIZE(dss_cache.manager_cache);
+ 	int i, r;
+ 	bool mgr_busy[MAX_DSS_MANAGERS];
++	unsigned long flags;
+ 
+ 	for (i = 0; i < num_mgrs; i++)
+ 		mgr_busy[i] = dispc_go_busy(i);
+ 
+-	spin_lock(&dss_cache.lock);
+-
++	spin_lock_irqsave(&dss_cache.lock, flags);
+ 	for (i = 0; i < num_ovls; ++i) {
+ 		oc = &dss_cache.overlay_cache[i];
+ 		if (!mgr_busy[oc->channel])
+@@ -1156,7 +1156,7 @@
+ 	dss_cache.irq_enabled = false;
+ 
+ end:
+-	spin_unlock(&dss_cache.lock);
++	spin_unlock_irqrestore(&dss_cache.lock, flags);
+ }
+ 
+ static int omap_dss_mgr_apply(struct omap_overlay_manager *mgr)

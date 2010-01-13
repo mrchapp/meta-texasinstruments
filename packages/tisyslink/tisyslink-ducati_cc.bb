@@ -20,8 +20,6 @@ CCASE_PATHCOMPONENTS = "3"
 
 FILES_${PN}="/syslink/"
 
-SRC_URI += "file://cache.patch;patch=1"
-
 inherit ccasefetch
 
 
