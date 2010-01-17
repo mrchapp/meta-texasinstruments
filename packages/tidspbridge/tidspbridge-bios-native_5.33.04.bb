@@ -1,19 +1,13 @@
 SECTION = "toolchains"
 PRIORITY = "optional"
-DESCRIPTION = "Texas Instruments DSP Toolchain"
+DESCRIPTION = "Texas Instruments DSP BIOS"
 LICENSE = "Texas Instruments"
-PR = "r1"
+PR = "r0"
 
-inherit dfetch native
+inherit sdotools
 
-DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/BIOS-${PV}"
-DIRAC_PATHCOMPONENT = "BIOS-${PV}"
-DIRAC_PATHCOMPONENTS = 6
+SDOVERS = 5_33_04
 
-do_stage() {
-	chmod -R +w ${S}/*
-	install -d ${STAGING_BINDIR}/dspbridge/tools
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/tools
-	chmod -R +wx ${STAGING_BINDIR}/dspbridge/tools	
-	ln -s ${STAGING_BINDIR}/dspbridge/tools ${STAGING_BINDIR}/dspbridge/tools/bios_5_33_04
-}
+SDOFILE = bios_setuplinux_${SDOVERS}.bin
+
+SDOPATH = "BIOS/${SDOVERS}/exports/${SDOFILE}"
