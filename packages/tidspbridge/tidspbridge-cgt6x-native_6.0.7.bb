@@ -1,18 +1,13 @@
 SECTION = "toolchains"
 PRIORITY = "optional"
-DESCRIPTION = "Texas Instruments codegen tools"
+DESCRIPTION = "Texas Instruments C6x Code generation tools"
 LICENSE = "Texas Instruments"
-PR = "r1"
+PR = "r0"
 
-inherit dfetch native
+inherit sdotools-cgt
+SDOFILE = "ti_cgt_c6000_6.0.7_setup_linux_x86.bin"
 
-DIRAC_PATHFETCH = "/data/omapts/linux/dsp-tc/cgt6x-${PV}"
-DIRAC_PATHCOMPONENT = "cgt6x-${PV}"
-DIRAC_PATHCOMPONENTS = 4
+SDOPATH = "c60/rel6_0_7/build/install/${SDOFILE}"
 
-do_stage() {
-	chmod -R +w ${S}/*
-	install -d ${STAGING_BINDIR}/dspbridge/tools/cgt6x-${PV}
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/tools
-	chmod -R +wx ${STAGING_BINDIR}/dspbridge/tools
-}
+# FIXME: this is cgt6x not 7x!
+SDONAME = "cgt6x"
