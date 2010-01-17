@@ -41,15 +41,9 @@ do_configure_prepend() {
 #					${S}/.config
 				;;
 			omap-3630sdp)
-                               echo "CONFIG_MPU_BRIDGE=m" >> ${S}/arch/arm/configs/omap_3630sdp_defconfig
-                               echo "CONFIG_BRIDGE_MEMPOOL_SIZE=0x600000" >> ${S}/arch/arm/configs/omap_3630sdp_defconfig
-                               echo "CONFIG_BRIDGE_DVFS=y"  >> ${S}/arch/arm/configs/omap_3630sdp_defconfig
 				yes '' | oe_runmake omap_3630sdp_defconfig
 				;;
 			zoom2)
-                               echo "CONFIG_MPU_BRIDGE=m" >> ${S}/arch/arm/configs/omap_zoom2_defconfig
-                               echo "CONFIG_BRIDGE_MEMPOOL_SIZE=0x600000" >> ${S}/arch/arm/configs/omap_zoom2_defconfig
-                               echo "CONFIG_BRIDGE_DVFS=y"  >> ${S}/arch/arm/configs/omap_zoom2_defconfig
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
