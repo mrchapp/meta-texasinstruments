@@ -19,7 +19,7 @@ SRC_URI = "git://dev.omapzoom.org/pub/scm/tidspbridge/userspace-dspbridge.git;pr
 do_compile() {
 	cd ${S}/source
 	oe_runmake  KRNLSRC=${STAGING_KERNEL_DIR}  \
-		 DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools .samples
+		 DEPOT=${STAGING_BINDIR_NATIVE}/titools .samples
 }
 
 do_stage() {

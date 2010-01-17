@@ -24,7 +24,7 @@ do_compile() {
 
 	cd ${S}/source
 	oe_runmake  KRNLSRC=${STAGING_KERNEL_DIR}  \
-		 DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools .api
+		 DEPOT=${STAGING_BINDIR_NATIVE}/titools .api
 
 }
 

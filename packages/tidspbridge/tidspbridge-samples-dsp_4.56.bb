@@ -21,10 +21,10 @@ CCASE_PATHFETCH = "/vobs/SDS/Source/Bridge/dsp"
 CCASE_PATHCOMPONENT = "dsp"
 CCASE_PATHCOMPONENTS = "4"
 
-ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
+ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/titools \
 	   DBS_BRIDGE_DIR_C64=${S} \
-	   DBS_SABIOS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
-	   DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools/cgt6x-6.0.7 \
+	   DBS_SABIOS_DIR_C64=${STAGING_BINDIR_NATIVE}/titools/bios_5_33_04 \
+	   DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR_NATIVE}/tiools/cgt6x-6.0.7 \
 	   DBS_FC=${S}/bdsptools/framework_components_1_10_04/packages-bld \
 	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
 "
