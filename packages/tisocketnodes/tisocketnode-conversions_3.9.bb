@@ -12,11 +12,11 @@ CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/video/lib/conversions"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
 CCASE_PATHCOMPONENTS = "2"
 
-ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
+ENV_VAR = "DEPOT=${STAGING_BINDIR_NATIVE}/titools \
 	   DSPMAKEROOT=${S}/make \
 	   DBS_BRIDGE_DIR_C64=${STAGING_BINDIR}/dspbridge/dsp \
-	   DBS_SABIOS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools \
-	   DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR_NATIVE}/dspbridge/tools/cgt6x-6.0.7 \
+	   DBS_SABIOS_DIR_C64=${STAGING_BINDIR_NATIVE}/titools/bios_5_33_04 \
+	   DBS_CGTOOLS_DIR_C64=${STAGING_BINDIR_NATIVE}/titools/cgt6x-6.0.7 \
 	   DBS_FC=${STAGING_BINDIR}/dspbridge/dsp/bdsptools/framework_components_1_10_04/packages-bld \
 	   DLLCREATE_DIR=${STAGING_BINDIR_NATIVE}/DLLcreate \
 "
@@ -47,7 +47,7 @@ do_compile() {
 	cp -a ${STAGING_BINDIR}/dspbridge/make/* ${S}/make 
 	## Setting PATH for gmake
 	pathorig=$PATH
-	export PATH=$PATH:${STAGING_BINDIR_NATIVE}/dspbridge/tools/xdctools
+	export PATH=$PATH:${STAGING_BINDIR_NATIVE}/titools/bios_5_33_04/xdctools
 	chmod -R +w ${S}/*
 	cd ${S}/video/lib/conversions
 	sed -e 's%\\%\/%g' makefile > makefile.linux
