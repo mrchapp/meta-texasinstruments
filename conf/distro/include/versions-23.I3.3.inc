@@ -13,7 +13,11 @@ PREFERRED_VERSION_omap-image-minimal.bb =		"1.0"
 PREFERRED_VERSION_omap-image-mm.bb =			"1.0"
 PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
-# Linux TIOMAP kernel
+# u-boot & x-loader for zoom2 - zoom3 - omap3630sdp
+SRCREV_pn-x-load ?= "630f563dd5777be51049f3eae9322b96c618a023"
+SRCREV_pn-u-boot ?= "9c58aa0ebbe49373c12c94d98093122c56a2e6bb"
+
+# Linux TIOMAP kernel for zoom2 - zoom3 - omap3630sdp
 SRCREV_pn-linux-tiomap ?= "69eb2b26cc8b4d0a0db963a100c02d1acbfd90eb"
 
 # bridge and friends
