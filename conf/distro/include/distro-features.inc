@@ -34,7 +34,7 @@ DISTRO_FEATURES += "720p"
 # Enable support for Bluetooth and FM stack
 DISTRO_FEATURES += "tibluetooth"
 
-# Enable support for TI's WLAN
+# Enable support for TI's WLAN on zoom3 - no impact on other boards.
 DISTRO_FEATURES += "tiwifi"
 
 # Enable support for TI's GPS
