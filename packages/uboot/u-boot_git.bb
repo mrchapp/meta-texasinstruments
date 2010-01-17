@@ -2,7 +2,7 @@ require u-boot.inc
  
 PR = "r0"
  
-SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git \
+SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=next;protocol=git \
 "
 
 #SRC_URI = " \
