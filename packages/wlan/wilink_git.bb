@@ -19,6 +19,7 @@ PV = "23.i3+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
         file://makefile-ar.patch;patch=1 \
+	file://wlan.init \
          "
 do_compile() {
 	cd ${S}/platforms/os/linux
@@ -42,9 +43,28 @@ do_install() {
 	install -m 755 ${S}/platforms/os/linux/tiwlan.ini ${D}/wlan
 	install -m 755 ${S}/platforms/os/linux/tiwlan_loader ${D}/wlan
 	install -m 755 ${S}/platforms/os/linux/wlan_cu ${D}/wlan
+	
+	install -d ${D}/etc/init.d
+	install -d ${D}/etc/rc0.d
+	install -d ${D}/etc/rc1.d
+	install -d ${D}/etc/rc2.d
+	install -d ${D}/etc/rc3.d
+	install -d ${D}/etc/rc4.d
+	install -d ${D}/etc/rc5.d
+	install -d ${D}/etc/rc6.d
+	
+	install -m 755 ${FILESDIR}/wlan.init ${D}/etc/init.d/wlan
+	
+	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
+	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
+	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
 }
 
 FILES_${PN} = "\
+	/etc/*/* \
 	/wlan/firmware.bin \
 	/wlan/sdio.ko \
 	/wlan/tiwlan_drv.ko \
