@@ -18,7 +18,7 @@ S = "${WORKDIR}/git"
 
 PV = "23.0+git+${SRCREV}"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/tidspbridge/userspace-dspbridge.git;protocol=git;branch=bridge-2.6.31"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/tidspbridge/userspace-dspbridge.git;protocol=git;branch=master"
 
 do_compile() {
 
