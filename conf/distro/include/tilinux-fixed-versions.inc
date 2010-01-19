@@ -132,7 +132,6 @@ SRCREV_pn-tiopenmax-core              = "L24.2"
 SRCREV_pn-tiopenmax-osal              = "L24.2"
 SRCREV_pn-tiopenmax-domx              = "L24.2"
 SRCREV_pn-tiopenmax-video-sample      = "TI-MM-DUCATI_RLS.01.09.00.00"
-SRCREV_pn-tiopenmax-video-omx         = "l24.1.rel"
 
 
 # connectivity
