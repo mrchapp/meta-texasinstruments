@@ -27,7 +27,7 @@ PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.56"
 PREFERRED_VERSION_tidspbridge-extra =		"23.13"
 PREFERRED_VERSION_tidspbridge-cgt6x =		"6.0.7"
 PREFERRED_VERSION_tidspbridge-bios =		"5.33.04"
-PREFERRED_VERSION_tidspbridge-dllcreate-native =	"23.11"
+PREFERRED_VERSION_tidspbridge-dllcreate-native =	"1.72"
 
 # baseimage
 PREFERRED_VERSION_baseimage-masterconfig =		"23.x"

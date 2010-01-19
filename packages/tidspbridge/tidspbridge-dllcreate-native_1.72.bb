@@ -4,8 +4,8 @@ LICENSE = "Texas Instruments"
 PR = "r1"
 
 CCASE_SPEC = "%\
-              element /vobs/SDS/Source/Dload/dload/... .../dyn-load_rel_1.x/LATEST%\
-	      element * /main/LATEST%"
+              element /vobs/SDS/Source/Dload/dload/... DYN-LOADER_RLS_${PV}%\
+	      %"
 
 CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"
 CCASE_PATHCOMPONENT = "src"
