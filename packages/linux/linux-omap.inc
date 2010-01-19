@@ -80,6 +80,7 @@ do_stage_append() {
               arch/arm/include/asm/mach \
               arch/arm/include/asm/hardware \
               drivers/media/video/isp \
+	      drivers/video/omap2/omapfb \
               include/trace \
               include/trace/events 
     do
