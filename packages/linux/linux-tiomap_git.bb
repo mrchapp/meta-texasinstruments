@@ -2,7 +2,7 @@ require linux-omap.inc
 
 PR = "r1"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap3.git;protocol=git;branch=for_L23.I3.3"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap3.git;protocol=git;branch=L23.I3.3"
 
 PV = "2.6+git${SRCREV}"
 
@@ -18,9 +18,6 @@ DEFAULT_PREFERENCE = "1"
 #SRC_URI += " \
 #           file://<patch-name>.patch;patch=1 \
 #  	   "
-
-# work-around for touchscreen problem (remove this when proper soln is found):
-#ADD_DISTRO_FEATURES += "sed -i 's/# CONFIG_INTERCONNECT_IO_POSTING is not set/CONFIG_INTERCONNECT_IO_POSTING=y/' ${S}/.config"
 
 
 

@@ -33,8 +33,6 @@ do_configure_prepend() {
 				yes '' | oe_runmake ${MACHINE}_defconfig
 				;;
 		esac
-	echo "${ADD_DISTRO_FEATURES}"
-	${ADD_DISTRO_FEATURES}
 }
 
 do_deploy() {

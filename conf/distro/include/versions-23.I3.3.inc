@@ -15,10 +15,10 @@ PREFERRED_VERSION_omap-image-sato.bb =			"1.0
 
 # u-boot & x-loader for zoom2 - zoom3 - omap3630sdp
 SRCREV_pn-x-load ?= "251d92815500143aefdbe3b3558a0ce6daeaebdc"
-SRCREV_pn-u-boot ?= "61e08010b0b9835368457bcd5787ecfedc2c5c3e"
+SRCREV_pn-u-boot ?= "ab45d2a787a9674bed30542139175d8e090e0749"
 
 # Linux TIOMAP kernel for zoom2 - zoom3 - omap3630sdp
-SRCREV_pn-linux-tiomap ?= "784d205096a942cd56a3c2580cadbf201225df8c"
+SRCREV_pn-linux-tiomap ?= "2e3c681c6228de2a3f8fbb0cfbc940e7ea825a09"
 
 # bridge and friends
 SRCREV_pn-tidspbridge-lib = "d7ab60790b9be5a0337abfc6d51581c4a1ff056d"
