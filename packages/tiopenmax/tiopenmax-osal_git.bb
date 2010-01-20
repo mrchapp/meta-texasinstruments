@@ -6,6 +6,8 @@ require tiopenmax-system-git.inc
 
 S = "${WORKDIR}/git/system/mm_osal/"
 
+SRC_URI += "file://timm_osal_trace.patch;patch=1"
+
 inherit pkgconfig autotools
 
 FILES_${PN} += "${libdir}/*.so"

@@ -41,7 +41,7 @@ do_stage() {
 do_install() {
     install -d ${D}/syslink/
     cd ${S}/ipc/ti/sdo/samples
-    for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/*; do
+    for xem3 in ammu/debug/* frameq/debug/* heapbuf/debug/* listmp/debug/* messageq/debug/* notify/debug/* dmm/debug/* rcm/debug/* sysmgr/debug/* stress/debug/*; do
         if [ ! -e ${xem3} ]; then
             continue
         fi
