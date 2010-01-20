@@ -21,14 +21,14 @@ CCASE_PATHCOMPONENTS = "7"
 do_compile() {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 	cd ${S}/eurasiacon/build/linux/omap3630_linux/kbuild
-	oe_runmake EURASIAROOT=${S} KERNELDIR=${STAGING_KERNEL_DIR} \
+	oe_runmake EURASIAROOT=${S} KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} CROSS=${AR%-*}-
 }
 
 do_install() {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 	cd ${S}/eurasiacon/build/linux/omap3630_linux/kbuild
-	oe_runmake EURASIAROOT=${S} KERNELDIR=${STAGING_KERNEL_DIR} \
+	oe_runmake EURASIAROOT=${S} KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
 		install
 }

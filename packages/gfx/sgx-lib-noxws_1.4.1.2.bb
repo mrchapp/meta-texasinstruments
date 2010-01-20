@@ -34,14 +34,14 @@ do_chmod() {
 
 do_compile() {
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
-	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
+	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} V=1 SUPPORT_XWS=0
 }
 
 do_install() {
 	install -d ${D}/lib/modules/${KERNEL_VERSION}
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
-	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
+	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
 		SUPPORT_XWS=0 install
 
