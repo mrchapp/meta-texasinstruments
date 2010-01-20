@@ -1,8 +1,9 @@
+# PRE integration config spec for L23.I3.3
 CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 
 	# OMX Audio%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.27%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.28%\
 	
 	# OMX Video%\
         element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/post_processor/...  ACT_VIDEOLINUX-TV-OUT%\
@@ -12,7 +13,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.27%\
 	
 	# LCML & core%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.27%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.28%\
 	
 	# OMX Application%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.27%\
