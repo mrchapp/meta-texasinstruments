@@ -28,8 +28,11 @@ DISTRO_FEATURES += "spark"
 # Enable 3D GFX module and libraries
 DISTRO_FEATURES += "gfx"
 
-# Enable 720p OpenMAX components
+# Enable 720p OpenMAX components - Ittiam
 DISTRO_FEATURES += "720p"
+
+# Enable 720p OpenMAX components - Aricent - deprecated
+#DISTRO_FEATURES += "Aricent_720p"
 
 # Enable support for Bluetooth and FM stack
 DISTRO_FEATURES += "tibluetooth"

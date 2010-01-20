@@ -139,7 +139,9 @@ PREFERRED_VERSION_tisocketnode-jpegdec-codec =          "3.9"
 PREFERRED_VERSION_tisocketnode-jpegenc =                "3.9"
 PREFERRED_VERSION_tisocketnode-jpegenc-codec =          "3.9"
 PREFERRED_VERSION_tisocketnode-conversions =		"3.9"
-#
+# Ittiam
+PREFERRED_VERSION_tisocketnode-h264decitt =		"3.7"
+PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"3.7"
 
 # openmax
 PREFERRED_PROVIDER_virtual/openmax-il =		"meta-tiopenmax-modular"
@@ -202,6 +204,9 @@ PREFERRED_VERSION_tiopenmax-imagedisplaytest =	"3.27"
 PREFERRED_VERSION_tiopenmax-videodisplaytest =	"3.27"
 PREFERRED_VERSION_tiopenmax-videocapturetest =	"3.27"
 PREFERRED_VERSION_mm-isp =			"1.17"
+# Ittiam
+PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.26"
+#PREFERRED_VERSION_tiopenmax-aacdecitt = 	"3.26"
 
 # gstreamer
 PREFERRED_VERSION_libgoo =		"5.i3.1"
