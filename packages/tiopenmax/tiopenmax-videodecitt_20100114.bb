@@ -3,13 +3,11 @@ DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-lcml tiopenmax-rmproxy tiope
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 
-#require tiopenmax-cspec-${PV}.inc
-
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_20100114%\
+	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_${PV}%\
 	      element * /main/0%"
 
-CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tiopenmax-videodecitt-${PV}.tar.gz"
+CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tiopenmax-videodecitt-3.26.tar.gz"
 CCASE_PATHCOMPONENT = "ittiam-sw"
 CCASE_PATHCOMPONENTS = "5"
 
@@ -17,10 +15,10 @@ inherit ccasefetch
 
 do_unpack_ccase_append() {
 	cd ${S}
-	tar zxf tiopenmax-videodecitt-${PV}.tar.gz
+	tar zxf tiopenmax-videodecitt-3.26.tar.gz
 	mv vobs/wtbu/OMAPSW_MPU/linux/* .
 	rm -fr vobs
-	rm -fr tiopenmax-videodecitt-${PV}.tar.gz
+	rm -fr tiopenmax-videodecitt-3.26.tar.gz
 }
 
 do_compile_prepend() {

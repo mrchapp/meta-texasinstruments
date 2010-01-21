@@ -3,13 +3,11 @@ DEPENDS = "tiopenmax-core tiopenmax-rmproxy tiopenmax-resourcemanager"
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 
-#require tiopenmax-cspec-${PV}.inc
-
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_20100114%\
+	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_${PV}%\
 	      element * /main/0%"
 
-CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tiopenmax-aacdecitt-${PV}.tar.gz"
+CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tiopenmax-aacdecitt-3.26.tar.gz"
 CCASE_PATHCOMPONENT = "ittiam-sw"
 CCASE_PATHCOMPONENTS = "5"
 
@@ -17,10 +15,10 @@ inherit ccasefetch
 
 do_unpack_ccase_append() {
 	cd ${S}
-	tar zxf tiopenmax-aacdecitt-${PV}.tar.gz
+	tar zxf tiopenmax-aacdecitt-3.26.tar.gz
 	mv vobs/wtbu/OMAPSW_MPU/linux/* .
 	rm -fr vobs
-	rm -fr tiopenmax-aacdecitt-${PV}.tar.gz
+	rm -fr tiopenmax-aacdecitt-3.26.tar.gz
 }
 
 do_compile_prepend() {
