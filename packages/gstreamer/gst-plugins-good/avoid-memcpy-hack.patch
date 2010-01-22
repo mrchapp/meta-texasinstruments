@@ -1,0 +1,89 @@
+diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
+index 3512ada..66a31ec 100644
+--- a/sys/v4l2/gstv4l2object.c
++++ b/sys/v4l2/gstv4l2object.c
+@@ -1100,6 +1100,8 @@ gst_v4l2_object_v4l2fourcc_to_structure (guint32 fourcc)
+       structure = gst_structure_new ("video/x-raw-yuv-strided",
+           "format", GST_TYPE_FOURCC, fcc,
+           "rowstride", G_TYPE_INT, 4096,
++          "buffer-count-requested", GST_TYPE_INT_RANGE, 1, G_MAXINT,
++          "buffer-count-actual", GST_TYPE_INT_RANGE, 1, G_MAXINT,
+           NULL);
+       break;
+     }
+diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
+index 971bfef..8870db2 100644
+--- a/sys/v4l2/gstv4l2sink.c
++++ b/sys/v4l2/gstv4l2sink.c
+@@ -575,13 +575,12 @@ gst_v4l2sink_change_state (GstElement * element, GstStateChange transition)
+         if (!gst_v4l2_object_stop_streaming (v4l2sink->v4l2object)) {
+           return GST_STATE_CHANGE_FAILURE;
+         }
+-        v4l2sink->state = STATE_OFF;
++        v4l2sink->state = STATE_PENDING_STREAMON;
+       }
+       break;
+     case GST_STATE_CHANGE_READY_TO_NULL:
+       /* destroy the buffer pool */
+-      if (v4l2sink->pool)
+-      {
++      if (v4l2sink->pool) {
+         gst_v4l2_buffer_pool_destroy (v4l2sink->pool);
+         v4l2sink->pool = NULL;
+       }
+@@ -728,6 +727,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+     /* initialize the buffer pool if not initialized yet (first buffer): */
+     if (G_UNLIKELY (!v4l2sink->pool)) {
+ 
++      gboolean num_buffers_can_change = TRUE;
+       gboolean no_pending_streamon = FALSE;
+       char *driver = (char *) v4l2sink->v4l2object->vcap.driver;
+ 
+@@ -749,6 +749,35 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+         }
+       }
+ 
++      if (caps) {
++        GstStructure *s;
++        gint cnt;
++
++        g_warn_if_fail (gst_caps_is_fixed (caps));
++
++        caps = gst_caps_make_writable (caps);
++        s = gst_caps_get_structure (caps, 0);
++
++        if (gst_structure_get_int (s, "buffer-count-requested", &cnt)) {
++          GST_DEBUG_OBJECT (v4l2sink,
++              "upstream element is requesting %d buffers", cnt);
++          GST_DEBUG_OBJECT (v4l2sink,
++              "... overriding original value of %d", v4l2sink->num_buffers);
++          v4l2sink->num_buffers = cnt;
++
++          /* note: we have to put buffer-count-actual on the caps before
++           * allocating.. even though we don't know if the driver will be
++           * able to allocate that many.. otherwise the caps will change
++           * after _set_caps().  And anyways, if the driver fails to
++           * allocate enough buffers, that is a fatal condition:
++           */
++          num_buffers_can_change = FALSE;
++          gst_structure_set (s,
++              "buffer-count-actual", G_TYPE_INT, cnt,
++              NULL);
++        }
++      }
++
+       /* set_caps() might not be called yet.. so just to make sure: */
+       if (!gst_v4l2sink_set_caps (bsink, caps)) {
+         return GST_FLOW_ERROR;
+@@ -778,6 +807,11 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+       GST_INFO_OBJECT (v4l2sink, "outputting buffers via mmap()");
+ 
+       if (v4l2sink->num_buffers != v4l2sink->pool->buffer_count) {
++        if (!num_buffers_can_change) {
++          GST_WARNING_OBJECT (v4l2sink,
++              "I can't handle a differing number of buffers!!!!");
++          return GST_FLOW_ERROR;
++        }
+         v4l2sink->num_buffers = v4l2sink->pool->buffer_count;
+         g_object_notify (G_OBJECT (v4l2sink), "queue-size");
+       }
