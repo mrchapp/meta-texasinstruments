@@ -1,0 +1,102 @@
+From b129bcdb766c0f1a303df4673f45edee77317aca Mon Sep 17 00:00:00 2001
+From: Santosh Shilimkar <santosh.shilimkar@ti.com>
+Date: Wed, 6 Jan 2010 01:03:30 +0530
+Subject: [PATCH] HOT-SAMPLES: 1GHZ
+
+This patch is the  hack vesrion to support 1 GHZ on OMAP4430
+
+Signed-off-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
+---
+ board/omap4430sdp/clock.c       |    5 +++--
+ board/omap4430sdp/omap4430sdp.c |   32 +++++---------------------------
+ 2 files changed, 8 insertions(+), 29 deletions(-)
+
+diff --git a/board/omap4430sdp/clock.c b/board/omap4430sdp/clock.c
+index 649ae3c..59ca847 100644
+--- a/board/omap4430sdp/clock.c
++++ b/board/omap4430sdp/clock.c
+@@ -69,9 +69,10 @@ struct dpll_param mpu_dpll_param[7] = {
+ 	/* 38.4M values */
+ #ifdef CONFIG_MPU_600
+ 	/* RUN MPU @ 600 MHz */
+-	{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00},
++	//{0x7d, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00},
++	{0x69, 0x03, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00},// 1GHz
+ #else
+-	{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00},	
++	{0x1a, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00},
+ #endif
+ };
+ 
+diff --git a/board/omap4430sdp/omap4430sdp.c b/board/omap4430sdp/omap4430sdp.c
+index 2267924..66d75fc 100644
+--- a/board/omap4430sdp/omap4430sdp.c
++++ b/board/omap4430sdp/omap4430sdp.c
+@@ -599,28 +599,23 @@ void try_unlock_memory(void)
+ #ifdef CONFIG_MPU_600	
+ static scale_vcores(void)
+ {
++	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
++	 * VCOREx_CFG_VOLTAGE  changes can be discarded
++	 */
+ 	/* PRM_VC_CFG_I2C_MODE */
+ 	*(volatile int*)(0x4A307BA8) = 0x0;
+-	/* PRM_VC_CFG_I2C_CLK */	
++	/* PRM_VC_CFG_I2C_CLK */
+ 	*(volatile int*)(0x4A307BAC) = 0x6026;
+ 
+ 	/* set VCORE1 force VSEL */
+ 	/* PRM_VC_VAL_BYPASS) */
+-	*(volatile int*)(0x4A307BA0) = 0x395512;
++	*(volatile int*)(0x4A307BA0) = 0x3B5512;
+ 	*(volatile int*)(0x4A307BA0) |= 0x1000000;
+ 	while((*(volatile int*)(0x4A307BA0)) & 0x1000000);
+ 
+ 	/* PRM_IRQSTATUS_MPU */
+ 	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+ 
+-	/*set VCORE1 volt VSEL */
+-	/*PRM_VC_VAL_BYPASS */
+-	*(volatile int*)(0x4A307BA0) = 0x395612;
+-	*(volatile int*)(0x4A307BA0) |= 0x1000000;
+-	while((*(volatile int*)(0x4A307BA0)) & 0x1000000);
+-
+-	/* PRM_IRQSTATUS_MPU */
+-	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+ 
+ 	/* FIXME: set VCORE2 force VSEL, Check the reset value */
+ 	/* PRM_VC_VAL_BYPASS) */
+@@ -631,15 +626,6 @@ static scale_vcores(void)
+ 	/* PRM_IRQSTATUS_MPU */
+ 	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+ 
+-	/*set VCORE2 volt VSEL */
+-	/*PRM_VC_VAL_BYPASS */
+-	*(volatile int*)(0x4A307BA0) = 0x315C12;
+-	*(volatile int*)(0x4A307BA0) |= 0x1000000;
+-	while((*(volatile int*)(0x4A307BA0)) & 0x1000000);
+-
+-	/* PRM_IRQSTATUS_MPU */
+-	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+-
+ 	/*/set VCORE3 force VSEL */
+ 	/* PRM_VC_VAL_BYPASS */
+ 	*(volatile int*)(0x4A307BA0) = 0x316112;
+@@ -649,14 +635,6 @@ static scale_vcores(void)
+ 	/* PRM_IRQSTATUS_MPU */
+ 	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+ 
+-	/*set VCORE3 volt VSEL */
+-	/*PRM_VC_VAL_BYPASS */
+-	*(volatile int*)(0x4A307BA0) = 0x316112;
+-	*(volatile int*)(0x4A307BA0) |= 0x1000000;
+-	while((*(volatile int*)(0x4A307BA0)) & 0x1000000);
+-
+-	/* PRM_IRQSTATUS_MPU */
+-	*(volatile int*)(0x4A306010) = *(volatile int*)(0x4A306010);
+ }
+ #endif
+ 
+-- 
+1.6.0.4
+

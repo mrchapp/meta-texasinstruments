@@ -31,6 +31,7 @@ S = "${WORKDIR}/git"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/bootloader/x-loader.git;branch=omap4_dev;protocol=git \
            file://configuration-header.bin \
+          ${@base_contains("DISTRO_FEATURES", "1GHz", "file://0001-HOT-SAMPLES-1GHZ.patch;patch=1", "", d)} \
 "
 
 do_configure() {
