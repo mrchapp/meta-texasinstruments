@@ -1,0 +1,52 @@
+From 3d57c25503b2eef23ac7cd54bb5fff100cadd87b Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Wed, 20 Jan 2010 22:39:05 -0600
+Subject: [PATCH 3/4] some hacks for playbin
+
+for now, until omx component properly reports the stride it requires, we need these hacks so that in fixating caps the correct "guesses" are made.
+---
+ omx/gstomx_base_videodec.c |    4 ++--
+ omx/gstomx_port.c          |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/omx/gstomx_base_videodec.c b/omx/gstomx_base_videodec.c
+index 7d2fd8c..df65ccb 100644
+--- a/omx/gstomx_base_videodec.c
++++ b/omx/gstomx_base_videodec.c
+@@ -28,7 +28,6 @@
+ 
+ GSTOMX_BOILERPLATE (GstOmxBaseVideoDec, gst_omx_base_videodec, GstOmxBaseFilter, GST_OMX_BASE_FILTER_TYPE);
+ 
+-
+ static GstStaticPadTemplate src_template =
+         GST_STATIC_PAD_TEMPLATE ("src",
+                 GST_PAD_SRC,
+@@ -231,7 +230,8 @@ src_getcaps (GstPad *pad)
+ 
+         caps = gst_caps_new_empty ();
+ 
+-        for (i=0; i<2; i++)
++//        for (i=0; i<2; i++)
++        for (i=1; i<2; i++)
+         {
+             GstStructure *struc = gst_structure_new (
+                     (i ? "video/x-raw-yuv-strided" : "video/x-raw-yuv"),
+diff --git a/omx/gstomx_port.c b/omx/gstomx_port.c
+index c680d28..9ebd37f 100644
+--- a/omx/gstomx_port.c
++++ b/omx/gstomx_port.c
+@@ -756,10 +756,10 @@ g_omx_port_finish (GOmxPort *port)
+ 
+ /* keep this list in sync GSTOMX_ALL_FORMATS */
+ static gint32 all_fourcc[] = {
++        GST_MAKE_FOURCC ('N','V','1','2'),
+         GST_MAKE_FOURCC ('I','4','2','0'),
+         GST_MAKE_FOURCC ('Y','U','Y','2'),
+         GST_MAKE_FOURCC ('U','Y','V','Y'),
+-        GST_MAKE_FOURCC ('N','V','1','2')
+ };
+ 
+ #ifndef DIM  /* XXX is there a better alternative available? */
+-- 
+1.6.3.1
+

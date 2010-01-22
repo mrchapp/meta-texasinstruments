@@ -1,0 +1,27 @@
+From 10ee6f3aba3a5f309ee2efb92079bbe4d100c5e2 Mon Sep 17 00:00:00 2001
+From: Rob Clark <rob@ti.com>
+Date: Thu, 21 Jan 2010 00:33:09 -0600
+Subject: [PATCH 4/4] temporary hack for cases where omx component does not return all buffers
+
+in case where display order is not the same as decode order, sometimes the codec doesn't give us FBD for all FTB's.  Resulting that we hang when freeing buffers.  This hack works around that issue (but will cause issues for scenarios of dynamically enabling/disabling ports at runtime)
+---
+ omx/gstomx_port.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/omx/gstomx_port.c b/omx/gstomx_port.c
+index 9ebd37f..71e8a82 100644
+--- a/omx/gstomx_port.c
++++ b/omx/gstomx_port.c
+@@ -273,7 +273,8 @@ g_omx_port_free_buffers (GOmxPort *port)
+          * OMX component, to avoid freeing a buffer that the component
+          * is still accessing:
+          */
+-        omx_buffer = async_queue_pop_full (port->queue, TRUE, TRUE);
++//        omx_buffer = async_queue_pop_full (port->queue, TRUE, TRUE);
++        omx_buffer = port->buffers[i]; // XXX temporary hack because sometimes omx component does not return all buffers
+ 
+         if (omx_buffer)
+         {
+-- 
+1.6.3.1
+
