@@ -11,6 +11,6 @@ PACKAGES += "gst-plugin-id3demux"
 SRCREV = "188725811f00a8eb6293c3810418016728b512bf"
 
 SRC_URI += "\
-	file://v4l2sink-update-20091218.patch;patch=1 \
+	file://v4l2sink-update.patch;patch=1 \
 	file://rowstride.patch;patch=1 \
 	"
