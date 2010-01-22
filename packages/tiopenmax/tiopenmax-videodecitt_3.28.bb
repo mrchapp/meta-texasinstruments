@@ -3,25 +3,25 @@ DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-lcml tiopenmax-rmproxy tiope
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
 
-CCASE_SPEC = "%\
-	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_${PV}%\
-	      element * /main/0%"
+require tiopenmax-cspec-${PV}.inc
 
-CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tiopenmax-videodecitt-3.26.tar.gz"
-CCASE_PATHCOMPONENT = "ittiam-sw"
-CCASE_PATHCOMPONENTS = "5"
+CCASE_PATHFETCH = "\
+	/vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode_ittiam \
+	/vobs/wtbu/OMAPSW_MPU/linux/Makefile \
+	/vobs/wtbu/OMAPSW_MPU/linux/Master.mk \
+	"
+CCASE_PATHCOMPONENTS = 3
+CCASE_PATHCOMPONENT = "linux"
+
+# Patch to allow fwrite when using VidDecTest_common_Itt
+#SRC_URI = " \
+#       file://enable-fwrite.patch;patch=1 \
+#       "
 
 inherit ccasefetch
 
-do_unpack_ccase_append() {
-	cd ${S}
-	tar zxf tiopenmax-videodecitt-3.26.tar.gz
-	mv vobs/wtbu/OMAPSW_MPU/linux/* .
-	rm -fr vobs
-	rm -fr tiopenmax-videodecitt-3.26.tar.gz
-}
-
 do_compile_prepend() {
+	install -d ${D}/usr/omx
 	install -d ${D}/usr/lib
 	install -d ${D}/usr/bin
 }
