@@ -1,6 +1,6 @@
 SECTION = "libs"
 PRIORITY = "optional"
-DESCRIPTION = "GFX TIBLT 2D acceleration library"
+DESCRIPTION = "GFX TICPUBLT 2D acceleration library"
 LICENSE = "GPL"
 PR = "r0"
 COMPATIBLE_MACHINE = "omap-4430sdp"
@@ -18,9 +18,9 @@ CCASE_SPEC = "%\
     element /vobs/OMAPSW_TIBLT_2DGFX/... ${SRCREV}%\
 "
 
-CCASE_PATHFETCH = "/vobs/OMAPSW_TIBLT_2DGFX/Linux/L24"
-CCASE_PATHCOMPONENT = "L24"
-CCASE_PATHCOMPONENTS = "3"
+CCASE_PATHFETCH = "/vobs/OMAPSW_TIBLT_2DGFX/TIBLT/release/Linux"
+CCASE_PATHCOMPONENT = "Linux"
+CCASE_PATHCOMPONENTS = "4"
 
 do_compile() {
 	cd ${S}/apps/SolidFill
@@ -28,11 +28,17 @@ do_compile() {
     oe_runmake
 }
 
+do_stage() {
+    install -d ${STAGING_INCDIR}/${PN}/
+	install -m 644 ${S}/inc/TIBLT.h ${STAGING_INCDIR}/${PN}/
+}
+
 do_install() {
 	install -d ${D}${bindir}
 	install -m 755 ${S}/apps/SolidFill/SolidFill ${D}${bindir}
 	install -m 755 ${S}/apps/SolidFill/input.rgb ${D}${bindir}
 	install -d ${D}${libdir}
+	oe_libinstall -so -C ${S}/lib libTICPUBLT ${D}${libdir}
 	oe_libinstall -so -C ${S}/lib libTICPUBLT_TI ${D}${libdir}
 }
 

@@ -1,6 +1,6 @@
 require u-boot.inc
 
-PR="r5"
+PR="r6"
 
 SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=omap4_dev;protocol=git \
 	   file://uboot_sdmmc_or_nfs.patch;patch=1"

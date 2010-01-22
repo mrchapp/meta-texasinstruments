@@ -2,7 +2,7 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r4"
+PR = "r5"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
 DEPENDS = "virtual/kernel bison-native"
@@ -11,8 +11,8 @@ inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PACKAGES = "${PN} ${PN}-dbg"
-FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* ${libdir}/*.so*"
-FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* ${libdir}/.debug/*.so*"
+FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/*"
+FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/*"
 
 PV = "0.0+cc+${SRCREV}"
 
@@ -22,9 +22,8 @@ SRC_URI = "\
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
-	element /vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK/... ${SRCREV}%\
-	element * /main/LATEST%\
-	"
+	element /vobs/wtbu/OMAPSW_GFX/... ${SRCREV}%\
+"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK"
 CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
@@ -41,6 +40,23 @@ do_compile() {
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap4430_linux
 	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} \
 		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} V=1 SUPPORT_XWS=0
+}
+
+do_stage() {
+	oe_libinstall -so libGLES_CM ${STAGING_LIBDIR}
+	oe_libinstall -so libGLESv2 ${STAGING_LIBDIR}
+	oe_libinstall -so libglslcompiler ${STAGING_LIBDIR}
+	oe_libinstall -so libOpenVG ${STAGING_LIBDIR}
+	oe_libinstall -so libOpenVGU ${STAGING_LIBDIR}
+	oe_libinstall -so libIMGegl ${STAGING_LIBDIR}
+	oe_libinstall -so libEGL ${STAGING_LIBDIR}
+	oe_libinstall -so libpvr2d ${STAGING_LIBDIR}
+	oe_libinstall -so libsrv_um ${STAGING_LIBDIR}
+	oe_libinstall -so libpvrscope ${STAGING_LIBDIR}
+	oe_libinstall -so libpvrPVR2D_X11WSEGL ${STAGING_LIBDIR}
+	oe_libinstall -so libpvrPVR2D_BLITWSEGL ${STAGING_LIBDIR}
+	oe_libinstall -so libpvrPVR2D_FLIPWSEGL ${STAGING_LIBDIR}
+	oe_libinstall -so libpvrPVR2D_FRONTWSEGL ${STAGING_LIBDIR}
 }
 
 do_install() {
@@ -61,7 +77,7 @@ do_install() {
 	oe_libinstall -so libpvrscope ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_X11WSEGL ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_BLITWSEGL ${D}${libdir}
-#	oe_libinstall -so libpvrPVR2D_FLIPWSEGL ${D}${libdir}
+	oe_libinstall -so libpvrPVR2D_FLIPWSEGL ${D}${libdir}
 	oe_libinstall -so libpvrPVR2D_FRONTWSEGL ${D}${libdir}
 
 	install -d ${D}${bindir}

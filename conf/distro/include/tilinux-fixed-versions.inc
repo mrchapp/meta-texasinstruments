@@ -66,9 +66,11 @@ SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.2"
 SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.1.1"
-SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.1.1"
-SRCREV_pn-sgx-tiblt =                   "LINUX-TIBLT-L24_RLS_1.0.0"
+SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1"
+SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1"
+SRCREV_pn-sgx-ticpublt =                "OMAP_LINUX_TICPUBLT_BIN_RLS_1.0.0.0"
+SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.1"
+SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.1"
 
 # open source dependencies
 
