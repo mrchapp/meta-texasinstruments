@@ -1,30 +1,32 @@
-From f6a95d43e8c0b873b6cd347061f5b5b30236d36e Mon Sep 17 00:00:00 2001
+From 661c7ec6e0d2391e6887d880d547f8d8dc0da189 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Sun, 16 Aug 2009 20:49:46 -0500
-Subject: [PATCH] This is a combination of 6 commits.
+Subject: [PATCH] This is a combination of 8 commits.
 
-The 6 commits are:
+The 8 commits are:
 * v4l2sink: Improve behavior for shared buffers.
 * v4l2sink: Add support for omap24xxvout and omap_vout drivers.
 * v4l2sink: Add support for blocking dequeue.
 * v4l2sink: bufferpool should be destroyed at end up playback
 * re-enable x-overlay support
 * add properties to control crop
+* fix race condition
+* add support for video decoder to configure crop
 
 They all come from http://gitorious.org/robclark-gstreamer/gst-plugins-good/commits/master
 
 Signed-off-by: Daniel Diaz <ddiaz@ti.com>
 ---
  sys/v4l2/Makefile.am         |   15 ++--
- sys/v4l2/gstv4l2bufferpool.c |   18 +++-
+ sys/v4l2/gstv4l2bufferpool.c |   24 ++++-
  sys/v4l2/gstv4l2bufferpool.h |    2 +-
  sys/v4l2/gstv4l2object.c     |    6 +-
- sys/v4l2/gstv4l2sink.c       |  209 ++++++++++++++++++++++++++++++++++++------
+ sys/v4l2/gstv4l2sink.c       |  226 ++++++++++++++++++++++++++++++++++++-----
  sys/v4l2/gstv4l2sink.h       |    9 +-
  sys/v4l2/gstv4l2src.c        |   12 +-
  sys/v4l2/gstv4l2xoverlay.c   |    2 +
  sys/v4l2/v4l2src_calls.c     |    2 +-
- 9 files changed, 219 insertions(+), 56 deletions(-)
+ 9 files changed, 241 insertions(+), 57 deletions(-)
 
 diff --git a/sys/v4l2/Makefile.am b/sys/v4l2/Makefile.am
 index e655bcb..46cefe9 100644
@@ -52,10 +54,10 @@ index e655bcb..46cefe9 100644
  libgstvideo4linux2_la_SOURCES = gstv4l2.c \
  				gstv4l2colorbalance.c \
 diff --git a/sys/v4l2/gstv4l2bufferpool.c b/sys/v4l2/gstv4l2bufferpool.c
-index bca07b9..3222ac2 100644
+index bca07b9..67b6a1a 100644
 --- a/sys/v4l2/gstv4l2bufferpool.c
 +++ b/sys/v4l2/gstv4l2bufferpool.c
-@@ -451,17 +451,27 @@ gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool)
+@@ -451,17 +451,29 @@ gst_v4l2_buffer_pool_destroy (GstV4l2BufferPool * pool)
  
  /**
   * gst_v4l2_buffer_pool_get:
@@ -72,20 +74,36 @@ index bca07b9..3222ac2 100644
  {
 -  GstV4l2Buffer *buf = g_async_queue_try_pop (pool->avail_buffers);
 +  GstV4l2Buffer *buf;
- 
--  if (buf)
++
 +  if (blocking) {
 +    buf = g_async_queue_pop (pool->avail_buffers);
 +  } else {
 +    buf = g_async_queue_try_pop (pool->avail_buffers);
 +  }
-+
+ 
+-  if (buf)
 +  if (buf) {
++    GST_V4L2_BUFFER_POOL_LOCK (pool);
      GST_BUFFER_SIZE (buf) = buf->vbuffer.length;
 +    GST_BUFFER_FLAG_UNSET (buf, 0xffffffff);
++    GST_V4L2_BUFFER_POOL_UNLOCK (pool);
 +  }
  
    pool->running = TRUE;
+ 
+@@ -542,11 +554,11 @@ gst_v4l2_buffer_pool_dqbuf (GstV4l2BufferPool * pool)
+     GST_DEBUG_OBJECT (pool->v4l2elem, "num_live_buffers++: %d",
+         pool->num_live_buffers);
+ 
+-    GST_V4L2_BUFFER_POOL_UNLOCK (pool);
+-
+     /* this can change at every frame, esp. with jpeg */
+     GST_BUFFER_SIZE (pool_buffer) = buffer.bytesused;
+ 
++    GST_V4L2_BUFFER_POOL_UNLOCK (pool);
++
+     return pool_buffer;
+   }
  
 diff --git a/sys/v4l2/gstv4l2bufferpool.h b/sys/v4l2/gstv4l2bufferpool.h
 index 36a4220..1fe4f43 100644
@@ -132,7 +150,7 @@ index 1a15947..5b10cc9 100644
  #endif
  
 diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
-index d2d5cb3..971bfef 100644
+index d2d5cb3..f652432 100644
 --- a/sys/v4l2/gstv4l2sink.c
 +++ b/sys/v4l2/gstv4l2sink.c
 @@ -43,7 +43,7 @@
@@ -297,7 +315,7 @@ index d2d5cb3..971bfef 100644
 -      if (v4l2sink->overlay_fields_set & OVERLAY_TOP_SET)
 +
 +      GST_DEBUG_OBJECT (v4l2sink,
-+          "setting overlay: overlay_fields_set=0x%02, top=%d, left=%d, width=%d, height=%d",
++          "setting overlay: overlay_fields_set=0x%02x, top=%d, left=%d, width=%d, height=%d",
 +          v4l2sink->overlay_fields_set,
 +          v4l2sink->overlay.top, v4l2sink->overlay.left,
 +          v4l2sink->overlay.width, v4l2sink->overlay.height);
@@ -335,7 +353,7 @@ index d2d5cb3..971bfef 100644
 +    if (v4l2sink->crop_fields_set) {
 +
 +      GST_DEBUG_OBJECT (v4l2sink,
-+          "setting crop: crop_fields_set=0x%02, top=%d, left=%d, width=%d, height=%d",
++          "setting crop: crop_fields_set=0x%02x, top=%d, left=%d, width=%d, height=%d",
 +          v4l2sink->crop_fields_set,
 +          v4l2sink->crop.top, v4l2sink->crop.left,
 +          v4l2sink->crop.width, v4l2sink->crop.height);
@@ -465,16 +483,33 @@ index d2d5cb3..971bfef 100644
        if (tmp)
          gst_caps_append (ret, tmp);
  
-@@ -591,8 +710,6 @@ gst_v4l2sink_set_caps (GstBaseSink * bsink, GstCaps * caps)
+@@ -591,7 +710,24 @@ gst_v4l2sink_set_caps (GstBaseSink * bsink, GstCaps * caps)
      return FALSE;
    }
  
 -  gst_v4l2sink_sync_overlay_fields (v4l2sink);
--
++  /* check for crop information in the caps */
++  {
++    GstStructure *structure = gst_caps_get_structure (caps, 0);
++    gint crop_top, crop_left, crop_width, crop_height;
++
++    if (gst_structure_get_int (structure, "crop-top", &crop_top) &&
++        gst_structure_get_int (structure, "crop-left", &crop_left) &&
++        gst_structure_get_int (structure, "crop-width", &crop_width) &&
++        gst_structure_get_int (structure, "crop-height", &crop_height)) {
++      v4l2sink->crop.top = crop_top;
++      v4l2sink->crop.left = crop_left;
++      v4l2sink->crop.width = crop_width;
++      v4l2sink->crop.height = crop_height;
++      v4l2sink->crop_fields_set |= RECT_TOP_SET | RECT_LEFT_SET |
++          RECT_WIDTH_SET | RECT_HEIGHT_SET;
++      gst_v4l2sink_sync_crop_fields (v4l2sink);
++    }
++  }
+ 
    v4l2sink->current_caps = gst_caps_ref (caps);
  
-   return TRUE;
-@@ -611,6 +728,27 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -611,6 +747,27 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
      /* initialize the buffer pool if not initialized yet (first buffer): */
      if (G_UNLIKELY (!v4l2sink->pool)) {
  
@@ -502,7 +537,7 @@ index d2d5cb3..971bfef 100644
        /* set_caps() might not be called yet.. so just to make sure: */
        if (!gst_v4l2sink_set_caps (bsink, caps)) {
          return GST_FLOW_ERROR;
-@@ -624,7 +762,18 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -624,7 +781,18 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
                    V4L2_BUF_TYPE_VIDEO_OUTPUT))) {
          return GST_FLOW_ERROR;
        }
@@ -522,7 +557,7 @@ index d2d5cb3..971bfef 100644
  
        GST_INFO_OBJECT (v4l2sink, "outputting buffers via mmap()");
  
-@@ -634,7 +783,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -634,7 +802,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
        }
      }
  
@@ -531,7 +566,7 @@ index d2d5cb3..971bfef 100644
  
      if (G_LIKELY (v4l2buf)) {
        GST_DEBUG_OBJECT (v4l2sink, "allocated buffer: %p", v4l2buf);
-@@ -671,7 +820,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -671,7 +839,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
          &newbuf);
  
      if (GST_FLOW_OK != ret) {
@@ -541,7 +576,7 @@ index d2d5cb3..971bfef 100644
      }
  
      memcpy (GST_BUFFER_DATA (newbuf),
-@@ -686,6 +836,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -686,6 +855,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
    if (!gst_v4l2_buffer_pool_qbuf (v4l2sink->pool, GST_V4L2_BUFFER (buf))) {
      return GST_FLOW_ERROR;
    }
@@ -549,7 +584,7 @@ index d2d5cb3..971bfef 100644
    if (v4l2sink->state == STATE_PENDING_STREAMON) {
      if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
        return GST_FLOW_ERROR;
-@@ -701,7 +852,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -701,7 +871,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
     * just queued, then dequeue one immediately to make it available via
     * _buffer_alloc():
     */
