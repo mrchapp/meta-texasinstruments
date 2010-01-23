@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r17"
+PR = "r18"
 
 PACKAGES = "\
     task-omap-gst \
@@ -55,6 +55,7 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-jpegparse \
     gst-plugin-qtmux \
     gst-plugin-stridetransform \
+    gst-plugin-h264 \
     gst-qa \
     gst-openmax \
     "
