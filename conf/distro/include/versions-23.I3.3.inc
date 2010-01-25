@@ -133,7 +133,7 @@ PREFERRED_VERSION_tisocketnode-mpeg2-codec =            "3.9"
 PREFERRED_VERSION_tisocketnode-spark =                  "3.9"
 PREFERRED_VERSION_tisocketnode-spark-codec =            "3.9"
 #
-PREFERRED_VERSION_tisocketnode-jpegdec =                "3.9"
+PREFERRED_VERSION_tisocketnode-jpegdec =                "3.9-P1"
 PREFERRED_VERSION_tisocketnode-jpegdec-codec =          "3.9"
 PREFERRED_VERSION_tisocketnode-jpegenc =                "3.9"
 PREFERRED_VERSION_tisocketnode-jpegenc-codec =          "3.9"
