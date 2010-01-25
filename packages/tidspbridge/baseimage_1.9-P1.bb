@@ -19,9 +19,15 @@ FILES_${PN}="\
 	${base_libdir}/dsp/baseimage.map \
 	"
 
-require baseimage-system-cspec-${PV}.inc
+require baseimage-dasf-system-cspec-${PV}.inc
 
-CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system"
+CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/baseimage \
+/vobs/wtbu/OMAPSW_DSP/system/utils \
+/vobs/wtbu/OMAPSW_DSP/make \
+/vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock \
+/vobs/wtbu/OMAPSW_DSP/system/inst2 \
+"
+
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
 CCASE_PATHCOMPONENTS = "2"
 
@@ -41,6 +47,13 @@ inherit ccasefetch
 do_compile() {
   pwd
 ## Getting system files
+  mkdir -p ${S}/system/utils
+  mkdir -p ${S}/system/inst2
+  mkdir -p ${S}/system/avsync
+  mkdir -p ${S}/system/dasf
+  mkdir -p ${S}/system/hal
+  mkdir -p ${S}/system/tmon
+
   cd ${S}/system/baseimage
   cp -fa ${STAGING_BINDIR}/dspbridge/system/utils/* ${S}/system/utils
   cp -fa ${STAGING_BINDIR}/dspbridge/system/inst2/* ${S}/system/inst2
@@ -58,9 +71,11 @@ do_compile() {
   mkdir -p ${S}/audio/alg/SampleRateConverter
   cp -a ${STAGING_BINDIR}/dspbridge/audio/alg/SampleRateConverter/* ${S}/audio/alg/SampleRateConverter
   sed -e 's%\\%\/%g' makefile > makefile.linux
-## Getting the dsp make system
-  mkdir -p ${S}/make
-  cp -a ${STAGING_BINDIR}/dspbridge/make/* ${S}/make
+
+## Getting the dsp make system - not needed
+#  mkdir -p ${S}/make
+#  cp -a ${STAGING_BINDIR}/dspbridge/make/* ${S}/make
+
 ## Setting PATH for gmake
   pathorig=$PATH
   export PATH=$PATH:${STAGING_BINDIR_NATIVE}/titools/bios_5_33_04/xdctools
