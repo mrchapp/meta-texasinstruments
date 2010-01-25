@@ -113,4 +113,5 @@ PREFERRED_VERSION_external-csl-toolchain = "2009q1-203"
 
 # xserver
 SRCREV_pn-xf86-video-omapfb               = "5317aae587a2bf48f07a8c06bfaf7bcbfd23bafc"
+PREFERRED_VERSION_xserver-xf86-lite = "1.6.1"
 

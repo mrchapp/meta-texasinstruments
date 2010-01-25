@@ -1,0 +1,46 @@
+From d6cc8c0deda0c10f4dc35e0edf6aac891bf8be17 Mon Sep 17 00:00:00 2001
+From: Shashi Shekar B.S <shashi.shekar@ti.com>
+Date: Fri, 15 Jan 2010 13:46:50 +0530
+Subject: [PATCH] Changes needed to detect/ enable multiple framebuffer devices.
+
+Multiple framebuffer devices do not sit on ISA or PCI bus. So,
+this patch is needed to detect multiple framebuffer devices
+sitting on /dev/fb*. This is needed for OMAP4.
+---
+ src/fbdev.c |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
+
+diff --git a/src/fbdev.c b/src/fbdev.c
+index df278f5..214bdac 100644
+--- a/src/fbdev.c
++++ b/src/fbdev.c
+@@ -356,6 +356,7 @@ FBDevProbe(DriverPtr drv, int flags)
+ 	int bus,device,func;
+ 	char *dev;
+ 	Bool foundScreen = FALSE;
++        char filename[20];
+ 
+ 	TRACE("probe start");
+ 
+@@ -391,6 +392,18 @@ FBDevProbe(DriverPtr drv, int flags)
+ 		    isIsa = TRUE;
+ 		  
+ 	    }
++               
++            if (
++                isIsa == FALSE && dev == NULL
++#ifndef XSERVER_LIBPCIACCESS
++	        && isPci == FALSE
++#endif	    
++	       )	
++	    {
++	       sprintf(filename,"/dev/fb%d",i);
++               dev = &filename[0];
++            }
++
+ 	    if (fbdevHWProbe(NULL,dev,NULL)) {
+ 		pScrn = NULL;
+ #ifndef XSERVER_LIBPCIACCESS
+-- 
+1.5.6.3
+
