@@ -3,7 +3,7 @@ DESCRIPTION = "Texas Instruments Baseimage inst2."
 LICENSE = "LGPL"
 PR = "r0"
 
-require baseimage-system-cspec-${PV}.inc
+require baseimage-dasf-system-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/inst2"
 CCASE_PATHCOMPONENT = "inst2"

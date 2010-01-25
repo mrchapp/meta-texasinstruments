@@ -3,7 +3,7 @@ DESCRIPTION = "Texas Instruments MPU/DSP Bridge Socket Node compilation."
 LICENSE = "LGPL"
 PR = "r0"
 
-require baseimage-system-cspec-${PV}.inc
+require baseimage-dasf-system-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/system/avsync/syncclock"
 CCASE_PATHCOMPONENT = "avsync"

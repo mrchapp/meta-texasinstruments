@@ -40,8 +40,7 @@ PREFERRED_VERSION_baseimage-utils =                     "1.9-P1"
 PREFERRED_VERSION_baseimage-make-system =               "1.9-P1"
 PREFERRED_VERSION_baseimage-avsync =                    "1.9-P1"
 PREFERRED_VERSION_baseimage-inst2 =                     "1.9-P1"
-PREFERRED_VERSION_baseimage-dasf-cspec =		"1.9-P1"
-PREFERRED_VERSION_baseimage-system-cspec =		"1.9-P1"
+PREFERRED_VERSION_baseimage-dasf-system-cspec =		"1.9-P1"
 PREFERRED_VERSION_baseimage-vgpop =			"3.9"
 
 # socket nodes and codecs
