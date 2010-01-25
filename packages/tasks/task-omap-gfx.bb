@@ -8,10 +8,10 @@ PR = "r3"
 RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-kernel-module", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-lib-noxws", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-ticpublt", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-sdk", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-benchmark", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "gfx-ticpublt", "gfx-ticpublt", "", d)} \
 	"
+#	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-sdk", "", d)} \
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
