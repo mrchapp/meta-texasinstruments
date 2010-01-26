@@ -1,47 +1,21 @@
-# These distro features change the build options of some components
+# The distro features change the build options of some components
 # across the TI Linux distribution.
 #
-# Possible features are:
-# * 720p	- Enable 720p OpenMAX components, kernel.
-# * spark	- Enable Sorenson spark video decoder.
-# * gfx		- Include 3D GFX module and libraries.
-# * tibluetooth	- Include support for TI's Bluetooth and FM stack.
-# * tiwifi	- Include support for TI's WLAN stack.
-# * gps		- Include support for TI's GPS
-# * rarv    - Enable readaudio/realvideo codecs
-# * testpatterns - Include OMX test patterns
-# * ddt     - Device driver tests
+# The following features shall be set in pokyomap/build/conf/local.conf :
+# * gfx          - Include 3D GFX module and libraries.
+# * gfx-ticpublt - Include TICPUBLT, a Neon 2D acceleration library
+# * tiwifi       - Include support for TI's WLAN stack.
+# * tibluetooth  - Include support for TI's Bluetooth and FM stack.
+# * gps          - Include support for TI's GPS
+# * hdmi         - Include support for HDMI
+# * domx         - Include DOMX component
+# * 1GHz         - Include 1GHz support
+# * ddt          - Device driver tests
 
 # The following are standard Poky DISTRO_FEATURES, not specific to
 # OMAP.  Do not touch these unless you know what you are doing.
-
 DISTRO_FEATURES += "alsa bluetooth ext2 irda pcmcia usbgadget usbhost wifi nfs zeroconf pci"
-
-# Below are OMAP-specific DISTRO_FEATURES.  Hack away!
-# This is a multimedia-based distribution. We can specify what
-# codecs to enable in this release.
 
 # Default TI OpenMax and Camara Component. Do not remove.
 DISTRO_FEATURES += "camera jpegdec jpegenc"
-
-# Enable Sorenson spark video decoder
-#DISTRO_FEATURES += "spark"
-
-# Enable 3D GFX module and libraries
-#DISTRO_FEATURES += "gfx"
-
-# Enable 720p OpenMAX components
-#DISTRO_FEATURES += "720p"
-
-# Enable support for TI's Bluetooth and FM stack
-#DISTRO_FEATURES += "tibluetooth"
-
-# Enable support for TI's WLAN stack
-DISTRO_FEATURES += "tiwifi"
-
-# Enable support for TI's GPS
-#DISTRO_FEATURES += "gps"
-
-# Enable support for TI's device driver test
-#DISTRO_FEATURES += "ddt"
 
