@@ -4,7 +4,7 @@ LICENSE = "GPL"
 HOMEPAGE = "http://hostap.epitest.fi/wpa_supplicant/"
 DEPENDS = "gnutls ${@base_contains("COMBINED_FEATURES", "madwifi", "madwifi-ng", "",d)}"
 
-PR = "r1"
+PR = "r2"
 
 #we introduce MY_ARCH to get 'armv5te' as arch instead of the misleading 'arm' on armv5te builds
 MY_ARCH := "${PACKAGE_ARCH}"
@@ -13,7 +13,8 @@ PACKAGE_ARCH = "${@base_contains('COMBINED_FEATURES', 'madwifi', '${MACHINE_ARCH
 SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
 	file://defconfig-gnutls \
 	file://ifupdown.sh \
-	file://functions.sh"
+	file://functions.sh \
+	file://add-tempo-init.patch;patch=1"
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
 
