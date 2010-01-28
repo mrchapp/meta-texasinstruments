@@ -2,13 +2,13 @@ require u-boot.inc
  
 PR = "r0"
  
-#SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=zoom3;protocol=git \
-#"
-
-SRC_URI = " \
-${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/u-boot.git;branch=3630v0.1;protocol=git", "", d)} \
-${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git", "", d)} \
+SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git \
 "
+
+#SRC_URI = " \
+#${@base_contains("MACHINE", "omap-3630sdp", "git://git.omapzoom.org/repo/u-boot.git;branch=3630v0.1;protocol=git", "", d)} \
+#${@base_contains("MACHINE", "zoom3", "git://git.omapzoom.org/repo/u-boot.git;branch=master;protocol=git", "", d)} \
+#"
 
 PV = "git${SRCREV}"
 
@@ -65,8 +65,12 @@ install -m 644 ${S}/include/asm-arm/arch-omap3/sys_proto.h \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
 install -m 644 ${S}/include/asm-arm/arch-omap3/rev.h \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
-if [ "${MACHINE}" = "zoom3" ]; then
+if [ "${MACHINE}" = "zoom3" -o "${MACHINE}" = "omap-3630sdp" ]; then
 install -m 644 ${S}/include/asm-arm/arch-omap3/dpll_table_36xx.S \
+${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
+fi
+if [ "${MACHINE}" = "zoom2" ]; then
+install -m 644 ${S}/include/asm-arm/arch-omap3/dpll_table_34xx.S \
 ${STAGING_INCDIR}/${PN}/asm-arm/arch-omap3/
 fi
 

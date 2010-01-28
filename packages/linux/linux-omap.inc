@@ -8,27 +8,7 @@ inherit kernel
 
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-3630sdp|zoom2|zoom3"
 
-ADD_DISTRO_FEATURES = "	${@base_contains("DISTRO_FEATURES", "720p", "sed -i 's/# CONFIG_FB_OMAP_720P_STREAMING is not set/CONFIG_FB_OMAP_720P_STREAMING=y/' ${S}/.config;", "", d)}"
-
 do_configure_prepend() {
-
-	if [ -f '${WORKDIR}/defconfig-${MACHINE}' ]; then
-		rm -f ${S}/.config || true
-
-		if [ "${TARGET_OS}" = "linux-gnueabi" -o  "${TARGET_OS}" = "linux-uclibcgnueabi" ]; then
-			echo "CONFIG_AEABI=y"                   >> ${S}/.config
-			echo "CONFIG_OABI_COMPAT=y"             >> ${S}/.config
-		else
-			echo "# CONFIG_AEABI is not set"        >> ${S}/.config
-			echo "# CONFIG_OABI_COMPAT is not set"  >> ${S}/.config
-		fi
-
-		sed     -e '/CONFIG_AEABI/d' \
-			-e '/CONFIG_OABI_COMPAT=/d' \
-			'${WORKDIR}/defconfig-${MACHINE}' >>'${S}/.config'
-
-		yes '' | oe_runmake oldconfig
-	else
 		case ${MACHINE} in
 			omap-3430ldp)
 				yes '' | oe_runmake omap_3430ldp_defconfig
@@ -47,14 +27,12 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
-				yes '' | oe_runmake omap_zoom3_defconfig
+			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
 				yes '' | oe_runmake ${MACHINE}_defconfig
 				;;
 		esac
-	fi
-	${ADD_DISTRO_FEATURES}
 }
 
 do_deploy() {
@@ -80,6 +58,7 @@ do_stage_append() {
               arch/arm/include/asm/mach \
               arch/arm/include/asm/hardware \
               drivers/media/video/isp \
+	      drivers/video/omap2/omapfb \
               include/trace \
               include/trace/events 
     do

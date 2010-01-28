@@ -1,0 +1,26 @@
+Index: tiopenmax-videodecitt-3.28/video/src/openmax_il/video_decode_ittiam/test/VidDecTest.c
+===================================================================
+--- tiopenmax-videodecitt-3.28.orig/video/src/openmax_il/video_decode_ittiam/test/VidDecTest.c	2010-01-14 13:46:39.000000000 +0100
++++ tiopenmax-videodecitt-3.28/video/src/openmax_il/video_decode_ittiam/test/VidDecTest.c	2010-01-21 10:41:10.000168000 +0100
+@@ -3030,9 +3030,9 @@
+                         if(pAppData->nRenamingOut || !pAppData->nTimesCount) {
+                             if((pBuf->nFlags & OMX_BUFFERFLAG_DECODEONLY) == 0) {
+                                 APP_DPRINT("%d writing %x  %x\n",pAppData->nCurrentFrameOut,((pBuf->nFlags & OMX_BUFFERFLAG_DECODEONLY)),pBuf->nFlags);
+-                                 /*fwrite(pBuf->pBuffer, 1, pBuf->nFilledLen, pAppData->fOut); */
+-                                /* printf(".\n"); */
+-                                /*fflush(pAppData->fOut);*/
++                                 fwrite(pBuf->pBuffer, 1, pBuf->nFilledLen, pAppData->fOut);
++                                 printf(".\n"); 
++                                fflush(pAppData->fOut);
+                             }
+                             else {
+                                 APP_DPRINT("%d erased %x  %x\n",pAppData->nCurrentFrameOut,((pBuf->nFlags & OMX_BUFFERFLAG_DECODEONLY)),pBuf->nFlags);
+@@ -3047,7 +3047,7 @@
+                                 if((pBuf->nFlags & OMX_BUFFERFLAG_DECODEONLY) == 0) {
+                                     APP_DPRINT("%d writing %x  %x\n",(int)(pAppData->nCurrentFrameOut),
+                                         (unsigned int)((pBuf->nFlags & OMX_BUFFERFLAG_DECODEONLY)),(unsigned int)pBuf->nFlags);
+-#if 0
++#if 1
+                                      fwrite(pBuf->pBuffer, 1, pBuf->nFilledLen, pAppData->fOut);  
+                                     /*printf(".\n"); */
+                                     fflush(pAppData->fOut);

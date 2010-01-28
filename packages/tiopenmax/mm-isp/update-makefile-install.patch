@@ -1,0 +1,20 @@
+Index: mm-isp-1.17/algo/camera/vstab/make/linux/Makefile
+===================================================================
+--- mm-isp-1.17.orig/algo/camera/vstab/make/linux/Makefile	2009-12-18 14:50:04.000065000 +0100
++++ mm-isp-1.17/algo/camera/vstab/make/linux/Makefile	2009-12-18 14:54:18.000019000 +0100
+@@ -43,6 +43,15 @@
+ 	@$(MAKE) -s -f Makefile.lib clean
+ 	@$(MAKE) -s -f Makefile.app clean
+ 
++install:: $(TARGETDIR)/include/mmisp $(TARGETDIR)/lib
++	cp -f $(LIB_DYNAMIC) $(TARGETDIR)/lib
++	cp -f ../../inc/VStabLib_c.h $(TARGETDIR)/include/mmisp
++	cp -f ../../inc/videoStabAPITypes.h $(TARGETDIR)/include/mmisp
++
++# make sure the install dirs get created
++$(TARGETDIR)/include/mmisp $(TARGETDIR)/lib:
++	mkdir -p $@
++
+ $(LIB_STATIC) $(LIB_DYNAMIC):
+ 	@$(MAKE) -s -f Makefile.lib $@
+ 

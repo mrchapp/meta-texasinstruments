@@ -1,0 +1,85 @@
+#!/bin/sh
+
+case $1 in
+  'start')
+    echo -n "Starting WLAN driver"
+
+    #check if wlan driver is already up
+    tiwlan_if=`/sbin/ifconfig | grep tiwlan0`
+
+    if [ -n "$tiwlan_if" ]
+    then
+        echo "WLAN interface already up"
+        exit
+    fi
+
+    cd /wlan/
+
+    #load the WLAN driver only if all the required files are present in the file system
+    if [ -f "sdio.ko"       ] &&
+       [ -f "tiwlan_drv.ko" ] &&
+       [ -f "tiwlan_loader" ] &&
+       [ -f "tiwlan.ini"    ] &&
+       [ -f "firmware.bin"  ]
+    then
+    #{
+        echo "Loading WLAN driver"
+        Hardware_Absent=`/sbin/insmod sdio.ko | grep sdioDrv_Execute | grep -i "error"`
+
+        if [ -n "$Hardware_Absent" ]
+        then
+            echo "Hardware not present; WLAN driver will not be loaded"
+            /bin/rmmod sdio
+            exit
+        fi
+
+        /sbin/insmod tiwlan_drv.ko
+
+        SdioDrv_loaded=`/bin/lsmod | grep sdio`
+        WlanDrv_loaded=`/bin/lsmod | grep tiwlan_drv`
+
+        if [ -n "$SdioDrv_loaded" ] && [ -n "$WlanDrv_loaded" ]
+        then
+            ./tiwlan_loader
+            echo "Making WLAN interface up"
+            /sbin/ifconfig tiwlan0 up
+            kill `ps | grep  haldaemon | grep -v addon | grep -v grep | cut "-d " -f2`	
+            /usr/sbin/hald
+
+        else
+            echo "Failed to install driver"
+            exit
+        fi
+    #}
+    else
+    #{
+        echo "WLAN driver not found"
+    #}
+    fi
+
+  ;;
+
+  'stop')
+    echo -n "Unloading WLAN driver"
+    SdioDrv_loaded=`/bin/lsmod | grep sdio`
+    WlanDrv_loaded=`/bin/lsmod | grep tiwlan_drv`
+
+    if [ -n "$SdioDrv_loaded" ] && [ -n "$WlanDrv_loaded" ]
+    then
+        /sbin/ifconfig tiwlan0 down
+        /sbin/rmmod tiwlan_drv
+        /sbin/rmmod sdio
+    else
+        echo "WLAN driver not loaded"
+    fi
+  ;;
+
+  'restart')
+    $0 stop
+    $0 start
+  ;;
+
+  *)
+    echo "Usage: $0 { start | stop | restart }"
+  ;;
+esac
