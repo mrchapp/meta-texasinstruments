@@ -1,8 +1,8 @@
-diff --git a/sys/v4l2/gstv4l2object.c b/sys/v4l2/gstv4l2object.c
-index 3512ada..66a31ec 100644
---- a/sys/v4l2/gstv4l2object.c
-+++ b/sys/v4l2/gstv4l2object.c
-@@ -1100,6 +1100,8 @@ gst_v4l2_object_v4l2fourcc_to_structure (guint32 fourcc)
+Index: git/sys/v4l2/gstv4l2object.c
+===================================================================
+--- git.orig/sys/v4l2/gstv4l2object.c	2010-01-26 13:24:08.000000000 -0600
++++ git/sys/v4l2/gstv4l2object.c	2010-01-26 13:24:09.000000000 -0600
+@@ -1100,6 +1100,8 @@
        structure = gst_structure_new ("video/x-raw-yuv-strided",
            "format", GST_TYPE_FOURCC, fcc,
            "rowstride", G_TYPE_INT, 4096,
@@ -11,11 +11,11 @@ index 3512ada..66a31ec 100644
            NULL);
        break;
      }
-diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
-index 971bfef..8870db2 100644
---- a/sys/v4l2/gstv4l2sink.c
-+++ b/sys/v4l2/gstv4l2sink.c
-@@ -575,13 +575,12 @@ gst_v4l2sink_change_state (GstElement * element, GstStateChange transition)
+Index: git/sys/v4l2/gstv4l2sink.c
+===================================================================
+--- git.orig/sys/v4l2/gstv4l2sink.c	2010-01-26 13:24:08.000000000 -0600
++++ git/sys/v4l2/gstv4l2sink.c	2010-01-27 17:31:29.000000000 -0600
+@@ -575,13 +575,12 @@
          if (!gst_v4l2_object_stop_streaming (v4l2sink->v4l2object)) {
            return GST_STATE_CHANGE_FAILURE;
          }
@@ -31,7 +31,7 @@ index 971bfef..8870db2 100644
          gst_v4l2_buffer_pool_destroy (v4l2sink->pool);
          v4l2sink->pool = NULL;
        }
-@@ -728,6 +727,7 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -747,6 +746,7 @@
      /* initialize the buffer pool if not initialized yet (first buffer): */
      if (G_UNLIKELY (!v4l2sink->pool)) {
  
@@ -39,7 +39,7 @@ index 971bfef..8870db2 100644
        gboolean no_pending_streamon = FALSE;
        char *driver = (char *) v4l2sink->v4l2object->vcap.driver;
  
-@@ -749,6 +749,35 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -768,6 +768,35 @@
          }
        }
  
@@ -57,7 +57,7 @@ index 971bfef..8870db2 100644
 +              "upstream element is requesting %d buffers", cnt);
 +          GST_DEBUG_OBJECT (v4l2sink,
 +              "... overriding original value of %d", v4l2sink->num_buffers);
-+          v4l2sink->num_buffers = cnt;
++          if ( cnt > 1) v4l2sink->num_buffers = cnt;
 +
 +          /* note: we have to put buffer-count-actual on the caps before
 +           * allocating.. even though we don't know if the driver will be
@@ -75,7 +75,7 @@ index 971bfef..8870db2 100644
        /* set_caps() might not be called yet.. so just to make sure: */
        if (!gst_v4l2sink_set_caps (bsink, caps)) {
          return GST_FLOW_ERROR;
-@@ -778,6 +807,11 @@ gst_v4l2sink_buffer_alloc (GstBaseSink * bsink, guint64 offset, guint size,
+@@ -797,6 +826,11 @@
        GST_INFO_OBJECT (v4l2sink, "outputting buffers via mmap()");
  
        if (v4l2sink->num_buffers != v4l2sink->pool->buffer_count) {
