@@ -1,5 +1,5 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
-PR = "r12"
+PR = "r13"
 
 SRC_URI = "git://github.com/roopar/gst-openmax.git;protocol=git;branch=omap"
 SRC_URI += "\
@@ -7,6 +7,7 @@ SRC_URI += "\
 	file://0002-support-to-set-cropping-in-sink-element.patch;patch=1 \
 	file://0003-some-hacks-for-playbin.patch;patch=1 \
 	file://0004-temporary-hack-for-cases-where-omx-component-does-no.patch;patch=1 \
+	file://element-rank.patch;patch=1 \
 	"
 
 # From omap branch:
