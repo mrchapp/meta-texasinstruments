@@ -3,7 +3,8 @@ PR = "r0"
 DEPENDS += "tisocketnode-gsmfrenc-codec"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc/... DSP-MM-TII_RLS_${PV}%\
+	      element /vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc/... DSP-MM-TII_RLS_3.10-P1%\
+	      element /vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc/... DSP-MM-TII_RLS_3.10%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc"

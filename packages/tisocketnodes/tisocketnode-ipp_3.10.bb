@@ -1,5 +1,5 @@
 DESCRIPTION = "Texas Instruments IPP Socket Node."
-PR = "r1"
+PR = "r0"
 DEPENDS += "tisocketnode-algo tisocketnode-dfgm"
 
 CCASE_SPEC = "%\
