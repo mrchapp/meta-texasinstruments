@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments RingIO Socket Node."
 LICENSE = "LGPL"
-PR = "r1"
+PR = "r0"
 DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\

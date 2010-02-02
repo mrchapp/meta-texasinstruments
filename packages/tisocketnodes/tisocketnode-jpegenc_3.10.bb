@@ -1,5 +1,5 @@
 DESCRIPTION = "Texas Instruments JPEG Encoder Socket Node."
-PR = "r1"
+PR = "r0"
 DEPENDS += "tisocketnode-jpegenc-codec"
 
 CCASE_SPEC = "%\

@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Conversion library."
 LICENSE = "LGPL"
-PR = "r1"
+PR = "r0"
 DEPENDS = "baseimage tisocketnode-usn"
 
 CCASE_SPEC = "%\
