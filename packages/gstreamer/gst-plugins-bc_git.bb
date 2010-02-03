@@ -1,11 +1,10 @@
 require gst-plugins-git.inc
 DEPENDS = "gst-plugins-base"
-PR = "r0"
+PR = "r1"
 
 SRC_URI = "git://gitorious.org/gst-plugin-bc/gst-plugin-bc.git;protocol=git"
-SRCREV = "39a672916e11dbccb07c3d9ad5b57422fd29b8f0"
+SRCREV = "dca16cd0c118c23c648f516df220e6c57b9c759f"
 SRC_URI += "file://common-20091119.tar.gz"
-SRC_URI += "file://nomodule.patch;patch=1"
 S = "${WORKDIR}/git"
 
 inherit autotools
