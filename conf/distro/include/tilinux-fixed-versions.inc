@@ -2,7 +2,7 @@
 # baseport
 SRCREV_pn-x-load  =                 "L24.3"
 SRCREV_pn-u-boot =                  "L24.3-p1"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.3-p2"
+SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.3-p3"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "79a9207b43499221b3b027f069fa0426e8bafdb1"
@@ -66,8 +66,8 @@ SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.2"
 SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1"
-SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1"
+SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1-P1"
+SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.2.1-P1"
 SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.1"
 SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.1"
 SRCREV_pn-gfx-ticpublt =                "OMAP_LINUX_TICPUBLT_BIN_RLS_1.0.0.0"

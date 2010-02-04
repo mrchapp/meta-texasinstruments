@@ -1,6 +1,6 @@
 --- a/src/eurasia/eurasiacon/build/linux/scripts/rc.pvr.m4
 +++ b/src/eurasia/eurasiacon/build/linux/scripts/rc.pvr.m4
-@@ -295,7 +295,7 @@
+@@ -301,7 +301,7 @@
  define([[RUN_SRVINIT]],[[dnl
  pushdivert(51)dnl
  	# Run the PVR initialisation server
