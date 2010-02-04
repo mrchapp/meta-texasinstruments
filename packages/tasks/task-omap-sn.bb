@@ -37,7 +37,6 @@ RDEPENDS = "\
     \
     tisocketnode-h264dec \
     tisocketnode-h264enc \
-    tisocketnode-mpeg2 \
     tisocketnode-mpeg4dec \
     tisocketnode-mpeg4enc \
     ${@base_contains("DISTRO_FEATURES", "spark", "tisocketnode-spark", "", d)} \    
