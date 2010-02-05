@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments DSP Bridge tool DLLcreate"
 LICENSE = "Texas Instruments"
-PR = "r1"
+PR = "r2"
 
 PV = "0.0+cc+${SRCREV}"
 
@@ -13,7 +13,9 @@ CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"
 CCASE_PATHCOMPONENT = "src"
 CCASE_PATHCOMPONENTS = "5"
 
-SRC_URI = "file://DLLcreate.patch;patch=1"
+SRC_URI = "file://DLLcreate.patch;patch=1 \
+           file://tidspbridge-dllcreate-native-compilationerrors.patch;patch=1 \
+"
 
 inherit ccasefetch native
 
