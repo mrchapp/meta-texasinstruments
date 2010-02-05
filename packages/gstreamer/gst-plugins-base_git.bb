@@ -9,3 +9,4 @@ EXTRA_OECONF += "--disable-freetypetest --disable-pango --disable-theora"
 
 SRCREV = "8b4f6dd43bf13d286f11f532033ac46aec33b13b"
 SRC_URI += "file://rowstride.patch;patch=1"
+SRC_URI += "file://use-stridetransform.patch;patch=1"
