@@ -10,7 +10,7 @@ ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "tibluetooth", "btfm", "", d)} \
-#	${@base_contains("DISTRO_FEATURES", "tibluetooth", "fmapp", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "tibluetooth", "kfmapp", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "obex-data-server", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "gnome-bluetooth", "", d)} \
@@ -18,7 +18,7 @@ RDEPENDS = "\
 
 RDEPENDS_zoom3 = "\
 	${@base_contains("DISTRO_FEATURES", "tibluetooth", "btfm", "", d)} \
-#	${@base_contains("DISTRO_FEATURES", "tibluetooth", "fmapp", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "tibluetooth", "kfmapp", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "obex-data-server", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "gnome-bluetooth", "", d)} \
