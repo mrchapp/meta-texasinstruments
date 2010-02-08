@@ -21,8 +21,8 @@ SRCREV_pn-u-boot ?= "ab45d2a787a9674bed30542139175d8e090e0749"
 SRCREV_pn-linux-tiomap ?= "b10ab24e74828809010f7cc6a465c3a73d0fc8f4"
 
 # bridge and friends
-SRCREV_pn-tidspbridge-lib = "d7ab60790b9be5a0337abfc6d51581c4a1ff056d"
-SRCREV_pn-tidspbridge-mpusamples = "d7ab60790b9be5a0337abfc6d51581c4a1ff056d"
+SRCREV_pn-tidspbridge-lib = "85d2b37bb6a7150ba8a642a47a97957a3c411f84"
+SRCREV_pn-tidspbridge-mpusamples = "85d2b37bb6a7150ba8a642a47a97957a3c411f84"
 PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.56"
 PREFERRED_VERSION_tidspbridge-extra =		"23.13"
 PREFERRED_VERSION_tidspbridge-cgt6x =		"6.0.7"
