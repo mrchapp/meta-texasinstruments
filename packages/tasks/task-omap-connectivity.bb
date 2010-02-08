@@ -15,6 +15,8 @@ RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "obex-data-server", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "gnome-bluetooth", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "bluetooth", "fuse", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "bluetooth", "obexfs", "", d)} \
 "
 
 RDEPENDS_zoom3 = "\
@@ -24,6 +26,8 @@ RDEPENDS_zoom3 = "\
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "obex-data-server", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "gnome-bluetooth", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "bluetooth", "fuse", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "bluetooth", "obexfs", "", d)} \	
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "wilink", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "iperf", "", d)} \
 "
