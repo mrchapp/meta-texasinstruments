@@ -2,7 +2,7 @@ require linux-omap.inc
 
 PR = "r1"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap3.git;protocol=git;branch=L23.I3.3"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/integration/kernel-omap3.git;protocol=git;branch=L23.I3.4"
 
 PV = "2.6+git${SRCREV}"
 
