@@ -5,7 +5,7 @@ LICENSE = "GPL"
 PR = "r5"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
-DEPENDS = "virtual/kernel bison-native"
+DEPENDS = "virtual/kernel bison-native flex-native"
 
 inherit ccasefetch
 
