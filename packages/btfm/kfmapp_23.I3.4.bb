@@ -35,6 +35,10 @@ do_install() {
         install -m 755 ${S}/init_scripts/fm_tx_init_1273.1.bts ${D}${base_libdir}/firmware
         install -m 755 ${S}/init_scripts/fmc_init_1273.1.bts ${D}${base_libdir}/firmware
 
+	install -m 755 ${S}/init_scripts/fmc_ch8_1273.2.bts ${D}${base_libdir}/firmware
+	install -m 755 ${S}/init_scripts/fm_rx_ch8_1273.2.bts ${D}${base_libdir}/firmware
+	install -m 755 ${S}/init_scripts/fm_tx_ch8_1273.2.bts ${D}${base_libdir}/firmware
+
 	install -m 755 ${S}/init_scripts/fm_rx_init_1273.2.bts ${D}${base_libdir}/firmware
 	install -m 755 ${S}/init_scripts/fm_tx_init_1273.2.bts ${D}${base_libdir}/firmware
 	install -m 755 ${S}/init_scripts/fmc_init_1273.2.bts ${D}${base_libdir}/firmware

@@ -34,7 +34,7 @@ DISTRO_FEATURES += "720p"
 # Enable 720p OpenMAX components - Aricent - deprecated
 #DISTRO_FEATURES += "Aricent_720p"
 
-# Enable support for Bluetooth and FM stack
+# Enable support for TI Bluetooth and FM stack
 DISTRO_FEATURES += "tibluetooth"
 
 # Enable support for TI's WLAN on zoom3 - no impact on other boards.
