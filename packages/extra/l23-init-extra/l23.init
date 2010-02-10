@@ -17,9 +17,9 @@ start ()
     mount -t debugfs debugfs /debug
     echo 1 > /debug/pm_debug/sleep_while_idle
     
-    # AVS
-    echo 1 > /debug/pm_debug/sr1_autocomp
-    echo 1 > /debug/pm_debug/sr2_autocomp
+    # AVS - Disabled - 
+    #echo 1 > /debug/pm_debug/sr1_autocomp
+    #echo 1 > /debug/pm_debug/sr2_autocomp
 }
 
 stop ()
