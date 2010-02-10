@@ -1,3 +1,5 @@
+RDEPENDS="l23-init-extra"
+
 require linux-omap.inc
 
 PR = "r1"

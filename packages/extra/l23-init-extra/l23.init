@@ -1,0 +1,56 @@
+#!/bin/sh
+# 
+# Xavier Boudet <x-boudet@ti.com>
+# description: addtional init steps for L23.I3.x
+#
+# usage:
+#     l23.init {start|stop|restart}
+
+start ()
+{
+    echo -n "Start init L23 "
+    # OnDemand Governor 
+    echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    
+    # Sleep while idle
+    mkdir -p /debug
+    mount -t debugfs debugfs /debug
+    echo 1 > /debug/pm_debug/sleep_while_idle
+    
+    # AVS
+    echo 1 > /debug/pm_debug/sr1_autocomp
+    echo 1 > /debug/pm_debug/sr2_autocomp
+}
+
+stop ()
+{
+    echo -n "Shutting down init L23"
+    umount /debug
+}
+
+restart ()
+{
+    stop
+    start
+}
+
+cd /
+
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart)
+	restart
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+cd - > /dev/null 2>&1
+
+exit $?
