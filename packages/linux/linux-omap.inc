@@ -27,7 +27,6 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
-			sed -i "s/# CONFIG_FUSE_FS is not set/CONFIG_FUSE_FS=y/" ${S}/arch/arm/configs/omap_zoom3_defconfig
 			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
