@@ -4,19 +4,43 @@ LICENSE = "GPL"
 HOMEPAGE = "http://hostap.epitest.fi/wpa_supplicant/"
 DEPENDS = "gnutls ${@base_contains("COMBINED_FEATURES", "madwifi", "madwifi-ng", "",d)}"
 
-PR = "r2"
+PR = "r3"
 
 #we introduce MY_ARCH to get 'armv5te' as arch instead of the misleading 'arm' on armv5te builds
 MY_ARCH := "${PACKAGE_ARCH}"
 PACKAGE_ARCH = "${@base_contains('COMBINED_FEATURES', 'madwifi', '${MACHINE_ARCH}', '${MY_ARCH}', d)}"
 
 SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
-	file://defconfig-gnutls \
+	file://defconfig-openssl-wsc \
 	file://ifupdown.sh \
 	file://functions.sh \
-	file://add-tempo-init.patch;patch=1"
+	file://add-tempo-init.patch;patch=1 \
+	file://wsc-support.patch;patch=1 \
+	file://wsc_supplicant.c \
+	file://wsc_supplicant.h \
+	file://WscTypes.h \
+	file://eap_wsc.c \
+	file://CipherWrapper.c \
+	file://CipherWrapper.h \
+	file://bufferObj.c \
+	file://bufferObj.h \
+	file://TI_IPC_Api.h \	
+	"
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
+
+
+SRC_WSC = "\
+ wsc_supplicant.c \
+ wsc_supplicant.h \
+ WscTypes.h \
+ eap_wsc.c \
+ CipherWrapper.c \
+ CipherWrapper.h \
+ bufferObj.c \
+ bufferObj.h \
+ TI_IPC_Api.h \
+ "
 
 PACKAGES_prepend = "wpa-supplicant-passphrase "
 FILES_wpa-supplicant-passphrase = "/usr/sbin/wpa_passphrase"
@@ -28,8 +52,10 @@ RRECOMMENDS_${PN} = "wpa-supplicant-passphrase"
 export HAS_MADWIFI = "${@base_contains('COMBINED_FEATURES', 'madwifi', 1, 0,d)}"
 
 do_configure () {
-        install -m 0755 ${WORKDIR}/defconfig-gnutls  .config
-
+        install -m 0755 ${WORKDIR}/defconfig-openssl-wsc  .config
+	for i in ${SRC_WSC} ; do
+		install -m 0644 ${WORKDIR}/$i $i
+	done
         if [ "x$HAS_MADWIFI" == "x1" ] ; then
                 echo "CONFIG_DRIVER_MADWIFI=y" >> .config
                 echo "CFLAGS += -I${STAGING_INCDIR}/madwifi-ng" >> .config
