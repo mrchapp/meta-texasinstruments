@@ -40,6 +40,13 @@ do_compile () {
 	make
 }
 
+do_stage() {
+	install -d ${STAGING_INCDIR}/wpa-supplicant
+	for i in `ls ${S}/*.h ${S}/wpa_gui/*.h`; do
+		install -m 0644 $i ${STAGING_INCDIR}/wpa-supplicant
+	done
+}
+
 do_install () {
 	install -d ${D}${sbindir}
 	install -m 755 wpa_supplicant ${D}${sbindir}
