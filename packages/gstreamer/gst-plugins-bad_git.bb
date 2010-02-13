@@ -7,11 +7,6 @@ SRC_URI += "\
 	file://0001-jpegparse-new-element.patch;patch=1 \
 	file://0002-jpegparse-This-is-a-combination-of-41-commits.patch;patch=1 \
 	"
-SRC_URI += "\
-	file://0001-aacparse-New-implementation.patch;patch=1 \
-	file://0002-aacparse-Add-framed-caps-increse-rank.patch;patch=1 \
-	"
-SRC_URI += "file://eightchan_aacparse_support.patch;patch=1"
 SRC_URI += "file://freeze-timeout.patch;patch=1"
 SRC_URI += "file://0001-fixes-to-mux-h264-stream-utilizing-ctts.patch;patch=1"
 
