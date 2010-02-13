@@ -9,12 +9,10 @@ DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native"
 
 inherit autotools pkgconfig
 
-SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
+SRC_URI = "git://gitorious.org/robclark-gstreamer/${PN};branch=l24.3;protocol=git \
            file://common-20091119.tar.gz \
-           file://configurable-buffer-alignment.patch;patch=1 \
-           file://0001-Changes-to-make-it-possible-to-LD_PRELOAD-libttif.patch;patch=1 \
           "
-SRCREV = "5a1c788d9a58a032442ea09f091306640a0a7069"
+SRCREV = "489a4e4275854ddaedf81182237a1a0d6d800850"
 S = "${WORKDIR}/git"
 
 EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=no --disable-examples --disable-tests --disable-valgrind --disable-debug --with-buffer-alignment=128"
