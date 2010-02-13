@@ -1,0 +1,50 @@
+diff --git a/configure.in b/configure.in
+index 0720341..c2b20f1 100644
+--- a/configure.in
++++ b/configure.in
+@@ -2479,7 +2479,7 @@ if test x"$GCC" = xyes; then
+       AC_MSG_RESULT([arm])
+       AC_DEFINE_UNQUOTED(G_ATOMIC_ARM, 1,
+                          [arm atomic implementation])
+-      glib_memory_barrier_needed=no
++      glib_memory_barrier_needed=yes
+       ;;
+     crisv32*|etraxfs*)
+       AC_MSG_RESULT([crisv32])
+diff --git a/glib/gatomic.c b/glib/gatomic.c
+index baa73e7..764d720 100644
+--- a/glib/gatomic.c
++++ b/glib/gatomic.c
+@@ -563,6 +563,9 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomi
+ # elif defined (G_ATOMIC_ARM)
+ static volatile int atomic_spin = 0;
+ 
++
++#  define G_ATOMIC_MEMORY_BARRIER __asm__ ("dsb" : : : "memory")
++
+ static int atomic_spin_trylock (void)
+ {
+   int result;
+@@ -572,10 +575,12 @@ static int atomic_spin_trylock (void)
+     : "=&r,&r" (result)
+     : "r,0" (1), "r,r" (&atomic_spin)
+     : "memory");
+-  if (result == 0)
++  if (result == 0) {
++    G_ATOMIC_MEMORY_BARRIER;
+     return 0;
+-  else
++  } else {
+     return -1;
++  }
+ }
+ 
+ static void atomic_spin_lock (void)
+@@ -586,6 +591,7 @@ static void atomic_spin_lock (void)
+ 
+ static void atomic_spin_unlock (void)
+ {
++  G_ATOMIC_MEMORY_BARRIER;
+   atomic_spin = 0;
+ }
+ 
