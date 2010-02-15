@@ -20,8 +20,6 @@ PV = "0.0+cc+${SRCREV}"
 
 CCASE_SPEC = "%\
    element /vobs/WTSD_DucatiMMSW/...   ${SRCREV}%\
-   element /vobs/WTSD_DucatiMMSW/...   TI-MM-DUCATI_RLS.01.10.00.00-P1%\
-   element /vobs/WTSD_DucatiMMSW/...   TI-MM-DUCATI_RLS.01.10.00.00%\
    element * /main/LATEST%"
 
 # Note: WTSD_DucatiMMSW is used in the XDC package name, so it must be put
