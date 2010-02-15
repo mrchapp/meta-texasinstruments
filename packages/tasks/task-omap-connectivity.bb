@@ -14,8 +14,6 @@ RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "bluez-gnome", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "obex-data-server", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "bluetooth", "gnome-bluetooth", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "bluetooth", "fuse", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "bluetooth", "obexfs", "", d)} \
 "
 
 RDEPENDS_zoom3 = "\
