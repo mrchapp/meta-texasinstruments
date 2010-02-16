@@ -11,7 +11,7 @@ PARALLEL_MAKE = "-j1"
 CCASE_SPEC = "\
 	# MM ISP%\
 	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX-TID-MMISP_RLS_${PV}%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/camera/vstab/doc/... LINUX-TID-MMISP_RLS_1.16%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/camera/vstab/doc/... LINUX-TID-MMISP_RLS_${PV}%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX-TID-MMISP_RLS_${PV}%\
 	element * /main/LATEST%\
 	"
@@ -44,7 +44,7 @@ do_compile() {
 
 	cd ${S}/linux/mm_isp/
 	for action in clean all; do
-		for subcomp in capl ipp il3p caf; do
+		for subcomp in capl ipp il3p; do
 			oe_runmake \
 				ALGOROOT=${S}/algo \
 				MMISPROOT=${S}/linux/mm_isp \
@@ -110,7 +110,11 @@ do_install() {
 		BRIDGEINCLUDEDIR=${STAGING_INCDIR}/dspbridge \
 		BRIDGELIBDIR=${STAGING_LIBDIR} \
 		TARGETDIR=${D} \
-		capl.install ipp.install il3p.install caf.install
+		capl.install ipp.install il3p.install
+
+	# Install 3A FW
+	cd ${D}
+	tar zxf ${S}/linux/mm_isp/linux_imaging/fw3a_target.tgz
 }
 
 do_stage() {
@@ -162,7 +166,7 @@ do_stage() {
 		BRIDGEINCLUDEDIR=${STAGING_INCDIR}/dspbridge \
 		BRIDGELIBDIR=${STAGING_LIBDIR} \
 		TARGETDIR=${STAGING_DIR_TARGET}/usr/ \
-		capl.install ipp.install il3p.install caf.install
+		capl.install ipp.install il3p.install
 
 	install -d ${STAGING_INCDIR}/capl/inc
 	install -m 0644 ${S}/linux/mm_isp/capl/inc/*.h ${STAGING_INCDIR}/capl/inc/
@@ -181,13 +185,19 @@ do_stage() {
 FILES_${PN} = "\
 	/lib \
 	/bin \
+	/etc \
+	/mms \
 	"
 
 FILES_${PN}-dbg = "\
 	/lib/.debug \
 	/bin/.debug \
+	/etc/.debug \
+	/mms/.debug \
+	/usr/.debug \
 	"
 
 FILES_${PN}-dev = "\
 	/include \
+	/usr \
 	"
