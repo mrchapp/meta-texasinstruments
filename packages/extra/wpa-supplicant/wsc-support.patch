@@ -477,18 +477,6 @@ Index: wpa_supplicant-0.5.11/driver_wext.c
  
  static int wpa_driver_wext_event_wireless_michaelmicfailure(
  	void *ctx, const char *ev, size_t len)
-@@ -1001,11 +1015,6 @@
- {
- 	int flags;
- 
--        if (wpa_driver_wext_get_ifflags(drv, &flags) != 0 || wpa_driver_wext_set_ifflags(drv, flags | IFF_UP) != 0) { 
--                printf("Could not set interface '%s' UP\n", drv->ifname);
--        }
--        os_sleep(0, 400000);
--
- 	/*
- 	 * Make sure that the driver does not have any obsolete PMKID entries.
- 	 */
 @@ -1811,7 +1820,7 @@
  				    reason_code);
  }
