@@ -241,6 +241,7 @@ PREFERRED_VERSION_flex =		"2.5.35"
 PREFERRED_VERSION_flex-native =		"2.5.35"
 PREFERRED_VERSION_iperf =		"2.0.4"
 PREFERRED_VERSION_libmms =		"0.4"
+PREFERRED_VERSION_sysvinit =		"2.86"
 
 # toolchain
 PREFERRED_VERSION_external-csl-toolchain =	"2008q3-72"
