@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r20"
+PR = "r21"
 
 PACKAGES = "\
     task-omap-gst \
@@ -31,7 +31,7 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugins-good	\
     gst-plugins-bad	\
     gst-plugins-ugly	\
-    gst-plugin-bc \
+    ${@base_contains("DISTRO_FEATURES", "gfx", "gst-plugin-bc", "", d)} \
     gst-ffmpeg \
     gst-plugin-mpegaudioparse \
     gst-plugin-audiotestsrc \
