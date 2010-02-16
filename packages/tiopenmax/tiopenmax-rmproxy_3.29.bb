@@ -1,4 +1,4 @@
-DEPENDS = "tidspbridge-lib tiopenmax-core"
+DEPENDS = "tidspbridge-lib tiopenmax-core tiopenmax-ram"
 DESCRIPTION = "Texas Instruments OpenMAX IL Resource Manager Proxy."
 PR = "r0"
 PACKAGES = "${PN}-dbg ${PN}-dev ${PN}"
@@ -7,7 +7,6 @@ require tiopenmax-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "\
 	/vobs/wtbu/OMAPSW_MPU/linux/system/src/openmax_il/resource_manager_proxy \
-	/vobs/wtbu/OMAPSW_MPU/linux/system/src/openmax_il/resource_manager/resource_activity_monitor/inc/Resource_Activity_Monitor.h \
 	/vobs/wtbu/OMAPSW_MPU/linux/Makefile \
 	/vobs/wtbu/OMAPSW_MPU/linux/Master.mk \
 	"
@@ -25,9 +24,6 @@ do_compile_prepend() {
 #	install -d ${D}/omx
 
 do_compile() {
-	# HACK - stage file Resource_Activity_Monitor.h
-	install -m 0644 ${S}/system/src/openmax_il/resource_manager/resource_activity_monitor/inc/Resource_Activity_Monitor.h ${STAGING_INCDIR}/omx
-	
 	oe_runmake \
 		PREFIX=${D}/usr PKGDIR=${S} \
 		CROSS=${AR%-*}- \

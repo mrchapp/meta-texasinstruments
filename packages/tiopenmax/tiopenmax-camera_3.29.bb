@@ -7,6 +7,7 @@ require tiopenmax-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "\
 	/vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/mms_camera \
+	/vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/camera/test \
 	/vobs/wtbu/OMAPSW_MPU/linux/Makefile \
 	/vobs/wtbu/OMAPSW_MPU/linux/Master.mk \
 	"
@@ -15,6 +16,7 @@ CCASE_PATHCOMPONENT = "linux"
 
 SRC_URI = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "file://remove-patterns.patch;patch=1", d)} \
+	file://23.19-cameratestnocore.patch;patch=1 \
 	"
 
 inherit ccasefetch
