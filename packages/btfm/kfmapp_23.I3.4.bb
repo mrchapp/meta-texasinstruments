@@ -10,10 +10,7 @@ inherit ccasefetch
 COMPATIBLE_MACHINE = "omap-3430sdp|omap-3430ldp|omap-3630sdp|zoom2|zoom3"
 
 CCASE_SPEC =   "%\
-	element /vobs/WCGDev/... LINUX_BT_L23.I3.4%\
-	element /vobs/WCGDev/... LINUX-WCG-BT_RLS_${PV}%\
-	element /vobs/MCP_Common/... LINUX-WCG-BT_RLS_${PV}%\
-	element /vobs/HSW_FMStack/... LINUX-WCG-BT_RLS_${PV}%\
+	element /vobs/WCGDev/... LINUX_BT_L${PV}%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WCGDev/linux/"
@@ -31,19 +28,11 @@ do_compile() {
 
 do_install() {
 	install -d ${D}${base_libdir}/firmware
-	install -m 755 ${S}/init_scripts/fm_rx_init_1273.1.bts ${D}${base_libdir}/firmware
-        install -m 755 ${S}/init_scripts/fm_tx_init_1273.1.bts ${D}${base_libdir}/firmware
-        install -m 755 ${S}/init_scripts/fmc_init_1273.1.bts ${D}${base_libdir}/firmware
-
 	install -m 755 ${S}/init_scripts/fmc_ch8_1273.2.bts ${D}${base_libdir}/firmware
 	install -m 755 ${S}/init_scripts/fm_rx_ch8_1273.2.bts ${D}${base_libdir}/firmware
-	install -m 755 ${S}/init_scripts/fm_tx_ch8_1273.2.bts ${D}${base_libdir}/firmware
-
-	install -m 755 ${S}/init_scripts/fm_rx_init_1273.2.bts ${D}${base_libdir}/firmware
-	install -m 755 ${S}/init_scripts/fm_tx_init_1273.2.bts ${D}${base_libdir}/firmware
-	install -m 755 ${S}/init_scripts/fmc_init_1273.2.bts ${D}${base_libdir}/firmware
-
-	install -d ${D}/usr/bin
+ 	install -m 755 ${S}/init_scripts/fm_tx_ch8_1273.2.bts ${D}${base_libdir}/firmware
+      
+ 	install -d ${D}/usr/bin
 	install -m 755 ${S}/kfmapp/kfmapp ${D}/usr/bin
 }
 
