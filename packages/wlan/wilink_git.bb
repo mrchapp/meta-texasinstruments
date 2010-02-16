@@ -1,7 +1,7 @@
 SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "WLAN stack (kernel module, libs, wpa_supplicant)"
-DEPENDS = "linux-tiomap wilink-firmware"
+DEPENDS = "linux-tiomap wilink-firmware wpa-supplicant"
 LICENSE = "BSD"
 PR = "r0"
 
@@ -18,7 +18,6 @@ PV = "23.i3+git+${SRCREV}"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
-        file://makefile-ar.patch;patch=1 \
 	file://wlan.init \
          "
 do_compile() {
@@ -29,10 +28,12 @@ do_compile() {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 
 	make ARCH=arm HOST_PLATFORM=${MACHINE} KERNEL_DIR=${STAGING_KERNEL_DIR} \
-	BUILD_SUPPL=n CROSS_COMPILE=${TARGET_PREFIX} clean
+	TI_SUPP_LIB_DIR=${STAGING_INCDIR}/wpa-supplicant \
+	BUILD_SUPPL=y CROSS_COMPILE=${TARGET_PREFIX} clean
 
 	make ARCH=arm HOST_PLATFORM=${MACHINE} KERNEL_DIR=${STAGING_KERNEL_DIR} \ 
-	BUILD_SUPPL=n CROSS_COMPILE=${TARGET_PREFIX}
+	TI_SUPP_LIB_DIR=${STAGING_INCDIR}/wpa-supplicant \
+	BUILD_SUPPL=y CROSS_COMPILE=${TARGET_PREFIX}
 }
 
 do_install() {
