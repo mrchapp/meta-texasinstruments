@@ -1,11 +1,11 @@
 
 # baseport
-SRCREV_pn-x-load  =                 "L24.3"
-SRCREV_pn-u-boot =                  "L24.3-p1"
-SRCREV_pn-linux-tiomap =            "ti-2.6.31-omap4-L24.3-p3"
+SRCREV_pn-x-load  =                 "L24.4"
+SRCREV_pn-u-boot =                  "L24.4"
+SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.4"
 
 # Device driver test
-SRCREV_pn-device-driver-test =      "79a9207b43499221b3b027f069fa0426e8bafdb1"
+SRCREV_pn-device-driver-test =      "d8a8672a4e12f0ad8ae1134273405d240ce5b19b"
 
 # Tesla Bridge
 SRCREV_pn-tidspbridge-lib            =      "ti-syslink-mpu-rls-24.4"
