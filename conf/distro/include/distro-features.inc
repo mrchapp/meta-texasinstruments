@@ -40,5 +40,5 @@ DISTRO_FEATURES += "tibluetooth"
 # Enable support for TI's WLAN on zoom3 - no impact on other boards.
 DISTRO_FEATURES += "tiwifi"
 
-# Enable support for TI's GPS
-#DISTRO_FEATURES += "gps"
+# Enable support for TI-BT test framework on zoom3 - no impact on other boards.
+#DISTRO_FEATURES += "tibt-test-fw"
