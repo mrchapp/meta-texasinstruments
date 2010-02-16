@@ -19,6 +19,7 @@ PV = "23.i3+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
 	file://wlan.init \
+	file://wpa-core-include.patch;patch=1 \
          "
 do_compile() {
 	cd ${S}/platforms/os/linux
