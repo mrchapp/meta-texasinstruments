@@ -14,7 +14,7 @@ CCASE_SPEC = "%\
 	element /vobs/wtbu/OMAPSW_GFX/... GFX-LINUX-SGX-DDK-23X-INC3_RLS_${PV}%\
 	element * /main/LATEST%\
 	"
-CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK/src/eurasia_km"
+CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_GFX/IMAGINATION/GFX/GFX_Linux_DDK/gfx_linux_ddk/eurasia_km"
 CCASE_PATHCOMPONENT = "eurasia_km"
 CCASE_PATHCOMPONENTS = "7"
 

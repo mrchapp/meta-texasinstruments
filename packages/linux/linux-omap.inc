@@ -51,6 +51,7 @@ addtask deploy before do_populate_staging after do_install
 do_stage_append() {
 
     for ii in arch/arm/mach-omap2 \
+	      arch/arm/mach-omap2/include/mach \
               arch/arm/plat-omap/include/dspbridge \
               arch/arm/plat-omap/include/mach \
               arch/arm/plat-omap/include/plat \
@@ -60,7 +61,7 @@ do_stage_append() {
               drivers/media/video/isp \
 	      drivers/video/omap2/omapfb \
               include/trace \
-              include/trace/events 
+              include/trace/events
     do
         install -d ${STAGING_KERNEL_DIR}/$ii
         install -m 0644 ${S}/$ii/*.h ${STAGING_KERNEL_DIR}/$ii

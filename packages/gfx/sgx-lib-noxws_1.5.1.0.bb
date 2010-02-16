@@ -29,19 +29,19 @@ KERNEL_VERSION=`cat ${STAGING_KERNEL_DIR}/kernel-abiversion`
 
 # hack.  Carlos knows to fix it in future revisions.
 do_chmod() {
-	chmod -R +w ${S}/src/eurasia
+	chmod -R +w ${S}/gfx_linux_ddk/eurasia
 }
 
 do_compile() {
-	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
-	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
+	cd ${S}/gfx_linux_ddk/eurasia/eurasiacon/build/linux/omap3630_linux
+	oe_runmake EURASIAROOT=${S}/gfx_linux_ddk/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${STAGING_DIR_TARGET} X11ROOT=${prefix} V=1 SUPPORT_XWS=0
 }
 
 do_install() {
 	install -d ${D}/lib/modules/${KERNEL_VERSION}
-	cd ${S}/src/eurasia/eurasiacon/build/linux/omap3630_linux
-	oe_runmake EURASIAROOT=${S}/src/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
+	cd ${S}/gfx_linux_ddk/eurasia/eurasiacon/build/linux/omap3630_linux
+	oe_runmake EURASIAROOT=${S}/gfx_linux_ddk/eurasia KERNELDIR=${STAGING_KERNEL_DIR} BUILD=release \
 		DISCIMAGE=${D} X11ROOT=${prefix} CROSS=${AR%-*}- \
 		SUPPORT_XWS=0 install
 
