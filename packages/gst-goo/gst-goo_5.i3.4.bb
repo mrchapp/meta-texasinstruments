@@ -3,10 +3,10 @@ PRIORITY = "optional"
 DEPENDS = "glib-2.0 libgoo gst-plugins-base"
 DESCRIPTION = "GStreamer plug-ins for OpenMAX IL based on LibGoo"
 LICENSE = "LGPL"
-PR = "r0"
+PR = "r1"
 
-SRCREV = "ddc24a0cf25bd227a16671156537c694382e0f25"
-SRC_URI = "git://git.omapzoom.org/repo/gst-goo.git;protocol=http;branch=gst-goo-5.i3.3-rc"
+SRCREV = "816078f0368cc43400636d5622c2afc724a9dbcb"
+SRC_URI = "git://git.omapzoom.org/repo/gst-goo.git;protocol=http;branch=gst-goo-5.i3.4-rc"
 S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
