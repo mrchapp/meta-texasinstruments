@@ -38,8 +38,7 @@ start ()
         echo -n "Launching OMX Managers: "
 	OMXAudioManager &
 	OMXPolicyManager &
-	# Workaround: disable RM for LO convergence
-	# OMXResourceManager &
+	OMXResourceManager &
 	echo "OK"
     fi
 }
@@ -49,8 +48,7 @@ stop ()
     echo -n "Shutting down OpenMAX: "
     killall OMXAudioManager > /dev/null 2>&1
     killall OMXPolicyManager > /dev/null 2>&1
-    # Workaround: disable RM for LO convergence
-    # killall OMXResourceManager > /dev/null 2>&1
+    killall OMXResourceManager > /dev/null 2>&1
     echo "OK"
 
     echo -n "Unloading Bridge drivers: "
