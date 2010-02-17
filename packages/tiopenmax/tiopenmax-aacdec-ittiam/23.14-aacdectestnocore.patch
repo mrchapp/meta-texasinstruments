@@ -1,6 +1,8 @@
---- tiopenmax-aacdec-3.21.orig/audio/src/openmax_il/aac_dec_ittiam/tests/Makefile	2009-04-16 11:45:14.000000000 -0500
-+++ tiopenmax-aacdec-3.21/audio/src/openmax_il/aac_dec_ittiam/tests/Makefile	2009-04-16 12:08:59.000000000 -0500
-@@ -36,7 +36,6 @@ ifneq ($(OMX_RENDERING_DISABLE), 1)
+Index: tiopenmax-aacdec-ittiam-3.29-P1/audio/src/openmax_il/aac_dec_ittiam/tests/Makefile
+===================================================================
+--- tiopenmax-aacdec-ittiam-3.29-P1.orig/audio/src/openmax_il/aac_dec_ittiam/tests/Makefile	2010-02-17 12:18:42.006227000 +0100
++++ tiopenmax-aacdec-ittiam-3.29-P1/audio/src/openmax_il/aac_dec_ittiam/tests/Makefile	2010-02-17 12:19:18.003293000 +0100
+@@ -36,7 +36,6 @@
  endif
  
  
@@ -8,12 +10,12 @@
  OMXRMPROXY_LIB=$(OMXLIBDIR)/libOMX_ResourceManagerProxy.so
  COMPONENT_TEST=AacDecoder_Test_Itt
  
-@@ -44,7 +43,7 @@ COMPONENT_TARGET=$(OMXTESTDIR)/$(COMPONENT_TEST)
+@@ -44,7 +43,7 @@
  
  all install:: $(COMPONENT_TARGET)
  
 -omxcore $(COMPONENT_TARGET): $(OMXTESTDIR) $(COMPONENT_TEST) $(OMXLIBDIR) $(OMXCORE_LIB)  
-+$(COMPONENT_TARGET): $(OMXTESTDIR) $(COMPONENT_TEST) $(OMXLIBDIR)  
++$(COMPONENT_TARGET): $(OMXTESTDIR) $(COMPONENT_TEST) $(OMXLIBDIR) $(OMXCORE_LIB)  
  	@echo "Installing $(COMPONENT_TEST)"
  	cp -f $(COMPONENT_TEST) $(COMPONENT_TARGET)
  
