@@ -7,6 +7,7 @@ ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
 	tiopenmax-aacdec \
+	tiopenmax-aacdec-ittiam \
 	tiopenmax-aacenc \
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacdec", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacenc", "", d)} \
