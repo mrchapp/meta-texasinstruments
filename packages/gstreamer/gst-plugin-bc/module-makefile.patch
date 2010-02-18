@@ -1,0 +1,11 @@
+--- a/module/Makefile.in
++++ n/module/Makefile.in
+@@ -5,7 +5,7 @@
+ .PHONY: prepare
+ prepare:
+ 	@if [ "@srcdir@" != $(PWD) ]; then \
+-		cp -p @srcdir@/*.c $(PWD);     \
++		echo #cp -p @srcdir@/*.c $(PWD);     \
+ 	fi
+ 
+ all: prepare
