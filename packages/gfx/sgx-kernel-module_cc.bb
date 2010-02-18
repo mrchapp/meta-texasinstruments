@@ -2,7 +2,7 @@ SECTION = "kernel/modules"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR module."
 LICENSE = "GPL"
-PR = "r2"
+PR = "r3"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 
 DEPENDS = " virtual/kernel "
@@ -14,7 +14,9 @@ PACKAGES = "${PN} ${PN}-dbg"
 FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* /lib/modules/*"
 FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* /lib/modules/.debug/*"
 
-SRC_URI = " file://regtool"
+SRC_URI = " file://regtool \
+            file://kernel-2.6.33.patch;patch=1 \
+"
 
 PV = "0.0+cc+${SRCREV}"
 
@@ -43,5 +45,14 @@ do_install() {
     install -d ${D}${bindir}
     install -m 0777 ${WORKDIR}/regtool ${D}${bindir}
 
+}
+
+do_stage() {
+        install -d ${STAGING_INCDIR}/eurasia_km/
+        install -d ${STAGING_INCDIR}/eurasia_km/services4/
+        install -d ${STAGING_INCDIR}/eurasia_km/services4/include/
+        install -d ${STAGING_INCDIR}/eurasia_km/include4
+    	install -m 644 ${S}/src/eurasia_km/services4/include/*.h ${STAGING_INCDIR}/eurasia_km/services4/include
+    	install -m 644 ${S}/src/eurasia_km/include4/*.h ${STAGING_INCDIR}/eurasia_km/include4
 }
 

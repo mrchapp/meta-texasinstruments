@@ -1,0 +1,23 @@
+--- a/src/eurasia/eurasiacon/build/linux/makefile.subdir_rules
++++ b/src/eurasia/eurasiacon/build/linux/makefile.subdir_rules
+@@ -391,13 +391,13 @@
+ 		echo; \
+ 		exit 1; \
+ 	fi
+-	@if [ "$(REQUIREDKERNELVERSION)" != "$(KERNELVERSION)" ]; then \
+-		echo; \
+-		echo -n "** This build expects kernel version $(REQUIREDKERNELVERSION), "; \
+-		echo "but found $(KERNELVERSION)"; \
+-		echo; \
+-		exit 1; \
+-	fi
++#	@if [ "$(REQUIREDKERNELVERSION)" != "$(KERNELVERSION)" ]; then \
++#		echo; \
++#		echo -n "** This build expects kernel version $(REQUIREDKERNELVERSION), "; \
++#		echo "but found $(KERNELVERSION)"; \
++#		echo; \
++#		exit 1; \
++#	fi
+ 
+ 
+ # Clean up what's been built.  The $(RM) macro already sets the -f flag.  But

@@ -2,7 +2,7 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r5"
+PR = "r6"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
 DEPENDS = "virtual/kernel bison-native flex-native"
@@ -18,6 +18,7 @@ PV = "0.0+cc+${SRCREV}"
 
 SRC_URI = "\
     file://rc.pvr.m4.patch;patch=1 \
+    file://kernel-version-hack.patch;patch=1 \
 "
 
 CCASE_SPEC = "%\
