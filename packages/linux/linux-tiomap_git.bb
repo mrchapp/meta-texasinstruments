@@ -1,3 +1,6 @@
+DEPENDS = "\
+${@base_contains("DISTRO_FEATURES", "hdmi", "hdmi", "", d)} \
+"
 RDEPENDS="l23-init-extra"
 
 require linux-omap.inc
