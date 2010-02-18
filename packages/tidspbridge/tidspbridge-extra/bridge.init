@@ -38,7 +38,7 @@ start ()
         echo -n "Launching OMX Managers: "
 	OMXAudioManager &
 	OMXPolicyManager &
-	OMXResourceManager &
+#	OMXResourceManager &
 	echo "OK"
     fi
 }
