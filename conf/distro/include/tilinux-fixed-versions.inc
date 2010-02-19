@@ -2,7 +2,7 @@
 # baseport
 SRCREV_pn-x-load  =                 "L24.4"
 SRCREV_pn-u-boot =                  "L24.4"
-SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.4"
+SRCREV_pn-linux-tiomap =            "58b3048ba73662bf898aba594da03b5d403e0614"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "d8a8672a4e12f0ad8ae1134273405d240ce5b19b"
@@ -14,10 +14,10 @@ SRCREV_pn-tidspbridge-dllcreate      =      "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.4"
-SRCREV_pn-titiler-memmgr             =      "l24.3.rel"
-SRCREV_pn-titiler-d2cmap             =      "l24.3.rel"
+SRCREV_pn-titiler-memmgr             =      "l24.4.prerel"
+SRCREV_pn-titiler-d2cmap             =      "l24.4.prerel"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.16"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.11.00.00"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.11.00.00-P1"
 
 # Tesla/Ducati external tools
 PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B4"
@@ -53,16 +53,16 @@ SRCREV_pn-tisocketnode-wbamrenc-codec    =          "DSP-MM-TESLA_RLS_4.6"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il = "meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "L24.3P1"
-SRCREV_pn-tiopenmax-audioencode       = "L24.3P1"
-SRCREV_pn-tiopenmax-base              = "L24.3P1"
-SRCREV_pn-tiopenmax-lcml              = "L24.3P1"
-SRCREV_pn-tiopenmax-core              = "L24.3"
-SRCREV_pn-tiopenmax-osal              = "L24.3"
-SRCREV_pn-tiopenmax-domx              = "L24.3"
+SRCREV_pn-tiopenmax-audiodecode       = "L24.4"
+SRCREV_pn-tiopenmax-audioencode       = "L24.4"
+SRCREV_pn-tiopenmax-base              = "L24.4"
+SRCREV_pn-tiopenmax-lcml              = "L24.4"
+SRCREV_pn-tiopenmax-core              = "L24.4"
+SRCREV_pn-tiopenmax-osal              = "L24.4"
+SRCREV_pn-tiopenmax-domx              = "L24.4"
 
 # connectivity
-SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.2"
+SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
 SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 
 # graphics
