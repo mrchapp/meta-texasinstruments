@@ -8,5 +8,10 @@ EXTRA_OECONF += "--disable-aalib --disable-esd --disable-shout2 --disable-libcac
 
 PACKAGES += "gst-plugin-id3demux"
 
-SRCREV = "41a0eb10445624f3b5dcb8be326fc22ad7d4d21e"
+SRCREV = "188725811f00a8eb6293c3810418016728b512bf"
 
+SRC_URI += "\
+	file://v4l2sink-update.patch;patch=1 \
+	file://rowstride.patch;patch=1 \
+	file://avoid-memcpy-hack.patch;patch=1 \
+	"
