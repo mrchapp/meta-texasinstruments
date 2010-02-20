@@ -1,9 +1,9 @@
-From 661c7ec6e0d2391e6887d880d547f8d8dc0da189 Mon Sep 17 00:00:00 2001
+From 6adc52e80a69e8fabf65670133f139f8a020b654 Mon Sep 17 00:00:00 2001
 From: Rob Clark <rob@ti.com>
 Date: Sun, 16 Aug 2009 20:49:46 -0500
-Subject: [PATCH] This is a combination of 8 commits.
+Subject: [PATCH] This is a combination of 9 commits.
 
-The 8 commits are:
+The 9 commits are:
 * v4l2sink: Improve behavior for shared buffers.
 * v4l2sink: Add support for omap24xxvout and omap_vout drivers.
 * v4l2sink: Add support for blocking dequeue.
@@ -12,21 +12,22 @@ The 8 commits are:
 * add properties to control crop
 * fix race condition
 * add support for video decoder to configure crop
+* v4l2sink: special handling for cases gst_buffer_make_metadata_writable()
 
 They all come from http://gitorious.org/robclark-gstreamer/gst-plugins-good/commits/master
 
 Signed-off-by: Daniel Diaz <ddiaz@ti.com>
 ---
- sys/v4l2/Makefile.am         |   15 ++--
- sys/v4l2/gstv4l2bufferpool.c |   24 ++++-
+ sys/v4l2/Makefile.am         |   15 +--
+ sys/v4l2/gstv4l2bufferpool.c |   24 +++-
  sys/v4l2/gstv4l2bufferpool.h |    2 +-
  sys/v4l2/gstv4l2object.c     |    6 +-
- sys/v4l2/gstv4l2sink.c       |  226 ++++++++++++++++++++++++++++++++++++-----
+ sys/v4l2/gstv4l2sink.c       |  249 +++++++++++++++++++++++++++++++++++++-----
  sys/v4l2/gstv4l2sink.h       |    9 +-
  sys/v4l2/gstv4l2src.c        |   12 +-
  sys/v4l2/gstv4l2xoverlay.c   |    2 +
  sys/v4l2/v4l2src_calls.c     |    2 +-
- 9 files changed, 241 insertions(+), 57 deletions(-)
+ 9 files changed, 264 insertions(+), 57 deletions(-)
 
 diff --git a/sys/v4l2/Makefile.am b/sys/v4l2/Makefile.am
 index e655bcb..46cefe9 100644
@@ -150,7 +151,7 @@ index 1a15947..5b10cc9 100644
  #endif
  
 diff --git a/sys/v4l2/gstv4l2sink.c b/sys/v4l2/gstv4l2sink.c
-index d2d5cb3..f652432 100644
+index d2d5cb3..4212e54 100644
 --- a/sys/v4l2/gstv4l2sink.c
 +++ b/sys/v4l2/gstv4l2sink.c
 @@ -43,7 +43,7 @@
@@ -566,7 +567,37 @@ index d2d5cb3..f652432 100644
  
      if (G_LIKELY (v4l2buf)) {
        GST_DEBUG_OBJECT (v4l2sink, "allocated buffer: %p", v4l2buf);
-@@ -671,7 +839,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -663,6 +831,29 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+   if (!GST_IS_V4L2_BUFFER (buf)) {
+     GstFlowReturn ret;
+ 
++    /* special case check for sub-buffers:  In certain cases, places like
++     * GstBaseTransform, which might check that the buffer is writable
++     * before copying metadata, timestamp, and such, will find that the
++     * buffer has more than one reference to it.  In these cases, they
++     * will create a sub-buffer with an offset=0 and length equal to the
++     * original buffer size.
++     *
++     * This could happen in two scenarios: (1) a tee in the pipeline, and
++     * (2) because the refcnt is incremented in gst_mini_object_free()
++     * before the finalize function is called, and decremented after it
++     * returns..  but returning this buffer to the buffer pool in the
++     * finalize function, could wake up a thread blocked in _buffer_alloc()
++     * which could run and get a buffer w/ refcnt==2 before the thread
++     * originally unref'ing the buffer returns from finalize function and
++     * decrements the refcnt back to 1!
++     */
++    if (buf->parent &&
++        (GST_BUFFER_DATA (buf) == GST_BUFFER_DATA (buf->parent)) &&
++        (GST_BUFFER_SIZE (buf) == GST_BUFFER_SIZE (buf->parent))) {
++      GST_DEBUG_OBJECT (v4l2sink, "I have a sub-buffer!");
++      return gst_v4l2sink_show_frame (bsink, buf->parent);
++    }
++
+     GST_DEBUG_OBJECT (v4l2sink, "slow-path.. I got a %s so I need to memcpy",
+         g_type_name (G_OBJECT_TYPE (buf)));
+ 
+@@ -671,7 +862,8 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
          &newbuf);
  
      if (GST_FLOW_OK != ret) {
@@ -576,7 +607,7 @@ index d2d5cb3..f652432 100644
      }
  
      memcpy (GST_BUFFER_DATA (newbuf),
-@@ -686,6 +855,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -686,6 +878,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
    if (!gst_v4l2_buffer_pool_qbuf (v4l2sink->pool, GST_V4L2_BUFFER (buf))) {
      return GST_FLOW_ERROR;
    }
@@ -584,7 +615,7 @@ index d2d5cb3..f652432 100644
    if (v4l2sink->state == STATE_PENDING_STREAMON) {
      if (!gst_v4l2_object_start_streaming (v4l2sink->v4l2object)) {
        return GST_FLOW_ERROR;
-@@ -701,7 +871,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
+@@ -701,7 +894,7 @@ gst_v4l2sink_show_frame (GstBaseSink * bsink, GstBuffer * buf)
     * just queued, then dequeue one immediately to make it available via
     * _buffer_alloc():
     */
