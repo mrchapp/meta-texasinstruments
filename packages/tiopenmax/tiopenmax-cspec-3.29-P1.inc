@@ -30,8 +30,8 @@ CCASE_SPEC = "\
 	"
 
 # Uncomment to Disable resource manager support
-# export OMX_RESOURCEMANAGER_DISABLE=1
-export RESOURCE_MANAGER_ENABLED=1
-export ENABLE_RMPM_STUB=0
-export DVFS_ENABLED=1
+export OMX_RESOURCEMANAGER_DISABLE=1
+#export RESOURCE_MANAGER_ENABLED=1
+#export ENABLE_RMPM_STUB=0
+#export DVFS_ENABLED=1
 
