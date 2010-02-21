@@ -155,7 +155,6 @@ PREFERRED_VERSION_tiopenmax-resourcemanager =	"3.29-P1"
 PREFERRED_VERSION_tiopenmax-jpegdec =		"3.29-P1"
 PREFERRED_VERSION_tiopenmax-jpegenc =		"3.29-P1"
 PREFERRED_VERSION_tiopenmax-aacdec =            "3.29-P1"
-PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.29-P1"
 PREFERRED_VERSION_tiopenmax-aacenc =            "3.29-P1"
 PREFERRED_VERSION_tiopenmax-armaacdec =         "3.29-P1"
 PREFERRED_VERSION_tiopenmax-armaacenc =         "3.29-P1"
@@ -205,7 +204,7 @@ PREFERRED_VERSION_tiopenmax-videocapturetest =	"3.29-P1"
 PREFERRED_VERSION_mm-isp =			"1.18"
 # Ittiam
 PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.28-P1"
-#PREFERRED_VERSION_tiopenmax-aacdecitt = 	"20100114"
+PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.29-P1"
 
 # gstreamer
 PREFERRED_VERSION_libgoo =		"5.i3.4"

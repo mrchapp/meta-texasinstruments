@@ -7,11 +7,10 @@ ALLOW_EMPTY = "1"
 
 RDEPENDS = "\
 	tiopenmax-aacdec \
-	tiopenmax-aacdec-ittiam \
+	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-aacdec-ittiam", "", d)} \
 	tiopenmax-aacenc \
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacdec", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacenc", "", d)} \
-#	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-aacdecitt", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-videodecitt", "", d)} \
 	tiopenmax-audiomanager \
 	tiopenmax-avplaytest \
