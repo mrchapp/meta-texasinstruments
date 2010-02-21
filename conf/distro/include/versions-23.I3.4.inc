@@ -136,10 +136,10 @@ PREFERRED_VERSION_tisocketnode-jpegenc =                "3.10"
 PREFERRED_VERSION_tisocketnode-jpegenc-codec =          "3.10-P1"
 PREFERRED_VERSION_tisocketnode-conversions =		"3.10"
 # Ittiam
-PREFERRED_VERSION_tisocketnode-h264decitt =		"20100208"
-PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"20100208"
-PREFERRED_VERSION_tisocketnode-mpeg4decitt =		"20100208"
-PREFERRED_VERSION_tisocketnode-mpeg4decitt-codec =	"20100208"
+PREFERRED_VERSION_tisocketnode-h264decitt =		"20100114"
+PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"20100114"
+#PREFERRED_VERSION_tisocketnode-mpeg4decitt =		"20100208"
+#PREFERRED_VERSION_tisocketnode-mpeg4decitt-codec =	"20100208"
 
 # openmax
 PREFERRED_PROVIDER_virtual/openmax-il =		"meta-tiopenmax-modular"
@@ -204,7 +204,7 @@ PREFERRED_VERSION_tiopenmax-videodisplaytest =	"3.29-P1"
 PREFERRED_VERSION_tiopenmax-videocapturetest =	"3.29-P1"
 PREFERRED_VERSION_mm-isp =			"1.18"
 # Ittiam
-PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.29-P1"
+PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.28-P1"
 #PREFERRED_VERSION_tiopenmax-aacdecitt = 	"20100114"
 
 # gstreamer
