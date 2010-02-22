@@ -10,8 +10,8 @@ inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 PACKAGES = "${PN} ${PN}-dbg"
-FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* "
-FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/*"
+FILES_${PN} = "${bindir}/* "
+FILES_${PN}-dbg = "${bindir}/.debug/* "
 
 PV = "0.0+cc+${SRCREV}"
 
@@ -26,16 +26,19 @@ CCASE_PATHCOMPONENTS = "5"
 
 do_install() {
     install -d ${D}${bindir}
-    install -m 755 ${S}/OGLES2/BenchmarkPackage/GridMark3/LinuxOMAP4/Raw/OGLES2GridMark3 ${D}${bindir}
-    install -m 755 ./OGLES2/BenchmarkPackage/VillageMark/LinuxOMAP4/Raw/OGLES2VillageMark ${D}${bindir}
-    install -m 755 ./OGLES2/BenchmarkPackage/TMark/LinuxOMAP4/Raw/OGLES2TMark ${D}${bindir}
-    install -m 755 ./OGLES2/BenchmarkPackage/FableMark/LinuxOMAP4/Raw/OGLES2FableMark ${D}${bindir}
-    install -m 755 ./OGLES/BenchmarkPackage/GridMark3/LinuxOMAP4/Raw/OGLESGridMark3 ${D}${bindir}
-    install -m 755 ./OGLES/BenchmarkPackage/VillageMark/LinuxOMAP4/Raw/OGLESVillageMark ${D}${bindir}
-    install -m 755 ./OGLES/BenchmarkPackage/TMark/LinuxOMAP4/Raw/OGLESTMark ${D}${bindir}
-    install -m 755 ./OGLES/BenchmarkPackage/UIMark/PVR2D_SGX/UIMarkPVR2D_SGX ${D}${bindir}
-    install -m 755 ./OVG/BenchmarkPackage/Mark/LinuxOMAP4/Raw/OVGMark ${D}${bindir}
-    install -m 755 ./OVG/BenchmarkPackage/TigerMark/LinuxOMAP4/Raw/OVGTigerMark ${D}${bindir}
+    for fil in \
+        OGLES2/BenchmarkPackage/GridMark3/LinuxOMAP4/Raw/OGLES2GridMark3 \
+        OGLES2/BenchmarkPackage/VillageMark/LinuxOMAP4/Raw/OGLES2VillageMark \
+        OGLES2/BenchmarkPackage/TMark/LinuxOMAP4/Raw/OGLES2TMark \
+        OGLES2/BenchmarkPackage/FableMark/LinuxOMAP4/Raw/OGLES2FableMark \
+        OGLES/BenchmarkPackage/GridMark3/LinuxOMAP4/Raw/OGLESGridMark3 \
+        OGLES/BenchmarkPackage/VillageMark/LinuxOMAP4/Raw/OGLESVillageMark \
+        OGLES/BenchmarkPackage/TMark/LinuxOMAP4/Raw/OGLESTMark \
+        OGLES/BenchmarkPackage/UIMark/PVR2D_SGX/UIMarkPVR2D_SGX \
+        OVG/BenchmarkPackage/Mark/LinuxOMAP4/Raw/OVGMark \
+        OVG/BenchmarkPackage/TigerMark/LinuxOMAP4/Raw/OVGTigerMark ;
+    do
+        install -m 755 ${fil} ${D}${bindir}
+    done
 }
-
 

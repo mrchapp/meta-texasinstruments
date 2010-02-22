@@ -2,7 +2,7 @@ SECTION = "libs"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR OpenGL libs (no X support)"
 LICENSE = "GPL"
-PR = "r6"
+PR = "r7"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 RDEPENDS = sgx-kernel-module
 DEPENDS = "virtual/kernel bison-native flex-native"
@@ -16,10 +16,7 @@ FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/*"
 
 PV = "0.0+cc+${SRCREV}"
 
-SRC_URI = "\
-    file://rc.pvr.m4.patch;patch=1 \
-    file://kernel-version-hack.patch;patch=1 \
-"
+SRC_URI = " file://rc.pvr.m4.patch;patch=1 "
 
 CCASE_SPEC = "%\
 	element * COMPONENT_ROOT%\
@@ -31,11 +28,6 @@ CCASE_PATHCOMPONENT = "GFX_Linux_DDK"
 CCASE_PATHCOMPONENTS = "5"
 
 KERNEL_VERSION=`cat ${STAGING_KERNEL_DIR}/kernel-abiversion`
-
-# hack.  Carlos knows to fix it in future revisions.
-do_chmod() {
-	chmod -R +w ${S}/src/eurasia
-}
 
 do_compile() {
 	cd ${S}/src/eurasia/eurasiacon/build/linux/omap4430_linux

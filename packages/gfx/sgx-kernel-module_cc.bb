@@ -2,7 +2,7 @@ SECTION = "kernel/modules"
 PRIORITY = "optional"
 DESCRIPTION = "Imagination Technologies SGX Power VR module."
 LICENSE = "GPL"
-PR = "r3"
+PR = "r4"
 COMPATIBLE_MACHINE = "omap-4430sdp"
 
 DEPENDS = " virtual/kernel "
@@ -14,9 +14,7 @@ PACKAGES = "${PN} ${PN}-dbg"
 FILES_${PN} = "${bindir}/* ${libdir}/* ${sysconfdir}/* /lib/modules/*"
 FILES_${PN}-dbg = "${bindir}/.debug/* ${libdir}/.debug/* ${sysconfdir}/* /lib/modules/.debug/*"
 
-SRC_URI = " file://regtool \
-            file://kernel-2.6.33.patch;patch=1 \
-"
+SRC_URI = " file://regtool "
 
 PV = "0.0+cc+${SRCREV}"
 
