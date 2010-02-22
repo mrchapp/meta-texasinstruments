@@ -1,7 +1,7 @@
 require gst-plugins.inc
 
 # override the SRC_URI from gst-plugins.inc to pull from git:
-SRC_URI = "git://gitorious.org/robclark-gstreamer/gstreamer/${PN};branch=l24.3;protocol=git \
+SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
            file://common-20091119.tar.gz \
           "
 S = "${WORKDIR}/git"
