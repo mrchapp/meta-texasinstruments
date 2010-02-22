@@ -27,5 +27,4 @@ RDEPENDS_zoom3 = "\
 	${@base_contains("DISTRO_FEATURES", "tibt-test-fw", "obexfs", "", d)} \	
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "wilink", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "tiwifi", "iperf", "", d)} \
-	${@base_contains("DISTRO_FEATURES", "hdmi", "hdmi", "", d)} \
 "
