@@ -9,9 +9,6 @@ inherit kernel
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-3630sdp|zoom2|zoom3"
 
 do_configure_prepend() {
-# HDMI patch - Shall be remove on L23.I4.5, will be part of kernel.
-${@base_contains("DISTRO_FEATURES", "hdmi", "cd ${S}; patch -p1 < ${STAGING_KERNEL_DIR}/hdmi/HDMI-kernel.patch", "", d)}
-
 		case ${MACHINE} in
 			omap-3430ldp)
 				yes '' | oe_runmake omap_3430ldp_defconfig
@@ -30,6 +27,8 @@ ${@base_contains("DISTRO_FEATURES", "hdmi", "cd ${S}; patch -p1 < ${STAGING_KERN
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
+			# HDMI patch - Shall be remove on L23.I4.5, will be part of kernel.
+			${@base_contains("DISTRO_FEATURES", "hdmi", "cd ${S}; patch -p1 < ${STAGING_KERNEL_DIR}/hdmi/HDMI-kernel.patch", "", d)}
 			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)

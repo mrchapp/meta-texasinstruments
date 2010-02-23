@@ -1,4 +1,4 @@
-DEPENDS = "\
+DEPENDS_zoom3 = "\
 ${@base_contains("DISTRO_FEATURES", "hdmi", "hdmi", "", d)} \
 "
 RDEPENDS="l23-init-extra"
