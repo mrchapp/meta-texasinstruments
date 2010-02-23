@@ -1,6 +1,6 @@
 DESCRIPTION = "Texas Instruments OpenMAX IL INST2 Utility"
 DEPENDS = "tidspbridge-lib tiopenmax-core"
-PR = "r0"
+PR = "r1"
 PACKAGES = "${PN}-dbg ${PN}-patterns ${PN}-dev ${PN}"
 
 #require tiopenmax-cspec-${PV}.inc
@@ -22,6 +22,10 @@ CCASE_PATHFETCH = "\
 	"
 CCASE_PATHCOMPONENTS = 3
 CCASE_PATHCOMPONENT = "linux"
+
+SRC_URI = "\
+        file://inst_log.patch;patch=1 \
+        "
 
 inherit ccasefetch
 
