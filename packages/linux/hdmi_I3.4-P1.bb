@@ -3,7 +3,7 @@ DESCRIPTION = "HDMI kernel patch provider"
 LICENSE = "GPL v2"
 PR = "r0"
 
-COMPATIBLE_MACHINE = "zoom3"
+COMPATIBLE_MACHINE = "omap-3630sdp|zoom(2|3)"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 CCASE_SPEC = "%\
