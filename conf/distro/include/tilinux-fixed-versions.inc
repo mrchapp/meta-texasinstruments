@@ -14,10 +14,10 @@ SRCREV_pn-tidspbridge-dllcreate      =      "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.4"
-SRCREV_pn-titiler-memmgr             =      "l24.4.prerel"
-SRCREV_pn-titiler-d2cmap             =      "l24.4.prerel"
+SRCREV_pn-titiler-memmgr             =      "l24.4.p1.rel"
+SRCREV_pn-titiler-d2cmap             =      "l24.4.p1.rel"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.16"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.11.00.00-P1"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.12.00.00"
 
 # Tesla/Ducati external tools
 PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B4"
