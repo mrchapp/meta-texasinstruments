@@ -2,8 +2,7 @@ DESCRIPTION = "Texas Instruments algo for IPP."
 PR = "r0"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_DSP/algo/... DSP-MM-TII_RLS_3.10-P1%\
-	      element /vobs/wtbu/OMAPSW_DSP/algo/... DSP-MM-TII_RLS_3.10%\
+	      element /vobs/wtbu/OMAPSW_DSP/algo/... DSP-MM-TII_RLS_${PV}%\
 	      element * /main/LATEST%"
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/algo"
