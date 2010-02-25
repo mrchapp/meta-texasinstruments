@@ -17,6 +17,9 @@ PV = "23.0+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/tidspbridge/userspace-dspbridge.git;protocol=git;branch=master"
 
 do_compile() {
+	install -d ${S}/source/target/lib
+	install -m 0755 ${STAGING_LIBDIR}/libbridge.* ${S}/source/target/lib
+	install -m 0755 ${STAGING_LIBDIR}/libqos.* ${S}/source/target/lib
 	cd ${S}/source
 	oe_runmake  KRNLSRC=${STAGING_KERNEL_DIR}  \
 		 DEPOT=${STAGING_BINDIR_NATIVE}/titools .samples

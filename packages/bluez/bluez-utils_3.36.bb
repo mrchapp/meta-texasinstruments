@@ -15,7 +15,7 @@ EXTRA_OECONF = " \
                  --enable-hidd \
                  --enable-pand \
                  --enable-dund \
-		 --disable-alsa \ 
+		 --enable-alsa \
 		 --disable-cups \
 		 --enable-glib \
 		 --disable-sdpd \

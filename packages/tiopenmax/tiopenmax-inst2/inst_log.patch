@@ -1,0 +1,11 @@
+Index: tiopenmax-inst2-3.29-P1/utilities/src/inst2/tools/inst_log
+===================================================================
+--- tiopenmax-inst2-3.29-P1.orig/utilities/src/inst2/tools/inst_log	2010-02-23 16:14:31.000288000 +0100
++++ tiopenmax-inst2-3.29-P1/utilities/src/inst2/tools/inst_log	2010-02-23 16:16:30.001384000 +0100
+@@ -9,5 +9,5 @@
+ else
+   #/inst2/InstUtility.out 0x763f0000 0x$globalObj 0xffffffff 0x4000 0x48078028 0x4802A028 0x67000000 0x$logaddr $loglen /mnt/rd/$1log.txt 0x4000 2>/mnt/rd/dbg-$1.txt &
+   #Now using 32Sync clock timer - hence address changed below
+-  /inst2/InstUtility.out 0x6fff0000 0x$globalObj 0xffffffff 0x4000 0x48320010 0x48320010 0x60b00000 0x$logaddr $loglen /mnt/rd/$1log.txt 0x8000 2>/mnt/rd/dbg-$1.txt &
++  /inst2/InstUtility.out 0x700f0000 0x$globalObj 0xffffffff 0x4000 0x48320010 0x48320010 0x60c00000 0x$logaddr $loglen /mnt/rd/$1log.txt 0x4000 2>/mnt/rd/dbg-$1.txt &
+ fi

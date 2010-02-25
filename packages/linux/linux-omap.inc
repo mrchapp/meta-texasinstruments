@@ -27,6 +27,8 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
+			# HDMI patch - Shall be remove on L23.I4.5, will be part of kernel.
+			${@base_contains("DISTRO_FEATURES", "hdmi", "cd ${S}; patch -p1 < ${STAGING_KERNEL_DIR}/hdmi/HDMI-kernel.patch", "", d)}
 			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
@@ -51,6 +53,7 @@ addtask deploy before do_populate_staging after do_install
 do_stage_append() {
 
     for ii in arch/arm/mach-omap2 \
+	      arch/arm/mach-omap2/include/mach \
               arch/arm/plat-omap/include/dspbridge \
               arch/arm/plat-omap/include/mach \
               arch/arm/plat-omap/include/plat \
@@ -60,7 +63,7 @@ do_stage_append() {
               drivers/media/video/isp \
 	      drivers/video/omap2/omapfb \
               include/trace \
-              include/trace/events 
+              include/trace/events
     do
         install -d ${STAGING_KERNEL_DIR}/$ii
         install -m 0644 ${S}/$ii/*.h ${STAGING_KERNEL_DIR}/$ii
