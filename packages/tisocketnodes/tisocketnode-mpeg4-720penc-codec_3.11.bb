@@ -6,7 +6,9 @@ DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\
 	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/video/mpeg4_ari_enc/... DSP-MM-TII_RLS_${PV}%\
-	      element * /main/LATEST%"
+	      element * COMPONENT_ROOT%\
+	      element -directory /vobs/wtbu/CSSD_MM_Releases/... /main/LATEST%\
+	      "
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/video/mpeg4_ari_enc"
 CCASE_PATHCOMPONENT = "mpeg4_ari_enc"

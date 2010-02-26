@@ -3,7 +3,9 @@ PR = "r0"
 
 CCASE_SPEC = "%\
 	      element /vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_dec/c64x/mm_tiicodecs/... DSP-MM-TII_RLS_${PV}%\
-	      element * /main/LATEST%"
+	      element * COMPONENT_ROOT%\
+	      element -directory /vobs/wtbu/CSSD_MM_Releases/... /main/LATEST%\
+	      "
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_MM_Releases/Codecs/speech/g711_dec/c64x/mm_tiicodecs"
 CCASE_PATHCOMPONENT = "mm_tiicodecs"
