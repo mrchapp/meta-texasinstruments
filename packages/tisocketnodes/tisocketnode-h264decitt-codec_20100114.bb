@@ -7,7 +7,8 @@ DEPENDS = "baseimage"
 
 CCASE_SPEC = "%\
 	      element /vobs/wtbu/CSSD_Linux_Releases/... ITTIAM-720P_REL_${PV}%\
-	      element * /main/0%"
+	      element * /main/0%\
+	     "
 
 CCASE_PATHFETCH = "/vobs/wtbu/CSSD_Linux_Releases/3430/Linux_23.I3.x/ittiam-sw/tisocketnode-h264decitt-codec-3.7.tar.gz"
 CCASE_PATHCOMPONENT = "ittiam-sw"

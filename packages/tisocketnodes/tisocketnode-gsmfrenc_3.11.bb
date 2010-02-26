@@ -4,7 +4,9 @@ DEPENDS += "tisocketnode-gsmfrenc-codec"
 
 CCASE_SPEC = "%\
 	      element /vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc/... DSP-MM-TII_RLS_${PV}%\
-	      element * /main/LATEST%"
+	      element * COMPONENT_ROOT%\
+	      element -directory /vobs/wtbu/CSSD_MM_Releases/... /main/LATEST%\
+	      "
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/speech/node/fr/enc"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"

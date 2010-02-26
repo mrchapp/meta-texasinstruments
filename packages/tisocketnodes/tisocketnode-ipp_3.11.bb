@@ -4,7 +4,9 @@ DEPENDS += "tisocketnode-algo tisocketnode-dfgm"
 
 CCASE_SPEC = "%\
 	      element /vobs/wtbu/OMAPSW_DSP/ivp/... DSP-MM-TII_RLS_${PV}%\
-	      element * /main/LATEST%"
+	      element * COMPONENT_ROOT%\
+	      element -directory /vobs/wtbu/CSSD_MM_Releases/... /main/LATEST%\
+	      "
 
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/ivp"
 CCASE_PATHCOMPONENT = "OMAPSW_DSP"
