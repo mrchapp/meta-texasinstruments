@@ -26,9 +26,6 @@ do_configure_prepend() {
 
         yes '' | oe_runmake oldconfig
 
-        ${@base_contains("DISTRO_FEATURES", "hdmi", "sed -i 's/# CONFIG_OMAP2_DSS_HDMI is not set/CONFIG_OMAP2_DSS_HDMI=y/' ${S}/.config", "", d)}
-        ${@base_contains("DISTRO_FEATURES", "hdmi", "sed -i 's/# CONFIG_SND_OMAP_SOC_HDMI is not set/CONFIG_SND_OMAP_SOC_HDMI=y/' ${S}/.config", "", d)}
-
     else
         case ${MACHINE} in
             omap-4430sdp)
