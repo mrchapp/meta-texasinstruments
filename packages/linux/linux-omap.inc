@@ -27,8 +27,6 @@ do_configure_prepend() {
 				yes '' | oe_runmake omap_zoom2_defconfig
 				;;				
 			zoom3)
-			# HDMI patch - Shall be remove on L23.I4.5, will be part of kernel.
-			${@base_contains("DISTRO_FEATURES", "hdmi", "cd ${S}; patch -p1 < ${STAGING_KERNEL_DIR}/hdmi/HDMI-kernel.patch", "", d)}
 			yes '' | oe_runmake omap_zoom3_defconfig
 				;;				
 			*)
