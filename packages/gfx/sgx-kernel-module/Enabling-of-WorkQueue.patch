@@ -9,10 +9,10 @@ Signed-off-by: Preshit Agarwal <preshit.agarwal@ti.com>
  .../linux/omap3630_linux/makefile.shared_conf      |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf b/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
+diff --git a/eurasia_km/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf b/eurasia_km/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
 index 5b2aebb..4f48c09 100755
---- a/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
-+++ b/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
+--- a/eurasia_km/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
++++ b/eurasia_km/eurasiacon/build/linux/omap3630_linux/makefile.shared_conf
 @@ -44,7 +44,8 @@ ARCH_CFLAGS		= -march=armv7-a
  # SYS_FLAGS contains any flags specific to this system
  SYS_CFLAGS		= -DSGX_DYNAMIC_TIMING_INFO \
