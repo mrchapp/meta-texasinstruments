@@ -218,8 +218,8 @@ PREFERRED_VERSION_kfmapp = 		"23.I3.4"
 PREFERRED_VERSION_gps-navilink =	"23.17.0"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	"6a30c8f6b6de45ad083eaf09acdb05799e1e42df"
-SRCREV_pn-sgx-lib-noxws =	"6a30c8f6b6de45ad083eaf09acdb05799e1e42df"
+SRCREV_pn-sgx-kernel-module =	"L23.I3.4"
+SRCREV_pn-sgx-lib-noxws =	"L23.I3.4"
 
 # open source dependencies
 PREFERRED_VERSION_gst-plugins-bad =	"git"
