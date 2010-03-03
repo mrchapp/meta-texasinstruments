@@ -5,8 +5,10 @@ LICENSE = "GPL"
 PR = "r0"
 COMPATIBLE_MACHINE = "zoom(2|3)|omap-3(4|6)30(l|s)dp|beagleboard"
 
+GFORGE_USER ?= ${USER} 
+
 PV = "23.i3+git+${SRCREV}"
-SRC_GFORGE = "ssh://${USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_ddk"
+SRC_GFORGE = "ssh://${GFORGE_USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_ddk"
 S = "${WORKDIR}/git"
 
 inherit module gforgefetch
