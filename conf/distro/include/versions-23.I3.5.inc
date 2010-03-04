@@ -206,8 +206,8 @@ PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.28-P1"
 PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.29-P1"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.i3.4"
-PREFERRED_VERSION_gst-goo =		"5.i3.4"
+PREFERRED_VERSION_libgoo =		"5.i3.5-pre2"
+PREFERRED_VERSION_gst-goo =		"5.i3.5-pre2"
 PREFERRED_VERSION_gst-pyapps =		"5.I3.2"
 
 # connectivity
