@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r21"
+PR = "r22"
 
 PACKAGES = "\
     task-omap-gst \
@@ -25,6 +25,7 @@ RDEPENDS_task-omap-gst-libs = "\
     check	\
     gstreamer	\
     libgoo	\
+    gst-tracelib \
     "
 
 RDEPENDS_task-omap-gst-plugins = "\
