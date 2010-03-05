@@ -28,6 +28,9 @@ DISTRO_FEATURES += "spark"
 # Enable 3D GFX module and libraries
 DISTRO_FEATURES += "gfx"
 
+# Enable 3D GFX Benchmark application delivery - requires gfx
+DISTRO_FEATURES += "gfx-bp"
+
 # Enable 720p OpenMAX components - Ittiam
 DISTRO_FEATURES += "720p"
 

@@ -8,6 +8,7 @@ PR = "r2"
 RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-kernel-module", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "gfx", "sgx-lib-noxws", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "gfx-bp", "sgx-bp", "", d)} \
 	"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
