@@ -15,7 +15,6 @@ inherit module gforgefetch
 
 SRC_URI += " \
 file://sgx-gcc-4.3-error.patch;patch=1 \
-file://Enabling-of-WorkQueue.patch;patch=1 \
 "
 
 do_compile() {

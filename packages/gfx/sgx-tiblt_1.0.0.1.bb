@@ -21,7 +21,11 @@ CCASE_PATHCOMPONENT = "Linux"
 CCASE_PATHCOMPONENTS = "4"
 
 do_compile() {
-	cd ${S}/apps/SolidFill
+    cd ${S}/lib/
+    ln -s libTICPUBLT.so.${PV} libTICPUBLT.so
+    ln -s libTICPUBLT_TI.so.${PV} libTICPUBLT_TI.so
+   
+    cd ${S}/apps/SolidFill
     oe_runmake clean
     oe_runmake
 }
