@@ -11,15 +11,16 @@ typedef enum {
   INVALID_TEST = 0,
   STANDBY_TO_FIRST_SHOT,
   SHOT_TO_SHOT,
-  SHOT_TO_SAVE,
-  SHOT_TO_SNAPSHOT
-} ShotTestCases;
+  SHOT_TO_SAVE
+  } ShotTestCases;
 
 /*
 Global variables
 */
 static GstElement *pipeline;
 static GHashTable *timestamps;
+ShotTestCases option=INVALID_TEST;
+
 
 /*
 Functions
@@ -40,10 +41,8 @@ get_input_arguments(
   gchar **output_image_file)
 {
 
-    static gchar *usage = "Usage: %s [-o 0=STANDBY_TO_FIRST_SHOT | 1=SHOT_TO_SHOT | 2=SHOT_TO_SAVE | 3=SHOT_TO_SNAPSHOT] [-b num-buffers] [-w width] [-h height] [-i output-image-file] [-r output-results-file]\n";
+    static gchar *usage = "Usage: %s [-o 0=STANDBY_TO_FIRST_SHOT | 1=SHOT_TO_SHOT | 2=SHOT_TO_SAVE] [-b num-buffers] [-w width] [-h height] [-i output-image-file] [-r output-results-file]\n";
     int c;
-
-    *option = INVALID_TEST;
 
     opterr = 0;
 
@@ -74,9 +73,6 @@ get_input_arguments(
              break;
            case 2:
              *option = SHOT_TO_SAVE;
-             break;
-           case 3:
-             *option = SHOT_TO_SNAPSHOT;
              break;
            default:
              *option = INVALID_TEST;
@@ -115,7 +111,7 @@ get_timestamp_string(GstStateChange transition)
 }
 
 static gdouble
-get_timestamp_double(GstStateChange transition)
+get_state_transition_timestamp_double(GstStateChange transition)
 {
   gchar *str;
   gdouble timestamp;
@@ -129,6 +125,20 @@ get_timestamp_double(GstStateChange transition)
   return timestamp;
 }
 
+static gdouble
+get_timestamp_double (gchar *str)
+{
+  gdouble timestamp;
+  gpointer value;
+
+  value = (gchar *)g_hash_table_lookup(timestamps,str);
+  g_return_val_if_fail(value != NULL, 0);
+  timestamp = atof(value);
+  return timestamp;
+}
+
+
+
 static gint
 print_results(ShotTestCases option, gint width, gint height, gchar *output_result_file)
 {
@@ -140,34 +150,27 @@ print_results(ShotTestCases option, gint width, gint height, gchar *output_resul
     switch(option)
     {
         case STANDBY_TO_FIRST_SHOT:
-          t0 = get_timestamp_double(GST_STATE_CHANGE_NULL_TO_READY);
-          t1 = get_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
-          str_test_name = g_strdup_printf("STANDBY_TO_FIRST_SHOT");
-          break;
-        case SHOT_TO_SHOT: //shot to shot
-          t0 = get_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
-          t1 = get_timestamp_double(GST_STATE_CHANGE_PLAYING_TO_PAUSED);
-          str_test_name = g_strdup_printf("SHOT_TO_SHOT");
-          break;
+        {
+		t0 = get_state_transition_timestamp_double(GST_STATE_CHANGE_NULL_TO_READY);
+		t1 = get_state_transition_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
+		str_test_name = g_strdup_printf("STANDBY_TO_FIRST_SHOT");
+		break;
+        }
+        case SHOT_TO_SHOT:
+	{
+		t0 = get_state_transition_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
+		t1 = get_state_transition_timestamp_double(GST_STATE_CHANGE_PLAYING_TO_PAUSED);
+		str_test_name = g_strdup_printf("SHOT_TO_SHOT");
+		break;
+        }
         case SHOT_TO_SAVE:
-          t0 = get_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
-          t1 = atof((gchar *)g_hash_table_lookup(timestamps,"save-image"));
-          str_test_name = g_strdup_printf("SHOT_TO_SAVE");
-          break;
-        case SHOT_TO_SNAPSHOT://shot to snapshot
-          t0 = get_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
-/*
-          Hack to get the end-point for this test case
-*/
-          double t1_double = 0;
-          FILE *id_file;
-          id_file = fopen("snapshot.txt","r");
-          g_assert(id_file != NULL);
-          fscanf(id_file,"%lf",&t1_double);
-          fclose(id_file);
-          t1 = t1_double;
-          str_test_name = g_strdup_printf("SHOT_TO_SNAPSHOT");
-          break;
+	{
+		gpointer value;
+		t0 = get_state_transition_timestamp_double(GST_STATE_CHANGE_PAUSED_TO_PLAYING);
+		t1 = get_timestamp_double("filtervpp_chain");
+	        str_test_name = g_strdup_printf("SHOT_TO_SAVE");
+		break;
+        }
         default:
           break;
     }
@@ -186,6 +189,9 @@ print_results(ShotTestCases option, gint width, gint height, gchar *output_resul
     g_fprintf(file_id, "%s,%dx%d,%f\n",
         str_test_name,width,height,delta);
 
+
+    g_print("Result appended in file %s\n", output_result_file);
+
     fclose(file_id);
     g_free(str_test_name);
 
@@ -193,13 +199,20 @@ print_results(ShotTestCases option, gint width, gint height, gchar *output_resul
 }
   
 static gboolean
-camera_has_done_state_transition(GstStateChange transition)
+endpoint_reached ()
 {
-   gchar *str, *value;
-   str = get_timestamp_string(transition);
-   value = g_hash_table_lookup(timestamps,str);
-   g_free(str);
-   return value != NULL;
+	gchar *str = NULL;
+	gboolean retval = FALSE;
+
+	if (option == SHOT_TO_SAVE)
+	  str = g_strdup_printf("%s","filtervpp_chain");
+	else
+	  str = g_strdup_printf("camera_transition_%d",GST_STATE_CHANGE_PLAYING_TO_PAUSED);
+
+	retval = g_hash_table_lookup(timestamps, str) != NULL;
+	g_free (str);
+
+	return retval;
 }
 
 
@@ -226,26 +239,12 @@ bus_call (GstBus     *bus,
   static gdouble end_point_save = -1;
   static gboolean first_shot = TRUE;
 
-/*
-  g_print("Type of message: %s\n", GST_MESSAGE_TYPE_NAME(msg));
-*/
-  
   switch (GST_MESSAGE_TYPE (msg)) 
   {
-/*
-    case GST_MESSAGE_STATE_CHANGED:
-    {
-        g_print("Message state changed -> object name: %s\n", gst_object_get_name(GST_MESSAGE_SRC(msg)));
-        g_print("Message state changed -> timestamp: %" GST_TIME_FORMAT "\n", GST_MESSAGE_TIMESTAMP(msg));
-        break;
-    }
-*/
 
     case GST_MESSAGE_EOS:
     {
-      g_print ("End of stream\n");
-      
-      gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_READY);
+      gst_element_set_state (pipeline, GST_STATE_PAUSED);
       break;
     }
 
@@ -275,9 +274,7 @@ bus_call (GstBus     *bus,
           structure = gst_message_get_structure(msg);
           name = gst_structure_get_name(structure);
           timestamp = gst_structure_get_string(structure,"timestamp");
-/*
-          g_print("GST_MESSAGE_ELEMENT %s %s\n", name, timestamp);
-*/
+
 
           if (timestamps == NULL)
           { /* create the hash which will contain the timestamps */
@@ -296,9 +293,9 @@ bus_call (GstBus     *bus,
           }
 
           /* Check if we are done */
-          if (camera_has_done_state_transition(GST_STATE_CHANGE_PAUSED_TO_READY))
+          if (endpoint_reached ())
           {
-            g_main_loop_quit (loop);
+              g_main_loop_quit (loop);
           }
         }
 
@@ -339,15 +336,11 @@ run_pipeline(int argc, char *argv[], gchar *str_pipeline)
 
 
   /* Iterate */
-  g_print ("Running...\n");
   g_main_loop_run (loop);
-  g_print ("Done...\n");
+
 
   /* Out of the main loop, clean up nicely */
-  g_print ("Out of the main loop, stopping the pipeline\n");
-  gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
 
-  g_print ("Deleting pipeline\n");
   gst_object_unref (GST_OBJECT (pipeline));
   
   return 0;
@@ -367,9 +360,8 @@ gchar *create_str_pipeline(ShotTestCases option, gint width, gint height, gint n
     {
       case STANDBY_TO_FIRST_SHOT:
       case SHOT_TO_SHOT:
-      case SHOT_TO_SNAPSHOT:
-        {
-          str_pipeline = g_strdup_printf("%s ! %s ! fakesink -v",
+      {
+          str_pipeline = g_strdup_printf("%s ! %s ! fakesink",
                                          str_goocamera,
                                          str_cap);
           break;
@@ -382,7 +374,7 @@ gchar *create_str_pipeline(ShotTestCases option, gint width, gint height, gint n
           gchar *str_vpp_cap;
           str_goofilter_vpp = g_strdup_printf("goofilter_vpp rotation=90");
           str_gooenc_jpeg   = g_strdup_printf("gooenc_jpeg thumbnail=128x96  comment=string");
-          str_multifilesink = g_strdup_printf("multifilesink location=%s_%s.jpg",
+          str_multifilesink = g_strdup_printf("filesink name=filesink0 location=%s_%s.jpg",
                                               output_image_file,
                                               "%d");
           str_vpp_cap = g_strdup_printf("video/x-raw-yuv, format=(fourcc)UYVY, width=%d, height=%d, framerate=0/1",height,width);
@@ -424,7 +416,6 @@ main (int   argc,
 /*
     Default values
 */
-    ShotTestCases option=INVALID_TEST;
     gchar *output_result_file ="shot.txt";
     gint width=640;
     gint height=480;
@@ -462,7 +453,6 @@ main (int   argc,
       g_free(str_pipeline);
     }
 
-    g_print("%s test has finished correctly\n",argv[0]);
 
     return 0;
 }
