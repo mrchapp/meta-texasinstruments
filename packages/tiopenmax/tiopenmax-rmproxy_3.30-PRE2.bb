@@ -13,7 +13,9 @@ CCASE_PATHFETCH = "\
 CCASE_PATHCOMPONENTS = 3
 CCASE_PATHCOMPONENT = "linux"
 
-#SRC_URI = "file://23.11-ampthread.patch;patch=1"
+SRC_URI = "\
+	file://add-dvfs-support.patch;patch=1 \
+	"
 
 inherit ccasefetch
 
