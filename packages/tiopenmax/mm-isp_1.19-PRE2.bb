@@ -10,11 +10,13 @@ PARALLEL_MAKE = "-j1"
 
 CCASE_SPEC = "\
 	# MM ISP%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX-TID-MMISP_RLS_${PV}%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/camera/vstab/doc/... LINUX-TID-MMISP_RLS_${PV}%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX-TID-MMISP_RLS_${PV}%\
-	element * /main/LATEST%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... ACT_MMISP-PREREL-I3.5.1%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX-TID-MMISP_RLS_1.18%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/camera/vstab/doc/... LINUX-TID-MMISP_RLS_1.18%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX-TID-MMISP_RLS_1.18%\
+	element -directory /vobs/wtbu/OMAPSW_MPU/... /main/LATEST%\
 	"
+
 CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_MPU/linux/mm_isp /vobs/wtbu/OMAPSW_MPU/algo"
 CCASE_PATHCOMPONENTS = 2
 CCASE_PATHCOMPONENT = "OMAPSW_MPU"
@@ -180,13 +182,20 @@ do_stage() {
 	install -d ${STAGING_INCDIR}/ipp/inc
 	install -m 0644 ${S}/linux/mm_isp/ipp/inc/*.h ${STAGING_INCDIR}/ipp/inc/
 
+	install -d ${STAGING_INCDIR}/omx/icam_icap
+	install -m 0644 ${D}/usr/include/icam_icap/*.h ${STAGING_INCDIR}/omx/icam_icap
+
+	oe_libinstall -so -C ${D}/usr/lib libicamera ${STAGING_LIBDIR}
+	oe_libinstall -so -C ${D}/usr/lib libicapture ${STAGING_LIBDIR}
+
 }
 
 FILES_${PN} = "\
 	/lib \
 	/bin \
 	/etc \
-	/mms \
+	/usr/lib \
+	/usr/bin \
 	"
 
 FILES_${PN}-dbg = "\
@@ -194,10 +203,11 @@ FILES_${PN}-dbg = "\
 	/bin/.debug \
 	/etc/.debug \
 	/mms/.debug \
-	/usr/.debug \
+	/usr/lib/.debug \
+	/usr/bin/.debug \
 	"
 
 FILES_${PN}-dev = "\
 	/include \
-	/usr \
+	/usr/include \
 	"
