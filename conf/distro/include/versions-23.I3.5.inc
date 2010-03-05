@@ -221,6 +221,7 @@ PREFERRED_VERSION_gps-navilink =	"23.17.0"
 SRCREV_pn-sgx-kernel-module =	"L23.I3.4"
 SRCREV_pn-sgx-lib-noxws =	"L23.I3.4"
 SRCREV_pn-sgx-bp =	"L23.I3.4"
+PREFERRED_VERSION_sgx-tiblt =		"1.0.0.0"
 
 # open source dependencies
 PREFERRED_VERSION_gst-plugins-bad =	"git"
