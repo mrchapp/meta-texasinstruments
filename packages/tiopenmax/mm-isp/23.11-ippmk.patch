@@ -5,8 +5,8 @@ diff -Naur vobs.orig/wtbu/OMAPSW_MPU/linux/mm_isp/ipp/src/Makefile vobs/wtbu/OMA
  
  $(COMPONENT_LIB): $(OBJ)
  	# Not sure if MPU bridge needs to be dynmaically linked here.  Keep for now.
--	$(CC) $(CFLAGS) -shared -o $(COMPONENT_LIB) $(OBJ) -L$(BRIDGELIBDIR) -lbridge -lpthread -lcapl
-+	$(CC) $(CFLAGS) -shared -o $(COMPONENT_LIB) $(OBJ) -L$(BRIDGELIBDIR) -lbridge -lpthread -lcapl -L../../capl/src
+-	$(CC) $(CFLAGS) -shared -o $(COMPONENT_LIB) $(OBJ) -L$(BRIDGELIBDIR) -L$(MMISPLIBDIR) -lbridge -lpthread -lcapl
++	$(CC) $(CFLAGS) -shared -o $(COMPONENT_LIB) $(OBJ) -L$(BRIDGELIBDIR) -L$(MMISPLIBDIR) -lbridge -lpthread -lcapl -L../../capl/src
  
  install::
  	cp -f $(COMPONENT_LIB) $(MMISPLIBDIR)

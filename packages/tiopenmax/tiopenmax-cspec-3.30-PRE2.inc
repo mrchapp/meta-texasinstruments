@@ -9,12 +9,12 @@ CCASE_SPEC = "\
 	# OMX Video%\
   element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode/... ACT_MMVIDEO-PREREL-I3.5.1%\
   element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_encode/... ACT_MMVIDEO-PREREL-I3.5.1%\
-  element /OMAPSW_MPU/linux/video/src/openmax_il/mms_camera/... ACT_MMVIDEO-PREREL-I3.5.1%\
-  element /OMAPSW_MPU/linux/video/src/openmax_il/prepost_processor/... ACT_MMVIDEO-PREREL-I3.5.1%\
+  element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/mms_camera/... ACT_MMVIDEO-PREREL-I3.5.1%\
+  element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/prepost_processor/... ACT_MMVIDEO-PREREL-I3.5.1%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.29%\
 	
 	# OMX Image%\
-	element /OMAPSW_MPU/linux/image/... ACT_MMIMAGE-PREREL-I3.5.1%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/image/... ACT_MMIMAGE-PREREL-I3.5.1%\
   element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.29%\
 	
 	# LCML & core%\
