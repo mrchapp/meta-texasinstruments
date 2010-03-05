@@ -9,7 +9,7 @@ inherit base
 
 GFORGEFETCH_OUTFILE=${DL_DIR}/${PN}-${PV}.tar.gz
 GFORGEFETCH_PROJECT=`echo ${SRC_GFORGE} | awk -F@ '{print $2}' | sed 's/\//-/g'`
-GFORGEFETCH_REF=${DL_DIR}/git/${GFORGEFETCH_PROJECT}
+GFORGEFETCH_REF=${DL_DIR}/git/${PN}-${GFORGEFETCH_PROJECT}
 
 do_fetch_gforge () {
   if [ ! -z "${SRC_GFORGE}" ]; then
