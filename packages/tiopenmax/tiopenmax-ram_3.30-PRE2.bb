@@ -15,6 +15,7 @@ CCASE_PATHCOMPONENT = "linux"
 
 SRC_URI = "\
           file://23.11-mknocore.patch;patch=1 \
+          file://add-dvfs-support.patch;patch=1 \
 	  "
 
 inherit ccasefetch
