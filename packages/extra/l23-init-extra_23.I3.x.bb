@@ -23,8 +23,6 @@ do_install() {
 	
 	cd ${D}/etc/rc0.d && ln -s ../init.d/l23.init K90L23Init
 	cd ${D}/etc/rc1.d && ln -s ../init.d/l23.init K90L23Init
-	cd ${D}/etc/rc2.d && ln -s ../init.d/l23.init S90L23Init
-	cd ${D}/etc/rc3.d && ln -s ../init.d/l23.init S90L23Init
 	cd ${D}/etc/rc5.d && ln -s ../init.d/l23.init S90L23Init
 	cd ${D}/etc/rc6.d && ln -s ../init.d/l23.init K90L23Init
 }
