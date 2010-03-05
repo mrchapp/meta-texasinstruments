@@ -59,8 +59,6 @@ do_install() {
 	
 	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
 	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
-	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
-	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
 	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
 	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
 }
