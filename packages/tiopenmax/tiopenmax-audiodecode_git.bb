@@ -3,7 +3,7 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 SECTION = "libs"
 
-PR = "r8"
+PR = "r9"
 
 require tiopenmax-audio-git.inc
 
@@ -27,7 +27,11 @@ S = "${WORKDIR}/git/audio/audio_decode/"
 
 inherit pkgconfig autotools
 
-SRC_URI +="file://amixer.sh"
+SRC_URI +="file://amixer.sh \
+           file://asound.conf \
+"
+
+FILES_${PN} += "${sysconfdir}/*"
 
 do_stage() {
     autotools_stage_all
@@ -35,5 +39,7 @@ do_stage() {
 
 do_install_append() {
     install -m 0777 ${WORKDIR}/amixer.sh       ${D}${bindir}
+    install -d ${D}${sysconfdir}
+    install -m 0777 ${WORKDIR}/asound.conf     ${D}${sysconfdir}
 }
 
