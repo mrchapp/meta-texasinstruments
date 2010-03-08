@@ -60,7 +60,7 @@ do_install () {
 		   ${D}${sysconfdir}/init.d
 	install -m 0644 ${WORKDIR}/inittab ${D}${sysconfdir}/inittab
 	if [ ! -z "${SERIAL_CONSOLE}" ]; then
-		echo "S:234:respawn:${base_sbindir}/getty ${SERIAL_CONSOLE}" >> ${D}${sysconfdir}/inittab
+		echo "S:2345:respawn:${base_sbindir}/getty ${SERIAL_CONSOLE}" >> ${D}${sysconfdir}/inittab
 	fi
 	if [ "${USE_VT}" = "1" ]; then
 		cat <<EOF >>${D}${sysconfdir}/inittab
@@ -77,7 +77,7 @@ EOF
 
 		for n in ${SYSVINIT_ENABLED_GETTYS}
 		do
-			echo "$n:2345:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
+			echo "$n:234:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
 		done
 		echo "" >> ${D}${sysconfdir}/inittab
 	fi
