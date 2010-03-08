@@ -83,7 +83,7 @@ EOF
 	fi
 	
 	# TI FW3A
-	echo "fw:2345:respawn:/mms/fw3a_core" >> ${D}${sysconfdir}/inittab
+	echo "fw:2345:respawn:/usr/bin/fw3a_core" >> ${D}${sysconfdir}/inittab
 	
 	install -m 0644    ${WORKDIR}/rcS-default	${D}${sysconfdir}/default/rcS
 	install -m 0755    ${WORKDIR}/rc		${D}${sysconfdir}/init.d
