@@ -77,7 +77,7 @@ EOF
 
 		for n in ${SYSVINIT_ENABLED_GETTYS}
 		do
-			echo "$n:2345:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
+			echo "$n:234:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
 		done
 		echo "" >> ${D}${sysconfdir}/inittab
 	fi
