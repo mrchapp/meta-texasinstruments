@@ -1,15 +1,15 @@
-From 37978f7d834655b0085232e4c2f7bb4b1cc244a3 Mon Sep 17 00:00:00 2001
+From 322aee333a4c9189681fdcb3571a377d33f88b3f Mon Sep 17 00:00:00 2001
 From: Olivier Naudan <o-naudan@ti.com>
-Date: Tue, 16 Feb 2010 15:59:01 +0100
-Subject: [PATCH] Migration to kernel 2.6.33-rc2: Picked up kernel.bbclass from OpenEmbedded.
+Date: Wed, 10 Mar 2010 15:43:18 +0100
+Subject: [PATCH] Migration to kernel 2.6.33-rc2. Picked up the kernel.bbclass from OpenEmbedded
 
 ---
- meta/classes/kernel.bbclass            |  170 +++++++++++++++++++++++---------
+ meta/classes/kernel.bbclass            |  173 ++++++++++++++++++++++----------
  meta/classes/linux-kernel-base.bbclass |    6 +-
- 2 files changed, 127 insertions(+), 49 deletions(-)
+ 2 files changed, 124 insertions(+), 55 deletions(-)
 
 diff --git meta/classes/kernel.bbclass meta/classes/kernel.bbclass
-index b2266be..071c267 100644
+index b2266be..84c9ff2 100644
 --- meta/classes/kernel.bbclass
 +++ meta/classes/kernel.bbclass
 @@ -1,28 +1,37 @@
@@ -33,10 +33,8 @@ index b2266be..071c267 100644
      kerneltype = bb.data.getVar('KERNEL_IMAGETYPE', d, 1) or ''
      if kerneltype == 'uImage':
      	depends = bb.data.getVar("DEPENDS", d, 1)
--    	depends = "%s u-boot-mkimage-native" % depends
--    	bb.data.setVar("DEPENDS", depends, d)
-+#    	depends = "%s u-boot-mkimage-openmoko-native" % depends
-+#    	bb.data.setVar("DEPENDS", depends, d)
+     	depends = "%s u-boot-mkimage-native" % depends
+     	bb.data.setVar("DEPENDS", depends, d)
 +
 +    image = bb.data.getVar('INITRAMFS_IMAGE', d, True)
 +    if image != '' and image is not None:
@@ -79,7 +77,7 @@ index b2266be..071c267 100644
  kernel_do_compile() {
  	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS MACHINE
  	oe_runmake include/linux/version.h CC="${KERNEL_CC}" LD="${KERNEL_LD}"
-@@ -79,14 +92,37 @@ kernel_do_compile() {
+@@ -79,28 +92,42 @@ kernel_do_compile() {
  		oenote "no modules to compile"
  	fi
  }
@@ -95,6 +93,9 @@ index b2266be..071c267 100644
 -	cp -fR include/$ASMDIR/* ${STAGING_KERNEL_DIR}/include/$ASMDIR/
 -	rm -f $ASMDIR ${STAGING_KERNEL_DIR}/include/asm
 -	ln -sf $ASMDIR ${STAGING_KERNEL_DIR}/include/asm
+-
+-	mkdir -p ${STAGING_KERNEL_DIR}/include/asm-generic
+-	cp -fR include/asm-generic/* ${STAGING_KERNEL_DIR}/include/asm-generic/
 +		mkdir -p ${STAGING_KERNEL_DIR}/include/$ASMDIR
 +		cp -fR include/$ASMDIR/* ${STAGING_KERNEL_DIR}/include/$ASMDIR/
 +	fi
@@ -105,7 +106,9 @@ index b2266be..071c267 100644
 +		fi
 +		install -d ${STAGING_KERNEL_DIR}/arch/${ARCH}/include
 +		cp -fR arch/${ARCH}/* ${STAGING_KERNEL_DIR}/arch/${ARCH}/	
-+
+ 
+-	mkdir -p ${STAGING_KERNEL_DIR}/include/linux
+-	cp -fR include/linux/* ${STAGING_KERNEL_DIR}/include/linux/
 +	# Check for arch/x86 on i386
 +	elif [ -d arch/x86/include/asm/ ]; then
 +		if [ -e include/asm ] ; then
@@ -114,24 +117,25 @@ index b2266be..071c267 100644
 +		install -d ${STAGING_KERNEL_DIR}/arch/x86/include
 +		cp -fR arch/x86/* ${STAGING_KERNEL_DIR}/arch/x86/
 +	fi
-+
+ 
+-	mkdir -p ${STAGING_KERNEL_DIR}/include/net
+-	cp -fR include/net/* ${STAGING_KERNEL_DIR}/include/net/
 +	if [ -e include/asm ] ; then
 +		rm -f ${STAGING_KERNEL_DIR}/include/asm
 +		ln -sf $ASMDIR ${STAGING_KERNEL_DIR}/include/asm
 +	fi
  
- 	mkdir -p ${STAGING_KERNEL_DIR}/include/asm-generic
- 	cp -fR include/asm-generic/* ${STAGING_KERNEL_DIR}/include/asm-generic/
-@@ -100,7 +136,7 @@ kernel_do_stage() {
- 	mkdir -p ${STAGING_KERNEL_DIR}/include/pcmcia
- 	cp -fR include/pcmcia/* ${STAGING_KERNEL_DIR}/include/pcmcia/
+-	mkdir -p ${STAGING_KERNEL_DIR}/include/pcmcia
+-	cp -fR include/pcmcia/* ${STAGING_KERNEL_DIR}/include/pcmcia/
++	mkdir -p ${STAGING_KERNEL_DIR}/include/asm-generic
++	cp -fR include/asm-generic/* ${STAGING_KERNEL_DIR}/include/asm-generic/
  
 -	for entry in drivers/crypto include/media include/acpi include/sound include/video; do
-+	for entry in drivers/crypto drivers/media include/media include/acpi include/sound include/video include/scsi include/trace; do
++	for entry in drivers/crypto drivers/media include/generated include/linux include/net include/pcmcia include/media include/acpi include/sound include/video include/scsi include/trace; do
  		if [ -d $entry ]; then
  			mkdir -p ${STAGING_KERNEL_DIR}/$entry
  			cp -fR $entry/* ${STAGING_KERNEL_DIR}/$entry/
-@@ -156,6 +192,7 @@ kernel_do_install() {
+@@ -156,6 +183,7 @@ kernel_do_install() {
  	install -m 0644 System.map ${D}/boot/System.map-${KERNEL_VERSION}
  	install -m 0644 .config ${D}/boot/config-${KERNEL_VERSION}
  	install -m 0644 vmlinux ${D}/boot/vmlinux-${KERNEL_VERSION}
@@ -139,7 +143,7 @@ index b2266be..071c267 100644
  	install -d ${D}/etc/modutils
  	if [ "${KERNEL_MAJOR_VERSION}" = "2.6" ]; then
  		install -d ${D}/etc/modprobe.d
-@@ -171,7 +208,14 @@ kernel_do_install() {
+@@ -171,7 +199,14 @@ kernel_do_install() {
  }
  
  kernel_do_configure() {
@@ -155,7 +159,7 @@ index b2266be..071c267 100644
  }
  
  do_menuconfig() {
-@@ -184,7 +228,7 @@ do_menuconfig() {
+@@ -184,7 +219,7 @@ do_menuconfig() {
  	fi
  }
  do_menuconfig[nostamp] = "1"
@@ -164,7 +168,7 @@ index b2266be..071c267 100644
  
  pkg_postinst_kernel () {
  	cd /${KERNEL_IMAGEDEST}; update-alternatives --install /${KERNEL_IMAGEDEST}/${KERNEL_IMAGETYPE} ${KERNEL_IMAGETYPE} ${KERNEL_IMAGETYPE}-${KERNEL_VERSION} ${KERNEL_PRIORITY} || true
-@@ -203,9 +247,11 @@ EXPORT_FUNCTIONS do_compile do_install do_stage do_configure
+@@ -203,9 +238,11 @@ EXPORT_FUNCTIONS do_compile do_install do_stage do_configure
  PACKAGES = "kernel kernel-base kernel-image kernel-dev kernel-vmlinux"
  FILES = ""
  FILES_kernel-image = "/boot/${KERNEL_IMAGETYPE}*"
@@ -177,7 +181,7 @@ index b2266be..071c267 100644
  # Allow machines to override this dependency if kernel image files are 
  # not wanted in images as standard
  RDEPENDS_kernel-base ?= "kernel-image"
-@@ -220,6 +266,9 @@ ALLOW_EMPTY_kernel-image = "1"
+@@ -220,6 +257,9 @@ ALLOW_EMPTY_kernel-image = "1"
  DEPENDS_kernel-module-dtl1-cs = "bluez-dtl1-workaround"
  RDEPENDS_kernel-module-dtl1-cs = "bluez-dtl1-workaround"
  
@@ -187,7 +191,7 @@ index b2266be..071c267 100644
  pkg_postinst_kernel-image () {
  if [ ! -e "$D/lib/modules/${KERNEL_VERSION}" ]; then
  	mkdir -p $D/lib/modules/${KERNEL_VERSION}
-@@ -270,14 +319,18 @@ module_conf_sco = "alias bt-proto-2 sco"
+@@ -270,14 +310,18 @@ module_conf_sco = "alias bt-proto-2 sco"
  module_conf_rfcomm = "alias bt-proto-3 rfcomm"
  
  python populate_packages_prepend () {
@@ -208,7 +212,7 @@ index b2266be..071c267 100644
  		os.unlink(tmpfile)
  		exp = re.compile("([^=]+)=(.*)")
  		vals = {}
-@@ -289,7 +342,7 @@ python populate_packages_prepend () {
+@@ -289,7 +333,7 @@ python populate_packages_prepend () {
  		return vals
  	
  	def parse_depmod():
@@ -217,7 +221,7 @@ index b2266be..071c267 100644
  
  		dvar = bb.data.getVar('D', d, 1)
  		if not dvar:
-@@ -343,7 +396,7 @@ python populate_packages_prepend () {
+@@ -343,7 +387,7 @@ python populate_packages_prepend () {
  		file = file.replace(bb.data.getVar('D', d, 1) or '', '', 1)
  
  		if module_deps.has_key(file):
@@ -226,7 +230,7 @@ index b2266be..071c267 100644
  			dependencies = []
  			for i in module_deps[file]:
  				m = re.match(pattern, os.path.basename(i))
-@@ -364,6 +417,9 @@ python populate_packages_prepend () {
+@@ -364,6 +408,9 @@ python populate_packages_prepend () {
  		# If autoloading is requested, output /etc/modutils/<name> and append
  		# appropriate modprobe commands to the postinst
  		autoload = bb.data.getVar('module_autoload_%s' % basename, d, 1)
@@ -236,7 +240,7 @@ index b2266be..071c267 100644
  		if autoload:
  			name = '%s/etc/modutils/%s' % (dvar, basename)
  			f = open(name, 'w')
-@@ -409,9 +465,16 @@ python populate_packages_prepend () {
+@@ -409,9 +456,16 @@ python populate_packages_prepend () {
  
  	postinst = bb.data.getVar('pkg_postinst_modules', d, 1)
  	postrm = bb.data.getVar('pkg_postrm_modules', d, 1)
@@ -255,13 +259,11 @@ index b2266be..071c267 100644
  	metapkg = "kernel-modules"
  	bb.data.setVar('ALLOW_EMPTY_' + metapkg, "1", d)
  	bb.data.setVar('FILES_' + metapkg, "", d)
-@@ -434,10 +497,10 @@ python populate_packages_prepend () {
- # Support checking the kernel size since some kernels need to reside in partitions
+@@ -435,9 +489,9 @@ python populate_packages_prepend () {
  # with a fixed length or there is a limit in transferring the kernel to memory
  do_sizecheck() {
--	if [ ! -z "${KERNEL_IMAGE_MAXSIZE}" ]; then
+ 	if [ ! -z "${KERNEL_IMAGE_MAXSIZE}" ]; then
 -        	size=`ls -l arch/${ARCH}/boot/${KERNEL_IMAGETYPE} | awk '{ print $5}'`
-+	if [ ! -z "${KERNEL_IMAGE_MAXSIZE}" -a -z "${DONT_CHECK_KERNELSIZE}" ]; then
 +        	size=`ls -l ${KERNEL_OUTPUT} | awk '{ print $5}'`
          	if [ $size -ge ${KERNEL_IMAGE_MAXSIZE} ]; then
 -                	rm arch/${ARCH}/boot/${KERNEL_IMAGETYPE}
@@ -269,7 +271,7 @@ index b2266be..071c267 100644
                  	die  "This kernel (size=$size > ${KERNEL_IMAGE_MAXSIZE}) is too big for your device. Please reduce the size of the kernel by making more of it modular."
          	fi
      	fi
-@@ -445,30 +508,42 @@ do_sizecheck() {
+@@ -445,30 +499,42 @@ do_sizecheck() {
  
  addtask sizecheck before do_install after do_compile
  
@@ -295,7 +297,7 @@ index b2266be..071c267 100644
 +    fi
 +}
 +
-+#addtask uboot_mkimage before do_install after do_compile
++addtask uboot_mkimage before do_install after do_compile
 +
 +KERNEL_IMAGE_BASE_NAME ?= "${KERNEL_IMAGETYPE}-${PV}-${PR}-${MACHINE}"
  KERNEL_IMAGE_SYMLINK_NAME ?= "${KERNEL_IMAGETYPE}-${MACHINE}"
@@ -330,7 +332,7 @@ index b2266be..071c267 100644
  	fi
  
  	cd ${DEPLOY_DIR_IMAGE}
-@@ -478,5 +553,6 @@ do_deploy() {
+@@ -478,5 +544,6 @@ do_deploy() {
  }
  
  do_deploy[dirs] = "${S}"
