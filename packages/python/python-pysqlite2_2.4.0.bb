@@ -6,7 +6,7 @@ DEPENDS = "sqlite3"
 SRCNAME = "pysqlite"
 PR = "ml2"
 
-SRC_URI = "http://pypi.python.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
+SRC_URI = "http://pypi.netsight.co.uk/${SRCNAME}/${SRCNAME}-${PV}.tar.gz \
            file://fix-setup.patch;patch=1"
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
