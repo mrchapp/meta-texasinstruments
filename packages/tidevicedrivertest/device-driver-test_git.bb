@@ -9,7 +9,7 @@ inherit  pkgconfig
 PR = "r1"
 PV = "0.00+git+${SRCREV}"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/richo/device_driver_test.git;branch=24x;protocol=git "
+SRC_URI = "git://dev.omapzoom.org/pub/scm/richo/device_driver_test.git;protocol=git "
 
 S = "${WORKDIR}/git/"
 
