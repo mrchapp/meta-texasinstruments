@@ -11,6 +11,15 @@ GFORGE_USER ?= ${USER}
 
 PV = "23.i3+git+${SRCREV}"
 SRC_GFORGE = "ssh://${GFORGE_USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_bp"
+
+GFORGE_PATHFETCH ="\
+OGLES \
+OGLES2 \
+OVG \
+TI_Linux_OMAP_SGX_BP.txt \
+docs \
+"
+
 S = "${WORKDIR}/git"
 
 inherit gforgefetch
