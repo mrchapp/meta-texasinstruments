@@ -77,13 +77,13 @@ EOF
 
 		for n in ${SYSVINIT_ENABLED_GETTYS}
 		do
-			echo "$n:2345:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
+			echo "$n:234:respawn:${base_sbindir}/getty 38400 tty$n" >> ${D}${sysconfdir}/inittab
 		done
 		echo "" >> ${D}${sysconfdir}/inittab
 	fi
 	
 	# TI FW3A
-	echo "fw:2345:respawn:/mms/fw3a_core" >> ${D}${sysconfdir}/inittab
+	echo "fw:2345:respawn:/usr/bin/fw3a_core" >> ${D}${sysconfdir}/inittab
 	
 	install -m 0644    ${WORKDIR}/rcS-default	${D}${sysconfdir}/default/rcS
 	install -m 0755    ${WORKDIR}/rc		${D}${sysconfdir}/init.d

@@ -1,0 +1,17 @@
+DESCRIPTION = "Texas Instruments WMA9 Decoder Socket Node."
+PR = "r0"
+DEPENDS += "tisocketnode-wma9-codec"
+
+CCASE_SPEC = "%\
+	      element /vobs/wtbu/OMAPSW_DSP/audio/node/wma9/dec/... DSP-MM-TII_RLS_${PV}%\
+	      element * COMPONENT_ROOT%\
+	      element -directory /vobs/wtbu/CSSD_MM_Releases/... /main/LATEST%\
+	      "
+
+CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_DSP/audio/node/wma9/dec/"
+CCASE_PATHCOMPONENT = "OMAPSW_DSP"
+CCASE_PATHCOMPONENTS = "2"
+
+SN_DIR=${S}/audio/node/wma9/dec
+
+inherit ccasefetch tisocketnode

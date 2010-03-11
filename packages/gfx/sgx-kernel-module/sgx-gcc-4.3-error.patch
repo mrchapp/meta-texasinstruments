@@ -1,7 +1,7 @@
-Index: eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common
+Index: git/eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common
 ===================================================================
---- eurasia_km.orig/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:14.000000000 +0100
-+++ eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:30.000000000 +0100
+--- git.orig/eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:14.000000000 +0100
++++ git/eurasia_km/eurasiacon/build/linux/kbuild/Makefile.kbuild_subdir_common	2009-11-18 15:42:30.000000000 +0100
 @@ -30,7 +30,7 @@
  
  EXTRA_CFLAGS = $(INCLUDES)  \

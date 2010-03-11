@@ -1,0 +1,20 @@
+diff --git a/Master.mk b/Master.mk
+--- a/Master.mk
++++ b/Master.mk
+@@ -73,11 +73,11 @@ endif
+ ifndef CFLAGS
+ CFLAGS=-Wall -fpic -pipe -O2
+ endif
+-
+-# Resource Manager
+-ifneq ($(OMX_RESOURCEMANAGER_DISABLE), 1)
+-CFLAGS += -DRESOURCE_MANAGER_ENABLED
+-endif
++
++# Resource Manager
++ifneq ($(OMX_RESOURCEMANAGER_DISABLE), 1)
++CFLAGS += -DRESOURCE_MANAGER_ENABLED -DDVFS_ENABLED
++endif
+ 
+ # PERF instrumentation global flags and make variables
+ ifdef OMX_PERF_INSTRUMENTATION

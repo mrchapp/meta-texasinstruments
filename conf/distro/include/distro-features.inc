@@ -28,6 +28,9 @@ DISTRO_FEATURES += "spark"
 # Enable 3D GFX module and libraries
 DISTRO_FEATURES += "gfx"
 
+# Enable 3D GFX Benchmark application delivery - requires gfx
+DISTRO_FEATURES += "gfx-bp"
+
 # Enable 720p OpenMAX components - Ittiam
 DISTRO_FEATURES += "720p"
 
@@ -39,9 +42,6 @@ DISTRO_FEATURES += "tibluetooth"
 
 # Enable support for TI's WLAN on zoom3 - no impact on other boards.
 DISTRO_FEATURES += "tiwifi"
-
-# Enable support for HDMI on zoom3 - no impact on other boards.
-DISTRO_FEATURES += "hdmi"
 
 # Enable support for TI-BT test framework on zoom3 - no impact on other boards.
 #DISTRO_FEATURES += "tibt-test-fw"
