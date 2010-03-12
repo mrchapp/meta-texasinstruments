@@ -20,6 +20,7 @@ do_fetch_gforge () {
         echo "${GFORGEFETCH_REF} fetched for the first time"
         echo "If it fails, remove dir: ${GFORGEFETCH_REF}, before to retry"
 	git clone ${SRC_GFORGE} ${GFORGEFETCH_REF}
+	chmod -R a+w ${GFORGEFETCH_REF}
       else
         cd ${GFORGEFETCH_REF}
 	echo "Synchronization with remote on ${GFORGEFETCH_REF}"
