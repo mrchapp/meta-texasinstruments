@@ -45,6 +45,8 @@ RDEPENDS = "\
     ${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tisocketnode-mpeg4-720pdec", "", d)} \
     ${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tisocketnode-mpeg4-720penc", "", d)} \
     ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-h264decitt", "", d)} \
+    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4decitt", "", d)} \
+    ${@base_contains("DISTRO_FEATURES", "720p", "tisocketnode-mpeg4encitt", "", d)} \
     \
     tisocketnode-jpegdec \
     tisocketnode-jpegenc \
