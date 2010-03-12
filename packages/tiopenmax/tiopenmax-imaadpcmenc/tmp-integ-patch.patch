@@ -1,0 +1,13 @@
+Index: tiopenmax-imaadpcmenc-3.30-PRE3/audio/src/openmax_il/imaadpcm_enc/tests/ImaAdpcmEncTest.c
+===================================================================
+--- tiopenmax-imaadpcmenc-3.30-PRE3.orig/audio/src/openmax_il/imaadpcm_enc/tests/ImaAdpcmEncTest.c	2010-03-12 14:26:34.000097000 +0100
++++ tiopenmax-imaadpcmenc-3.30-PRE3/audio/src/openmax_il/imaadpcm_enc/tests/ImaAdpcmEncTest.c	2010-03-12 14:26:58.000013000 +0100
+@@ -512,7 +512,7 @@
+     temp16 =  nSamplesPerBlock;
+     memcpy(&hdr[38], &temp16, 2);
+ 
+-    fwrite(hdr,1, sizeof(hdr), fOut);
++/*    fwrite(hdr,1, sizeof(hdr), fOut); */
+ 	return;
+ }
+ int main(int argc, char* argv[])
