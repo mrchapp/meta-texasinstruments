@@ -1,8 +1,10 @@
 # This is a class for accessing gforge git trees internally at TI
 #
 # This fetcher class requires the following:
-# ${SRC_GFORGE} - Gforge git tree e.g.:
-#                 SRC_GFORGE = "ssh://${USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_ddk"
+# ${SRC_GFORGE}       - Gforge git tree e.g.:
+#                       SRC_GFORGE = "ssh://${USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_ddk"
+# ${GFORGE_PATHFETCH} - List of file or directories to be added to tarball
+#
 # Prerequisites: TI internal access to gforge configured. 
 
 inherit base
@@ -12,12 +14,13 @@ GFORGEFETCH_PROJECT=`echo ${SRC_GFORGE} | awk -F@ '{print $2}' | sed 's/\//-/g'`
 GFORGEFETCH_REF=${DL_DIR}/git/${PN}-${GFORGEFETCH_PROJECT}
 
 do_fetch_gforge () {
-  if [ ! -z "${SRC_GFORGE}" ]; then
+  if [ ! -z "${SRC_GFORGE}" ] && [ ! -z "${GFORGE_PATHFETCH}" ]; then
     if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
       if [ ! -d ${GFORGEFETCH_REF} ]; then
         echo "${GFORGEFETCH_REF} fetched for the first time"
         echo "If it fails, remove dir: ${GFORGEFETCH_REF}, before to retry"
 	git clone ${SRC_GFORGE} ${GFORGEFETCH_REF}
+	chmod -R a+w ${GFORGEFETCH_REF}
       else
         cd ${GFORGEFETCH_REF}
 	echo "Synchronization with remote on ${GFORGEFETCH_REF}"
@@ -30,7 +33,7 @@ do_fetch_gforge () {
       echo "Create source tarball"
       cd ${GFORGEFETCH_REF}
       git checkout -b work ${SRCREV}
-      tar zcf ${GFORGEFETCH_OUTFILE} `ls`
+      tar zcf ${GFORGEFETCH_OUTFILE} ${GFORGE_PATHFETCH}
       git branch -f last_work
       git checkout last_work
       git branch -D work
@@ -38,7 +41,7 @@ do_fetch_gforge () {
       echo "Package ${PN}-${PV}.tar.gz already downloaded."
     fi
   else
-    echo "Required SRC_GFORGE is missing."
+    echo "Required SRC_GFORGE or GFORGE_PATHFETCH is missing."
     exit 1
   fi
 }

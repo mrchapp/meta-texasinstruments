@@ -3,10 +3,14 @@ CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 
 	# OMX Audio%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.5.2-P1%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.5.2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.30%\
 	
 	# OMX Video%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode/... ACT_MMVIDEO-PREREL-I3.5.1%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode/... ACT_MMVIDEO-PREREL-I3.5.2%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode_ittiam/... ACT_MMVIDEO-PREREL-I3.5.2%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/post_processor/... ACT_MMVIDEO-PREREL-I3.5.2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_encode/... ACT_MMVIDEO-PREREL-I3.5.1%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/mms_camera/... ACT_MMVIDEO-PREREL-I3.5.1%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/prepost_processor/... ACT_MMVIDEO-PREREL-I3.5.1%\
@@ -17,6 +21,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.29%\
 	
 	# LCML & core%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/system/... ACT_MMSYSTEM-PREREL-I3.5.2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.30%\
 	
 	# OMX Application%\
@@ -27,6 +32,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.04%\
 	
 	# ROOT folder & Make files%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/... ACT_MMROOT-PREREL-I3.5.2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/... LINUX-MMROOT_RLS_3.21%\
 	# special hack needed because root of vob is not labeled:%\
 	element /vobs/wtbu/OMAPSW_MPU /main/LATEST%\

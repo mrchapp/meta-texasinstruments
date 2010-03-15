@@ -21,6 +21,17 @@ FILES_${PN} = "/usr/local/bin/* ${libdir} ${sysconfdir}/init.d/rc.pvr ${sysconfd
 
 SRC_URI += "file://noxsupport.patch;patch=1"
 
+GFORGE_PATHFETCH="\
+ TI_Linux_OMAP_SGX_DDK.txt \
+ docs \
+ glsl_compilers \
+ omapsw_gfx_sgx_linuxddk_testreport_* \
+ build_DDK.sh \
+ eurasia \
+ freedesktop \
+ omapsw_gfx_linuxddk_relnotes_* \
+ "
+
 KERNEL_VERSION=`cat ${STAGING_KERNEL_DIR}/kernel-abiversion`
 
 do_compile() {
