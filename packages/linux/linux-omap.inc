@@ -7,6 +7,7 @@ inherit kernel
 COMPATIBLE_MACHINE = "omap-4430sdp"
 KERNEL_IMAGETYPE = "uImage"
 KERNEL_OUTPUT = "arch/${ARCH}/boot/${KERNEL_IMAGETYPE}"
+UBOOT_ENTRYPOINT = "0x80008000"
 
 do_configure_prepend() {
 
