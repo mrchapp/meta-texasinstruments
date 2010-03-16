@@ -3,45 +3,45 @@
 # This fetcher class requires the following:
 # ${SRC_GFORGE}       - Gforge git tree e.g.:
 #                       SRC_GFORGE = "ssh://${USER}@gforge01.dal.design.ti.com/gitroot/gfx_l23_ddk"
-# ${GFORGE_PATHFETCH} - List of file or directories to be added to tarball
 #
 # Prerequisites: TI internal access to gforge configured. 
 
 inherit base
 
-GFORGEFETCH_OUTFILE=${DL_DIR}/${PN}-${PV}.tar.gz
 GFORGEFETCH_PROJECT=`echo ${SRC_GFORGE} | awk -F@ '{print $2}' | sed 's/\//-/g'`
-GFORGEFETCH_REF=${DL_DIR}/git/${PN}-${GFORGEFETCH_PROJECT}
+GFORGEFETCH_OUTFILE=${DL_DIR}/${GFORGEFETCH_PROJECT}-${PV}.tar.gz
 
 do_fetch_gforge () {
-  if [ ! -z "${SRC_GFORGE}" ] && [ ! -z "${GFORGE_PATHFETCH}" ]; then
+  if [ ! -z "${SRC_GFORGE}" ]; then
     if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
-      if [ ! -d ${GFORGEFETCH_REF} ]; then
-        echo "${GFORGEFETCH_REF} fetched for the first time"
-        echo "If it fails, remove dir: ${GFORGEFETCH_REF}, before to retry"
-	git clone ${SRC_GFORGE} ${GFORGEFETCH_REF}
-	chmod -R a+w ${GFORGEFETCH_REF}
+      if [ -f ${GFORGEFETCH_OUTFILE}.lock ]; then
+        # Wait 15 minutes maximum
+	wait=0
+	while [ "$wait" -lt "900" ]
+	do
+	  wait=`expr $wait + 10`
+	  sleep 10
+	  if [ -f ${GFORGEFETCH_OUTFILE}.lock ]; then
+	    echo "Still locked - $wait sec"
+	  else
+	    if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
+	      echo "Problem: file ${GFORGEFETCH_OUTFILE} is not there"
+	      exit 1
+	    fi
+	    echo "Unlocked - ${GFORGEFETCH_OUTFILE} is available now."
+	    break
+	  fi
+	done  
       else
-        cd ${GFORGEFETCH_REF}
-	echo "Synchronization with remote on ${GFORGEFETCH_REF}"
-        echo "If it fails, remove dir: ${GFORGEFETCH_REF}, before to retry"
-	# Required for git version 1.5.4.4 - if no echo this step fails 
-	# because git remote update return 1 if no update
-        (git remote update; echo "remote update done")
+        touch ${GFORGEFETCH_OUTFILE}.lock
+	git archive --format=tar -v --remote=${SRC_GFORGE} ${SRCREV} | gzip > ${GFORGEFETCH_OUTFILE}
+	rm -fr ${GFORGEFETCH_OUTFILE}.lock
       fi
-      
-      echo "Create source tarball"
-      cd ${GFORGEFETCH_REF}
-      git checkout -b work ${SRCREV}
-      tar zcf ${GFORGEFETCH_OUTFILE} ${GFORGE_PATHFETCH}
-      git branch -f last_work
-      git checkout last_work
-      git branch -D work
     else
       echo "Package ${PN}-${PV}.tar.gz already downloaded."
     fi
   else
-    echo "Required SRC_GFORGE or GFORGE_PATHFETCH is missing."
+    echo "Required SRC_GFORGE is missing."
     exit 1
   fi
 }
