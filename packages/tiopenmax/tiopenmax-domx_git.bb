@@ -2,7 +2,7 @@ DESCRIPTION = "Texas Instruments OpenMAX IL DOMX proxy components."
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r1"
-DEPENDS = "tiopenmax-core tiopenmax-osal tisyslink-lib titiler-d2cmap titiler-memmgr"
+DEPENDS = "tiopenmax-core tiopenmax-osal"
 
 SRC_URI = "git://sealion.sc.ti.com/git/domx.git;protocol=git"
 PV = "0.0+git+${SRCREV}"

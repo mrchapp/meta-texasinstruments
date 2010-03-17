@@ -1,9 +1,8 @@
 DEPENDS = "gst-plugins-base virtual/openmax-il"
-PR = "r14"
+PR = "r15"
 
-SRC_URI = "git://gitorious.org/robclark-gstreamer/gst-openmax.git;protocol=git;branch=l24.3"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/gstreamer/gst-openmax.git;protocol=git"
 
-SRCREV = "214ca1bacd6fd7656bb5cfa312519ae98a3ec060"
 S = "${WORKDIR}/git"
 
 inherit autotools

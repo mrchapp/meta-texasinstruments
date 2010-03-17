@@ -1,10 +1,8 @@
 require gst-plugins-git.inc
 DEPENDS = "gst-plugins-base sgx-kernel-module sgx-lib-noxws virtual/kernel" 
-PR = "r3"
+PR = "r5"
 
-SRC_URI = "git://gitorious.org/gst-plugin-bc/gst-plugin-bc.git;protocol=git"
-SRCREV = "eb4fed9e9b01a37338152625c8736625a63182c4"
-SRC_URI += "file://common-20091119.tar.gz"
+SRC_URI += "git://dev.omapzoom.org/pub/scm/gstreamer/gst-plugin-bc.git;protocol=git"
 SRC_URI += "file://module-makefile.patch;patch=1"
 S = "${WORKDIR}/git"
 

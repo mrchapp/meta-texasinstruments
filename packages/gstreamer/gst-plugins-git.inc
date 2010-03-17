@@ -1,10 +1,9 @@
 require gst-plugins.inc
 
 # override the SRC_URI from gst-plugins.inc to pull from git:
-SRC_URI = "git://anongit.freedesktop.org/gstreamer/${PN};protocol=git \
-           file://common-20091119.tar.gz \
-          "
-S = "${WORKDIR}/git"
+SRC_URI = "file://common-20091119.tar.gz"
+
+S = ${WORKDIR}/git
 
 do_configure_prepend() {
         # This m4 file contains nastiness which conflicts with libtool 2.2.2

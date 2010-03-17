@@ -53,23 +53,23 @@ SRCREV_pn-tisocketnode-wbamrenc-codec    =          "DSP-MM-TESLA_RLS_4.6"
 
 # TI openmax
 PREFERRED_PROVIDER_virtual/openmax-il = "meta-tiopenmax-modular"
-SRCREV_pn-tiopenmax-audiodecode       = "L24.4"
-SRCREV_pn-tiopenmax-audioencode       = "L24.4"
-SRCREV_pn-tiopenmax-base              = "L24.4"
-SRCREV_pn-tiopenmax-lcml              = "L24.4"
+SRCREV_pn-tiopenmax-audiodecode       = "L24.4-p2"
+SRCREV_pn-tiopenmax-audioencode       = "L24.4-p2"
+SRCREV_pn-tiopenmax-base              = "L24.4-p2"
+SRCREV_pn-tiopenmax-lcml              = "L24.4-p2"
 SRCREV_pn-tiopenmax-core              = "L24.4"
 SRCREV_pn-tiopenmax-osal              = "L24.4"
-SRCREV_pn-tiopenmax-domx              = "L24.4"
+SRCREV_pn-tiopenmax-domx              = "L24.4-p2"
 
 # connectivity
 SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
 SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0"
-SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0"
-SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.2"
-SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.2"
+SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0-P1"
+SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0-P1"
+SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.2-P1"
+SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.2-P1"
 SRCREV_pn-gfx-ticpublt =                "OMAP_LINUX_TICPUBLT_BIN_RLS_1.0.0.0"
 
 # open source dependencies
@@ -79,12 +79,14 @@ PREFERRED_VERSION_alsa-lib =            "1.0.18"
 PREFERRED_VERSION_alsa-utils =          "1.0.18"
 
 # gstreamer
+SRCREV_pn-gst-openmax =                 "L24.4-p2"
+SRCREV_pn-gst-plugin-bc =               "L24.4-p2"
+SRCREV_pn-gst-plugins-bad =             "L24.4-p2"
+SRCREV_pn-gst-plugins-ugly =            "L24.4-p2"
+SRCREV_pn-gst-plugins-good =            "L24.4-p2"
+SRCREV_pn-gst-plugins-base =            "L24.4-p2"
+SRCREV_pn-gstreamer =                   "L24.4-p2"
 PREFERRED_VERSION_gst-pyapps =          "5.11"
-PREFERRED_VERSION_gst-plugins-bad =     "git"
-PREFERRED_VERSION_gst-plugins-ugly =    "git"
-PREFERRED_VERSION_gst-plugins-good =    "git"
-PREFERRED_VERSION_gst-plugins-base =    "git"
-PREFERRED_VERSION_gstreamer =           "git"
 PREFERRED_VERSION_gst-qtmux =           "svn"
 PREFERRED_VERSION_check =               "0.9.5"
 PREFERRED_VERSION_amrnb =               "7.0.0.2"
