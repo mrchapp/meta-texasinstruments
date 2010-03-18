@@ -3,17 +3,7 @@ DEPENDS = "tidspbridge-lib tiopenmax-core"
 PR = "r1"
 PACKAGES = "${PN}-dbg ${PN}-patterns ${PN}-dev ${PN}"
 
-#require tiopenmax-cspec-${PV}.inc
-#hack for fetching INST2 code from ClearCase. linux/utilities folder is not labeled with LINUX-MMROOT_RLS_* label. This needs to be solved by DU's
-
-CCASE_SPEC = "\
-	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
-	# OMX INST2 utilities%\
-        element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.04%\
-	# ROOT folder & Make files%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/... LINUX-MMROOT_RLS_3.20%\
-	element * /main/LATEST%\
-	"
+require tiopenmax-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "\
 	/vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2 \
@@ -22,10 +12,6 @@ CCASE_PATHFETCH = "\
 	"
 CCASE_PATHCOMPONENTS = 3
 CCASE_PATHCOMPONENT = "linux"
-
-SRC_URI = "\
-        file://inst_log.patch;patch=1 \
-        "
 
 inherit ccasefetch
 
