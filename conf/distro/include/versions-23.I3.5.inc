@@ -213,8 +213,8 @@ PREFERRED_VERSION_gst-goo =		"5.i3.5-pre2"
 PREFERRED_VERSION_gst-pyapps =		"5.I3.2"
 
 # connectivity
-SRCREV_pn-wilink = "09617c8c063973bd9df1988f03fddb04ccdec9b2"
-PREFERRED_VERSION_wilink-firmware =    "1.2"
+SRCREV_pn-wilink = "7cdeed0b0ecade11b5317cbd18d827766bfa1b4d"
+PREFERRED_VERSION_wilink-firmware =    "1.3"
 PREFERRED_VERSION_btfm = 		"23.I3.4"
 PREFERRED_VERSION_kfmapp = 		"23.I3.4"
 PREFERRED_VERSION_gps-navilink =	"23.17.0"
