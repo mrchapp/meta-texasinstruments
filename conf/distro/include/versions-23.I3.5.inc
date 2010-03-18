@@ -21,9 +21,9 @@ SRCREV_pn-x-load ?= "49f261c4e0bbc5d50e164f5fc58442dec68654b6"
 SRCREV_pn-linux-tiomap ?= "70d3d0f2f1d8b6a7e9ac18d2bbb06ab3578521e6"
 
 # bridge and friends
-SRCREV_pn-tidspbridge-lib = "85d2b37bb6a7150ba8a642a47a97957a3c411f84"
-SRCREV_pn-tidspbridge-mpusamples = "85d2b37bb6a7150ba8a642a47a97957a3c411f84"
-PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.57-P1"
+SRCREV_pn-tidspbridge-lib = "31c7e2c95002960fcff2d627102a420e86054faa"
+SRCREV_pn-tidspbridge-mpusamples = "31c7e2c95002960fcff2d627102a420e86054faa"
+PREFERRED_VERSION_tidspbridge-samples-dsp =		"4.57-P2"
 PREFERRED_VERSION_tidspbridge-extra =		"23.13"
 PREFERRED_VERSION_tidspbridge-cgt6x =		"6.0.7"
 PREFERRED_VERSION_tidspbridge-bios =		"5.33.04"
