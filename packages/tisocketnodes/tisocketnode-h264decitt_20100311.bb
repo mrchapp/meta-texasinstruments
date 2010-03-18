@@ -22,4 +22,9 @@ do_unpack_ccase_append() {
 	mv vobs/wtbu/OMAPSW_DSP/video .
 	rm -fr vobs
 	rm -fr tisocketnode-h264decitt-20100311.tar.gz
+	
+	#FIX for 20100311 SN integration
+	cd ${S}/video/node/h264_ittiam/dec
+	rm -fr 720p_h264vdec_sn.pjt bin buildlog_omap3430release.txt \
+	iv_h264vdec_sncfg_c.c make.mak makefile.linux out
 }
