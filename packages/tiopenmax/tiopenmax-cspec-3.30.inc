@@ -18,8 +18,9 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.30%\
 	
 	# OMX INST2 utilities%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.04%\
-	
+	element /vobs/wtbu/OMAPSW_MPU/linux/utilities/src/inst2/... LINUX-MMUTILS_RLS_3.02.05%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/utilities/... COMPONENT_ROOT%\
+
 	# ROOT folder & Make files%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/... LINUX-MMROOT_RLS_3.22%\
 	# special hack needed because root of vob is not labeled:%\
