@@ -1,0 +1,342 @@
+From a0ac6408908f039310a4ed14500538244eecc63c Mon Sep 17 00:00:00 2001
+From: Kishore Kadiyala <kishore.kadiyala@ti.com>
+Date: Tue, 5 Jan 2010 12:41:12 +0530
+Subject: [PATCH] Adding Saveenv feature for eMMC on OMAP4SDP
+
+This patch adds Saveenv feature for eMMC on OMAP4SDP
+
+Signed-off-by: Kishore Kadiyala <kishore.kadiyala@ti.com>
+---
+ board/omap4430sdp/mem.c         |   16 ++---
+ board/omap4430sdp/omap4430sdp.c |   29 +++++++++-
+ common/Makefile                 |    2 +-
+ common/cmd_nvedit.c             |   12 +++-
+ common/env_mmc.c                |  129 +++++++++++++++++++++++++++++++++++++++
+ include/configs/omap4430sdp.h   |   15 +++++
+ include/environment.h           |    9 +++
+ 7 files changed, 196 insertions(+), 16 deletions(-)
+ create mode 100644 common/env_mmc.c
+
+diff --git a/board/omap4430sdp/mem.c b/board/omap4430sdp/mem.c
+index 53250af..d23b8a7 100644
+--- a/board/omap4430sdp/mem.c
++++ b/board/omap4430sdp/mem.c
+@@ -67,11 +67,6 @@ u8 is_flash;
+ u8 is_onenand;
+ #endif
+ 
+-char *env_name_spec;
+-/* update these elsewhere */
+-env_t *env_ptr;
+-
+-
+ #endif				/* ENV_IS_VARIABLE */
+ 
+ /* SDP4430 Board CS Organization
+@@ -173,12 +168,11 @@ uchar env_get_char_spec(int index)
+ }
+ int env_init(void)
+ {
+-/*
+- * Nand, Nor and Flash support not there
+-*     REVISIT
+-*/
+-       return 0;
+-
++	if (!boot_env_init)
++		puts("ERROR!! boot_env_init not available\n");
++	else
++		return boot_env_init();
++	return -1;
+ }
+ int saveenv(void)
+ {
+diff --git a/board/omap4430sdp/omap4430sdp.c b/board/omap4430sdp/omap4430sdp.c
+index 51abead..ea6a007 100644
+--- a/board/omap4430sdp/omap4430sdp.c
++++ b/board/omap4430sdp/omap4430sdp.c
+@@ -34,6 +34,24 @@
+ #if (CONFIG_COMMANDS & CFG_CMD_NAND) && defined(CFG_NAND_LEGACY)
+ #include <linux/mtd/nand_legacy.h>
+ #endif
++#include <environment.h>
++
++extern uchar(*boot_env_get_char_spec) (int index);
++extern int (*boot_env_init) (void);
++extern int (*boot_saveenv) (void);
++extern void (*boot_env_relocate_spec) (void);
++
++/* StrataNor */
++extern uchar mmc_env_get_char_spec(int index);
++extern int mmc_env_init(void);
++extern int mmc_saveenv(void);
++extern void mmc_env_relocate_spec(void);
++extern char *mmc_env_name_spec;
++
++char *env_name_spec;
++/* update these elsewhere */
++env_t *env_ptr;
++
+ 
+ /*******************************************************
+  * Routine: delay
+@@ -53,7 +71,16 @@ int board_init(void)
+ {
+ 	DECLARE_GLOBAL_DATA_PTR;
+ 
+-	gpmc_init();		/* in SRAM or SDRAM, finish GPMC */
++	/* Intializing env functional pointers with eMMC */
++	boot_env_get_char_spec = mmc_env_get_char_spec;
++	boot_env_init = mmc_env_init;
++	boot_saveenv = mmc_saveenv;
++	boot_env_relocate_spec = mmc_env_relocate_spec;
++	env_ptr = (env_t *) (CFG_FLASH_BASE + CFG_ENV_OFFSET);
++	env_name_spec = mmc_env_name_spec;
++
++	/* REVISIT once if NAND/NOR/OneNAND support is provided OMAP4SDP */
++	gpmc_init(); /* in SRAM or SDRAM, finish GPMC */
+ 	/* board id for Linux */
+ 	gd->bd->bi_arch_number = MACH_TYPE_OMAP_4430SDP;
+ 	gd->bd->bi_boot_params = (0x80000000 + 0x100); /* boot param addr */
+diff --git a/common/Makefile b/common/Makefile
+index af5eea0..481e5ec 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -44,7 +44,7 @@ COBJS	= main.o ACEX1K.o altera.o bedbug.o circbuf.o \
+ 	  cmd_usb.o cmd_vfd.o \
+ 	  command.o console.o devices.o dlmalloc.o docecc.o \
+ 	  environment.o env_common.o \
+-	  env_nand.o env_dataflash.o env_flash.o env_eeprom.o \
++	  env_nand.o env_dataflash.o env_flash.o env_eeprom.o env_mmc.o \
+ 	  env_nvram.o env_nowhere.o env_onenand.o \
+ 	  exports.o \
+ 	  flash.o fpga.o ft_build.o \
+diff --git a/common/cmd_nvedit.c b/common/cmd_nvedit.c
+index b414eac..3948740 100644
+--- a/common/cmd_nvedit.c
++++ b/common/cmd_nvedit.c
+@@ -57,8 +57,10 @@ DECLARE_GLOBAL_DATA_PTR;
+     !defined(CFG_ENV_IS_IN_FLASH)	&& \
+     !defined(CFG_ENV_IS_IN_DATAFLASH)	&& \
+     !defined(CFG_ENV_IS_IN_NAND)	&& \
++    !defined(CFG_ENV_IS_IN_EMMC)	&& \
+     !defined(CFG_ENV_IS_NOWHERE)
+-# error Define one of CFG_ENV_IS_IN_{NVRAM|EEPROM|FLASH|DATAFLASH|NOWHERE}
++# error Define one of CFG_ENV_IS_IN_{NVRAM|EEPROM|FLASH|DATAFLASH \
++						|NAND|EMMC|NOWHERE}
+ #endif
+ 
+ #define XMK_STR(x)	#x
+@@ -534,7 +536,9 @@ int getenv_r (char *name, char *buf, unsigned len)
+     ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_FLASH)) == \
+       (CFG_CMD_ENV|CFG_CMD_FLASH)) || \
+     ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_NAND)) == \
+-      (CFG_CMD_ENV|CFG_CMD_NAND))
++      (CFG_CMD_ENV|CFG_CMD_NAND)) || \
++    ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_MMC)) == \
++      (CFG_CMD_ENV|CFG_CMD_MMC))
+ int do_saveenv (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+ {
+ 	extern char * env_name_spec;
+@@ -592,7 +596,9 @@ U_BOOT_CMD(
+     ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_FLASH)) == \
+       (CFG_CMD_ENV|CFG_CMD_FLASH)) || \
+     ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_NAND)) == \
+-      (CFG_CMD_ENV|CFG_CMD_NAND))
++      (CFG_CMD_ENV|CFG_CMD_NAND)) || \
++    ((CONFIG_COMMANDS & (CFG_CMD_ENV|CFG_CMD_MMC)) == \
++      (CFG_CMD_ENV|CFG_CMD_MMC))
+ U_BOOT_CMD(
+ 	saveenv, 1, 0,	do_saveenv,
+ 	"saveenv - save environment variables to persistent storage\n",
+diff --git a/common/env_mmc.c b/common/env_mmc.c
+new file mode 100644
+index 0000000..4caa98f
+--- /dev/null
++++ b/common/env_mmc.c
+@@ -0,0 +1,129 @@
++/*
++ * (C) Copyright 2009 Texas Instruments, <www.ti.com>
++ * Kishore Kadiyala <kishore.kadiyala@ti.com>
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <common.h>
++
++#if defined(CFG_ENV_IS_IN_EMMC) /* Environment is in EMMC */
++
++#include <command.h>
++#include <environment.h>
++#include <linux/stddef.h>
++#include <malloc.h>
++
++#include <mmc.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++/* References to names in env_common.c */
++extern uchar default_environment[];
++
++#ifdef ENV_IS_VARIABLE
++char *mmc_env_name_spec = "EMMC";
++/* update these elsewhere */
++extern env_t *env_ptr;
++
++#else /* !ENV_IS_VARIABLE */
++
++char *env_name_spec = "EMMC";
++
++#ifdef ENV_IS_EMBEDDED
++extern uchar environment[];
++env_t *env_ptr = (env_t *)(&environment[0]);
++#else /* ! ENV_IS_EMBEDDED */
++env_t *env_ptr = (env_t *)CFG_ENV_ADDR;
++#endif /* ENV_IS_EMBEDDED */
++
++#endif /* ENV_IS_VARIABLE */
++
++#ifdef ENV_IS_VARIABLE
++uchar mmc_env_get_char_spec(int index)
++#else
++uchar env_get_char_spec(int index)
++#endif
++{
++	return *((uchar *)(gd->env_addr + index));
++}
++
++#ifdef ENV_IS_VARIABLE
++void mmc_env_relocate_spec(void)
++#else
++void env_relocate_spec(void)
++#endif
++{
++	unsigned int mmc_cont = 1;
++	unsigned long env_addr;
++	int use_default = 0;
++
++	env_addr = CFG_ENV_ADDR;
++
++	mmc_init(mmc_cont);
++	mmc_read(mmc_cont, env_addr, (u_char *) env_ptr, CFG_ENV_SIZE);
++
++	if (crc32(0, env_ptr->data, CFG_ENV_SIZE) != env_ptr->crc)
++		use_default = 1;
++
++	if (use_default) {
++		memcpy(env_ptr->data, default_environment, CFG_ENV_SIZE);
++		env_ptr->crc = crc32(0, env_ptr->data, CFG_ENV_SIZE);
++	}
++}
++
++#ifdef ENV_IS_VARIABLE
++int mmc_saveenv(void)
++#else
++int saveenv(void)
++#endif
++{
++	unsigned long env_addr = CFG_ENV_ADDR;
++	int     len;
++	int 	mmc_cont = 1;
++
++	len      = CFG_ENV_SIZE;
++	puts("Erasing MMC...");
++	mmc_erase(mmc_cont, env_addr, len);
++	printf("done\n");
++
++	/* update crc */
++	env_ptr->crc = crc32(0, env_ptr->data, len);
++	puts("Writing to MMC... ");
++	mmc_write(mmc_cont, (u_char *) env_ptr, env_addr, len);
++	printf("done\n");
++
++	gd->env_valid = 1;
++	return 0;
++
++}
++
++#ifdef ENV_IS_VARIABLE
++int mmc_env_init(void)
++#else
++int  env_init(void)
++#endif
++{
++	/* use default */
++	gd->env_addr  = (ulong)&default_environment[0];
++	gd->env_valid = 1;
++	return 0;
++}
++
++#endif /* CFG_ENV_IS_IN_EMMC */
+diff --git a/include/configs/omap4430sdp.h b/include/configs/omap4430sdp.h
+index f069777..d9c791b 100644
+--- a/include/configs/omap4430sdp.h
++++ b/include/configs/omap4430sdp.h
+@@ -225,6 +225,8 @@ initrd=0x81600000,64M ramdisk_size=65536"
+ #define PHYS_FLASH_SIZE_SDPV2	SZ_128M
+ #define PHYS_FLASH_SIZE		SZ_32M
+ 
++/* REVISIT if once NAND/NOR/ONENAND support is added on OMAP4SDP */
++#ifdef OMAP4_NAND_NOR_ONENAND
+ #define CFG_FLASH_BASE		boot_flash_base
+ #define PHYS_FLASH_SECT_SIZE	boot_flash_sec
+ /* Dummy declaration of flash banks to get compilation right */
+@@ -242,6 +244,19 @@ initrd=0x81600000,64M ramdisk_size=65536"
+ #define CFG_ENV_SECT_SIZE	boot_flash_sec
+ #define CFG_ENV_OFFSET		boot_flash_off
+ #define CFG_ENV_ADDR		boot_flash_env_addr
++#endif
++
++#define CFG_MONITOR_BASE	CFG_FLASH_BASE /* Monitor at start of flash */
++#define CFG_ONENAND_BASE	ONENAND_MAP
++
++/* eMMC Variables */
++#define CFG_ENV_IS_IN_EMMC	1
++#define CFG_FLASH_BASE		0x0
++#define CFG_ENV_SECT_SIZE	SZ_128K
++#define CFG_ENV_OFFSET		0x700
++#define CFG_ENV_ADDR		0x700
++
++#define ENV_IS_VARIABLE		1
+ 
+ /* Fastboot variables */
+ #define CFG_FASTBOOT_TRANSFER_BUFFER (PHYS_SDRAM_1 + SZ_16M)
+diff --git a/include/environment.h b/include/environment.h
+index 6e34e37..c498773 100644
+--- a/include/environment.h
++++ b/include/environment.h
+@@ -82,6 +82,15 @@
+ #endif /* CFG_ENV_IS_IN_NAND */
+ 
+ 
++#if defined(CFG_ENV_IS_IN_EMMC)
++# ifndef CFG_ENV_OFFSET
++#  error "Need to define CFG_ENV_OFFSET when using CFG_ENV_IS_IN_EMMC"
++# endif
++# ifndef CFG_ENV_SIZE
++#  error "Need to define CFG_ENV_SIZE when using CFG_ENV_IS_IN_EMMC"
++# endif
++#endif /* CFG_ENV_IS_IN_EMMC */
++
+ #ifdef CFG_REDUNDAND_ENVIRONMENT
+ # define ENV_HEADER_SIZE	(sizeof(unsigned long) + 1)
+ #else
+-- 
+1.5.5
+

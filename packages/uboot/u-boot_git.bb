@@ -1,9 +1,11 @@
 require u-boot.inc
 
-PR="r6"
+PR="r7"
 
 SRC_URI = "git://git.omapzoom.org/repo/u-boot.git;branch=omap4_dev;protocol=git \
-	   file://uboot_sdmmc_or_nfs.patch;patch=1"
+	   file://uboot_sdmmc_or_nfs.patch;patch=1 \
+	   file://0001-Adding-Saveenv-feature-for-eMMC-on-OMAP4SDP.patch;patch=1 \
+"
 
 S = "${WORKDIR}/git"
 
