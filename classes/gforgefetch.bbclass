@@ -24,17 +24,18 @@ do_fetch_gforge () {
 	  if [ -f ${GFORGEFETCH_OUTFILE}.lock ]; then
 	    echo "Still locked - $wait sec"
 	  else
-	    if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
-	      echo "Problem: file ${GFORGEFETCH_OUTFILE} is not there"
-	      exit 1
-	    fi
-	    echo "Unlocked - ${GFORGEFETCH_OUTFILE} is available now."
 	    break
 	  fi
-	done  
+	done
+        if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
+          echo "Problem: file ${GFORGEFETCH_OUTFILE} is not available or empty"
+          exit 1
+        fi
+        echo "Unlocked - ${GFORGEFETCH_OUTFILE} is available now."  
       else
         touch ${GFORGEFETCH_OUTFILE}.lock
-	git archive --format=tar -v --remote=${SRC_GFORGE} ${SRCREV} | gzip > ${GFORGEFETCH_OUTFILE}
+	git archive --format=tar -v --remote=${SRC_GFORGE} ${SRCREV} | gzip > ${GFORGEFETCH_OUTFILE}_downloading
+	mv ${GFORGEFETCH_OUTFILE}_downloading ${GFORGEFETCH_OUTFILE}
 	rm -fr ${GFORGEFETCH_OUTFILE}.lock
       fi
     else
