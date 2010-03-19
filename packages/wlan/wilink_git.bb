@@ -3,7 +3,7 @@ PRIORITY = "optional"
 DESCRIPTION = "WLAN stack (kernel module, libs, wpa_supplicant)"
 DEPENDS = "linux-tiomap wilink-firmware"
 LICENSE = "BSD"
-PR = "r2"
+PR = "r3"
 
 inherit module pkgconfig
 
@@ -53,14 +53,14 @@ do_install() {
 	install -d ${D}/etc/rc5.d
 	install -d ${D}/etc/rc6.d
 	
-	install -m 755 ${FILESDIR}/wlan.init ${D}/etc/init.d/wlan
+#	install -m 755 ${FILESDIR}/wlan.init ${D}/etc/init.d/wlan
 	
-	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
-	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
-	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
-	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
-	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
-	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
+#	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
+#	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
+#	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
+#	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
+#	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
+#	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
 }
 
 FILES_${PN} = "\
