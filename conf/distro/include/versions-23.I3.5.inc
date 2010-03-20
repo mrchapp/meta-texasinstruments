@@ -211,6 +211,7 @@ PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.30"
 PREFERRED_VERSION_libgoo =		"5.i3.5"
 PREFERRED_VERSION_gst-goo =		"5.i3.5"
 PREFERRED_VERSION_gst-pyapps =		"5.I3.2"
+PREFERRED_VERSION_gst-auto-launch =	"0.3"
 
 # connectivity
 SRCREV_pn-wilink = "7cdeed0b0ecade11b5317cbd18d827766bfa1b4d"
