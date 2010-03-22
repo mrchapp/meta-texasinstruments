@@ -216,8 +216,8 @@ PREFERRED_VERSION_gst-auto-launch =	"0.3"
 # connectivity
 SRCREV_pn-wilink = "7cdeed0b0ecade11b5317cbd18d827766bfa1b4d"
 PREFERRED_VERSION_wilink-firmware =    "1.3"
-PREFERRED_VERSION_btfm = 		"23.I3.5"
-PREFERRED_VERSION_kfmapp = 		"23.I3.5"
+PREFERRED_VERSION_btfm = 		"23.I3.5-P1"
+PREFERRED_VERSION_kfmapp = 		"23.I3.5-P1"
 PREFERRED_VERSION_gps-navilink =	"23.17.0"
 
 # graphics

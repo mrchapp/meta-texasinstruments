@@ -32,11 +32,15 @@ do_install() {
 
 	install -d ${D}/usr/bin
 	install -m 755 ${S}/uim/uim ${D}/usr/bin
+	
+	install -d ${D}/etc/init.d
+	install -m 755 ${S}/bluetooth_init.sh ${D}/etc/init.d/ti_btfm_init
 }
 
 FILES_${PN} = "\
 		/lib/firmware/* \
 		/usr/bin/uim \
+		/etc/init.d/ti_btfm_init \
 		"
 
 FILES_${PN}-dbg = "\
