@@ -15,7 +15,6 @@ CCASE_PATHCOMPONENT = "linux"
 
 SRC_URI = "\
 	file://23.16-avplaynocore.patch;patch=1 \
-	file://remove-rarv.patch;patch=1 \
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "file://remove-patterns.patch;patch=1", d)} \
 	"
 
