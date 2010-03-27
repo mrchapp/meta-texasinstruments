@@ -15,7 +15,7 @@ RDEPENDS_task-omap-sn = "\
     tisocketnode-mpeg4aacdec \
     tisocketnode-mpeg4aacenc \
     tisocketnode-nbamrenc \
-    tisocketnode-nbamrdec \
+#    tisocketnode-nbamrdec \
     tisocketnode-wbamrenc \
     tisocketnode-wbamrdec \
     "
