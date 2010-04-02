@@ -17,9 +17,9 @@ DEFAULT_PREFERENCE = "1"
 
 # You can supply your own defconfig if you like.  See
 # http://bec-systems.com/oe/html/recipes_sources.html for a full explanation
-#SRC_URI += " \
-#           file://<name>.patch;patch=1 \
-#  	   "
+SRC_URI += " \
+           file://0001-DSPBRIDGE-patch-for-L23.I3.6-PRE2.patch;patch=1 \
+  	   "
 
 
 
