@@ -7,6 +7,8 @@ require tiopenmax-cspec-${PV}.inc
 
 CCASE_PATHFETCH = "\
 	/vobs/wtbu/OMAPSW_MPU/linux/audio/src/openmax_il/aac_dec_ittiam \
+	/vobs/wtbu/OMAPSW_MPU/linux/audio/src/openmax_il/aac_dec/inc/TIDspOmx.h \
+	/vobs/wtbu/OMAPSW_MPU/linux/audio/src/openmax_il/aac_enc/inc/TIDspOmx.h \
 	/vobs/wtbu/OMAPSW_MPU/linux/Makefile \
 	/vobs/wtbu/OMAPSW_MPU/linux/Master.mk \
 	"
@@ -14,7 +16,7 @@ CCASE_PATHCOMPONENTS = 3
 CCASE_PATHCOMPONENT = "linux"
 
 SRC_URI = "\
-	file://23.14-aacdectestnocore.patch;patch=1 \
+#	file://23.14-aacdectestnocore.patch;patch=1 \
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "file://remove-patterns.patch;patch=1", d)} \
 	"
 
