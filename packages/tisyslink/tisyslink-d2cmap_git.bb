@@ -6,11 +6,11 @@ SECTION = "libs"
 DEPENDS = "titiler-memmgr tisyslink-lib"
 inherit autotools pkgconfig
 
-PR = "r8"
+PR = "r1"
 PV = "0.00+git+${SRCREV}"
 
-SRC_URI = "git://dev.omapzoom.org/pub/scm/tiler/tiler-userspace.git;protocol=git"
-S = "${WORKDIR}/git/d2c"
+SRC_URI = " git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git "
+S = "${WORKDIR}/git/syslink/d2c"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 FILES_${PN} += "${libdir}/*.so"

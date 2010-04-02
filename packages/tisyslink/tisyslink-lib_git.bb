@@ -7,14 +7,11 @@ DEPENDS = "virtual/kernel titiler-memmgr"
 RDEPENDS = "libgcc"
 inherit  pkgconfig autotools
 
-PR = "r13"
+PR = "r14"
 PV = "0.0+git+${SRCREV}"
 
-SRC_URI = "\
-    git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git \
-    file://install_syslink.patch;patch=1 \
-    file://timeout-no-error.patch;patch=1;pnum=2 \
-"
+SRC_URI = "git://dev.omapzoom.org/pub/scm/tisyslink/userspace-syslink.git;protocol=git"
+
 S = "${WORKDIR}/git/syslink"
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
