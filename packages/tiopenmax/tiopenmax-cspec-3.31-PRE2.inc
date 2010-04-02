@@ -7,8 +7,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.31%\
 	
 	# OMX Video%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/mms_camera/... LINUX-MMVIDEO_RLS_3.31-PRE2%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/prepost_processor/... LINUX-MMVIDEO_RLS_3.31-PRE2%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode_ittiam/... LINUX-MMVIDEO_RLS_3.31-PRE2P1%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.31-PRE2%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.30%\
 	
@@ -21,7 +20,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.31%\
 	
 	# OMX Application%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPP_RLS_3.31-PRE2	%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPP_RLS_3.31-PRE2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.30%\
 	
 	# OMX INST2 utilities%\
