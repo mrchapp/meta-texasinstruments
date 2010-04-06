@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Samples."
 LICENSE = "LGPL"
-PR = "r2"
+PR = "r3"
 DEPENDS = "titools-cgtarm \
            titools-bios \
            titools-fc \
@@ -28,7 +28,7 @@ do_compile() {
     chmod -R +w ${S}/*
     export ${COFFBLD_tidspbridge-ducatisamples}
     export DEPOT=${STAGING_BINDIR_NATIVE}/titools
-    oe_runmake ${PARALLEL_MAKE} -f gmakefile .ducati_samples  
+    oe_runmake ${PARALLEL_MAKE} -f gmakefile .ducati_samples USE_WA=true
 }
 
 

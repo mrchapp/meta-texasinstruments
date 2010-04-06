@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Multimedia S/w"
 LICENSE = "LGPL"
-PR = "r6"
+PR = "r7"
 
 DEPENDS = " \
    tisyslink-ducati \
@@ -36,7 +36,7 @@ ${S}/WTSD_DucatiMMSW/ext_rel/ivahd_codecs/packages;\
 
 XDCBUILDROOT="${S}/WTSD_DucatiMMSW/platform/base_image"
 
-XDCARGS="profile=release core=app_m3 target_build=BUILD_OMAP4"
+XDCARGS="profile=release core=app_m3 target_build=BUILD_OMAP4 cache_wa=USE_CACHE"
 
 XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 

@@ -6,13 +6,9 @@ PR = "r4"
 
 inherit sdotools
 
-SDOVERS = 6_20_03_44_eng
+SDOVERS = 6_21_02_18
 
-SDOFILE = bios_setuplinux_${SDOVERS}.bin
+SDOFILE = bios_setuplinux_${SDOVERS}_eng.bin
 
 SDOPATH = "BIOS/${SDOVERS}/exports/${SDOFILE}"
-
-do_stage_append() {
-     cp ${FILESDIR}/Cache.xs ${SDO_INSTALL_DIR}/bios_${SDOVERS}/packages/ti/sysbios/hal/Cache.xs
-}
 

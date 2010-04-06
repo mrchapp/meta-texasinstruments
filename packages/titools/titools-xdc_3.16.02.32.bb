@@ -1,12 +1,12 @@
 SECTION = "toolchains"
 PRIORITY = "optional"
-DESCRIPTION = "Texas Instruments xdc tools"
+DESCRIPTION = "Texas Instruments XDC tools"
 LICENSE = "Texas Instruments"
 PR = "r2"
 
 inherit sdotools
 
-SDOVERS = 3_15_03_67
+SDOVERS = 3_16_02_32
 
 SDOFILE = xdctools_setuplinux_${SDOVERS}.bin
 
