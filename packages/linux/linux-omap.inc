@@ -56,7 +56,6 @@ addtask deploy before do_populate_staging after do_install
 do_stage_append() {
 
     for ii in arch/arm/mach-omap2 \
-              arch/arm/plat-omap/include/dspbridge \
               arch/arm/plat-omap/include/syslink \
               arch/arm/plat-omap/include/plat \
               arch/arm/include/asm \

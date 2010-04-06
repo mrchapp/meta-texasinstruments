@@ -1,8 +1,8 @@
 
 # baseport
-SRCREV_pn-x-load  =                 "L24.4-p1"
-SRCREV_pn-u-boot =                  "L24.4"
-SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.4-p4"
+SRCREV_pn-x-load  =                 "L24.5"
+SRCREV_pn-u-boot =                  "L24.5"
+SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.5"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "ti-2.6.33-rc2-omap4-L24.4-p1"
