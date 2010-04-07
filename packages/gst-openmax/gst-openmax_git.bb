@@ -1,5 +1,5 @@
-DEPENDS = "gst-plugins-base virtual/openmax-il"
-PR = "r15"
+DEPENDS = "gst-plugins-base"
+PR = "r16"
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/gstreamer/gst-openmax.git;protocol=git"
 
