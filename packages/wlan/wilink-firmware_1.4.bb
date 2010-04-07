@@ -8,7 +8,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-3630sdp|zoom2|zoom3"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX-WCG-WLAN_RLS_L23-INC3-5 %\
+	element /vobs/WiLink/... LINUX-WCG-WLAN_RLS_L23-INC3-6-WK1%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WiLink/fw/Latest \

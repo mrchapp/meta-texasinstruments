@@ -19,7 +19,6 @@ PV = "23.i3+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
 	file://wlan.init \
-	file://make-ar-fix.patch;patch=1 \
          "
 do_compile() {
 	install -d ${S}/fw/Latest
