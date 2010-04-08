@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for TI's OpenMAX IL"
-PR = "r7"
+PR = "r8"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 ALLOW_EMPTY = "1"
@@ -13,6 +13,7 @@ RDEPENDS = "\
 #    tiopenmax-audioencode \
 #    tiopenmax-base \
 #    tiopenmax-lcml \
+    tiopenmax-alsa \
     tiopenmax-core \
     tiopenmax-osal \
     ${@base_contains("DISTRO_FEATURES", "domx", "tiopenmax-domx", "", d)} \
