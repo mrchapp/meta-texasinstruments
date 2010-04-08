@@ -1,0 +1,17 @@
+Index: mm-isp-1.20-PRE2/algo/camera/isphal/make/linux/Makefile
+===================================================================
+--- mm-isp-1.20-PRE2.orig/algo/camera/isphal/make/linux/Makefile	2010-04-08 11:12:01.001685000 +0200
++++ mm-isp-1.20-PRE2/algo/camera/isphal/make/linux/Makefile	2010-04-08 11:12:13.004036000 +0200
+@@ -7,12 +7,10 @@
+ install:: $(ALGOINCLUDEDIR)
+ 	cp -f $(ISPHAL_LIB) $(ALGOLIBDIR)
+ 	cp -f ../../inc/isphal*.h $(ALGOINCLUDEDIR)
+-	cp -f ../../doc/OMAP3430_ISPHAL_APIGuide.doc $(ALGODOCDIR)
+ 
+ clean:: 
+ 
+ distclean clobber:: clean
+ 	rm -f $(ALGOLIBDIR)/$(ISPHAL_LIB)
+ 	rm -f $(ALGOINCLUDEDIR)/isphal*.h
+-	rm -f $(ALGODOCDIR)/OMAP3430_ISPHAL_APIGuide.doc
+ 
