@@ -43,8 +43,8 @@ case $1 in
             ./tiwlan_loader
             echo "Making WLAN interface up"
             /sbin/ifconfig tiwlan0 up
-#            kill `ps | grep  haldaemon | grep -v addon | grep -v grep | cut "-d " -f2`	
-#            /usr/sbin/hald
+            kill `ps | grep  haldaemon | grep -v addon | grep -v grep | cut "-d " -f2`	
+            /usr/sbin/hald
 
         else
             echo "Failed to install driver"
