@@ -104,7 +104,7 @@ PREFERRED_VERSION_glib-2.0    =         "2.22.1"
 PREFERRED_VERSION_glib-2.0-native =     "2.22.1"
 PREFERRED_VERSION_pango        =        "1.22.4"
 PREFERRED_VERSION_cairo        =        "1.8.6"
-PREFERRED_VERSION_pixman    =           "0.14.0"
+PREFERRED_VERSION_pixman    =           "0.17.4"
 PREFERRED_VERSION_gtk+ =                "2.14.7"
 SRCREV_pn-webkit-gtk =                  "50081"
 
@@ -115,6 +115,5 @@ PREFERRED_VERSION_htop =                 "0.7"
 PREFERRED_VERSION_external-csl-toolchain = "2009q1-203"
 
 # xserver
-SRCREV_pn-xf86-video-omapfb               = "5317aae587a2bf48f07a8c06bfaf7bcbfd23bafc"
-PREFERRED_VERSION_xserver-xf86-lite = "1.6.1"
+PREFERRED_VERSION_xserver-xf86-lite = "1.7.4"
 
