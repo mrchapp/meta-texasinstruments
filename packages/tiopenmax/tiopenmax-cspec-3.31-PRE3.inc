@@ -1,13 +1,14 @@
-# Integration config spec for L23.I3.6
+# Integration config spec for L23.I3.6-PRE3
 CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 
 	# OMX Audio%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.6.2%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.6.3%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.31%\
 	
 	# OMX Video%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode_ittiam/... LINUX-MMVIDEO_RLS_3.31-PRE2P1%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/mms_camera/... LINUX-MMVIDEO_RLS_3.31-PRE3%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/... LINUX-MMVIDEO_RLS_3.31-PRE3%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.31-PRE2%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.30%\
 	
@@ -16,10 +17,12 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.30%\
 	
 	# LCML & core%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/system/... ACT_MMSYSTEM-PREREL-I3.6.2%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/system/... ACT_MMSYSTEM-PREREL-I3.6.3%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.31%\
 	
 	# OMX Application%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/application/src/openmax_il/avplay/... LINUX-MMAPP_RLS_3.31-PRE3%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/application/src/openmax_il/video_display/... LINUX-MMAPP_RLS_3.31-PRE3%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPP_RLS_3.31-PRE2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.30%\
 	
