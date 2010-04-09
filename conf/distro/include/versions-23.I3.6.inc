@@ -221,9 +221,9 @@ PREFERRED_VERSION_kfmapp = 		"23.I3.5-P1"
 PREFERRED_VERSION_gps-navilink =	"23.17.0"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =	"L23.I3.5"
-SRCREV_pn-sgx-lib-noxws =	"L23.I3.5"
-SRCREV_pn-sgx-bp =	"L23.I3.5"
+SRCREV_pn-sgx-kernel-module =	"L23.I3.6-pre3"
+SRCREV_pn-sgx-lib-noxws =	"L23.I3.6-pre3"
+SRCREV_pn-sgx-bp =	"L23.I3.6-pre3"
 PREFERRED_VERSION_sgx-tiblt =		"1.0.0.1"
 
 # open source dependencies
