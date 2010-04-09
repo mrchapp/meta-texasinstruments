@@ -1,11 +1,13 @@
---- git/eurasia/eurasiacon/build/linux/omap3630_linux/makefile.conf.orig	2008-12-02 23:32:32.000000000 -0600
-+++ git/eurasia/eurasiacon/build/linux/omap3630_linux/makefile.conf	2008-12-02 23:32:42.000000000 -0600
-@@ -17,7 +17,7 @@
+Index: git/eurasia/eurasiacon/build/linux/omap3630_linux/makefile.conf
+===================================================================
+--- git.orig/eurasia/eurasiacon/build/linux/omap3630_linux/makefile.conf	2010-04-09 12:22:20.000000000 +0200
++++ git/eurasia/eurasiacon/build/linux/omap3630_linux/makefile.conf	2010-04-09 12:22:27.000000000 +0200
+@@ -28,7 +28,7 @@
  
- X11ROOT			=
+ X11ROOT			=	/usr/X11R6_SGX
  
 -SUPPORT_XWS  = 1
 +SUPPORT_XWS  = 0
+ SUPPORT_EWS  = 1
  PROFILE_COMMON = 1
- SUPPORT_OPENVG = 1
  
