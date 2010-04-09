@@ -13,9 +13,6 @@ S = "${WORKDIR}/git"
 
 inherit module gforgefetch
 
-SRC_URI += " \
-file://sgx-gcc-4.3-error.patch;patch=1 \
-"
 GFORGE_PATHFETCH="\
  eurasia_km \
  "
