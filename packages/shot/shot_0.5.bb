@@ -1,9 +1,9 @@
 DEPENDS = "gst-plugins-base gst-goo"
-DESCRIPTION = "A simple application to measure JPEG capture times."
-PR = "r0"
+DESCRIPTION = "A simple application to measure camera capture times."
+PR = "r1"
 
-SRC_URI = "file://shot.c"
-S = ${WORKDIR}
+SRC_URI = "git://github.com/mrchapp/gstcamera-measure.git;protocol=http;tag=v${PV}"
+S = ${WORKDIR}/git
 
 do_compile() {
 	${CC} `pkg-config --libs --cflags gstreamer-0.10` -o shot shot.c
