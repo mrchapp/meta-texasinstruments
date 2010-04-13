@@ -1,7 +1,7 @@
 PRIORITY = "optional"
 DESCRIPTION = "Texas Instruments Ducati Multimedia S/w"
 LICENSE = "LGPL"
-PR = "r7"
+PR = "r8"
 
 DEPENDS = " \
    tisyslink-ducati \
@@ -36,7 +36,7 @@ ${S}/WTSD_DucatiMMSW/ext_rel/ivahd_codecs/packages;\
 
 XDCBUILDROOT="${S}/WTSD_DucatiMMSW/platform/base_image"
 
-XDCARGS="profile=release core=app_m3 target_build=BUILD_OMAP4 cache_wa=USE_CACHE"
+XDCARGS="profile=release core=app_m3 target_build=BUILD_OMAP4 cache_wa=NEWWA"
 
 XDCBUILDCFG="${S}/WTSD_DucatiMMSW/build/config.bld"
 
@@ -47,7 +47,7 @@ FILES_${PN}="/syslink/"
 do_install() {
     install -d ${D}/syslink
     cd ${S}/WTSD_DucatiMMSW/platform/base_image
-    for xem3 in ./out/app_m3/whole_program_debug/base_image_app_m3.xem3 ; do
+    for xem3 in ./out/app_m3/release/base_image_app_m3.xem3 ; do
         cp ${xem3} ${xem3}.old
         ${STAGING_BINDIR_NATIVE}/titools/cgtarm-*/bin/strip470 ${xem3}
         install -m 0644 ${xem3}      ${D}/syslink/

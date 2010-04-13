@@ -13,22 +13,22 @@ SRCREV_pn-device-driver-test =      "ti-2.6.33-rc2-omap4-L24.4-p1"
 #SRCREV_pn-tidspbridge-dllcreate      =      "DYN-LOADER_RLS_1.72"
 
 # Ducati syslink
-SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.4"
-SRCREV_pn-titiler-memmgr             =      "l24.4.p1.rel"
-SRCREV_pn-titiler-d2cmap             =      "l24.4.p1.rel"
-SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.16"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.12.00.00"
+SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.5"
+SRCREV_pn-tisyslink-d2cmap           =      "ti-syslink-mpu-rls-24.5"
+SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.17"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.13.00.00"
+SRCREV_pn-titiler-memmgr             =      "l24.5"
 
 # Tesla/Ducati external tools
 PREFERRED_VERSION_titools-cgt6x  =          "7.0.0B4"
 PREFERRED_VERSION_titools-cgtarm =          "4.6.0"
 PREFERRED_VERSION_titools-bios   =          "6.21.02.18"
-PREFERRED_VERSION_titools-fc     =          "3.00.00.57"
+PREFERRED_VERSION_titools-fc     =          "3.00.01.60"
 PREFERRED_VERSION_titools-xdc    =          "3.16.02.32"
 PREFERRED_VERSION_titools-ipc    =          "1.00.03.54.eng"
-PREFERRED_VERSION_titools-osal   =          "1.00.00.38"
-PREFERRED_VERSION_titools-ce     =          "3.00.00.26"
-PREFERRED_VERSION_titools-xdais  =          "7.00.00.20.eng"
+PREFERRED_VERSION_titools-osal   =          "1.00.00.41"
+PREFERRED_VERSION_titools-ce     =          "3.00.00.31"
+PREFERRED_VERSION_titools-xdais  =          "7.00.00.27"
 
 # baseimage
 #SRCREV_pn-baseimage ?=                      "DSP-DASF-SYSTEM-TESLA_RLS_4.4"

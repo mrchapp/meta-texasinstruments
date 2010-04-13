@@ -6,7 +6,7 @@ PR = "r1"
 
 inherit sdotools-tar
 
-SDOVERS = 3_00_00_57
+SDOVERS = 3_00_01_60
 
 SDOFILE = framework_components_${SDOVERS}.tar.gz
 
