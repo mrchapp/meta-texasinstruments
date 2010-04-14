@@ -8,13 +8,15 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 COMPATIBLE_MACHINE = "omap-3430ldp|omap-3430sdp|omap-3630sdp|zoom2|zoom3"
 
 CCASE_SPEC = "%\
-	element /vobs/WiLink/... LINUX-WCG-WLAN_RLS_L23-INC3-6-WK1%\
+	element /vobs/WiLink/... ${SRCREV}%\
 	"
 
 CCASE_PATHFETCH = "/vobs/WiLink/fw/Latest \
 	"
 CCASE_PATHCOMPONENTS = 0
 CCASE_PATHCOMPONENT = "vobs"
+
+PV = "cc+${SRCREV}"
 
 do_stage () {
 	install -d ${STAGING_DIR_TARGET}/fw
