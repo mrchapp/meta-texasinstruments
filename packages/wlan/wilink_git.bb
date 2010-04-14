@@ -19,7 +19,8 @@ PV = "23.i3+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
 	file://wlan.init \
-         "
+	"
+
 do_compile() {
 	install -d ${S}/fw/Latest
 	install -d ${S}/CUDK/output

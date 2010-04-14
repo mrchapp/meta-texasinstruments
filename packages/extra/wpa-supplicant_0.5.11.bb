@@ -2,8 +2,12 @@ DESCRIPTION = "A Client for Wi-Fi Protected Access (WPA)."
 SECTION = "network"
 LICENSE = "GPL"
 HOMEPAGE = "http://hostap.epitest.fi/wpa_supplicant/"
-DEPENDS = "gnutls ${@base_contains("COMBINED_FEATURES", "madwifi", "madwifi-ng", "",d)}"
-DEPENDS = "openssl"
+DEPENDS = "gnutls \
+${@base_contains("COMBINED_FEATURES", "madwifi", "madwifi-ng", "",d)} \
+${@base_contains("DISTRO_FEATURES", "wapi", " wapi", "", d)} \
+openssl \
+"
+
 
 PR = "r5"
 
@@ -30,6 +34,7 @@ SRC_URI = "http://hostap.epitest.fi/releases/wpa_supplicant-${PV}.tar.gz \
 
 S = "${WORKDIR}/wpa_supplicant-${PV}"
 
+export TI_WAPI = "${@base_contains("DISTRO_FEATURES", "wapi", "1", "0", d)}"
 
 SRC_WSC = "\
  wsc_supplicant.c \
@@ -42,6 +47,15 @@ SRC_WSC = "\
  bufferObj.h \
  TI_IPC_Api.h \
  "
+
+SRC_WAPI = "\
+  ec.c \
+  ec.h \
+  gem.c \
+  gem.h \
+  wapi.c \
+  wapi.h \
+"
 
 PACKAGES_prepend = "wpa-supplicant-passphrase "
 FILES_wpa-supplicant-passphrase = "/usr/sbin/wpa_passphrase"
@@ -61,6 +75,15 @@ do_configure () {
                 echo "CONFIG_DRIVER_MADWIFI=y" >> .config
                 echo "CFLAGS += -I${STAGING_INCDIR}/madwifi-ng" >> .config
         fi
+        if [ "x${TI_WAPI}" == "x1" ] && [ "${MACHINE_ARCH}" == "zoom3" ] ; then
+	  echo "TI_WAPI enabled"
+	  patch -p1 < ${STAGING_DIR_TARGET}/WAPI/wapi.patch
+          for i in ${SRC_WAPI} ; do
+            install -m 0644 ${STAGING_DIR_TARGET}/WAPI/$i $i
+          done
+	  echo "CONFIG_WAPI=y" >> .config
+          echo "CONFIG_INTERNAL_LIBTOMMATH=y" >> .config
+	fi
 }
 
 do_compile () {
