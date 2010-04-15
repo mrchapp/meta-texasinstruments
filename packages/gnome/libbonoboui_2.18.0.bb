@@ -57,4 +57,6 @@ do_stage() {
 		install -m 0644 $i ${STAGING_INCDIR}/libbonoboui-2.0/$i
 	done
 	oe_libinstall -C bonobo -a -so libbonoboui-2 ${STAGING_LIBDIR}
+	# Poky upstream migration patch
+	install -m 0644 bonobo/libbonoboui-2.0.pc ${STAGING_LIBDIR}/pkgconfig
 }
