@@ -135,12 +135,12 @@ PREFERRED_VERSION_tisocketnode-jpegenc =                "3.12"
 PREFERRED_VERSION_tisocketnode-jpegenc-codec =          "3.12"
 PREFERRED_VERSION_tisocketnode-conversions =		"3.12"
 # Ittiam
-PREFERRED_VERSION_tisocketnode-h264decitt =		"20100325"
-PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"20100325"
-PREFERRED_VERSION_tisocketnode-mpeg4decitt =		"20100325"
-PREFERRED_VERSION_tisocketnode-mpeg4decitt-codec =	"20100325"
-PREFERRED_VERSION_tisocketnode-mpeg4encitt =		"20100310"
-PREFERRED_VERSION_tisocketnode-mpeg4encitt-codec =	"20100310"
+PREFERRED_VERSION_tisocketnode-h264decitt =		"20100412"
+PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"20100412"
+PREFERRED_VERSION_tisocketnode-mpeg4decitt =		"20100412"
+PREFERRED_VERSION_tisocketnode-mpeg4decitt-codec =	"20100412"
+PREFERRED_VERSION_tisocketnode-mpeg4encitt =		"20100414"
+PREFERRED_VERSION_tisocketnode-mpeg4encitt-codec =	"20100414"
 
 # openmax
 PREFERRED_PROVIDER_virtual/openmax-il =		"meta-tiopenmax-modular"
