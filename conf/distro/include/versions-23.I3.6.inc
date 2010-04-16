@@ -214,8 +214,8 @@ PREFERRED_VERSION_gst-pyapps =		"5.I3.6-PRE2"
 PREFERRED_VERSION_gst-auto-launch =	"0.3.1"
 
 # connectivity
-SRCREV_pn-wilink = "366432c508c320eff19b4a08b0e8e168a9335fe0"
-SRCREV_pn-wilink-firmware =    "LINUX-WCG-WLAN_RLS_L23-INC3-6-WK1"
+SRCREV_pn-wilink = "ca16fa9650abcce671f225c290ce20f46d2b4055"
+SRCREV_pn-wilink-firmware =    "LINUX-WCG-WLAN_RLS_L23-INC3-6"
 SRCREV_pn-wapi =   "LINUX-WCG-WLAN_RLS_L23-WAPI-INC3-6"
 PREFERRED_VERSION_btfm = 		"23.I3.6"
 PREFERRED_VERSION_kfmapp = 		"23.I3.6"
