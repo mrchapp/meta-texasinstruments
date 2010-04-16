@@ -19,6 +19,7 @@ CCASE_PATHCOMPONENTS = "2"
 PACKAGES = "${PN} ${PN}-dbg"
 
 do_compile() {
+	tr -d '\015' < bluetooth_init.sh > ti_btfm_init
 	cp ${S}/build/makefile uim/.
 	cd uim
 	oe_runmake CROSS=${AR%-*}- uim
@@ -34,7 +35,7 @@ do_install() {
 	install -m 755 ${S}/uim/uim ${D}/usr/bin
 	
 	install -d ${D}/etc/init.d
-	install -m 755 ${S}/bluetooth_init.sh ${D}/etc/init.d/ti_btfm_init
+	install -m 755 ${S}/ti_btfm_init ${D}/etc/init.d/ti_btfm_init
 }
 
 FILES_${PN} = "\
