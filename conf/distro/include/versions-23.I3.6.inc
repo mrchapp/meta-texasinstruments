@@ -208,10 +208,11 @@ PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.31-PRE3"
 PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.31-PRE3"
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.i3.6-pre2"
-PREFERRED_VERSION_gst-goo =		"5.i3.6-pre2"
+PREFERRED_VERSION_libgoo =		"5.i3.6-pre4"
+PREFERRED_VERSION_gst-goo =		"5.i3.6-pre4"
 PREFERRED_VERSION_gst-pyapps =		"5.I3.6-PRE2"
 PREFERRED_VERSION_gst-auto-launch =	"0.3.1"
+PREFERRED_VERSION_shot =		"0.5"
 
 # connectivity
 SRCREV_pn-wilink = "366432c508c320eff19b4a08b0e8e168a9335fe0"
