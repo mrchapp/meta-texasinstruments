@@ -206,6 +206,9 @@ PREFERRED_VERSION_mm-isp =			"1.20-PRE4"
 # Ittiam
 PREFERRED_VERSION_tiopenmax-videodecitt = 	"3.31-PRE4"
 PREFERRED_VERSION_tiopenmax-aacdec-ittiam =     "3.31-PRE4"
+PREFERRED_VERSION_tiopenmax-videoencitt = 	"3.31-PRE4"
+PREFERRED_VERSION_tiopenmax-mpeg4enc =     "3.31-PRE4"
+
 
 # gstreamer
 PREFERRED_VERSION_libgoo =		"5.i3.6-pre4"
