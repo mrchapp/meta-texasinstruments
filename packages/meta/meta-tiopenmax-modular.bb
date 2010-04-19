@@ -12,6 +12,8 @@ RDEPENDS = "\
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacdec", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "Aricent_720p", "tiopenmax-armaacenc", "", d)} \
 	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-videodecitt", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-videoencitt", "", d)} \
+	${@base_contains("DISTRO_FEATURES", "720p", "tiopenmax-mpeg4enc", "", d)} \	
 	tiopenmax-audiomanager \
 	tiopenmax-avplaytest \
 	tiopenmax-avrecordtest \
