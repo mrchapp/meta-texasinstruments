@@ -4,7 +4,7 @@ PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 PR = "r1"
 DEPENDS = "tiopenmax-core tiopenmax-osal"
 
-SRC_URI = "git://sealion.sc.ti.com/git/domx.git;protocol=git"
+SRC_URI = "git://sealion.sc.ti.com/git/domx.git;protocol=git;branch=non-pre-announcement"
 PV = "0.0+git+${SRCREV}"
 S = "${WORKDIR}/git/"
 

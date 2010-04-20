@@ -2,7 +2,7 @@
 # baseport
 SRCREV_pn-x-load  =                 "L24.5"
 SRCREV_pn-u-boot =                  "L24.5"
-SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.5"
+SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.5-p1"
 
 # Device driver test
 SRCREV_pn-device-driver-test =      "ti-2.6.33-rc2-omap4-L24.4-p1"
@@ -57,19 +57,19 @@ PREFERRED_VERSION_titools-xdais  =          "7.00.00.27"
 #SRCREV_pn-tiopenmax-audioencode       = "L24.4-p2"
 #SRCREV_pn-tiopenmax-base              = "L24.4-p2"
 #SRCREV_pn-tiopenmax-lcml              = "L24.4-p2"
-SRCREV_pn-tiopenmax-core              = "L24.4"
-SRCREV_pn-tiopenmax-osal              = "L24.4"
-SRCREV_pn-tiopenmax-domx              = "L24.4-p2"
+SRCREV_pn-tiopenmax-core              = "L24.5"
+SRCREV_pn-tiopenmax-osal              = "L24.5"
+SRCREV_pn-tiopenmax-domx              = "1b528b41959aee703b8ed5e0dd8a2a951c4ad393"
 
 # connectivity
 SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
 SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
 
 # graphics
-SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0-P1"
-SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.3.0-P1"
-SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.2-P1"
-SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.2-P1"
+SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.4.1"
+SRCREV_pn-sgx-lib-noxws =               "GFX-LINUX-SGX-DDK-L24_RLS_1.4.1"
+SRCREV_pn-sgx-sdk =                     "GFX-LINUX-SGX-SDK-L24_RLS_2.5.3"
+SRCREV_pn-sgx-benchmark =               "GFX-LINUX-SGX-BP-L24_RLS_2.5.3"
 SRCREV_pn-gfx-ticpublt =                "OMAP_LINUX_TICPUBLT_BIN_RLS_1.0.0.0"
 
 # open source dependencies
