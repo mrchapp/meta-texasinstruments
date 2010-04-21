@@ -4,10 +4,13 @@ LICENSE = "LGPL"
 PR = "r0"
 
 CCASE_SPEC = "%\
-	      element /vobs/wtbu/OMAPSW_Loadbuild/tools/scm/... .../scm-abm_rel_1.x/LATEST -mkbranch scm-abm_rel_1.x%\
-	      element * /main/LATEST%"
+	      element /vobs/wtbu/OMAPSW_Loadbuild/tools/scm/... LINUX_RLS_23.17P1%\
+	      element -directory /vobs/wtbu/OMAPSW_Loadbuild/... /main/LATEST%"
 
-CCASE_PATHFETCH = "/vobs/wtbu/OMAPSW_Loadbuild/tools/scm"
+CCASE_PATHFETCH = " \
+	/vobs/wtbu/OMAPSW_Loadbuild/tools/scm/build_tools \
+	/vobs/wtbu/OMAPSW_Loadbuild/tools/scm/RelCfg \
+	"
 CCASE_PATHCOMPONENT = "scm"
 CCASE_PATHCOMPONENTS = "4"
 
@@ -17,7 +20,7 @@ inherit ccasefetch
 
 do_compile() {
 	cd ${S}/build_tools
-	perl mcl_parser.pl -fr=Linux_${PV} -fn=../RelCfg/Master_Configurable_List.csv -od=badwindows
+	perl mcl_parser.pl -fr=Linux_23.x -fn=../RelCfg/Master_Configurable_List.csv -od=badwindows
 	mv badwindows\\MasterConfig.h MasterConfig.h 
 	mv badwindows\\MasterConfig.inc MasterConfig.inc 
 	mv badwindows\\MasterConfig.pl MasterConfig.pl 
