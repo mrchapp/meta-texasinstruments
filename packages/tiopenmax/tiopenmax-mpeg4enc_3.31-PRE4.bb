@@ -31,6 +31,7 @@ do_compile() {
         OMX_PERF_INSTRUMENTATION=1 OMX_PERF_CUSTOMIZABLE=1 \
         OMXINCLUDEDIR=${STAGING_INCDIR}/omx \
         all
+    rm -f ${S}/video/src/openmax_il/mpeg4_encoder/inc/std.h
 }
 
 do_install() {
