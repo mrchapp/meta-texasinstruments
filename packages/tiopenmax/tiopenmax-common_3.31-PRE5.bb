@@ -14,6 +14,10 @@ CCASE_PATHFETCH = "\
 CCASE_PATHCOMPONENTS = 3
 CCASE_PATHCOMPONENT = "linux"
 
+SRC_URI = "\
+	file://add-stdio.patch;patch=1 \
+	"
+
 inherit ccasefetch
 
 do_compile_prepend() {

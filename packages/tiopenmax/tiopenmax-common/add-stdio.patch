@@ -1,0 +1,12 @@
+Index: tiopenmax-common-3.31-PRE4/system/src/openmax_il/common/inc/OMX_TI_Debug.h
+===================================================================
+--- tiopenmax-common-3.31-PRE4.orig/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2010-04-22 08:42:38.000004000 +0200
++++ tiopenmax-common-3.31-PRE4/system/src/openmax_il/common/inc/OMX_TI_Debug.h	2010-04-22 08:43:07.000007000 +0200
+@@ -44,6 +44,7 @@
+ #define OMX_TI_DEBUG__H
+ 
+ #include <ctype.h>
++#include <stdio.h>
+ /* 
+     The OMX TI Debug interface allows debug messages to be classified by
+     domain and importance.  There are no preset classifications required, but
