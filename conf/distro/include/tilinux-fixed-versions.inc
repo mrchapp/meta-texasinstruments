@@ -2,10 +2,10 @@
 # baseport
 SRCREV_pn-x-load  =                 "L24.5"
 SRCREV_pn-u-boot =                  "L24.5"
-SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.5-p1"
+SRCREV_pn-linux-tiomap =            "ti-2.6.33-rc2-omap4-L24.5-p2"
 
 # Device driver test
-SRCREV_pn-device-driver-test =      "ti-2.6.33-rc2-omap4-L24.4-p1"
+SRCREV_pn-device-driver-test =      "L24.5"
 
 # Tesla Bridge
 #SRCREV_pn-tidspbridge-lib            =      "ti-syslink-mpu-rls-24.4"
@@ -16,7 +16,7 @@ SRCREV_pn-device-driver-test =      "ti-2.6.33-rc2-omap4-L24.4-p1"
 SRCREV_pn-tisyslink-lib              =      "ti-syslink-mpu-rls-24.5"
 SRCREV_pn-tisyslink-d2cmap           =      "ti-syslink-mpu-rls-24.5"
 SRCREV_pn-tisyslink-ducati           =      "BRIDGE-DUCATI_RLS_0.17"
-SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.13.00.00"
+SRCREV_pn-tisyslink-ducati-mm        =      "TI-MM-DUCATI_RLS.01.13.00.00-P1"
 SRCREV_pn-titiler-memmgr             =      "l24.5"
 
 # Tesla/Ducati external tools
@@ -59,7 +59,7 @@ PREFERRED_VERSION_titools-xdais  =          "7.00.00.27"
 #SRCREV_pn-tiopenmax-lcml              = "L24.4-p2"
 SRCREV_pn-tiopenmax-core              = "L24.5"
 SRCREV_pn-tiopenmax-osal              = "L24.5"
-SRCREV_pn-tiopenmax-domx              = "1b528b41959aee703b8ed5e0dd8a2a951c4ad393"
+SRCREV_pn-tiopenmax-domx              = "L24.5"
 
 # connectivity
 SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
@@ -79,13 +79,13 @@ PREFERRED_VERSION_alsa-lib =            "1.0.18"
 PREFERRED_VERSION_alsa-utils =          "1.0.18"
 
 # gstreamer
-SRCREV_pn-gst-openmax =                 "L24.4-p2"
-SRCREV_pn-gst-plugin-bc =               "L24.4-p2"
-SRCREV_pn-gst-plugins-bad =             "L24.4-p2"
-SRCREV_pn-gst-plugins-ugly =            "L24.4-p2"
-SRCREV_pn-gst-plugins-good =            "L24.4-p2"
-SRCREV_pn-gst-plugins-base =            "L24.4-p2"
-SRCREV_pn-gstreamer =                   "L24.4-p2"
+SRCREV_pn-gst-openmax =                 "L24.5"
+SRCREV_pn-gst-plugin-bc =               "L24.5"
+SRCREV_pn-gst-plugins-bad =             "L24.5"
+SRCREV_pn-gst-plugins-ugly =            "L24.5"
+SRCREV_pn-gst-plugins-good =            "L24.5"
+SRCREV_pn-gst-plugins-base =            "L24.5"
+SRCREV_pn-gstreamer =                   "L24.5"
 PREFERRED_VERSION_gst-pyapps =          "5.11"
 PREFERRED_VERSION_gst-qtmux =           "svn"
 PREFERRED_VERSION_check =               "0.9.5"
