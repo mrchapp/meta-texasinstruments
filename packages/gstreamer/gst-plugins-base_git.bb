@@ -3,8 +3,9 @@ DEPENDS += "virtual/libx11 alsa-lib freetype gnome-vfs liboil libogg libvorbis l
 RDEPENDS += "gnome-vfs-plugin-file gnome-vfs-plugin-http gnome-vfs-plugin-ftp \
              gnome-vfs-plugin-sftp"
 PROVIDES_${PN} += "gst-plugins"
-PR = "r5"
+PR = "r6"
 
 EXTRA_OECONF += "--disable-freetypetest --disable-pango --disable-theora"
 
 SRC_URI += "git://dev.omapzoom.org/pub/scm/gstreamer/gst-plugins-base.git;protocol=git"
+SRC_URI += "file://remove-Wmissingdirs.patch;patch=1"
