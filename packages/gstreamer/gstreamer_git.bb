@@ -10,7 +10,7 @@ DEPENDS = "glib-2.0 gettext-native libxml2 bison-native flex-native"
 inherit autotools pkgconfig
 
 SRC_URI = "git://dev.omapzoom.org/pub/scm/gstreamer/gstreamer.git;protocol=git \
-           file://common-20091119.tar.gz \
+           file://common-20100422.tar.gz \
 "
 
 S = "${WORKDIR}/git"
@@ -20,7 +20,7 @@ EXTRA_OECONF = "--disable-docs-build --disable-dependency-tracking --with-check=
 do_configure_prepend() {
 	# This m4 file contains nastiness which conflicts with libtool 2.2.2
 	rm -f ${S}/common/m4/lib-link.m4 || true
-	mv ${WORKDIR}/common-20091119/* ${S}/common/
+	mv ${WORKDIR}/common-20100422/* ${S}/common/
 	(cd ${S}/; NOCONFIGURE=1 ./autogen.sh)
 }
 
