@@ -1,10 +1,10 @@
 DESCRIPTION = "Texas Instruments OpenMAX IL DOMX proxy components."
 
 PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
-PR = "r1"
+PR = "r2"
 DEPENDS = "tiopenmax-core tiopenmax-osal"
 
-SRC_URI = "git://sealion.sc.ti.com/git/domx.git;protocol=git"
+SRC_URI = "git://gforge01.dal.design.ti.com/domx;protocol=git"
 PV = "0.0+git+${SRCREV}"
 S = "${WORKDIR}/git/"
 

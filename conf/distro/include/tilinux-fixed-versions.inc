@@ -57,9 +57,9 @@ SRCREV_pn-tiopenmax-audiodecode       = "L24.4-p2"
 SRCREV_pn-tiopenmax-audioencode       = "L24.4-p2"
 SRCREV_pn-tiopenmax-base              = "L24.4-p2"
 SRCREV_pn-tiopenmax-lcml              = "L24.4-p2"
-SRCREV_pn-tiopenmax-core              = "L24.4"
-SRCREV_pn-tiopenmax-osal              = "L24.4"
-SRCREV_pn-tiopenmax-domx              = "L24.4-p2"
+SRCREV_pn-tiopenmax-core              = "L24.5"
+SRCREV_pn-tiopenmax-osal              = "L24.5"
+SRCREV_pn-tiopenmax-domx              = "L24.5"
 
 # connectivity
 SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
