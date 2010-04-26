@@ -1,0 +1,21 @@
+Index: git/configure.ac
+===================================================================
+--- git.orig/configure.ac	2010-04-23 14:49:30.000000000 -0500
++++ git/configure.ac	2010-04-23 14:49:47.000000000 -0500
+@@ -275,14 +275,14 @@
+ AG_GST_SET_ERROR_CFLAGS($GST_GIT, [
+         -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wundef
+         -Wwrite-strings -Wold-style-definition
+-        -Winit-self -Wmissing-include-dirs -Waddress -Wno-multichar
++        -Winit-self -Waddress -Wno-multichar
+         -Waggregate-return -Wnested-externs ])
+ 
+ dnl define an ERROR_CXXFLAGS Makefile variable
+ AG_GST_SET_ERROR_CXXFLAGS($GST_GIT, [
+         -Wmissing-declarations -Wredundant-decls -Wundef
+         -Wwrite-strings -Wcast-align
+-        -Winit-self -Wmissing-include-dirs -Waddress -Wno-multichar ])
++        -Winit-self -Waddress -Wno-multichar ])
+ 
+ dnl define correct level for debugging messages
+ AG_GST_SET_LEVEL_DEFAULT($GST_GIT)
