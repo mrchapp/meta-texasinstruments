@@ -1,11 +1,11 @@
 SECTION = "libs"
 DESCRIPTION = "WLAN firmware"
-PR = "r0"
+PR = "r1"
 
 inherit ccasefetch
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-COMPATIBLE_MACHINE = "omap-4430sdp|omap-4430sdphigh"
+COMPATIBLE_MACHINE = "omap-4430sdp"
 
 CCASE_SPEC = "%\
 	element /vobs/WCGDev/... ${SRCREV}%\

@@ -3,13 +3,13 @@ PRIORITY = "optional"
 DESCRIPTION = "WLAN stack (kernel module, libs, wpa_supplicant)"
 DEPENDS = "linux-tiomap wilink-firmware"
 LICENSE = "BSD"
-PR = "r3"
+PR = "r4"
 
 inherit module pkgconfig
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-COMPATIBLE_MACHINE = "omap-4430sdp|omap-4430sdphigh"
+COMPATIBLE_MACHINE = "omap-4430sdp"
 
 PACKAGES = "${PN} ${PN}-dbg"
 
@@ -28,8 +28,8 @@ do_compile() {
 
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 
-#    make ARCH=arm HOST_PLATFORM=${MACHINE} KERNEL_DIR=${STAGING_KERNEL_DIR} \
-#	 BUILD_SUPPL=n CROSS_COMPILE=${TARGET_PREFIX} clean
+    make ARCH=arm HOST_PLATFORM=sdc4430 KERNEL_DIR=${STAGING_KERNEL_DIR} \
+    BUILD_SUPPL=n CROSS_COMPILE=${TARGET_PREFIX} clean
 
 	make ARCH=arm HOST_PLATFORM=sdc4430 KERNEL_DIR=${STAGING_KERNEL_DIR} \
 	BUILD_SUPPL=n CROSS_COMPILE=${TARGET_PREFIX} all
@@ -47,18 +47,13 @@ do_install() {
 	install -d ${D}/etc/init.d
 	install -d ${D}/etc/rc0.d
 	install -d ${D}/etc/rc1.d
-	install -d ${D}/etc/rc2.d
-	install -d ${D}/etc/rc3.d
-	install -d ${D}/etc/rc4.d
 	install -d ${D}/etc/rc5.d
 	install -d ${D}/etc/rc6.d
 	
-#	install -m 755 ${FILESDIR}/wlan.init ${D}/etc/init.d/wlan
+	install -m 755 ${FILESDIR}/wlan.init ${D}/etc/init.d/wlan
 	
 #	cd ${D}/etc/rc0.d && ln -s ../init.d/wlan K29Wlan
 #	cd ${D}/etc/rc1.d && ln -s ../init.d/wlan K29Wlan
-#	cd ${D}/etc/rc2.d && ln -s ../init.d/wlan S29Wlan
-#	cd ${D}/etc/rc3.d && ln -s ../init.d/wlan S29Wlan
 #	cd ${D}/etc/rc5.d && ln -s ../init.d/wlan S29Wlan
 #	cd ${D}/etc/rc6.d && ln -s ../init.d/wlan K29Wlan
 }

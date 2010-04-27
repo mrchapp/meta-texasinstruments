@@ -63,7 +63,7 @@ SRCREV_pn-tiopenmax-domx              = "L24.5"
 
 # connectivity
 SRCREV_pn-wilink =                      "ti-wifi-omap4-L24.4"
-SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.2"
+SRCREV_pn-wilink-firmware =             "LINUX-WCG_RLS_24.5"
 
 # graphics
 SRCREV_pn-sgx-kernel-module =           "GFX-LINUX-SGX-DDK-L24_RLS_1.4.1"
