@@ -90,7 +90,6 @@ POKY_BASE_INSTALL = '\
     ${@base_contains("IMAGE_FEATURES", "omap-gfx", "task-omap-gfx", "",d)} \
     \
     ${@base_contains("IMAGE_FEATURES", "package-management", "${ROOTFS_PKGMANAGE}", "",d)} \
-    ${@base_contains("IMAGE_FEATURES", "omap-security", "task-omap-security", "",d)} \
     sgx-tiblt \
     ${POKY_EXTRA_INSTALL} \
     '
