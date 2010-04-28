@@ -5,8 +5,7 @@ SECTION = "x11/gnome/libs"
 SRC_URI = "http://ftp.gnome.org/pub/GNOME/sources/ORBit2/2.14/ORBit2-${PV}.tar.bz2 \
 	   file://gtk-doc.m4 \
 	   file://gtk-doc.make"
-DEPENDS = "libidl-native popt-native"
-# gtk-doc"
+DEPENDS = "libidl-native popt-native gtk-doc-native"
 
 S = "${WORKDIR}/ORBit2-${PV}"
 #FILESDIR = "${@os.path.dirname(bb.data.getVar('FILE',d,1))}/orbit2"
