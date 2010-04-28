@@ -1,5 +1,5 @@
 DESCRIPTION = "GStreamer Trace library"
-RDEPENDS = "gst-plugins-base"
+DEPENDS = "gst-plugins-base"
 PRIORITY = "optional"
 LICENSE = "GPL"
 PR = "r0"
