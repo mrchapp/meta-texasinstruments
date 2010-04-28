@@ -15,14 +15,14 @@ do_fetch_gforge () {
   if [ ! -z "${SRC_GFORGE}" ]; then
     if [ ! -s ${GFORGEFETCH_OUTFILE} ]; then
       if [ -f ${GFORGEFETCH_OUTFILE}.lock ]; then
-        # Wait 15 minutes maximum
+        # Wait 30 minutes maximum
 	wait=0
-	while [ "$wait" -lt "900" ]
+	while [ "$wait" -lt "1800" ]
 	do
-	  wait=`expr $wait + 10`
-	  sleep 10
+	  wait=`expr $wait + 30`
+	  sleep 30
 	  if [ -f ${GFORGEFETCH_OUTFILE}.lock ]; then
-	    echo "Still locked - $wait sec"
+	    echo "Still locked after $wait sec"
 	  else
 	    break
 	  fi
@@ -31,7 +31,7 @@ do_fetch_gforge () {
           echo "Problem: file ${GFORGEFETCH_OUTFILE} is not available or empty"
           exit 1
         fi
-        echo "Unlocked - ${GFORGEFETCH_OUTFILE} is available now."  
+        echo "Unlocked - ${GFORGEFETCH_OUTFILE} is now available."  
       else
         touch ${GFORGEFETCH_OUTFILE}.lock
 	git archive --format=tar -v --remote=${SRC_GFORGE} ${SRCREV} | gzip > ${GFORGEFETCH_OUTFILE}_downloading
