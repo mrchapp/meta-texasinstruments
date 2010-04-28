@@ -1,5 +1,5 @@
 DESCRIPTION = "GStreamer Enhanced Launcher"
-RDEPENDS = "gst-plugins-base"
+DEPENDS = "gst-plugins-base"
 PRIORITY = "optional"
 PR = "r1"
 
