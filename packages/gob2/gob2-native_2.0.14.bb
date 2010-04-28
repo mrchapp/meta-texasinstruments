@@ -12,6 +12,6 @@ inherit native
 
 PR = "r2"
  
-DEPENDS = "bison-native flex-native glib-2.0"
+DEPENDS = "bison-native flex-native glib-2.0-native"
 
 
