@@ -31,7 +31,9 @@ do_compile() {
         OMX_PERF_INSTRUMENTATION=1 OMX_PERF_CUSTOMIZABLE=1 \
         OMXINCLUDEDIR=${STAGING_INCDIR}/omx \
         all
+    rm -f ${STAGING_INCDIR}/omx/std.h
     rm -f ${S}/video/src/openmax_il/video_encode_ittiam/inc/std.h
+    rm -f ${S}/video/src/openmax_il/video_encode_ittiam/inc/import/std.h
 }
 
 do_install() {
