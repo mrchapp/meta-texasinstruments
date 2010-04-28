@@ -39,7 +39,7 @@ do_compile() {
 
 do_stage() {
 	install -d ${STAGING_BINDIR}/dspbridge/dsp
-	cp -a ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
+	cp -fa ${S}/* ${STAGING_BINDIR}/dspbridge/dsp
 	install -d ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -m 0644 ${S}/ti/dspbridge/dsp/bridge_product/exports/lib/*.a64P ${STAGING_LIBDIR}/dspbridge/exports/lib
 	install -d ${STAGING_INCDIR}/dspbridge/exports/include
