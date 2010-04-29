@@ -21,7 +21,6 @@ CCASE_PATHCOMPONENT = "OMAPSW_MPU"
 
 SRC_URI="\
     file://23.11-ippmk.patch;patch=1 \
-    file://23.11-il3pmk.patch;patch=1 \
     file://23.11-cafmk.patch;patch=1 \
     file://update-makefile-install.patch;patch=1 \
     file://no-doc.patch;patch=1 \
@@ -45,7 +44,7 @@ do_compile() {
 
 	cd ${S}/linux/mm_isp/
 	for action in clean all; do
-		for subcomp in capl ipp il3p; do
+		for subcomp in capl ipp; do
 			oe_runmake \
 				ALGOROOT=${S}/algo \
 				MMISPROOT=${S}/linux/mm_isp \
@@ -111,7 +110,7 @@ do_install() {
 		BRIDGEINCLUDEDIR=${STAGING_INCDIR}/dspbridge \
 		BRIDGELIBDIR=${STAGING_LIBDIR} \
 		TARGETDIR=${D} \
-		capl.install ipp.install il3p.install
+		capl.install ipp.install
 
 	# Install 3A FW
 	cd ${D}
@@ -167,7 +166,7 @@ do_stage() {
 		BRIDGEINCLUDEDIR=${STAGING_INCDIR}/dspbridge \
 		BRIDGELIBDIR=${STAGING_LIBDIR} \
 		TARGETDIR=${STAGING_DIR_TARGET}/usr/ \
-		capl.install ipp.install il3p.install
+		capl.install ipp.install
 
 	install -d ${STAGING_INCDIR}/capl/inc
 	install -m 0644 ${S}/linux/mm_isp/capl/inc/*.h ${STAGING_INCDIR}/capl/inc/
