@@ -261,9 +261,4 @@ PREFERRED_VERSION_cheese	=	"2.24.3"
 PREFERRED_VERSION_intltool	=	"0.40.0"
 
 # extra (will be replaced by pokyomap in subsequent releases)
-PREFERRED_VERSION_gtk+		=	"2.14.7"
-PREFERRED_VERSION_glib-2.0	=	"2.18.4"
-PREFERRED_VERSION_pango		=	"1.22.4"
-PREFERRED_VERSION_cairo		=	"1.8.6"
-PREFERRED_VERSION_pixman	=	"0.14.0"
 PREFERRED_VERSION_l23-init-extra    =	"23.I3.x"

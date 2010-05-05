@@ -44,4 +44,9 @@ do_stage() {
 	install -m 0644 src/services/name/CosNaming.h ${STAGING_INCDIR}/orbit-2.0/ORBitservices/
 	install -m 0644 src/services/name/CosNaming_impl.h ${STAGING_INCDIR}/orbit-2.0/ORBitservices/
 	install -m 0644 src/services/imodule/orbit-imodule.h ${STAGING_INCDIR}/orbit-2.0/ORBitservices/
+	# Poky upstream migration patch
+	install -m 0644 src/idl-compiler/ORBit-idl-2.0.pc ${STAGING_LIBDIR}/pkgconfig
+	install -m 0644 ORBit-2.0.pc ${STAGING_LIBDIR}/pkgconfig
+	install -m 0644 ORBit-CosNaming-2.0.pc ${STAGING_LIBDIR}/pkgconfig
+	install -m 0644 ORBit-imodule-2.0.pc ${STAGING_LIBDIR}/pkgconfig
 }
