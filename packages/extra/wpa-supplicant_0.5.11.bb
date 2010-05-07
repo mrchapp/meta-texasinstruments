@@ -2,7 +2,7 @@ DESCRIPTION = "A Client for Wi-Fi Protected Access (WPA)."
 SECTION = "network"
 LICENSE = "GPL"
 HOMEPAGE = "http://hostap.epitest.fi/wpa_supplicant/"
-DEPENDS = "gnutls \
+DEPENDS = "gnutls dbus \
 ${@base_contains("COMBINED_FEATURES", "madwifi", "madwifi-ng", "",d)} \
 ${@base_contains("DISTRO_FEATURES", "wapi", " wapi", "", d)} \
 openssl \
