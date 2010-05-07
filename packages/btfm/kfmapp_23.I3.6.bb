@@ -23,7 +23,7 @@ do_compile() {
         cp ${S}/build/makefile kfmapp/.
 	install -m 755 ${S}/build/makefile kfmapp/makefile
 	cd kfmapp
-	oe_runmake CROSS=${AR%-*}- kfmapp
+	oe_runmake BT_HOME=${STAGING_DIR_TARGET} CROSS=${AR%-*}- kfmapp
 }
 
 do_install() {

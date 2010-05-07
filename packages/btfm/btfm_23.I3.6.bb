@@ -22,7 +22,7 @@ do_compile() {
 	tr -d '\015' < bluetooth_init.sh > ti_btfm_init
 	cp ${S}/build/makefile uim/.
 	cd uim
-	oe_runmake CROSS=${AR%-*}- uim
+	oe_runmake BT_HOME=${STAGING_DIR_TARGET} CROSS=${AR%-*}- uim
 }
 
 do_install() {
