@@ -1,4 +1,4 @@
-# Integration config spec for L23.I3.6
+# Integration config spec for L23.I3.7-PRE1
 CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 
@@ -6,6 +6,7 @@ CCASE_SPEC = "\
 	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.33%\
 	
 	# OMX Video%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/src/openmax_il/video_decode_ittiam/...  LINUX-MMVIDEO_RLS_3.34-PRE1%\
  	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.33%\
 	
 	# OMX Image%\
