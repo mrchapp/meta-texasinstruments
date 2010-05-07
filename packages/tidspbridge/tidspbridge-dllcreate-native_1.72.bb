@@ -11,7 +11,10 @@ CCASE_PATHFETCH = "/vobs/SDS/Source/Dload/dload/src"
 CCASE_PATHCOMPONENT = "src"
 CCASE_PATHCOMPONENTS = "5"
 
-SRC_URI = "file://DLLcreate.patch;patch=1"
+SRC_URI = " \
+	file://DLLcreate.patch;patch=1 \
+	file://tidspbridge-dllcreate-native-compilationerrors.patch;patch=1 \
+	"
 
 S = ${WORKDIR}/${PN}-${PV}
 
