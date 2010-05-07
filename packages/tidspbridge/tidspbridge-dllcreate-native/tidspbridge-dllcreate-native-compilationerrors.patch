@@ -1,0 +1,22 @@
+Index: tidspbridge-dllcreate-native-1.72/DLLcreate/HOUSTON/HOST/filename.cpp
+===================================================================
+--- tidspbridge-dllcreate-native-1.72.orig/DLLcreate/HOUSTON/HOST/filename.cpp	2010-02-04 19:07:25.000000000 -0600
++++ tidspbridge-dllcreate-native-1.72/DLLcreate/HOUSTON/HOST/filename.cpp	2010-02-04 19:08:36.000000000 -0600
+@@ -72,7 +72,7 @@
+      /*****************************************************************/
+      /* FIND AND COPY FILE NAME, AND REMOVE EXTENSION                 */
+      /*****************************************************************/
+-     if ((cf = strpbrk(file_name, tokens)) != NULL)
++     if ((cf = (char *)strpbrk(file_name, tokens)) != NULL)
+      {
+ 	 /* Find the last occurance of any token */
+ 	 while((ce = strpbrk(cf + 1, tokens)) != NULL)  cf = ce;
+@@ -274,7 +274,7 @@
+     
+     if (strlen(file_name) == 0) return NULL;
+     
+-    if ((cf = strpbrk(file_name, tokens)) != NULL)
++    if ((cf = (char *)strpbrk(file_name, tokens)) != NULL)
+     {
+ 	/* Find the last occurance of any token */
+ 	while((ce = strpbrk(cf + 1, tokens)) != NULL)  cf = ce;
