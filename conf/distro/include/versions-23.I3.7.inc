@@ -218,8 +218,8 @@ PREFERRED_VERSION_gst-auto-launch =	"0.3.4"
 PREFERRED_VERSION_shot =		"0.5"
 
 # connectivity
-SRCREV_pn-wilink = "ca16fa9650abcce671f225c290ce20f46d2b4055"
-SRCREV_pn-wilink-firmware =    "LINUX-WCG-WLAN_RLS_L23-INC3-6"
+SRCREV_pn-wilink = "b6ab28bcd861b9cd18832481d1eee83448b4745b"
+SRCREV_pn-wilink-firmware =    "LINUX-WCG-WLAN_RLS_L23-INC3-7"
 SRCREV_pn-wapi =   "LINUX-WCG-WLAN_RLS_L23-WAPI-INC3-6"
 PREFERRED_VERSION_btfm = 		"23.I3.6"
 PREFERRED_VERSION_kfmapp = 		"23.I3.6"

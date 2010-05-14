@@ -1,0 +1,12 @@
+Index: git/platforms/os/linux/Makefile
+===================================================================
+--- git.orig/platforms/os/linux/Makefile	2010-05-14 14:19:34.000051000 +0200
++++ git/platforms/os/linux/Makefile	2010-05-14 14:20:32.000006000 +0200
+@@ -288,7 +288,6 @@
+ 
+ apps: $(OUTPUT_FILE) $(BUS_DRV) CU_DK 
+ 	rm -f $(OUTPUT_DIR)/$(BUS_DRV_REMOVE).ko $(OUTPUT_DIR)/$(BUS_DRV_REMOVE)_test
+-	cp -f $(FW_IMAGE) $(FW_IMAGE_DEST_FILE)
+ ifneq ($(SUPPL),ANDROID)
+ 	cp -f $(WLAN_CU_CLI) $(OUTPUT_DIR)
+ 	cp -f $(WLAN_LOADER) $(OUTPUT_DIR)
