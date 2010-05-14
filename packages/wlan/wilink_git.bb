@@ -19,20 +19,23 @@ PV = "23.i3+git+${SRCREV}"
 SRC_URI = "git://dev.omapzoom.org/pub/scm/vijay/wlan.git;protocol=git;branch=master"
 SRC_URI += " \
 	file://wlan.init \
+	file://ar-build-issue.patch;patch=1 \
+	file://firmware-path.patch;patch=1 \
+	file://do-not-copy-firmware.patch;patch=1 \
 	"
 
 do_compile() {
 	install -d ${S}/fw/Latest
 	install -d ${S}/CUDK/output
 	cd ${S}/platforms/os/linux
-	cp ${STAGING_DIR_TARGET}/fw/firmware.bin ${S}/platforms/os/linux/.
-    	cp ${STAGING_DIR_TARGET}/fw/Fw1273_CHIP.bin ${S}/fw/Latest/.
 
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS
 
 	make ARCH=arm HOST_PLATFORM=${MACHINE} KERNEL_DIR=${STAGING_KERNEL_DIR} \
 	TI_SUPP_LIB_DIR=${STAGING_INCDIR}/wpa-supplicant \
 	BUILD_SUPPL=y CROSS_COMPILE=${TARGET_PREFIX} clean
+	
+	cp ${STAGING_DIR_TARGET}/fw/firmware.bin ${S}/platforms/os/linux/.
 
 	make ARCH=arm HOST_PLATFORM=${MACHINE} KERNEL_DIR=${STAGING_KERNEL_DIR} \ 
 	TI_SUPP_LIB_DIR=${STAGING_INCDIR}/wpa-supplicant \
