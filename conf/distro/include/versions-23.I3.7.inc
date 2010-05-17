@@ -211,10 +211,10 @@ PREFERRED_VERSION_tiopenmax-mpeg4enc =     "3.34-PRE1"
 
 
 # gstreamer
-PREFERRED_VERSION_libgoo =		"5.i3.6"
-PREFERRED_VERSION_gst-goo =		"5.i3.6"
+PREFERRED_VERSION_libgoo =		"5.i3.7-pre2"
+PREFERRED_VERSION_gst-goo =		"5.i3.7-pre2"
 PREFERRED_VERSION_gst-pyapps =		"5.I3.6"
-PREFERRED_VERSION_gst-auto-launch =	"0.3.4"
+PREFERRED_VERSION_gst-auto-launch =	"0.3.6"
 PREFERRED_VERSION_shot =		"0.5"
 
 # connectivity
