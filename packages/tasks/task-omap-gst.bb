@@ -3,7 +3,7 @@
 #
 
 DESCRIPTION = "Tasks for the TI's GStreamer Multimedia Framework"
-PR = "r22"
+PR = "r23"
 
 PACKAGES = "\
     task-omap-gst \
@@ -24,6 +24,8 @@ RDEPENDS_task-omap-gst = "\
 RDEPENDS_task-omap-gst-libs = "\
     check	\
     gstreamer	\
+    faac	\
+    faad2	\
     "
 
 RDEPENDS_task-omap-gst-plugins = "\
@@ -58,10 +60,12 @@ RDEPENDS_task-omap-gst-plugins = "\
     gst-plugin-stridetransform \
     gst-plugin-h264 \
     gst-plugin-faad \
+    gst-plugin-h264parse \
     gst-qa \
     gst-openmax \
     "
 
 RDEPENDS_task-omap-gst-apps = "\
     omap-media-apps \
+    gst-auto-launch \
     "
