@@ -9,11 +9,11 @@ RRECOMMENDS = "gst-plugin-mad \
             gst-plugin-alsa \
             gst-plugin-ogg"
 
-PV = "0.1"
-PR = "r0"
+PR = "r1"
 
-SRCREV = "708c5650a1387fdcd5323407fc6c5d2f45f7905d"
-SRC_URI = "git://github.com/tigrux/omap-media-apps.git;protocol=http"
+SRC_URI = "git://github.com/tigrux/omap-media-apps.git;protocol=http;tag=${PV}"
 S = "${WORKDIR}/git"
+
+FILES_${PN} += "${datadir}/omap4-apps"
 
 inherit autotools
