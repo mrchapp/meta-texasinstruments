@@ -1,8 +1,9 @@
 require gst-plugins-git.inc
 DEPENDS += "gst-plugins-base libmusicbrainz tremor libmms amrwb"
-PR="r9"
+PR="r10"
 
 SRC_URI += "file://trace-fix.patch;patch=1"
+SRC_URI += "file://freeze-timeout.patch;patch=1"
 
 EXTRA_OECONF += "--disable-examples --disable-experimental --disable-sdl --disable-cdaudio \
 		--with-plugins=flv,musicbrainz,wavpack,ivorbis,amrwbenc,libmms,freeze,aacparse,qtmux,jpegparse,amrparse"
