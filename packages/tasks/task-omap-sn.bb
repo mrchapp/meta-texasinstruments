@@ -15,7 +15,7 @@ RDEPENDS = "\
     tisocketnode-ringio \
     tisocketnode-usn \
     tisocketnode-conversions \
-    \
+    tisocketnode-pplib-dualout\
     tisocketnode-g711dec \
     tisocketnode-g711enc \
     tisocketnode-gsmfrdec \

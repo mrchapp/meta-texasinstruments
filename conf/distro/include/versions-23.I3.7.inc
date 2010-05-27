@@ -134,6 +134,7 @@ PREFERRED_VERSION_tisocketnode-jpegdec-codec =          "3.12"
 PREFERRED_VERSION_tisocketnode-jpegenc =                "3.12"
 PREFERRED_VERSION_tisocketnode-jpegenc-codec =          "3.12"
 PREFERRED_VERSION_tisocketnode-conversions =		"3.12"
+PREFERRED_VERSION_tisocketnode-pplib-dualout =          "3.12"
 # Ittiam
 PREFERRED_VERSION_tisocketnode-h264decitt =		"20100430"
 PREFERRED_VERSION_tisocketnode-h264decitt-codec =	"20100430"
