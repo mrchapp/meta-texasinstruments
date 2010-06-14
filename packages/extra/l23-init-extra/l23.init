@@ -20,6 +20,11 @@ start ()
     # AVS - 
     echo 1 > /debug/pm_debug/sr1_autocomp
     echo 1 > /debug/pm_debug/sr2_autocomp
+
+    # OFF Mode
+    echo 1 > /debug/pm_debug/enable_off_mode
+    echo 1 > /debug/pm_debug/voltage_off_while_idle
+
 }
 
 stop ()
