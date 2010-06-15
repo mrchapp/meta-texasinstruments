@@ -10,10 +10,10 @@ PARALLEL_MAKE = "-j1"
 
 CCASE_SPEC = "\
 	# MM ISP%\
+	element /vobs/wtbu/OMAPSW_MPU/algo/... ACT_LINUX-TID-MMISP-PRERLS-I3.8.2%\
 	element /vobs/wtbu/OMAPSW_MPU/algo/... ACT_LINUX-TID-MMISP-PRERLS-I3.8.1%\
-	element /vobs/wtbu/OMAPSW_MPU/algo/... LINUX-TID-MMISP_RLS_1.20%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... ACT_LINUX-TID-MMISP-PRERLS-I3.8.2%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... ACT_LINUX-TID-MMISP-PRERLS-I3.8.1%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/mm_isp/... LINUX-TID-MMISP_RLS_1.20%\
 	element -directory /vobs/wtbu/OMAPSW_MPU/... /main/LATEST%\
 	"
 
