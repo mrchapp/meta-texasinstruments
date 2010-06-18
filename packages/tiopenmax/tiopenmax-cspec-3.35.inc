@@ -3,23 +3,19 @@ CCASE_SPEC = "\
 	${@base_contains("DISTRO_FEATURES", "testpatterns", "", "element patterns /main/0", d)}%\
 
 	# OMX Audio%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.8.1%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... ACT_MMAUDIO-PREREL-I3.8.0%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/audio/... LINUX-MMAUDIO_RLS_3.35%\
 	
 	# OMX Video%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/... ACT_LINUX-MMVIDEO-PREREL-I3.8.2%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/video/... ACT_LINUX-MMVIDEO-PREREL-I3.8.1%\
-
+	element /vobs/wtbu/OMAPSW_MPU/linux/video/... LINUX-MMVIDEO_RLS_3.35%\
+	
 	# OMX Image%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.34%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/image/... LINUX-MMIMAGE_RLS_3.35%\
 	
 	# LCML & core%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/system/... ACT_MMSYSTEM-PREREL-I3.8.1%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/system/... ACT_MMSYSTEM-PREREL-I3.8.0%\
+	element /vobs/wtbu/OMAPSW_MPU/linux/system/... LINUX-MMSYSTEM_RLS_3.35%\
 	
 	# OMX Application%\
-	element /vobs/wtbu/OMAPSW_MPU/linux/application/... ACT_LINUX-MMAPPLICATION-PRERLS-I3.8.1%\ 
-	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.34%\ 
+	element /vobs/wtbu/OMAPSW_MPU/linux/application/... LINUX-MMAPPLICATION_RLS_3.35%\ 
 	
 	# OMX INST2 utilities%\
 	element /vobs/wtbu/OMAPSW_MPU/linux/utilities/... LINUX-MMUTILS_RLS_3.33%\
