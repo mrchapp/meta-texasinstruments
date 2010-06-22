@@ -18,7 +18,7 @@ SRCREV_pn-u-boot ?= "de352010a1ba26705350d4cbc4d00761c56bae3d"
 SRCREV_pn-x-load ?= "3cef0d053672743a541cf00448ee81a7bcb6558a"
 
 # Linux TIOMAP kernel for zoom2 - zoom3 - omap3630sdp
-SRCREV_pn-linux-tiomap ?= "517f4111f126b118e59c1c02aac2f3b7d77a81fe"
+SRCREV_pn-linux-tiomap ?= "2bf360aa5268d484745a21d9a81ab09c234becc5"
 
 # bridge and friends
 SRCREV_pn-tidspbridge-lib = "31c7e2c95002960fcff2d627102a420e86054faa"
